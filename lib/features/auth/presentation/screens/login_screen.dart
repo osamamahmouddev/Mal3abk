@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/routes/routes.dart';
@@ -8,55 +9,35 @@ import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends HookWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _otpController = TextEditingController();
-  bool _isOtpSent = false;
-  bool _isLoading = false;
-
-  @override
-  void dispose() {
-    _phoneController.dispose();
-    _otpController.dispose();
-    super.dispose();
-  }
-
-  void _handleSendCode() {
-    if (_phoneController.text.trim().isEmpty) return;
-    setState(() {
-      _isLoading = true;
-    });
-    Future.delayed(const Duration(milliseconds: 600), () {
-      if (!mounted) return;
-      setState(() {
-        _isLoading = false;
-        _isOtpSent = true;
-      });
-    });
-  }
-
-  void _handleVerifyOtp() {
-    setState(() {
-      _isLoading = true;
-    });
-    Future.delayed(const Duration(milliseconds: 600), () {
-      if (!mounted) return;
-      setState(() {
-        _isLoading = false;
-      });
-      Navigator.of(context).pushReplacementNamed(AppRoutes.profileSetup);
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final phoneController = useTextEditingController();
+    final otpController = useTextEditingController();
+    final isOtpSent = useState(false);
+    final isLoading = useState(false);
+
+    void handleSendCode() {
+      if (phoneController.text.trim().isEmpty) return;
+      isLoading.value = true;
+      Future.delayed(const Duration(milliseconds: 600), () {
+        if (!context.mounted) return;
+        isLoading.value = false;
+        isOtpSent.value = true;
+      });
+    }
+
+    void handleVerifyOtp() {
+      isLoading.value = true;
+      Future.delayed(const Duration(milliseconds: 600), () {
+        if (!context.mounted) return;
+        isLoading.value = false;
+        Navigator.of(context).pushReplacementNamed(AppRoutes.profileSetup);
+      });
+    }
+
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppBar(
@@ -88,16 +69,16 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               SizedBox(height: 8.h),
               Text(
-                _isOtpSent
+                isOtpSent.value
                     ? 'أدخل كود التأكيد المرسل إلى رقمك'
                     : 'هنبعتلك كود تأكيد على رقم موبايلك',
                 style: AppTextStyles.font14Regular,
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 32.h),
-              if (!_isOtpSent) ...[
+              if (!isOtpSent.value) ...[
                 CustomTextFormField(
-                  controller: _phoneController,
+                  controller: phoneController,
                   labelText: 'رقم الموبايل',
                   hintText: '01012345678',
                   keyboardType: TextInputType.phone,
@@ -119,8 +100,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   text: 'إرسال الكود',
                   type: CustomButtonType.primary,
                   height: 54.h,
-                  isLoading: _isLoading,
-                  onTap: _handleSendCode,
+                  isLoading: isLoading.value,
+                  onTap: handleSendCode,
                 ),
                 SizedBox(height: 16.h),
                 Text(
@@ -132,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ] else ...[
                 CustomTextFormField(
-                  controller: _otpController,
+                  controller: otpController,
                   labelText: 'كود التأكيد (OTP)',
                   hintText: '••••',
                   keyboardType: TextInputType.number,
@@ -143,16 +124,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   text: 'تأكيد ودخول',
                   type: CustomButtonType.primary,
                   height: 54.h,
-                  isLoading: _isLoading,
-                  onTap: _handleVerifyOtp,
+                  isLoading: isLoading.value,
+                  onTap: handleVerifyOtp,
                 ),
                 SizedBox(height: 16.h),
                 TextButton(
-                  onPressed: () {
-                    setState(() {
-                      _isOtpSent = false;
-                    });
-                  },
+                  onPressed: () => isOtpSent.value = false,
                   child: Text(
                     'تعديل رقم الموبايل',
                     style: AppTextStyles.font14SemiBold.copyWith(
