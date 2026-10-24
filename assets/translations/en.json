@@ -1,0 +1,47 @@
+{
+  "app": {
+    "name": "Mal3abk"
+  },
+  "common": {
+    "english": "English",
+    "arabic": "Arabic",
+    "loading": "Loading...",
+    "retry": "Retry",
+    "ok": "OK",
+    "cancel": "Cancel",
+    "back": "Back",
+    "confirm": "Confirm",
+    "save": "Save",
+    "too_many_requests": "Too many requests. Please try again later.",
+    "unexpected_error": "An unexpected error occurred. Please try again."
+  },
+  "errors": {
+    "network": "Unable to connect to the server. Please check your internet connection.",
+    "timeout": "Request timed out. Please try again.",
+    "unauthorized": "Unauthorized access. Please login again.",
+    "server": "A server error occurred. Please try again later.",
+    "unknown": "An unexpected error occurred."
+  },
+  "auth": {
+    "login": "Login",
+    "email": "Email",
+    "password": "Password",
+    "email_hint": "Enter your email",
+    "password_hint": "Enter your password",
+    "welcome_back": "Welcome back!",
+    "login_prompt": "Sign in to manage your sports field bookings",
+    "logout": "Logout"
+  },
+  "validation": {
+    "email_required": "Email is required.",
+    "email_invalid": "Invalid email address format.",
+    "password_required": "Password is required.",
+    "password_too_short": "Password must be at least 6 characters."
+  },
+  "home": {
+    "title": "Home",
+    "welcome": "Welcome to Mal3abk",
+    "fields": "Fields",
+    "bookings": "My Bookings"
+  }
+}

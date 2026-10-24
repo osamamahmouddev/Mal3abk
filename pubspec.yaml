@@ -1,0 +1,94 @@
+name: mal3abk
+description: "Mal3abk - Sports field booking and management application"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # API & Networking
+  dio: ^5.9.2
+  retrofit: ^4.9.2
+  pretty_dio_logger: ^1.4.0
+  freezed_annotation: ^3.1.0
+  json_annotation: ^4.12.0
+
+  # State Management
+  flutter_bloc: ^9.1.1
+
+  # Dependency Injection
+  get_it: ^9.2.1
+
+  # Storage
+  shared_preferences: ^2.5.5
+  flutter_secure_storage: ^10.2.0
+
+  # UI / Responsive / Sizing
+  flutter_screenutil_plus: ^1.4.0
+  easy_localization: ^3.0.8
+  intl: ^0.20.2
+  flutter_svg: ^2.2.1
+  cached_network_image: ^3.4.1
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.4
+
+  # Code generation
+  retrofit_generator: ^10.2.3
+  freezed: ^3.2.5
+  json_serializable: ^6.13.0
+  build_runner: ^2.15.0
+
+  flutter_lints: ^6.0.0
+
+dependency_overrides:
+  objective_c: 9.4.1
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/pngs/
+    - assets/images/svgs/
+    - assets/translations/
+
+  fonts:
+    - family: Fustat
+      fonts:
+        - asset: assets/Fonts/Fustat/Fustat-ExtraLight.ttf
+          weight: 200
+        - asset: assets/Fonts/Fustat/Fustat-Light.ttf
+          weight: 300
+        - asset: assets/Fonts/Fustat/Fustat-Regular.ttf
+          weight: 400
+        - asset: assets/Fonts/Fustat/Fustat-Medium.ttf
+          weight: 500
+        - asset: assets/Fonts/Fustat/Fustat-SemiBold.ttf
+          weight: 600
+        - asset: assets/Fonts/Fustat/Fustat-Bold.ttf
+          weight: 700
+        - asset: assets/Fonts/Fustat/Fustat-ExtraBold.ttf
+          weight: 800
+    - family: IBMPlexSansArabic
+      fonts:
+        - asset: assets/Fonts/IBM_Plex_Sans_Arabic/IBMPlexSansArabic-Thin.ttf
+          weight: 100
+        - asset: assets/Fonts/IBM_Plex_Sans_Arabic/IBMPlexSansArabic-ExtraLight.ttf
+          weight: 200
+        - asset: assets/Fonts/IBM_Plex_Sans_Arabic/IBMPlexSansArabic-Light.ttf
+          weight: 300
+        - asset: assets/Fonts/IBM_Plex_Sans_Arabic/IBMPlexSansArabic-Regular.ttf
+          weight: 400
+        - asset: assets/Fonts/IBM_Plex_Sans_Arabic/IBMPlexSansArabic-Medium.ttf
+          weight: 500
+        - asset: assets/Fonts/IBM_Plex_Sans_Arabic/IBMPlexSansArabic-SemiBold.ttf
+          weight: 600
+        - asset: assets/Fonts/IBM_Plex_Sans_Arabic/IBMPlexSansArabic-Bold.ttf
+          weight: 700
