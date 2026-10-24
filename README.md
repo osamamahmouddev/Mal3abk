@@ -1,149 +1,150 @@
-# ⚽ Mal3abk | تطبيق مَلعَبك
+# ⚽ Mal3abk Mobile Application
 
-> تطبيق لإدارة وحجز الملاعب الرياضية، مبني باستخدام **Flutter** وفق أعلى معايير هندسة البرمجيات وأفضل الممارسات (**Clean Architecture - Feature-First Layering**).
-
----
-
-## 📋 نظرة عامة (Overview)
-
-تطبيق **ملعبك** يهدف إلى تسهيل عملية حجز الملاعب الرياضية وإدارتها للمستخدمين وأصحاب الملاعب، مع توفير تجربة مستخدم سلسة وعصرية تدعم اللغتين العربية والإنجليزية وتراعي اتجاهات الواجهة (RTL / LTR).
+> A sports field booking and management mobile application built with **Flutter** following strict software engineering principles and best practices (**Feature-First Clean Architecture**).
 
 ---
 
-## 🛠 التقنيات المستخدمة (Tech Stack)
+## 📋 Overview
 
-* **إدارة الحالة (State Management):** `flutter_bloc` (Cubit) مع `freezed` لتمثيل الحالات بأسلوب Union States ومطابقتها عبر Dart 3 Pattern Matching.
-* **الشبكة والاتصال (Networking):** `dio` + `retrofit` لإنشاء خدمات API متكاملة مع معالجة الأخطاء عبر `ApiResult<T>` و `AppApiFailure`.
-* **حقن الاعتماديات (Dependency Injection):** `get_it` مع تسجيل مركزي في `lib/core/di/service_locator.dart`.
-* **توليد الأكواد والموديلز (Models & Code Gen):** `freezed` + `json_serializable` (توليد ملفات `.freezed.dart` و `.g.dart`).
-* **التوطين واللغات (Localization):** `easy_localization` بدعم كامل للغتين العربية والإنجليزية مع ملفات الترجمة في `assets/translations/`.
-* **التجاوب والأبعاد (Responsive Sizing):** `flutter_screenutil_plus` لضبط القياسات عبر `.w`, `.h`, `.r`, `.sp` مع دوال التباعد `hSpace` و `vSpace`.
-* **التخزين المحلي (Storage):** `flutter_secure_storage` للبيانات الحساسة والتوكنز، و `shared_preferences` للإعدادات العامة.
-* **التنقل والتوجيه (Navigation):** `Navigator 1.0` مركزي مع `onGenerateRoute` وتمرير معطيات آمن (Type-Safe Arguments).
+**Mal3abk** is designed to streamline sports field reservations and management for both players and facility owners. The app provides a modern, responsive, and intuitive user experience with full bilingual support (Arabic & English) and seamless RTL/LTR adaptation.
 
 ---
 
-## 🏗 معمارية المشروع (Architecture)
+## 🛠 Tech Stack
 
-يعتمد المشروع هيكل **Feature-First Clean Architecture** بطبقات أحادية الاتجاه:
+* **State Management:** `flutter_bloc` (Cubit) with `freezed` union states, evaluated exhaustively using Dart 3 pattern matching and switch expressions.
+* **Networking & API:** `dio` + `retrofit` typed REST services, mapped through a unified `ApiResult<T>` and `AppApiFailure` contract.
+* **Dependency Injection:** `get_it` service locator configured centrally in `lib/core/di/service_locator.dart` (enforcing named constructor parameters and public fields).
+* **Models & Serialization:** `freezed` + `json_serializable` for code-generated immutable DTOs (`.freezed.dart` / `.g.dart`).
+* **Localization:** `easy_localization` supporting Arabic (RTL) and English (LTR) with translations located in `assets/translations/`.
+* **Responsive Sizing:** `flutter_screenutil_plus` for scalable dimensions (`.w`, `.h`, `.r`, `.sp`) with custom responsive spacing helpers (`hSpace` and `vSpace`).
+* **Local Storage:** `flutter_secure_storage` for sensitive tokens/credentials and `shared_preferences` for non-sensitive user settings.
+* **Navigation:** Centralized `Navigator 1.0` using `onGenerateRoute` with type-safe arguments and route name constants.
+
+---
+
+## 🏗 Architectural Principles
+
+The application strictly implements **Feature-First Clean Architecture** with downward-only unidirectional dependencies:
 
 ```
 presentation  ──►  domain  ──►  data
 ```
 
-### 1. طبقة العرض (`presentation`)
-* مسؤولة فقط عن رسم الواجهات وتمرير أحداث المستخدم للـ Cubit.
-* خالية تماماً من منطق الأعمال (Business Logic) أو الاستدعاءات المباشرة للـ API.
-* كل مكون يتم استخراجه في ملف مستقل (`*_widget.dart` / `*_screen.dart`).
+### 1. Presentation Layer (`presentation`)
+* Renders state and forwards user intents to Cubits.
+* Purely reactive — contains no business logic, data persistence, or direct API communication.
+* Every UI component is modularized into dedicated files (`*_widget.dart` / `*_screen.dart`).
 
-### 2. طبقة النطاق (`domain`)
-* خالية من أي استيراد لـ Flutter (Pure Dart).
-* تحتوي فقط على عقود المستودعات (`*_repo.dart`) وحالات الاستخدام (`*_use_case.dart`).
-* **قاعدة صارمة:** لا توجد Domain Entities، بل يتم استخدام الـ Models من طبقة البيانات مباشرة.
+### 2. Domain Layer (`domain`)
+* Pure Dart layer with zero Flutter framework dependencies.
+* Defines abstract repository contracts (`*_repo.dart`) and business logic use cases (`*_use_case.dart`).
+* **Strict Rule:** No domain entities or redundant entity mappers. Data layer DTO models are consumed directly.
 
-### 3. طبقة البيانات (`data`)
-* مسؤولة عن الاتصال بالـ API وقواعد البيانات المحلية.
-* تتضمن: خدمات Retrofit (`*_api_service.dart`)، وموديلز البيانات (`*_model.dart` / `*_request_body.dart`)، وتنفيذ المستودعات (`*_repo_impl.dart`).
-* تقوم باصطياد الاستثناءات وتحويلها إلى `AppApiFailure`.
+### 3. Data Layer (`data`)
+* Implements repository contracts and interacts with network APIs and local storage.
+* Houses Retrofit clients (`*_api_service.dart`), request bodies (`*_request_body.dart`), and data models (`*_model.dart`).
+* Traps all low-level exceptions and normalizes them into structured `AppApiFailure` instances.
 
 ---
 
-## 📂 هيكل المجلدات (Project Directory Structure)
+## 📂 Project Directory Structure
 
 ```
 lib/
-├── core/                           # النواة المشتركة للمشروع
-│   ├── app/                        # إعدادات التطبيق والمسافات (app_spaces) والأبعاد
-│   ├── config/                     # ملفات البيئات (Dev / Prod EnvConfig)
-│   ├── di/                         # Service Locator لحقن الاعتماديات (get_it)
-│   ├── extensions/                 # ملحقات مساعدة للسياق والبيانات
-│   ├── local_storage/              # إدارة التخزين المحلي الآمن
-│   ├── network/                    # إعدادات Dio, ApiResult, ApiFailureMapper
-│   ├── routes/                     # مسارات التطبيق و AppRouter
-│   ├── styles/                     # الألوان، الخطوط، أحجام النصوص، الأيقونات
-│   ├── theme/                      # ثيم التطبيق الموحد
-│   ├── utils/                      # المسجل (AppLogger) و SafeEmitCubitMixin
-│   ├── widgets/                    # المكونات العامة الموحدة (CustomButton, CustomTextFormField...)
-│   └── core.dart                   # تصدير مركزي لمحتويات النواة
+├── core/                           # Shared foundation and infrastructure
+│   ├── app/                        # App config, spacing helpers (hSpace/vSpace), regex, locale
+│   ├── config/                     # Environment configuration (Dev / Prod EnvConfig)
+│   ├── di/                         # GetIt service locator setup
+│   ├── extensions/                 # Context and display helper extensions
+│   ├── local_storage/              # Secure token and shared preferences management
+│   ├── network/                    # DioFactory, ApiResult, AppApiFailure, ApiFailureMapper
+│   ├── routes/                     # AppRoutes, AppRouter, and NavigationLoggerObserver
+│   ├── styles/                     # AppColors, AppTextStyles, AppFontFamily, AppAssets
+│   ├── theme/                      # Unified light theme definition
+│   ├── utils/                      # AppLogger and SafeEmitCubitMixin
+│   ├── widgets/                    # Core reusable widgets (CustomButton, CustomTextFormField, etc.)
+│   └── core.dart                   # Unified core barrel export
 │
-├── features/                       # ميزات التطبيق (Feature-First)
-│   ├── splash/                     # شاشة البداية والتحقق من حالة المصادقة
+├── features/                       # Modular business features
+│   ├── splash/                     # Splash screen and authentication state verification
 │   │   ├── data/
 │   │   ├── domain/
 │   │   └── presentation/
-│   ├── auth/                       # نظام تسجيل الدخول والمصادقة
+│   ├── auth/                       # Authentication feature (Login flow)
 │   │   ├── data/
 │   │   │   ├── apis/               # Retrofit AuthApiService
 │   │   │   ├── models/             # UserModel, LoginRequestBody
 │   │   │   └── repos/              # AuthRepoImpl
 │   │   ├── domain/
-│   │   │   ├── repos/              # AuthRepo (عقد مجرد)
+│   │   │   ├── repos/              # AuthRepo (abstract contract)
 │   │   │   └── use_cases/          # LoginUseCase
 │   │   └── presentation/
 │   │       ├── cubit/              # LoginCubit & LoginState (Freezed)
 │   │       ├── screens/            # LoginScreen
 │   │       └── widgets/            # LoginFormWidget, LoginBlocListener
-│   └── home/                       # الشاشة الرئيسية وحجوزات الملاعب
+│   └── home/                       # Home screen & field booking overview
 │
 ├── assets/
-│   ├── Fonts/                      # خطوط IBMPlexSansArabic و Fustat
-│   ├── images/                     # الصور والأيقونات (PNGs / SVGs)
-│   └── translations/               # ملفات اللغات (ar.json, en.json)
+│   ├── Fonts/                      # IBMPlexSansArabic and Fustat font assets
+│   ├── images/                     # App logos and vector assets (PNGs / SVGs)
+│   └── translations/               # Localization dictionaries (ar.json, en.json)
 │
-├── mal3abk_app.dart                # إعدادات MaterialApp و ScreenUtil
-├── main_common.dart                # التهيئة المشتركة قبل تشغيل التطبيق
-├── main_dev.dart                   # نقطة الدخول لبيئة التطوير (Dev)
-├── main_prod.dart                  # نقطة الدخول لبيئة الإنتاج (Prod)
-└── main.dart                       # نقطة الدخول الافتراضية
+├── mal3abk_app.dart                # MaterialApp configuration with ScreenUtil
+├── main_common.dart                # Common bootstrap logic
+├── main_dev.dart                   # Development flavor entry point
+├── main_prod.dart                  # Production flavor entry point
+└── main.dart                       # Default entry point
 ```
 
 ---
 
-## 🚀 البدء والتشغيل (Getting Started)
+## 🚀 Getting Started
 
-### 1. المتطلبات الأساسية
-* **Flutter SDK:** الإصدار `^3.10.4` أو أحدث.
-* **Dart SDK:** الإصدار `^3.10.4` أو أحدث.
+### 1. Prerequisites
+* **Flutter SDK:** `^3.10.4` or later
+* **Dart SDK:** `^3.10.4` or later
 
-### 2. تثبيت الحزم
+### 2. Dependency Installation
 ```bash
 flutter pub get
 ```
 
-### 3. توليد الأكواد (Code Generation)
-عند إجراء أي تغيير على ملفات الـ `freezed` أو `json_serializable` أو `retrofit`:
+### 3. Code Generation
+Run `build_runner` after modifying any `freezed`, `json_serializable`, or `retrofit` definitions:
 ```bash
 dart run build_runner build --delete-conflicting-outputs --force-jit
 ```
 
-### 4. تشغيل التطبيق حسب البيئة (Flavors)
-* **بيئة التطوير (Development):**
+### 4. Running the Application
+* **Development Environment:**
   ```bash
   flutter run -t lib/main_dev.dart
   ```
-* **بيئة الإنتاج (Production):**
+* **Production Environment:**
   ```bash
   flutter run -t lib/main_prod.dart
   ```
 
 ---
 
-## 🧪 الاختبارات وفحص الكود (Testing & Linting)
+## 🧪 Testing and Code Quality
 
-### فحص الكود (Linter & Analysis)
-يخضع المشروع لقواعد فحص صارمة في `analysis_options.yaml`:
+### Code Analysis & Linting
+The codebase is validated against strict lint rules defined in `analysis_options.yaml`:
 ```bash
 dart analyze
 ```
-> يشترط اجتياز الفحص بنتيجة **0 Errors / 0 Warnings**.
+> Must maintain **0 errors** and **0 warnings**.
 
-### تشغيل الاختبارات
+### Unit & Cubit Tests
+Execute the automated test suite:
 ```bash
 flutter test
 ```
 
 ---
 
-## 📜 ميثاق العمل والقواعد (Project Rules)
+## 📜 Development Guidelines
 
-للحصول على الدليل الإرشادي والتفصيلي الشامل للمطورين والمساعدين البرمجيين، يرجى مراجعة ملف [`rules.md`](file:///home/osama/Desktop/Mal3abk/rules.md) في جذر المشروع.
+For in-depth coding standards, architectural constraints, and repository conventions, please consult [`rules.md`](file:///home/osama/Desktop/Mal3abk/rules.md) in the project root.
