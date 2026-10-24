@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/routes/routes.dart';
@@ -7,20 +8,15 @@ import '../../../../core/widgets/booking_card_widget.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_tab_bar_widget.dart';
 
-class MyBookingsScreen extends StatefulWidget {
+class MyBookingsScreen extends HookWidget {
   const MyBookingsScreen({super.key});
 
-  @override
-  State<MyBookingsScreen> createState() => _MyBookingsScreenState();
-}
-
-class _MyBookingsScreenState extends State<MyBookingsScreen> {
-  int _selectedTab = 1; // Default to "معلّقة" as seen in Figma 10:128
-
-  final List<String> _tabs = ['القادمة', 'معلّقة', 'المنتهية', 'الملغية'];
+  static const List<String> _tabs = ['القادمة', 'معلّقة', 'المنتهية', 'الملغية'];
 
   @override
   Widget build(BuildContext context) {
+    final selectedTab = useState(1); // Default to "معلّقة" as seen in Figma 10:128
+
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
       appBar: CustomAppBarWidget(
@@ -30,9 +26,9 @@ class _MyBookingsScreenState extends State<MyBookingsScreen> {
           preferredSize: Size.fromHeight(48.h),
           child: CustomTabBarWidget(
             tabs: _tabs,
-            selectedIndex: _selectedTab,
+            selectedIndex: selectedTab.value,
             badgeCounts: const {0: 1, 1: 2},
-            onTabSelected: (index) => setState(() => _selectedTab = index),
+            onTabSelected: (index) => selectedTab.value = index,
           ),
         ),
       ),
@@ -76,4 +72,3 @@ class _MyBookingsScreenState extends State<MyBookingsScreen> {
     );
   }
 }
-

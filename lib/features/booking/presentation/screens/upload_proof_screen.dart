@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/routes/routes.dart';
@@ -7,20 +8,15 @@ import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
 
-class UploadProofScreen extends StatefulWidget {
+class UploadProofScreen extends HookWidget {
   const UploadProofScreen({super.key});
 
   @override
-  State<UploadProofScreen> createState() => _UploadProofScreenState();
-}
-
-class _UploadProofScreenState extends State<UploadProofScreen> {
-  bool _isUploaded = false;
-  bool _isSubmitted = false;
-
-  @override
   Widget build(BuildContext context) {
-    if (_isSubmitted) {
+    final isUploaded = useState(false);
+    final isSubmitted = useState(false);
+
+    if (isSubmitted.value) {
       return Scaffold(
         backgroundColor: AppColors.white,
         body: SafeArea(
@@ -79,8 +75,8 @@ class _UploadProofScreenState extends State<UploadProofScreen> {
             text: 'تأكيد وإرسال الإيصال',
             type: CustomButtonType.primary,
             height: 52.h,
-            enabled: _isUploaded,
-            onTap: () => setState(() => _isSubmitted = true),
+            enabled: isUploaded.value,
+            onTap: () => isSubmitted.value = true,
           ),
         ),
       ),
@@ -95,7 +91,7 @@ class _UploadProofScreenState extends State<UploadProofScreen> {
               Text('تأكد من وضوح رقم العملية وتاريخها والمبلغ (٥٠ ج.م)', style: AppTextStyles.font13Regular),
               SizedBox(height: 20.h),
               InkWell(
-                onTap: () => setState(() => _isUploaded = true),
+                onTap: () => isUploaded.value = true,
                 borderRadius: BorderRadius.circular(16.r),
                 child: Container(
                   height: 220.h,
@@ -103,12 +99,12 @@ class _UploadProofScreenState extends State<UploadProofScreen> {
                     color: AppColors.white,
                     borderRadius: BorderRadius.circular(16.r),
                     border: Border.all(
-                      color: _isUploaded ? AppColors.successGreen : AppColors.borderInput,
+                      color: isUploaded.value ? AppColors.successGreen : AppColors.borderInput,
                       width: 1.5,
                     ),
                   ),
                   child: Center(
-                    child: _isUploaded
+                    child: isUploaded.value
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -139,4 +135,3 @@ class _UploadProofScreenState extends State<UploadProofScreen> {
     );
   }
 }
-

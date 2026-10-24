@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/styles/app_colors.dart';
@@ -8,19 +9,15 @@ import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
 import '../../../../core/widgets/custom_chip_widget.dart';
 
-class CancelBookingScreen extends StatefulWidget {
+class CancelBookingScreen extends HookWidget {
   const CancelBookingScreen({super.key});
 
-  @override
-  State<CancelBookingScreen> createState() => _CancelBookingScreenState();
-}
-
-class _CancelBookingScreenState extends State<CancelBookingScreen> {
-  String _selectedReason = 'الميعاد مش مناسب';
-  final List<String> _reasons = ['الميعاد مش مناسب', 'العدد مش مكتمل', 'الجو', 'سبب تاني'];
+  static const List<String> _reasons = ['الميعاد مش مناسب', 'العدد مش مكتمل', 'الجو', 'سبب تاني'];
 
   @override
   Widget build(BuildContext context) {
+    final selectedReason = useState('الميعاد مش مناسب');
+
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
       appBar: const CustomAppBarWidget(title: 'إلغاء الحجز'),
@@ -115,8 +112,8 @@ class _CancelBookingScreenState extends State<CancelBookingScreen> {
                 children: _reasons.map((reason) {
                   return CustomChipWidget(
                     label: reason,
-                    isSelected: _selectedReason == reason,
-                    onTap: () => setState(() => _selectedReason = reason),
+                    isSelected: selectedReason.value == reason,
+                    onTap: () => selectedReason.value = reason,
                   );
                 }).toList(),
               ),
@@ -140,4 +137,3 @@ class _CancelBookingScreenState extends State<CancelBookingScreen> {
     );
   }
 }
-

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/routes/routes.dart';
@@ -8,19 +9,14 @@ import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
 
-class BookingReviewScreen extends StatefulWidget {
+class BookingReviewScreen extends HookWidget {
   const BookingReviewScreen({super.key});
 
   @override
-  State<BookingReviewScreen> createState() => _BookingReviewScreenState();
-}
-
-class _BookingReviewScreenState extends State<BookingReviewScreen> {
-  bool _isTeamBooking = false;
-  bool _agreedToPolicy = true;
-
-  @override
   Widget build(BuildContext context) {
+    final isTeamBooking = useState(false);
+    final agreedToPolicy = useState(true);
+
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
       appBar: const CustomAppBarWidget(title: 'مراجعة الحجز'),
@@ -31,7 +27,7 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
             text: 'إرسال طلب الحجز',
             type: CustomButtonType.primary,
             height: 52.h,
-            enabled: _agreedToPolicy,
+            enabled: agreedToPolicy.value,
             onTap: () => Navigator.of(context).pushNamed(AppRoutes.depositInstructions),
           ),
         ),
@@ -47,19 +43,19 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
                 children: [
                   Expanded(
                     child: InkWell(
-                      onTap: () => setState(() => _isTeamBooking = false),
+                      onTap: () => isTeamBooking.value = false,
                       borderRadius: BorderRadius.circular(10.r),
                       child: Container(
                         height: 46.h,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color: !_isTeamBooking ? AppColors.brandNavy : AppColors.white,
+                          color: !isTeamBooking.value ? AppColors.brandNavy : AppColors.white,
                           borderRadius: BorderRadius.circular(10.r),
-                          border: Border.all(color: !_isTeamBooking ? AppColors.brandNavy : AppColors.borderInput),
+                          border: Border.all(color: !isTeamBooking.value ? AppColors.brandNavy : AppColors.borderInput),
                         ),
                         child: Text(
                           'حجز فردي',
-                          style: !_isTeamBooking
+                          style: !isTeamBooking.value
                               ? AppTextStyles.font14Bold.copyWith(color: AppColors.white)
                               : AppTextStyles.font14Medium,
                         ),
@@ -69,19 +65,19 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
                   SizedBox(width: 10.w),
                   Expanded(
                     child: InkWell(
-                      onTap: () => setState(() => _isTeamBooking = true),
+                      onTap: () => isTeamBooking.value = true,
                       borderRadius: BorderRadius.circular(10.r),
                       child: Container(
                         height: 46.h,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color: _isTeamBooking ? AppColors.brandNavy : AppColors.white,
+                          color: isTeamBooking.value ? AppColors.brandNavy : AppColors.white,
                           borderRadius: BorderRadius.circular(10.r),
-                          border: Border.all(color: _isTeamBooking ? AppColors.brandNavy : AppColors.borderInput),
+                          border: Border.all(color: isTeamBooking.value ? AppColors.brandNavy : AppColors.borderInput),
                         ),
                         child: Text(
                           'حجز باسم فريق',
-                          style: _isTeamBooking
+                          style: isTeamBooking.value
                               ? AppTextStyles.font14Bold.copyWith(color: AppColors.white)
                               : AppTextStyles.font14Medium,
                         ),
@@ -180,9 +176,9 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
                     Row(
                       children: [
                         Checkbox(
-                          value: _agreedToPolicy,
+                          value: agreedToPolicy.value,
                           activeColor: AppColors.brandNavy,
-                          onChanged: (val) => setState(() => _agreedToPolicy = val ?? true),
+                          onChanged: (val) => agreedToPolicy.value = val ?? true,
                         ),
                         Expanded(
                           child: Text('أوافق على سياسة الحجز والإلغاء', style: AppTextStyles.font13SemiBold),
@@ -220,4 +216,3 @@ class _BookingReviewScreenState extends State<BookingReviewScreen> {
     );
   }
 }
-
