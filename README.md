@@ -1,6 +1,16 @@
-# ⚽ Mal3abk Mobile Application
+<p align="center">
+  <img src="assets/images/pngs/logo-horizontal.png" alt="Mal3abk Logo" width="380" />
+</p>
 
-> A modern sports field booking and management mobile application built with **Flutter** following strict software engineering principles and best practices (**Feature-First Clean Architecture**).
+<p align="center">
+  <strong>A modern sports field booking and management mobile application built with Flutter</strong>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Flutter-3.38.5-blue.svg" alt="Flutter" />
+  <img src="https://img.shields.io/badge/Dart-3.10.4-blue.svg" alt="Dart" />
+  <img src="https://img.shields.io/badge/Architecture-Clean%20Architecture-brightgreen.svg" alt="Architecture" />
+</p>
 
 ---
 
@@ -14,6 +24,10 @@
 
 ### The Concept
 The Mal3abk brand mark combines a **location pin (Red Pin)** representing *"Find a nearby pitch"* with a **football pitch and center ball** inside representing *"Book your game"*. Designed to remain sharp, recognizable, and legible even at smaller mobile launcher sizes.
+
+<p align="center">
+  <img src="assets/images/pngs/logo-stacked.png" alt="Mal3abk Stacked Logo" width="160" />
+</p>
 
 ### Color Palette
 
