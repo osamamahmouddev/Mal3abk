@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/routes/routes.dart';
@@ -9,24 +10,19 @@ import '../../../../core/widgets/custom_bottom_nav_bar_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends HookWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 0;
-
-  @override
   Widget build(BuildContext context) {
+    final currentIndex = useState(0);
+
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
       bottomNavigationBar: CustomBottomNavBarWidget(
-        currentIndex: _currentIndex,
+        currentIndex: currentIndex.value,
         onTap: (index) {
-          setState(() => _currentIndex = index);
+          currentIndex.value = index;
           if (index == 1) Navigator.of(context).pushNamed(AppRoutes.exploreList);
           if (index == 2) Navigator.of(context).pushNamed(AppRoutes.myBookings);
           if (index == 3) Navigator.of(context).pushNamed(AppRoutes.myTeams);
