@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/styles/app_colors.dart';
@@ -6,19 +7,14 @@ import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
 
-class SubmitResultScreen extends StatefulWidget {
+class SubmitResultScreen extends HookWidget {
   const SubmitResultScreen({super.key});
 
   @override
-  State<SubmitResultScreen> createState() => _SubmitResultScreenState();
-}
-
-class _SubmitResultScreenState extends State<SubmitResultScreen> {
-  int _score1 = 4;
-  int _score2 = 3;
-
-  @override
   Widget build(BuildContext context) {
+    final score1 = useState(4);
+    final score2 = useState(3);
+
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
       appBar: const CustomAppBarWidget(title: 'نتيجة المباراة'),
@@ -71,12 +67,12 @@ class _SubmitResultScreenState extends State<SubmitResultScreen> {
                         Row(
                           children: [
                             IconButton(
-                              onPressed: () => setState(() => _score1 = (_score1 - 1).clamp(0, 99)),
+                              onPressed: () => score1.value = (score1.value - 1).clamp(0, 99),
                               icon: const Icon(Icons.remove_circle_outline, color: AppColors.white),
                             ),
-                            Text('$_score1', style: AppTextStyles.font24Bold.copyWith(color: AppColors.white)),
+                            Text('${score1.value}', style: AppTextStyles.font24Bold.copyWith(color: AppColors.white)),
                             IconButton(
-                              onPressed: () => setState(() => _score1++),
+                              onPressed: () => score1.value++,
                               icon: const Icon(Icons.add_circle_outline, color: AppColors.white),
                             ),
                           ],
@@ -98,12 +94,12 @@ class _SubmitResultScreenState extends State<SubmitResultScreen> {
                         Row(
                           children: [
                             IconButton(
-                              onPressed: () => setState(() => _score2 = (_score2 - 1).clamp(0, 99)),
+                              onPressed: () => score2.value = (score2.value - 1).clamp(0, 99),
                               icon: const Icon(Icons.remove_circle_outline, color: AppColors.white),
                             ),
-                            Text('$_score2', style: AppTextStyles.font24Bold.copyWith(color: AppColors.white)),
+                            Text('${score2.value}', style: AppTextStyles.font24Bold.copyWith(color: AppColors.white)),
                             IconButton(
-                              onPressed: () => setState(() => _score2++),
+                              onPressed: () => score2.value++,
                               icon: const Icon(Icons.add_circle_outline, color: AppColors.white),
                             ),
                           ],
@@ -132,4 +128,3 @@ class _SubmitResultScreenState extends State<SubmitResultScreen> {
     );
   }
 }
-

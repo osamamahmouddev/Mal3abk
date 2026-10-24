@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/styles/app_colors.dart';
@@ -7,20 +8,15 @@ import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
 
-class ChallengeTeamScreen extends StatefulWidget {
+class ChallengeTeamScreen extends HookWidget {
   const ChallengeTeamScreen({super.key});
 
   @override
-  State<ChallengeTeamScreen> createState() => _ChallengeTeamScreenState();
-}
-
-class _ChallengeTeamScreenState extends State<ChallengeTeamScreen> {
-  int _selectedDayIndex = 0;
-  String _selectedTime = '٨:٠٠ م';
-  int _venueOption = 0;
-
-  @override
   Widget build(BuildContext context) {
+    final selectedDayIndex = useState(0);
+    final selectedTime = useState('٨:٠٠ م');
+    final venueOption = useState(0);
+
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
       appBar: const CustomAppBarWidget(title: 'تحدي فريق'),
@@ -103,9 +99,9 @@ class _ChallengeTeamScreenState extends State<ChallengeTeamScreen> {
                   itemCount: 5,
                   separatorBuilder: (_, _) => SizedBox(width: 8.w),
                   itemBuilder: (context, index) {
-                    final isSelected = _selectedDayIndex == index;
+                    final isSelected = selectedDayIndex.value == index;
                     return InkWell(
-                      onTap: () => setState(() => _selectedDayIndex = index),
+                      onTap: () => selectedDayIndex.value = index,
                       borderRadius: BorderRadius.circular(12.r),
                       child: Container(
                         width: 60.w,
@@ -145,9 +141,9 @@ class _ChallengeTeamScreenState extends State<ChallengeTeamScreen> {
                 spacing: 8.w,
                 runSpacing: 8.h,
                 children: ['٧:٠٠ م', '٨:٠٠ م', '٩:٠٠ م', '١٠:٠٠ م', '١٢:٠٠ ص'].map((time) {
-                  final isSelected = _selectedTime == time;
+                  final isSelected = selectedTime.value == time;
                   return InkWell(
-                    onTap: () => setState(() => _selectedTime = time),
+                    onTap: () => selectedTime.value = time,
                     borderRadius: BorderRadius.circular(10.r),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
@@ -171,12 +167,12 @@ class _ChallengeTeamScreenState extends State<ChallengeTeamScreen> {
               Text('الملعب', style: AppTextStyles.font15Bold),
               SizedBox(height: 10.h),
               CustomCardWidget(
-                onTap: () => setState(() => _venueOption = 0),
-                borderColor: _venueOption == 0 ? AppColors.brandNavy : AppColors.borderCard,
+                onTap: () => venueOption.value = 0,
+                borderColor: venueOption.value == 0 ? AppColors.brandNavy : AppColors.borderCard,
                 child: Row(
                   children: [
                     Icon(
-                      _venueOption == 0 ? Icons.radio_button_checked : Icons.radio_button_off,
+                      venueOption.value == 0 ? Icons.radio_button_checked : Icons.radio_button_off,
                       color: AppColors.brandNavy,
                       size: 20.sp,
                     ),
@@ -195,12 +191,12 @@ class _ChallengeTeamScreenState extends State<ChallengeTeamScreen> {
               ),
               SizedBox(height: 10.h),
               CustomCardWidget(
-                onTap: () => setState(() => _venueOption = 1),
-                borderColor: _venueOption == 1 ? AppColors.brandNavy : AppColors.borderCard,
+                onTap: () => venueOption.value = 1,
+                borderColor: venueOption.value == 1 ? AppColors.brandNavy : AppColors.borderCard,
                 child: Row(
                   children: [
                     Icon(
-                      _venueOption == 1 ? Icons.radio_button_checked : Icons.radio_button_off,
+                      venueOption.value == 1 ? Icons.radio_button_checked : Icons.radio_button_off,
                       color: AppColors.brandNavy,
                       size: 20.sp,
                     ),
