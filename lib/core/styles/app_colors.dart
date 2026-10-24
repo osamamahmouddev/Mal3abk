@@ -3,39 +3,64 @@ import 'package:flutter/material.dart';
 class AppColors {
   const AppColors._();
 
-  // Official Brand Palette from Malabak Logo Kit
-  static const Color brandNavy = Color(0xFF071832); // Primary Navy
-  static const Color brandRed = Color(0xFFEB4F42);  // Accent Red
-  static const Color brandGold = Color(0xFFF6B326); // Achievement Gold
+  // Official Brand Palette from Figma & Brand Kit
+  // Primary Navy (Dark Header / Buttons / Active elements in Figma: #0F1B3D & #0F172A)
+  static const Color brandNavy = Color(0xFF0F1B3D); 
+  static const Color brandPrimary = Color(0xFF0F1B3D);
+  static const Color brandPrimaryDark = Color(0xFF071832);
+  static const Color brandPrimaryLight = Color(0xFF1B2A52);
 
-  // Brand primary set to Navy (#071832)
-  static const Color brandPrimary = brandNavy;
-  static const Color brandPrimaryDark = Color(0xFF040F20);
-  static const Color brandPrimaryLight = Color(0xFF132B50);
-
-  // Secondary / Accent
+  // Accent Red (CTA buttons / Cancel / Urgent badges: #D63B2F)
+  static const Color brandRed = Color(0xFFD63B2F);
   static const Color secondary = brandRed;
-  static const Color secondaryLight = Color(0xFFFFECEB);
-  static const Color accentGold = brandGold;
+  static const Color redLight = Color(0xFFFDECEA);
+  static const Color redBorder = Color(0xFFF3C4BF);
+  static const Color redDark = Color(0xFF8A1F17);
+  static const Color redText = Color(0xFFA8261C);
 
-  // Primary navy scale
-  static const Color primary50 = Color(0xFFEDF2F8);
-  static const Color primary100 = Color(0xFFD3E0EE);
-  static const Color primary200 = Color(0xFFA6C0DD);
-  static const Color primary300 = Color(0xFF6E9BC7);
-  static const Color primary400 = Color(0xFF3B72A8);
-  static const Color primary500 = Color(0xFF071832);
-  static const Color primary600 = Color(0xFF06142A);
-  static const Color primary700 = Color(0xFF051022);
-  static const Color primary800 = Color(0xFF040C1A);
-  static const Color primary900 = Color(0xFF02070F);
+  // Status Green / Grass pitch (#1B6E3E, #287D4C, #2E8B55)
+  static const Color successGreen = Color(0xFF1B6E3E);
+  static const Color successLight = Color(0xFFE5F5EB);
+  static const Color successBorder = Color(0xFFC3E8D0);
+  static const Color pitchGreen = Color(0xFF287D4C);
+  static const Color pitchGreenDark = Color(0xFF1E603A);
 
-  // Neutral scale
+  // Achievement / Warning Gold (#F5B62B, #FEF3D6, #7A4D00)
+  static const Color accentGold = Color(0xFFF5B62B);
+  static const Color goldLight = Color(0xFFFEF3D6);
+  static const Color goldDark = Color(0xFF7A4D00);
+  static const Color goldBorder = Color(0xFFF8E3AD);
+
+  // Neutral scale & Surfaces
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
-  static const Color pageBackground = Color(0xFFF8F9FA);
-  static const Color cardBackground = Color(0xFFFFFFFF);
+  static const Color transparent = Colors.transparent;
 
+  // Backgrounds
+  static const Color pageBackground = Color(0xFFF3F5F9);
+  static const Color cardBackground = Color(0xFFFFFFFF);
+  static const Color lightGrayBackground = Color(0xFFF4F5F7);
+  static const Color lightSurface = Color(0xFFEEF0F5);
+
+  // Text Colors
+  static const Color textPrimary = Color(0xFF0F172A); // Main dark text
+  static const Color textSecondary = Color(0xFF5B6475); // Muted / subtitle text
+  static const Color textMuted = Color(0xFF737D91);
+  static const Color textWhite = Color(0xFFFFFFFF);
+
+  // Border & Divider Colors
+  static const Color border = Color(0xFFE4E7EC);
+  static const Color borderCard = Color(0xFFEDF0F5);
+  static const Color borderInput = Color(0xFFC9CFD9);
+  static const Color focusedBorder = Color(0xFF0F1B3D);
+
+  // Status mapping
+  static const Color success = successGreen;
+  static const Color error = brandRed;
+  static const Color warning = accentGold;
+  static const Color info = Color(0xFF3498DB);
+
+  // Backward compatibility neutrals
   static const Color neutral50 = Color(0xFFFAFAFA);
   static const Color neutral100 = Color(0xFFF5F5F5);
   static const Color neutral200 = Color(0xFFE5E5E5);
@@ -46,19 +71,4 @@ class AppColors {
   static const Color neutral700 = Color(0xFF404040);
   static const Color neutral800 = Color(0xFF262626);
   static const Color neutral900 = Color(0xFF171717);
-
-  // Text colors
-  static const Color textPrimary = Color(0xFF1A1A1A);
-  static const Color textSecondary = Color(0xFF757575);
-  static const Color textMuted = Color(0xFF9E9E9E);
-
-  // Border & Divider
-  static const Color border = Color(0xFFE0E0E0);
-  static const Color focusedBorder = brandNavy;
-
-  // Status colors
-  static const Color success = Color(0xFF2ECC71);
-  static const Color error = brandRed;
-  static const Color warning = brandGold;
-  static const Color info = Color(0xFF3498DB);
 }

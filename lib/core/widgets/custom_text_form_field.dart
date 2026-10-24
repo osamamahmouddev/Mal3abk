@@ -9,6 +9,7 @@ class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
     required this.hintText,
     super.key,
+    this.labelText,
     this.obscureText = false,
     this.suffixIcon,
     this.prefixIcon,
@@ -23,7 +24,7 @@ class CustomTextFormField extends StatelessWidget {
     this.autofocus = false,
     this.validator,
     this.autovalidateMode,
-    this.fillColor,
+    this.fillColor = AppColors.white,
     this.enabled = true,
     this.readOnly = false,
     this.minLines,
@@ -40,6 +41,7 @@ class CustomTextFormField extends StatelessWidget {
   });
 
   final String hintText;
+  final String? labelText;
   final bool obscureText;
   final Widget? suffixIcon;
   final Widget? prefixIcon;
@@ -71,78 +73,96 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveBorderRadius = BorderRadius.circular((borderRadius ?? 10).r);
+    final effectiveBorderRadius = BorderRadius.circular((borderRadius ?? 12).r);
 
-    return TextFormField(
-      controller: controller,
-      initialValue: initialValue,
-      focusNode: focusNode,
-      keyboardType: keyboardType,
-      textInputAction: TextInputAction.next,
-      textAlign: textAlign,
-      autofocus: autofocus,
-      readOnly: readOnly,
-      enabled: enabled,
-      obscureText: obscureText,
-      minLines: minLines,
-      maxLines: maxLines,
-      onChanged: onChanged,
-      onTap: onTap,
-      onFieldSubmitted: onFieldSubmitted,
-      validator: validator,
-      autovalidateMode: autovalidateMode,
-      inputFormatters: inputFormatters,
-      style: style ?? AppTextStyles.font14Medium,
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: hintStyle ?? AppTextStyles.font14Regular,
-        errorText: errorText,
-        prefixIcon: prefixIcon,
-        suffixIcon: suffixIcon,
-        isDense: isDense ?? true,
-        filled: true,
-        fillColor: fillColor ?? AppColors.white,
-        contentPadding: contentPadding ??
-            EdgeInsets.symmetric(
-              horizontal: 16.w,
-              vertical: 14.h,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (labelText != null) ...[
+          Text(
+            labelText!,
+            style: AppTextStyles.font14SemiBold.copyWith(
+              color: AppColors.textPrimary,
             ),
-        border: OutlineInputBorder(
-          borderRadius: effectiveBorderRadius,
-          borderSide: BorderSide(
-            color: borderColor ?? AppColors.border,
-            width: 1.w,
+          ),
+          SizedBox(height: 8.h),
+        ],
+        TextFormField(
+          controller: controller,
+          initialValue: initialValue,
+          focusNode: focusNode,
+          keyboardType: keyboardType,
+          textInputAction: TextInputAction.next,
+          textAlign: textAlign,
+          autofocus: autofocus,
+          readOnly: readOnly,
+          enabled: enabled,
+          obscureText: obscureText,
+          minLines: minLines,
+          maxLines: maxLines,
+          onChanged: onChanged,
+          onTap: onTap,
+          onFieldSubmitted: onFieldSubmitted,
+          validator: validator,
+          autovalidateMode: autovalidateMode,
+          inputFormatters: inputFormatters,
+          style: style ?? AppTextStyles.font14Medium,
+          decoration: InputDecoration(
+            hintText: hintText,
+            hintStyle: hintStyle ??
+                AppTextStyles.font14Regular.copyWith(
+                  color: AppColors.textMuted,
+                ),
+            errorText: errorText,
+            prefixIcon: prefixIcon,
+            suffixIcon: suffixIcon,
+            filled: true,
+            fillColor: fillColor,
+            isDense: isDense,
+            contentPadding: contentPadding ??
+                EdgeInsets.symmetric(
+                  horizontal: 16.w,
+                  vertical: 14.h,
+                ),
+            border: OutlineInputBorder(
+              borderRadius: effectiveBorderRadius,
+              borderSide: BorderSide(
+                color: borderColor ?? AppColors.borderInput,
+                width: 1,
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: effectiveBorderRadius,
+              borderSide: BorderSide(
+                color: borderColor ?? AppColors.borderInput,
+                width: 1,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: effectiveBorderRadius,
+              borderSide: BorderSide(
+                color: focusedBorderColor ?? AppColors.focusedBorder,
+                width: 1.5,
+              ),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: effectiveBorderRadius,
+              borderSide: const BorderSide(
+                color: AppColors.error,
+                width: 1,
+              ),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: effectiveBorderRadius,
+              borderSide: const BorderSide(
+                color: AppColors.error,
+                width: 1.5,
+              ),
+            ),
           ),
         ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: effectiveBorderRadius,
-          borderSide: BorderSide(
-            color: borderColor ?? AppColors.border,
-            width: 1.w,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: effectiveBorderRadius,
-          borderSide: BorderSide(
-            color: focusedBorderColor ?? AppColors.focusedBorder,
-            width: 1.5.w,
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: effectiveBorderRadius,
-          borderSide: BorderSide(
-            color: AppColors.error,
-            width: 1.w,
-          ),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: effectiveBorderRadius,
-          borderSide: BorderSide(
-            color: AppColors.error,
-            width: 1.5.w,
-          ),
-        ),
-      ),
+      ],
     );
   }
 }

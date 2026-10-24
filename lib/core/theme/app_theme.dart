@@ -7,15 +7,20 @@ class AppTheme {
   const AppTheme._();
 
   static ThemeData get light {
-    const defaultBorderRadius = BorderRadius.all(Radius.circular(12));
+    const defaultBorderRadius = BorderRadius.all(Radius.circular(16));
 
     return ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: AppColors.brandPrimary),
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: AppColors.brandPrimary,
+        primary: AppColors.brandPrimary,
+        secondary: AppColors.brandRed,
+        surface: AppColors.white,
+      ),
       scaffoldBackgroundColor: AppColors.pageBackground,
       canvasColor: AppColors.white,
       cardColor: AppColors.cardBackground,
       appBarTheme: const AppBarTheme(
-        backgroundColor: AppColors.white,
+        backgroundColor: AppColors.pageBackground,
         elevation: 0,
         centerTitle: true,
         iconTheme: IconThemeData(color: AppColors.textPrimary),
