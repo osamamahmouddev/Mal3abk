@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/routes/routes.dart';
+import '../../../../core/styles/app_colors.dart';
 import '../cubit/splash_cubit.dart';
 import '../cubit/splash_state.dart';
 import '../widgets/splash_body_widget.dart';
@@ -24,6 +25,7 @@ class SplashScreen extends StatelessWidget {
         }
       },
       child: const Scaffold(
+        backgroundColor: AppColors.brandNavy,
         body: SplashBodyWidget(),
       ),
     );

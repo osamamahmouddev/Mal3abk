@@ -1,12 +1,71 @@
-# ⚽ Mal3abk Mobile Application
+<p align="center">
+  <img src="assets/images/pngs/logo-horizontal.png" alt="Mal3abk Logo" width="380" />
+</p>
 
-> A sports field booking and management mobile application built with **Flutter** following strict software engineering principles and best practices (**Feature-First Clean Architecture**).
+<p align="center">
+  <strong>A modern sports field booking and management mobile application built with Flutter</strong>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Flutter-3.38.5-blue.svg" alt="Flutter" />
+  <img src="https://img.shields.io/badge/Dart-3.10.4-blue.svg" alt="Dart" />
+  <img src="https://img.shields.io/badge/Architecture-Clean%20Architecture-brightgreen.svg" alt="Architecture" />
+</p>
 
 ---
 
 ## 📋 Overview
 
-**Mal3abk** is designed to streamline sports field reservations and management for both players and facility owners. The app provides a modern, responsive, and intuitive user experience with full bilingual support (Arabic & English) and seamless RTL/LTR adaptation.
+**Mal3abk** is designed to streamline sports field reservations and facility management for both players and pitch owners. The app provides a clean, responsive, and intuitive user experience with full bilingual support (Arabic & English) and seamless RTL/LTR adaptation.
+
+---
+
+## 🎨 Brand Identity & Design System
+
+### The Concept
+The Mal3abk brand mark combines a **location pin (Red Pin)** representing *"Find a nearby pitch"* with a **football pitch and center ball** inside representing *"Book your game"*. Designed to remain sharp, recognizable, and legible even at smaller mobile launcher sizes.
+
+<p align="center">
+  <img src="assets/images/pngs/logo-stacked.png" alt="Mal3abk Stacked Logo" width="160" />
+</p>
+
+### Color Palette
+
+| Color Role | HEX Code | Preview | Description |
+|---|---|---|---|
+| **Primary Navy** | `#071832` | ![#071832](https://via.placeholder.com/15/071832/000000?text=+) | Primary brand color used in app bars, headers, splash, and launcher background |
+| **Accent Red** | `#EB4F42` | ![#EB4F42](https://via.placeholder.com/15/EB4F42/000000?text=+) | Vibrant pin accent used for CTA buttons, pins, and highlights |
+| **Achievement Gold** | `#F6B326` | ![#F6B326](https://via.placeholder.com/15/F6B326/000000?text=+) | Accent gold used for ratings, achievements, and badges |
+| **White** | `#FFFFFF` | ![#FFFFFF](https://via.placeholder.com/15/FFFFFF/000000?text=+) | Surface, cards, and contrasting typography |
+
+### Typography
+* **Wordmark & Logo:** Tajawal ExtraBold (800)
+* **App Body & Headings:** IBM Plex Sans Arabic & Fustat (configured under `assets/Fonts/`)
+
+---
+
+## 📱 App Icons & Splash Screen
+
+### 1. App Launcher Icon
+* **Master Asset:** [`assets/images/pngs/icon-app-1024.png`](file:///home/osama/Desktop/Mal3abk/assets/images/pngs/icon-app-1024.png) (1024×1024 px full-bleed icon with navy `#071832` background).
+* **iOS & Web:** Uses `icon-app-1024.png` directly; platforms apply their native mask curves automatically.
+* **Android Adaptive Icon (Android 8.0+):**
+  * **Background:** Solid brand navy `#071832`.
+  * **Foreground:** [`assets/images/pngs/icon-mark-1024.png`](file:///home/osama/Desktop/Mal3abk/assets/images/pngs/icon-mark-1024.png) (pin mark with transparent surroundings to support circle, square, and squircle device shapes).
+
+### 2. Splash Screen
+* **Native Splash:** Configured via `flutter_native_splash` on brand navy background `#071832` with [`assets/images/pngs/logo-stacked-darkbg.png`](file:///home/osama/Desktop/Mal3abk/assets/images/pngs/logo-stacked-darkbg.png) (including full Android 12+ splash support).
+* **In-App Splash:** `SplashScreen` seamlessly matches the native splash design with a smooth transition into authentication or home screens.
+
+### 3. Regenerating Icons and Splash
+To re-generate launcher icons or splash screens after any asset update:
+```bash
+# Generate launcher icons for Android, iOS, and Web
+dart run flutter_launcher_icons
+
+# Generate native splash screens for Android and iOS
+dart run flutter_native_splash:create
+```
 
 ---
 
@@ -20,6 +79,7 @@
 * **Responsive Sizing:** `flutter_screenutil_plus` for scalable dimensions (`.w`, `.h`, `.r`, `.sp`) with custom responsive spacing helpers (`hSpace` and `vSpace`).
 * **Local Storage:** `flutter_secure_storage` for sensitive tokens/credentials and `shared_preferences` for non-sensitive user settings.
 * **Navigation:** Centralized `Navigator 1.0` using `onGenerateRoute` with type-safe arguments and route name constants.
+* **Branding & Assets Tooling:** `flutter_launcher_icons` and `flutter_native_splash`.
 
 ---
 
@@ -87,7 +147,9 @@ lib/
 │
 ├── assets/
 │   ├── Fonts/                      # IBMPlexSansArabic and Fustat font assets
-│   ├── images/                     # App logos and vector assets (PNGs / SVGs)
+│   ├── images/
+│   │   ├── pngs/                   # App icons, marks, and horizontal/stacked logos
+│   │   └── svgs/                   # Scalable vector assets
 │   └── translations/               # Localization dictionaries (ar.json, en.json)
 │
 ├── mal3abk_app.dart                # MaterialApp configuration with ScreenUtil

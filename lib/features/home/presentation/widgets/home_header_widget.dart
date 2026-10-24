@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
+import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 
@@ -14,7 +15,7 @@ class HomeHeaderWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
       decoration: BoxDecoration(
-        color: AppColors.brandPrimary,
+        color: AppColors.brandNavy,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(24.r),
           bottomRight: Radius.circular(24.r),
@@ -28,11 +29,10 @@ class HomeHeaderWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'app.name'.tr(),
-                  style: AppTextStyles.font24Bold.copyWith(
-                    color: AppColors.white,
-                  ),
+                Image.asset(
+                  AppAssets.logoHorizontalDarkBg,
+                  height: 36.h,
+                  fit: BoxFit.contain,
                 ),
                 IconButton(
                   icon: const Icon(
