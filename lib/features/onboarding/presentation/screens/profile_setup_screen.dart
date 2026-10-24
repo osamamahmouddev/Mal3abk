@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/routes/routes.dart';
@@ -7,38 +8,23 @@ import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 
-class ProfileSetupScreen extends StatefulWidget {
+class ProfileSetupScreen extends HookWidget {
   const ProfileSetupScreen({super.key});
 
   @override
-  State<ProfileSetupScreen> createState() => _ProfileSetupScreenState();
-}
-
-class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _areaController = TextEditingController();
-  String _selectedPosition = 'وسط';
-  String _selectedLevel = 'متوسط';
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _areaController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final nameController = useTextEditingController();
+    final areaController = useTextEditingController();
+    final selectedPosition = useState('وسط');
+    final selectedLevel = useState('متوسط');
+
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
       appBar: AppBar(
         backgroundColor: AppColors.pageBackground,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: AppColors.brandNavy,
-          ),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.brandNavy),
           onPressed: () => Navigator.of(context).maybePop(),
         ),
       ),
@@ -52,7 +38,10 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('خطوة ١ من ٢', style: AppTextStyles.font13Regular),
+                  Text(
+                    'خطوة ١ من ٢',
+                    style: AppTextStyles.font13Regular,
+                  ),
                 ],
               ),
               SizedBox(height: 8.h),
@@ -80,7 +69,10 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                 ],
               ),
               SizedBox(height: 20.h),
-              Text('عرّفنا بنفسك', style: AppTextStyles.font22Bold),
+              Text(
+                'عرّفنا بنفسك',
+                style: AppTextStyles.font22Bold,
+              ),
               SizedBox(height: 6.h),
               Text(
                 'الاسم والمنطقة بس مطلوبين. الباقي يساعد الكباتن يلاقوك.',
@@ -124,14 +116,14 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
               SizedBox(height: 24.h),
 
               CustomTextFormField(
-                controller: _nameController,
+                controller: nameController,
                 labelText: 'اسمك بالكامل *',
                 hintText: 'أحمد سامي',
               ),
               SizedBox(height: 16.h),
 
               CustomTextFormField(
-                controller: _areaController,
+                controller: areaController,
                 labelText: 'المنطقة أو الحي *',
                 hintText: 'مدينة نصر، القاهرة',
               ),
@@ -144,37 +136,29 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
               SizedBox(height: 10.h),
               Row(
                 children: ['حارس', 'دفاع', 'وسط', 'هجوم'].map((pos) {
-                  final isSelected = _selectedPosition == pos;
+                  final isSelected = selectedPosition.value == pos;
                   return Expanded(
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 4.w),
                       child: InkWell(
-                        onTap: () => setState(() => _selectedPosition = pos),
+                        onTap: () => selectedPosition.value = pos,
                         borderRadius: BorderRadius.circular(10.r),
                         child: Container(
                           height: 44.h,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color: isSelected
-                                ? AppColors.brandNavy
-                                : AppColors.white,
+                            color: isSelected ? AppColors.brandNavy : AppColors.white,
                             borderRadius: BorderRadius.circular(10.r),
                             border: Border.all(
-                              color: isSelected
-                                  ? AppColors.brandNavy
-                                  : AppColors.borderInput,
+                              color: isSelected ? AppColors.brandNavy : AppColors.borderInput,
                               width: 1.2,
                             ),
                           ),
                           child: Text(
                             pos,
                             style: isSelected
-                                ? AppTextStyles.font14Bold.copyWith(
-                                    color: AppColors.white,
-                                  )
-                                : AppTextStyles.font14Medium.copyWith(
-                                    color: AppColors.textPrimary,
-                                  ),
+                                ? AppTextStyles.font14Bold.copyWith(color: AppColors.white)
+                                : AppTextStyles.font14Medium.copyWith(color: AppColors.textPrimary),
                           ),
                         ),
                       ),
@@ -184,69 +168,58 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
               ),
               SizedBox(height: 20.h),
 
-              Text('مستواك (اختياري)', style: AppTextStyles.font14SemiBold),
+              Text(
+                'مستواك (اختياري)',
+                style: AppTextStyles.font14SemiBold,
+              ),
               SizedBox(height: 10.h),
               Row(
-                children:
-                    [
-                      {'title': 'مبتدئ', 'sub': 'بلعب للمتعة'},
-                      {'title': 'متوسط', 'sub': 'بلعب كل أسبوع'},
-                      {'title': 'متقدم', 'sub': 'لعبت في نادي'},
-                    ].map((item) {
-                      final isSelected = _selectedLevel == item['title'];
-                      return Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 4.w),
-                          child: InkWell(
-                            onTap: () =>
-                                setState(() => _selectedLevel = item['title']!),
+                children: [
+                  {'title': 'مبتدئ', 'sub': 'بلعب للمتعة'},
+                  {'title': 'متوسط', 'sub': 'بلعب كل أسبوع'},
+                  {'title': 'متقدم', 'sub': 'لعبت في نادي'},
+                ].map((item) {
+                  final isSelected = selectedLevel.value == item['title'];
+                  return Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 4.w),
+                      child: InkWell(
+                        onTap: () => selectedLevel.value = item['title']!,
+                        borderRadius: BorderRadius.circular(10.r),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 8.h),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: isSelected ? AppColors.brandNavy : AppColors.white,
                             borderRadius: BorderRadius.circular(10.r),
-                            child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 8.h),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: isSelected
-                                    ? AppColors.brandNavy
-                                    : AppColors.white,
-                                borderRadius: BorderRadius.circular(10.r),
-                                border: Border.all(
-                                  color: isSelected
-                                      ? AppColors.brandNavy
-                                      : AppColors.borderInput,
-                                  width: 1.2,
-                                ),
-                              ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    item['title']!,
-                                    style: isSelected
-                                        ? AppTextStyles.font14Bold.copyWith(
-                                            color: AppColors.white,
-                                          )
-                                        : AppTextStyles.font14Medium.copyWith(
-                                            color: AppColors.textPrimary,
-                                          ),
-                                  ),
-                                  SizedBox(height: 2.h),
-                                  Text(
-                                    item['sub']!,
-                                    style: AppTextStyles.font11Regular.copyWith(
-                                      color: isSelected
-                                          ? AppColors.white.withValues(
-                                              alpha: 0.8,
-                                            )
-                                          : AppColors.textSecondary,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                            border: Border.all(
+                              color: isSelected ? AppColors.brandNavy : AppColors.borderInput,
+                              width: 1.2,
                             ),
                           ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                item['title']!,
+                                style: isSelected
+                                    ? AppTextStyles.font14Bold.copyWith(color: AppColors.white)
+                                    : AppTextStyles.font14Medium.copyWith(color: AppColors.textPrimary),
+                              ),
+                              SizedBox(height: 2.h),
+                              Text(
+                                item['sub']!,
+                                style: AppTextStyles.font11Regular.copyWith(
+                                  color: isSelected ? AppColors.white.withValues(alpha: 0.8) : AppColors.textSecondary,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      );
-                    }).toList(),
+                      ),
+                    ),
+                  );
+                }).toList(),
               ),
               SizedBox(height: 36.h),
 
@@ -254,9 +227,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                 text: 'التالي',
                 type: CustomButtonType.primary,
                 height: 52.h,
-                onTap: () => Navigator.of(
-                  context,
-                ).pushNamed(AppRoutes.locationPermission),
+                onTap: () => Navigator.of(context).pushNamed(AppRoutes.locationPermission),
               ),
               SizedBox(height: 16.h),
             ],
