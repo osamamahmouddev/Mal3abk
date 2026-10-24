@@ -3,25 +3,32 @@ import 'package:flutter/material.dart';
 class AppColors {
   const AppColors._();
 
-  // Primary brand palette (Green sports field vibe)
-  static const Color brandPrimary = Color(0xFF1E824C);
-  static const Color brandPrimaryDark = Color(0xFF145A32);
-  static const Color brandPrimaryLight = Color(0xFF2ECC71);
+  // Official Brand Palette from Malabak Logo Kit
+  static const Color brandNavy = Color(0xFF071832); // Primary Navy
+  static const Color brandRed = Color(0xFFEB4F42);  // Accent Red
+  static const Color brandGold = Color(0xFFF6B326); // Achievement Gold
 
-  static const Color primary50 = Color(0xFFE8F8F0);
-  static const Color primary100 = Color(0xFFC7EED8);
-  static const Color primary200 = Color(0xFF9DE0BC);
-  static const Color primary300 = Color(0xFF6ED19E);
-  static const Color primary400 = Color(0xFF48C586);
-  static const Color primary500 = Color(0xFF1E824C);
-  static const Color primary600 = Color(0xFF1A7544);
-  static const Color primary700 = Color(0xFF145A32);
-  static const Color primary800 = Color(0xFF0F4627);
-  static const Color primary900 = Color(0xFF0A301A);
+  // Brand primary set to Navy (#071832)
+  static const Color brandPrimary = brandNavy;
+  static const Color brandPrimaryDark = Color(0xFF040F20);
+  static const Color brandPrimaryLight = Color(0xFF132B50);
 
   // Secondary / Accent
-  static const Color secondary = Color(0xFFF39C12);
-  static const Color secondaryLight = Color(0xFFFDEBD0);
+  static const Color secondary = brandRed;
+  static const Color secondaryLight = Color(0xFFFFECEB);
+  static const Color accentGold = brandGold;
+
+  // Primary navy scale
+  static const Color primary50 = Color(0xFFEDF2F8);
+  static const Color primary100 = Color(0xFFD3E0EE);
+  static const Color primary200 = Color(0xFFA6C0DD);
+  static const Color primary300 = Color(0xFF6E9BC7);
+  static const Color primary400 = Color(0xFF3B72A8);
+  static const Color primary500 = Color(0xFF071832);
+  static const Color primary600 = Color(0xFF06142A);
+  static const Color primary700 = Color(0xFF051022);
+  static const Color primary800 = Color(0xFF040C1A);
+  static const Color primary900 = Color(0xFF02070F);
 
   // Neutral scale
   static const Color white = Color(0xFFFFFFFF);
@@ -47,11 +54,11 @@ class AppColors {
 
   // Border & Divider
   static const Color border = Color(0xFFE0E0E0);
-  static const Color focusedBorder = Color(0xFF1E824C);
+  static const Color focusedBorder = brandNavy;
 
   // Status colors
   static const Color success = Color(0xFF2ECC71);
-  static const Color error = Color(0xFFE74C3C);
-  static const Color warning = Color(0xFFF1C40F);
+  static const Color error = brandRed;
+  static const Color warning = brandGold;
   static const Color info = Color(0xFF3498DB);
 }

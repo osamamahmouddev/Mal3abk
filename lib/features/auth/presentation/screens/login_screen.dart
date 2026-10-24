@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
-import '../../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../widgets/login_bloc_listener.dart';
 import '../widgets/login_form_widget.dart';
@@ -21,23 +21,15 @@ class LoginScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                hSpace(32),
+                hSpace(24),
                 Center(
-                  child: Container(
-                    width: 80.w,
-                    height: 80.h,
-                    decoration: BoxDecoration(
-                      color: AppColors.primary50,
-                      borderRadius: BorderRadius.circular(16.r),
-                    ),
-                    child: Icon(
-                      Icons.sports_soccer,
-                      size: 44.r,
-                      color: AppColors.brandPrimary,
-                    ),
+                  child: Image.asset(
+                    AppAssets.logoStacked,
+                    width: 150.w,
+                    fit: BoxFit.contain,
                   ),
                 ),
-                hSpace(24),
+                hSpace(32),
                 Text(
                   'auth.welcome_back'.tr(),
                   style: AppTextStyles.font24Bold,
