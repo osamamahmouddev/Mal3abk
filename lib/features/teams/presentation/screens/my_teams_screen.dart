@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/routes/routes.dart';
@@ -9,18 +10,13 @@ import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
 
-class MyTeamsScreen extends StatefulWidget {
+class MyTeamsScreen extends HookWidget {
   const MyTeamsScreen({super.key});
 
   @override
-  State<MyTeamsScreen> createState() => _MyTeamsScreenState();
-}
-
-class _MyTeamsScreenState extends State<MyTeamsScreen> {
-  int _selectedTab = 0; // 0: فرقي, 1: اكتشف فرق
-
-  @override
   Widget build(BuildContext context) {
+    final selectedTab = useState(0); // 0: فرقي, 1: اكتشف فرق
+
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
       appBar: CustomAppBarWidget(
@@ -52,21 +48,21 @@ class _MyTeamsScreenState extends State<MyTeamsScreen> {
                 children: [
                   Expanded(
                     child: InkWell(
-                      onTap: () => setState(() => _selectedTab = 0),
+                      onTap: () => selectedTab.value = 0,
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 12.h),
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
-                              color: _selectedTab == 0 ? AppColors.brandNavy : Colors.transparent,
+                              color: selectedTab.value == 0 ? AppColors.brandNavy : Colors.transparent,
                               width: 3.h,
                             ),
                           ),
                         ),
                         child: Text(
                           'فرقي',
-                          style: _selectedTab == 0
+                          style: selectedTab.value == 0
                               ? AppTextStyles.font14Bold.copyWith(color: AppColors.brandNavy)
                               : AppTextStyles.font14Medium.copyWith(color: AppColors.textSecondary),
                         ),
@@ -75,21 +71,21 @@ class _MyTeamsScreenState extends State<MyTeamsScreen> {
                   ),
                   Expanded(
                     child: InkWell(
-                      onTap: () => setState(() => _selectedTab = 1),
+                      onTap: () => selectedTab.value = 1,
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 12.h),
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
-                              color: _selectedTab == 1 ? AppColors.brandNavy : Colors.transparent,
+                              color: selectedTab.value == 1 ? AppColors.brandNavy : Colors.transparent,
                               width: 3.h,
                             ),
                           ),
                         ),
                         child: Text(
                           'اكتشف فرق',
-                          style: _selectedTab == 1
+                          style: selectedTab.value == 1
                               ? AppTextStyles.font14Bold.copyWith(color: AppColors.brandNavy)
                               : AppTextStyles.font14Medium.copyWith(color: AppColors.textSecondary),
                         ),
@@ -278,4 +274,3 @@ class _MyTeamsScreenState extends State<MyTeamsScreen> {
     );
   }
 }
-

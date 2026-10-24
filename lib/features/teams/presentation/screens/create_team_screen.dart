@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/styles/app_colors.dart';
@@ -7,27 +8,15 @@ import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 
-class CreateTeamScreen extends StatefulWidget {
+class CreateTeamScreen extends HookWidget {
   const CreateTeamScreen({super.key});
 
   @override
-  State<CreateTeamScreen> createState() => _CreateTeamScreenState();
-}
-
-class _CreateTeamScreenState extends State<CreateTeamScreen> {
-  final TextEditingController _teamNameController = TextEditingController();
-  final TextEditingController _areaController = TextEditingController();
-  bool _isPublic = true;
-
-  @override
-  void dispose() {
-    _teamNameController.dispose();
-    _areaController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final teamNameController = useTextEditingController();
+    final areaController = useTextEditingController();
+    final isPublic = useState(true);
+
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
       appBar: const CustomAppBarWidget(title: 'إنشاء فريق جديد'),
@@ -51,13 +40,13 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               CustomTextFormField(
-                controller: _teamNameController,
+                controller: teamNameController,
                 labelText: 'اسم الفريق *',
                 hintText: 'مثال: نسور الشرق',
               ),
               SizedBox(height: 16.h),
               CustomTextFormField(
-                controller: _areaController,
+                controller: areaController,
                 labelText: 'المنطقة الأساسية للعب *',
                 hintText: 'مدينة نصر، القاهرة',
               ),
@@ -82,9 +71,9 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                       ),
                     ),
                     Switch(
-                      value: _isPublic,
+                      value: isPublic.value,
                       activeThumbColor: AppColors.brandNavy,
-                      onChanged: (val) => setState(() => _isPublic = val),
+                      onChanged: (val) => isPublic.value = val,
                     ),
                   ],
                 ),

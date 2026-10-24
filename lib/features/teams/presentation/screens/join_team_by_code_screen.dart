@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/styles/app_colors.dart';
@@ -7,24 +8,13 @@ import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 
-class JoinTeamByCodeScreen extends StatefulWidget {
+class JoinTeamByCodeScreen extends HookWidget {
   const JoinTeamByCodeScreen({super.key});
 
   @override
-  State<JoinTeamByCodeScreen> createState() => _JoinTeamByCodeScreenState();
-}
-
-class _JoinTeamByCodeScreenState extends State<JoinTeamByCodeScreen> {
-  final TextEditingController _codeController = TextEditingController();
-
-  @override
-  void dispose() {
-    _codeController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final codeController = useTextEditingController();
+
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
       appBar: const CustomAppBarWidget(title: 'الانضمام لفريق'),
@@ -40,7 +30,7 @@ class _JoinTeamByCodeScreenState extends State<JoinTeamByCodeScreen> {
               ),
               SizedBox(height: 20.h),
               CustomTextFormField(
-                controller: _codeController,
+                controller: codeController,
                 hintText: 'مثال: NGM-7842',
                 textAlign: TextAlign.center,
                 style: AppTextStyles.font18Bold.copyWith(letterSpacing: 2),
@@ -61,4 +51,3 @@ class _JoinTeamByCodeScreenState extends State<JoinTeamByCodeScreen> {
     );
   }
 }
-

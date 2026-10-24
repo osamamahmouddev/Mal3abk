@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/styles/app_colors.dart';
@@ -8,19 +9,15 @@ import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
 import '../../../../core/widgets/custom_chip_widget.dart';
 
-class LeaveTeamScreen extends StatefulWidget {
+class LeaveTeamScreen extends HookWidget {
   const LeaveTeamScreen({super.key});
 
-  @override
-  State<LeaveTeamScreen> createState() => _LeaveTeamScreenState();
-}
-
-class _LeaveTeamScreenState extends State<LeaveTeamScreen> {
-  String _selectedReason = 'مواعيدهم مش مناسبة';
-  final List<String> _reasons = ['مواعيدهم مش مناسبة', 'الملاعب بعيدة', 'المستوى مختلف', 'سبب تاني'];
+  static const List<String> _reasons = ['مواعيدهم مش مناسبة', 'الملاعب بعيدة', 'المستوى مختلف', 'سبب تاني'];
 
   @override
   Widget build(BuildContext context) {
+    final selectedReason = useState('مواعيدهم مش مناسبة');
+
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
       appBar: const CustomAppBarWidget(title: 'مغادرة الفريق'),
@@ -111,8 +108,8 @@ class _LeaveTeamScreenState extends State<LeaveTeamScreen> {
                 children: _reasons.map((r) {
                   return CustomChipWidget(
                     label: r,
-                    isSelected: _selectedReason == r,
-                    onTap: () => setState(() => _selectedReason = r),
+                    isSelected: selectedReason.value == r,
+                    onTap: () => selectedReason.value = r,
                   );
                 }).toList(),
               ),
@@ -123,4 +120,3 @@ class _LeaveTeamScreenState extends State<LeaveTeamScreen> {
     );
   }
 }
-
