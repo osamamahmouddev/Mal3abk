@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/styles/app_colors.dart';
@@ -6,23 +7,18 @@ import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends HookWidget {
   const SettingsScreen({super.key});
 
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen> {
-  bool _bookingAlerts = true;
-  bool _teamInvites = true;
-  bool _matchResults = true;
-  bool _promotions = false;
-  bool _appearInSearch = true;
-  bool _showPhoneToTeam = true;
-
-  @override
   Widget build(BuildContext context) {
+    final bookingAlerts = useState(true);
+    final teamInvites = useState(true);
+    final matchResults = useState(true);
+    final promotions = useState(false);
+    final appearInSearch = useState(true);
+    final showPhoneToTeam = useState(true);
+
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
       appBar: const CustomAppBarWidget(title: 'الإعدادات'),
@@ -38,13 +34,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 padding: EdgeInsets.zero,
                 child: Column(
                   children: [
-                    _buildSwitchTile('حالة الحجوزات والعربون', 'إشعار بالقبول أو الرفض أو التذكير', _bookingAlerts, (v) => setState(() => _bookingAlerts = v)),
+                    _buildSwitchTile('حالة الحجوزات والعربون', 'إشعار بالقبول أو الرفض أو التذكير', bookingAlerts.value, (v) => bookingAlerts.value = v),
                     const Divider(height: 1, color: AppColors.border),
-                    _buildSwitchTile('الدعوات والتحديات', 'دعوات الفرق وردود التحديات', _teamInvites, (v) => setState(() => _teamInvites = v)),
+                    _buildSwitchTile('الدعوات والتحديات', 'دعوات الفرق وردود التحديات', teamInvites.value, (v) => teamInvites.value = v),
                     const Divider(height: 1, color: AppColors.border),
-                    _buildSwitchTile('النتايج والترتيب', 'تأكيد النتايج وتغيّر الترتيب', _matchResults, (v) => setState(() => _matchResults = v)),
+                    _buildSwitchTile('النتايج والترتيب', 'تأكيد النتايج وتغيّر الترتيب', matchResults.value, (v) => matchResults.value = v),
                     const Divider(height: 1, color: AppColors.border),
-                    _buildSwitchTile('عروض الملاعب', 'محتوى إعلاني وعروض خاصة', _promotions, (v) => setState(() => _promotions = v)),
+                    _buildSwitchTile('عروض الملاعب', 'محتوى إعلاني وعروض خاصة', promotions.value, (v) => promotions.value = v),
                   ],
                 ),
               ),
@@ -56,9 +52,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 padding: EdgeInsets.zero,
                 child: Column(
                   children: [
-                    _buildSwitchTile('اظهر في البحث عن لاعبين', 'الكباتن يقدروا يلاقوك ويدعوك', _appearInSearch, (v) => setState(() => _appearInSearch = v)),
+                    _buildSwitchTile('اظهر في البحث عن لاعبين', 'الكباتن يقدروا يلاقوك ويدعوك', appearInSearch.value, (v) => appearInSearch.value = v),
                     const Divider(height: 1, color: AppColors.border),
-                    _buildSwitchTile('اظهر رقمي لأعضاء فرقي', 'الملعب بيشوف رقمك دايماً للتواصل', _showPhoneToTeam, (v) => setState(() => _showPhoneToTeam = v)),
+                    _buildSwitchTile('اظهر رقمي لأعضاء فرقي', 'الملعب بيشوف رقمك دايماً للتواصل', showPhoneToTeam.value, (v) => showPhoneToTeam.value = v),
                   ],
                 ),
               ),
