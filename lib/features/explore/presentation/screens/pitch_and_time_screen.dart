@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/routes/routes.dart';
@@ -7,19 +8,10 @@ import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
 
-class PitchAndTimeScreen extends StatefulWidget {
+class PitchAndTimeScreen extends HookWidget {
   const PitchAndTimeScreen({super.key});
 
-  @override
-  State<PitchAndTimeScreen> createState() => _PitchAndTimeScreenState();
-}
-
-class _PitchAndTimeScreenState extends State<PitchAndTimeScreen> {
-  int _selectedDateIndex = 0;
-  String _selectedSlot = '٨:٠٠ م';
-  String _duration = 'ساعة';
-
-  final List<String> _slots = [
+  static const List<String> _slots = [
     '٨:٠٠ م',
     '٩:٠٠ م',
     '١٠:٠٠ م',
@@ -30,6 +22,10 @@ class _PitchAndTimeScreenState extends State<PitchAndTimeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final selectedDateIndex = useState(0);
+    final selectedSlot = useState('٨:٠٠ م');
+    final duration = useState('ساعة');
+
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
       appBar: const CustomAppBarWidget(
@@ -49,7 +45,7 @@ class _PitchAndTimeScreenState extends State<PitchAndTimeScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('ملعب ١ · $_selectedSlot · $_duration', style: AppTextStyles.font11Regular),
+                  Text('ملعب ١ · ${selectedSlot.value} · ${duration.value}', style: AppTextStyles.font11Regular),
                   Text('١٥٠ ج.م', style: AppTextStyles.font18Bold.copyWith(color: AppColors.brandNavy)),
                 ],
               ),
@@ -80,9 +76,9 @@ class _PitchAndTimeScreenState extends State<PitchAndTimeScreen> {
                   itemCount: 7,
                   separatorBuilder: (_, _) => SizedBox(width: 8.w),
                   itemBuilder: (context, index) {
-                    final isSelected = _selectedDateIndex == index;
+                    final isSelected = selectedDateIndex.value == index;
                     return InkWell(
-                      onTap: () => setState(() => _selectedDateIndex = index),
+                      onTap: () => selectedDateIndex.value = index,
                       borderRadius: BorderRadius.circular(14.r),
                       child: Container(
                         width: 64.w,
@@ -135,10 +131,10 @@ class _PitchAndTimeScreenState extends State<PitchAndTimeScreen> {
                 itemBuilder: (context, index) {
                   final slot = _slots[index];
                   final isBooked = index == 1; // sample booked
-                  final isSelected = _selectedSlot == slot;
+                  final isSelected = selectedSlot.value == slot;
 
                   return InkWell(
-                    onTap: isBooked ? null : () => setState(() => _selectedSlot = slot),
+                    onTap: isBooked ? null : () => selectedSlot.value = slot,
                     borderRadius: BorderRadius.circular(10.r),
                     child: Container(
                       alignment: Alignment.center,
@@ -170,12 +166,12 @@ class _PitchAndTimeScreenState extends State<PitchAndTimeScreen> {
               SizedBox(height: 10.h),
               Row(
                 children: ['ساعة', 'ساعتين'].map((dur) {
-                  final isSelected = _duration == dur;
+                  final isSelected = duration.value == dur;
                   return Expanded(
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 4.w),
                       child: InkWell(
-                        onTap: () => setState(() => _duration = dur),
+                        onTap: () => duration.value = dur,
                         borderRadius: BorderRadius.circular(10.r),
                         child: Container(
                           height: 46.h,

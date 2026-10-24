@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/routes/routes.dart';
@@ -8,19 +9,15 @@ import '../../../../core/widgets/custom_chip_widget.dart';
 import '../../../../core/widgets/custom_search_field_widget.dart';
 import '../../../../core/widgets/pitch_card_widget.dart';
 
-class ExploreListScreen extends StatefulWidget {
+class ExploreListScreen extends HookWidget {
   const ExploreListScreen({super.key});
 
-  @override
-  State<ExploreListScreen> createState() => _ExploreListScreenState();
-}
-
-class _ExploreListScreenState extends State<ExploreListScreen> {
-  int _selectedFilterChip = 0;
-  final List<String> _filters = ['الكل', 'قريب مني', 'متاح النهارده', 'نجيل طبيعي', '٥ ضد ٥'];
+  static const List<String> _filters = ['الكل', 'قريب مني', 'متاح النهارده', 'نجيل طبيعي', '٥ ضد ٥'];
 
   @override
   Widget build(BuildContext context) {
+    final selectedFilterChip = useState(0);
+
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
       appBar: CustomAppBarWidget(
@@ -54,8 +51,8 @@ class _ExploreListScreenState extends State<ExploreListScreen> {
                 itemBuilder: (context, index) {
                   return CustomChipWidget(
                     label: _filters[index],
-                    isSelected: _selectedFilterChip == index,
-                    onTap: () => setState(() => _selectedFilterChip = index),
+                    isSelected: selectedFilterChip.value == index,
+                    onTap: () => selectedFilterChip.value = index,
                   );
                 },
               ),

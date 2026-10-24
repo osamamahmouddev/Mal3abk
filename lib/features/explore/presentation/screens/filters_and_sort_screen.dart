@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/styles/app_colors.dart';
@@ -7,21 +8,16 @@ import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_chip_widget.dart';
 
-class FiltersAndSortScreen extends StatefulWidget {
+class FiltersAndSortScreen extends HookWidget {
   const FiltersAndSortScreen({super.key});
 
   @override
-  State<FiltersAndSortScreen> createState() => _FiltersAndSortScreenState();
-}
-
-class _FiltersAndSortScreenState extends State<FiltersAndSortScreen> {
-  String _selectedSort = 'الأقرب مسافة';
-  String _selectedPitchType = 'نجيل صناعي';
-  String _selectedPitchSize = '٥ ضد ٥';
-  RangeValues _priceRange = const RangeValues(100, 300);
-
-  @override
   Widget build(BuildContext context) {
+    final selectedSort = useState('الأقرب مسافة');
+    final selectedPitchType = useState('نجيل صناعي');
+    final selectedPitchSize = useState('٥ ضد ٥');
+    final priceRange = useState(const RangeValues(100, 300));
+
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: CustomAppBarWidget(
@@ -29,12 +25,10 @@ class _FiltersAndSortScreenState extends State<FiltersAndSortScreen> {
         actions: [
           TextButton(
             onPressed: () {
-              setState(() {
-                _selectedSort = 'الأقرب مسافة';
-                _selectedPitchType = 'نجيل صناعي';
-                _selectedPitchSize = '٥ ضد ٥';
-                _priceRange = const RangeValues(100, 300);
-              });
+              selectedSort.value = 'الأقرب مسافة';
+              selectedPitchType.value = 'نجيل صناعي';
+              selectedPitchSize.value = '٥ ضد ٥';
+              priceRange.value = const RangeValues(100, 300);
             },
             child: Text(
               'إعادة تعيين',
@@ -68,8 +62,8 @@ class _FiltersAndSortScreenState extends State<FiltersAndSortScreen> {
                 children: ['الأقرب مسافة', 'الأعلى تقييماً', 'الأقل سعراً', 'الأكثر حجماً'].map((sort) {
                   return CustomChipWidget(
                     label: sort,
-                    isSelected: _selectedSort == sort,
-                    onTap: () => setState(() => _selectedSort = sort),
+                    isSelected: selectedSort.value == sort,
+                    onTap: () => selectedSort.value = sort,
                   );
                 }).toList(),
               ),
@@ -83,8 +77,8 @@ class _FiltersAndSortScreenState extends State<FiltersAndSortScreen> {
                 children: ['الكل', 'نجيل صناعي', 'نجيل طبيعي', 'صالات ترتان'].map((type) {
                   return CustomChipWidget(
                     label: type,
-                    isSelected: _selectedPitchType == type,
-                    onTap: () => setState(() => _selectedPitchType = type),
+                    isSelected: selectedPitchType.value == type,
+                    onTap: () => selectedPitchType.value = type,
                   );
                 }).toList(),
               ),
@@ -98,8 +92,8 @@ class _FiltersAndSortScreenState extends State<FiltersAndSortScreen> {
                 children: ['٥ ضد ٥', '٧ ضد ٧', '٩ ضد ٩', '١١ ضد ١١'].map((size) {
                   return CustomChipWidget(
                     label: size,
-                    isSelected: _selectedPitchSize == size,
-                    onTap: () => setState(() => _selectedPitchSize = size),
+                    isSelected: selectedPitchSize.value == size,
+                    onTap: () => selectedPitchSize.value = size,
                   );
                 }).toList(),
               ),
@@ -110,19 +104,19 @@ class _FiltersAndSortScreenState extends State<FiltersAndSortScreen> {
                 children: [
                   Text('نطاق السعر للساعة', style: AppTextStyles.font15Bold),
                   Text(
-                    '${_priceRange.start.round()} - ${_priceRange.end.round()} ج.م',
+                    '${priceRange.value.start.round()} - ${priceRange.value.end.round()} ج.م',
                     style: AppTextStyles.font13SemiBold.copyWith(color: AppColors.brandNavy),
                   ),
                 ],
               ),
               RangeSlider(
-                values: _priceRange,
+                values: priceRange.value,
                 min: 50,
                 max: 500,
                 divisions: 9,
                 activeColor: AppColors.brandNavy,
                 inactiveColor: AppColors.border,
-                onChanged: (values) => setState(() => _priceRange = values),
+                onChanged: (values) => priceRange.value = values,
               ),
               SizedBox(height: 16.h),
             ],
@@ -132,4 +126,3 @@ class _FiltersAndSortScreenState extends State<FiltersAndSortScreen> {
     );
   }
 }
-
