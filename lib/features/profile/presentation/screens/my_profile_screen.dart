@@ -9,6 +9,7 @@ import '../../../../core/widgets/custom_card_widget.dart';
 import '../widgets/profile_header_card_widget.dart';
 import '../widgets/profile_nav_tile_widget.dart';
 import '../widgets/profile_venue_owner_card_widget.dart';
+import '../../../main_shell/presentation/widgets/main_shell_scope_widget.dart';
 
 class MyProfileScreen extends StatelessWidget {
   const MyProfileScreen({super.key});
@@ -35,26 +36,40 @@ class MyProfileScreen extends StatelessWidget {
                             icon: Icons.groups_outlined,
                             title: 'profile.my_teams'.tr(context: context),
                             trailing: 'النجوم · الأبطال',
-                            onTap: () => Navigator.of(context).pushNamed(AppRoutes.myTeams),
+                            onTap: () => MainShellScopeWidget.switchTab(
+                              context,
+                              MainShellScopeWidget.teamsTab,
+                            ),
                           ),
                           const Divider(height: 1, color: AppColors.border),
                           ProfileNavTileWidget(
                             icon: Icons.calendar_today_outlined,
-                            title: 'profile.booking_history'.tr(context: context),
-                            onTap: () => Navigator.of(context).pushNamed(AppRoutes.myBookings),
+                            title: 'profile.booking_history'.tr(
+                              context: context,
+                            ),
+                            onTap: () => MainShellScopeWidget.switchTab(
+                              context,
+                              MainShellScopeWidget.bookingsTab,
+                            ),
                           ),
                           const Divider(height: 1, color: AppColors.border),
                           ProfileNavTileWidget(
                             icon: Icons.favorite_border_rounded,
-                            title: 'profile.favorite_pitches'.tr(context: context),
+                            title: 'profile.favorite_pitches'.tr(
+                              context: context,
+                            ),
                             trailing: '٣',
-                            onTap: () => Navigator.of(context).pushNamed(AppRoutes.favorites),
+                            onTap: () => Navigator.of(
+                              context,
+                            ).pushNamed(AppRoutes.favorites),
                           ),
                           const Divider(height: 1, color: AppColors.border),
                           ProfileNavTileWidget(
                             icon: Icons.notifications_none_rounded,
                             title: 'profile.notifications'.tr(context: context),
-                            onTap: () => Navigator.of(context).pushNamed(AppRoutes.notifications),
+                            onTap: () => Navigator.of(
+                              context,
+                            ).pushNamed(AppRoutes.notifications),
                           ),
                         ],
                       ),
@@ -68,13 +83,19 @@ class MyProfileScreen extends StatelessWidget {
                             icon: Icons.settings_outlined,
                             title: 'profile.settings'.tr(context: context),
                             trailing: 'عربي',
-                            onTap: () => Navigator.of(context).pushNamed(AppRoutes.settings),
+                            onTap: () => Navigator.of(
+                              context,
+                            ).pushNamed(AppRoutes.settings),
                           ),
                           const Divider(height: 1, color: AppColors.border),
                           ProfileNavTileWidget(
                             icon: Icons.help_outline_rounded,
-                            title: 'profile.help_and_support'.tr(context: context),
-                            onTap: () => Navigator.of(context).pushNamed(AppRoutes.helpAndSupport),
+                            title: 'profile.help_and_support'.tr(
+                              context: context,
+                            ),
+                            onTap: () => Navigator.of(
+                              context,
+                            ).pushNamed(AppRoutes.helpAndSupport),
                           ),
                         ],
                       ),

@@ -68,7 +68,8 @@ class ProfileHeaderCardWidget extends StatelessWidget {
                 foregroundColor: AppColors.white,
                 borderRadius: 10,
                 height: 38.h,
-                onTap: () => Navigator.of(context).pushNamed(AppRoutes.profileSetup),
+                onTap: () =>
+                    Navigator.of(context).pushNamed(AppRoutes.profileSetup),
               ),
             ],
           ),
