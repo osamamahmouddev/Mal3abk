@@ -1,11 +1,15 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/app/app_spaces.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
+import '../widgets/venue_amenity_chip_widget.dart';
+import '../widgets/venue_pitch_option_card_widget.dart';
 
 class VenueProfileScreen extends StatelessWidget {
   const VenueProfileScreen({super.key});
@@ -19,7 +23,7 @@ class VenueProfileScreen extends StatelessWidget {
           SliverAppBar(
             expandedHeight: 220.h,
             pinned: true,
-            backgroundColor: AppColors.brandNavy,
+            backgroundColor: AppColors.pitchGreen,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.white),
               onPressed: () => Navigator.of(context).maybePop(),
@@ -38,7 +42,7 @@ class VenueProfileScreen extends StatelessWidget {
               background: Container(
                 color: AppColors.pitchGreen,
                 child: Center(
-                  child: Icon(Icons.sports_soccer_rounded, size: 72.sp, color: AppColors.white.withValues(alpha: 0.6)),
+                  child: Icon(Icons.sports_soccer_rounded, size: 64.sp, color: AppColors.white.withValues(alpha: 0.8)),
                 ),
               ),
             ),
@@ -52,46 +56,58 @@ class VenueProfileScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('ملعب النجوم', style: AppTextStyles.font22Bold),
+                      Text('ملاعب النجوم', style: AppTextStyles.font20Bold),
                       Row(
                         children: [
-                          Icon(Icons.star_rounded, size: 18.sp, color: AppColors.goldDark),
-                          SizedBox(width: 4.w),
-                          Text('٤٫٨ (١٤٢ تقييم)', style: AppTextStyles.font13SemiBold.copyWith(color: AppColors.goldDark)),
+                          Icon(Icons.star_rounded, color: AppColors.goldDark, size: 20.sp),
+                          vSpace(4),
+                          Text('٤٫٨', style: AppTextStyles.font14Bold.copyWith(color: AppColors.goldDark)),
                         ],
                       ),
                     ],
                   ),
-                  SizedBox(height: 6.h),
+                  hSpace(4),
                   Row(
                     children: [
                       Icon(Icons.location_on_outlined, size: 16.sp, color: AppColors.textSecondary),
-                      SizedBox(width: 4.w),
+                      vSpace(4),
                       Text('مدينة نصر، خلف النادي الأهلي · ١٫٢ كم', style: AppTextStyles.font13Regular),
                     ],
                   ),
-                  SizedBox(height: 16.h),
-
-                  // Amenities / Facilities
+                  hSpace(16),
                   CustomCardWidget(
                     padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        _buildAmenity(Icons.wb_incandescent_outlined, 'إضاءة ليد'),
-                        _buildAmenity(Icons.shower_outlined, 'غرف تبديل'),
-                        _buildAmenity(Icons.local_cafe_outlined, 'كافيتريا'),
-                        _buildAmenity(Icons.local_parking_outlined, 'موقف سيارات'),
+                        VenueAmenityChipWidget(icon: Icons.wb_incandescent_outlined, label: 'explore.lighting'.tr(context: context)),
+                        VenueAmenityChipWidget(icon: Icons.shower_outlined, label: 'explore.changing_rooms'.tr(context: context)),
+                        VenueAmenityChipWidget(icon: Icons.local_cafe_outlined, label: 'explore.cafeteria'.tr(context: context)),
+                        VenueAmenityChipWidget(icon: Icons.local_parking_outlined, label: 'explore.parking'.tr(context: context)),
                       ],
                     ),
                   ),
-                  SizedBox(height: 20.h),
-
-                  Text('الملاعب المتاحة بالمنشأة', style: AppTextStyles.font16Bold),
-                  SizedBox(height: 10.h),
-                  _buildPitchOption(context, 'ملعب ١ (خماسي)', 'نجيل تركي صناعي مميز · ٥ ضد ٥', '١٥٠ ج.م'),
-                  _buildPitchOption(context, 'ملعب ٢ (سباعي)', 'مساحة قانونية واسعة · ٧ ضد ٧', '٢٢٠ ج.م'),
-                  _buildPitchOption(context, 'ملعب ٣ (خماسي مغطى)', 'صالة مغطاة ترتان مكيفة', '١٨٠ ج.م'),
+                  hSpace(20),
+                  Text('explore.pitches_in_venue'.tr(context: context), style: AppTextStyles.font16Bold),
+                  hSpace(10),
+                  VenuePitchOptionCardWidget(
+                    title: 'ملعب ١ (خماسي)',
+                    subtitle: 'نجيل تركي صناعي مميز · ٥ ضد ٥',
+                    price: '١٥٠ ج.م',
+                    onTap: () => Navigator.of(context).pushNamed(AppRoutes.pitchAndTime),
+                  ),
+                  VenuePitchOptionCardWidget(
+                    title: 'ملعب ٢ (سباعي)',
+                    subtitle: 'مساحة قانونية واسعة · ٧ ضد ٧',
+                    price: '٢٢٠ ج.م',
+                    onTap: () => Navigator.of(context).pushNamed(AppRoutes.pitchAndTime),
+                  ),
+                  VenuePitchOptionCardWidget(
+                    title: 'ملعب ٣ (خماسي مغطى)',
+                    subtitle: 'صالة مغطاة ترتان مكيفة',
+                    price: '١٨٠ ج.م',
+                    onTap: () => Navigator.of(context).pushNamed(AppRoutes.pitchAndTime),
+                  ),
                 ],
               ),
             ),
@@ -117,7 +133,7 @@ class VenueProfileScreen extends StatelessWidget {
               ),
               const Spacer(),
               CustomButton(
-                text: 'اختر الملعب والميعاد',
+                text: 'explore.pitch_and_time'.tr(context: context),
                 type: CustomButtonType.primary,
                 width: 190.w,
                 height: 48.h,
@@ -126,40 +142,6 @@ class VenueProfileScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildAmenity(IconData icon, String label) {
-    return Column(
-      children: [
-        Icon(icon, size: 22.sp, color: AppColors.brandNavy),
-        SizedBox(height: 4.h),
-        Text(label, style: AppTextStyles.font11Regular),
-      ],
-    );
-  }
-
-  Widget _buildPitchOption(BuildContext context, String title, String subtitle, String price) {
-    return CustomCardWidget(
-      margin: EdgeInsets.only(bottom: 10.h),
-      onTap: () => Navigator.of(context).pushNamed(AppRoutes.pitchAndTime),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: AppTextStyles.font15Bold),
-                SizedBox(height: 2.h),
-                Text(subtitle, style: AppTextStyles.font12Regular),
-                SizedBox(height: 4.h),
-                Text(price, style: AppTextStyles.font14Bold.copyWith(color: AppColors.brandNavy)),
-              ],
-            ),
-          ),
-          Icon(Icons.arrow_forward_ios_rounded, size: 16.sp, color: AppColors.textSecondary),
-        ],
       ),
     );
   }

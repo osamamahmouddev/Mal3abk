@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
@@ -13,8 +14,8 @@ class FavoritesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
-      appBar: const CustomAppBarWidget(
-        title: 'المفضلة',
+      appBar: CustomAppBarWidget(
+        title: 'explore.favorites_title'.tr(context: context),
         subtitle: '٣ ملاعب محفوظة',
       ),
       body: SafeArea(

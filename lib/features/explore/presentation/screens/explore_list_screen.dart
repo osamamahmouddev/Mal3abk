@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/app/app_spaces.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
@@ -21,7 +23,7 @@ class ExploreListScreen extends HookWidget {
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
       appBar: CustomAppBarWidget(
-        title: 'استكشف الملاعب',
+        title: 'explore.list_title'.tr(context: context),
         subtitle: 'القاهرة، مدينة نصر (١٢ ملعب)',
         actions: [
           IconButton(
@@ -36,18 +38,18 @@ class ExploreListScreen extends HookWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
               child: CustomSearchFieldWidget(
-                hintText: 'ابحث باسم الملعب أو المنطقة...',
+                hintText: 'explore.search_hint'.tr(context: context),
                 onFilterTap: () => Navigator.of(context).pushNamed(AppRoutes.filtersAndSort),
                 hasActiveFilters: true,
               ),
             ),
-            SizedBox(
+            RSizedBox(
               height: 42.h,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 itemCount: _filters.length,
-                separatorBuilder: (_, _) => SizedBox(width: 8.w),
+                separatorBuilder: (_, _) => vSpace(8),
                 itemBuilder: (context, index) {
                   return CustomChipWidget(
                     label: _filters[index],
@@ -57,7 +59,7 @@ class ExploreListScreen extends HookWidget {
                 },
               ),
             ),
-            SizedBox(height: 12.h),
+            hSpace(12),
             Expanded(
               child: ListView(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),

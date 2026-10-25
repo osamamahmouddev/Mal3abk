@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/app/app_spaces.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
@@ -12,25 +14,25 @@ class PitchAndTimeScreen extends HookWidget {
   const PitchAndTimeScreen({super.key});
 
   static const List<String> _slots = [
+    '٧:٠٠ م',
     '٨:٠٠ م',
     '٩:٠٠ م',
     '١٠:٠٠ م',
     '١١:٠٠ م',
     '١٢:٠٠ ص',
-    '١:٠٠ ص',
   ];
 
   @override
   Widget build(BuildContext context) {
     final selectedDateIndex = useState(0);
-    final selectedSlot = useState('٨:٠٠ م');
+    final selectedSlot = useState('٩:٠٠ م');
     final duration = useState('ساعة');
 
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
-      appBar: const CustomAppBarWidget(
-        title: 'الملعب والميعاد',
-        subtitle: 'ملعب النجوم — ملعب ١',
+      appBar: CustomAppBarWidget(
+        title: 'explore.pitch_and_time'.tr(context: context),
+        subtitle: 'ملعب النجوم — ملعب ١ (خماسي)',
       ),
       bottomNavigationBar: SafeArea(
         child: Container(
@@ -45,15 +47,15 @@ class PitchAndTimeScreen extends HookWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('ملعب ١ · ${selectedSlot.value} · ${duration.value}', style: AppTextStyles.font11Regular),
+                  Text('الإجمالي المطلوب', style: AppTextStyles.font11Regular),
                   Text('١٥٠ ج.م', style: AppTextStyles.font18Bold.copyWith(color: AppColors.brandNavy)),
                 ],
               ),
               const Spacer(),
               CustomButton(
-                text: 'متابعة الحجز',
+                text: 'مراجعة الحجز',
                 type: CustomButtonType.primary,
-                width: 160.w,
+                width: 170.w,
                 height: 48.h,
                 onTap: () => Navigator.of(context).pushNamed(AppRoutes.bookingReview),
               ),
@@ -68,13 +70,13 @@ class PitchAndTimeScreen extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('اختر اليوم', style: AppTextStyles.font15Bold),
-              SizedBox(height: 10.h),
-              SizedBox(
+              hSpace(10),
+              RSizedBox(
                 height: 72.h,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   itemCount: 7,
-                  separatorBuilder: (_, _) => SizedBox(width: 8.w),
+                  separatorBuilder: (_, _) => vSpace(8),
                   itemBuilder: (context, index) {
                     final isSelected = selectedDateIndex.value == index;
                     return InkWell(
@@ -100,7 +102,7 @@ class PitchAndTimeScreen extends HookWidget {
                                 color: isSelected ? AppColors.white.withValues(alpha: 0.8) : AppColors.textSecondary,
                               ),
                             ),
-                            SizedBox(height: 4.h),
+                            hSpace(4),
                             Text(
                               '${26 + index}',
                               style: AppTextStyles.font16Bold.copyWith(
@@ -114,10 +116,9 @@ class PitchAndTimeScreen extends HookWidget {
                   },
                 ),
               ),
-              SizedBox(height: 24.h),
-
+              hSpace(24),
               Text('المواعيد المتاحة', style: AppTextStyles.font15Bold),
-              SizedBox(height: 10.h),
+              hSpace(10),
               GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -130,7 +131,7 @@ class PitchAndTimeScreen extends HookWidget {
                 itemCount: _slots.length,
                 itemBuilder: (context, index) {
                   final slot = _slots[index];
-                  final isBooked = index == 1; // sample booked
+                  final isBooked = index == 1;
                   final isSelected = selectedSlot.value == slot;
 
                   return InkWell(
@@ -160,10 +161,9 @@ class PitchAndTimeScreen extends HookWidget {
                   );
                 },
               ),
-              SizedBox(height: 24.h),
-
+              hSpace(24),
               Text('مدة الحجز', style: AppTextStyles.font15Bold),
-              SizedBox(height: 10.h),
+              hSpace(10),
               Row(
                 children: ['ساعة', 'ساعتين'].map((dur) {
                   final isSelected = duration.value == dur;
@@ -196,7 +196,7 @@ class PitchAndTimeScreen extends HookWidget {
                   );
                 }).toList(),
               ),
-              SizedBox(height: 20.h),
+              hSpace(20),
             ],
           ),
         ),
