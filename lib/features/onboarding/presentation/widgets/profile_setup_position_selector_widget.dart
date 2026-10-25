@@ -1,60 +1,44 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
-import '../../../../core/styles/app_colors.dart';
-import '../../../../core/styles/app_text_styles.dart';
+import '../../../../core/app/app_spaces.dart';
+import '../../../../core/widgets/selectable_tile_widget.dart';
 
 class ProfileSetupPositionSelectorWidget extends StatelessWidget {
   const ProfileSetupPositionSelectorWidget({
-    required this.selectedPosition,
-    required this.onSelect,
+    required this.selectedPositions,
+    required this.onToggle,
     super.key,
   });
 
-  final String selectedPosition;
-  final ValueChanged<String> onSelect;
+  static const List<String> positionKeys = [
+    'pos_gk',
+    'pos_def',
+    'pos_mid',
+    'pos_fwd',
+  ];
+
+  final Set<String> selectedPositions;
+  final ValueChanged<String> onToggle;
 
   @override
   Widget build(BuildContext context) {
-    final positions = [
-      {'key': 'pos_gk', 'label': 'onboarding.profile_setup.pos_gk'.tr(context: context)},
-      {'key': 'pos_def', 'label': 'onboarding.profile_setup.pos_def'.tr(context: context)},
-      {'key': 'pos_mid', 'label': 'onboarding.profile_setup.pos_mid'.tr(context: context)},
-      {'key': 'pos_fwd', 'label': 'onboarding.profile_setup.pos_fwd'.tr(context: context)},
-    ];
-
     return Row(
-      children: positions.map((pos) {
-        final isSelected = selectedPosition == pos['key'];
-        return Expanded(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 4.w),
-            child: InkWell(
-              onTap: () => onSelect(pos['key']!),
-              borderRadius: BorderRadius.circular(10.r),
-              child: Container(
-                height: 44.h,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: isSelected ? AppColors.brandNavy : AppColors.white,
-                  borderRadius: BorderRadius.circular(10.r),
-                  border: Border.all(
-                    color: isSelected ? AppColors.brandNavy : AppColors.borderInput,
-                    width: 1.2,
-                  ),
-                ),
-                child: Text(
-                  pos['label']!,
-                  style: isSelected
-                      ? AppTextStyles.font14Bold.copyWith(color: AppColors.white)
-                      : AppTextStyles.font14Medium.copyWith(color: AppColors.textPrimary),
-                ),
-              ),
+      children: [
+        for (var i = 0; i < positionKeys.length; i++) ...[
+          if (i > 0) vSpace(8),
+          Expanded(
+            child: SelectableTileWidget(
+              title: 'onboarding.profile_setup.${positionKeys[i]}'
+                  .tr(context: context),
+              isSelected: selectedPositions.contains(positionKeys[i]),
+              onTap: () => onToggle(positionKeys[i]),
+              height: 46,
+              borderRadius: 12,
             ),
           ),
-        );
-      }).toList(),
+        ],
+      ],
     );
   }
 }

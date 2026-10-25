@@ -7,48 +7,63 @@ import '../../../../core/styles/app_text_styles.dart';
 
 class NotificationPreviewCardWidget extends StatelessWidget {
   const NotificationPreviewCardWidget({
-    required this.icon,
-    required this.iconColor,
+    required this.glyph,
+    required this.glyphColor,
+    required this.glyphBackground,
     required this.title,
     required this.time,
     super.key,
+    this.width = 282,
   });
 
-  final IconData icon;
-  final Color iconColor;
+  final String glyph;
+  final Color glyphColor;
+  final Color glyphBackground;
   final String title;
   final String time;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+      width: width.w,
+      padding: EdgeInsetsDirectional.fromSTEB(16.w, 12.h, 16.w, 12.h),
       decoration: BoxDecoration(
-        color: AppColors.pageBackground,
-        borderRadius: BorderRadius.circular(14.r),
-        border: Border.all(color: AppColors.border, width: 1),
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(18.r),
+        border: Border.all(color: AppColors.borderCard),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.navyShadow18,
+            offset: Offset(0, 10.h),
+            blurRadius: 24.r,
+            spreadRadius: -12.r,
+          ),
+        ],
       ),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 18.r,
-            backgroundColor: AppColors.white,
-            child: Icon(icon, color: iconColor, size: 20.sp),
+          Container(
+            width: 37.r,
+            height: 37.r,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: glyphBackground,
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            child: Text(
+              glyph,
+              style: AppTextStyles.font16Bold.copyWith(color: glyphColor),
+            ),
           ),
-          vSpace(12),
+          vSpace(9),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: AppTextStyles.font13SemiBold,
-                ),
-                hSpace(2),
-                Text(
-                  time,
-                  style: AppTextStyles.font11Regular,
-                ),
+                Text(title, style: AppTextStyles.font13Bold),
+                hSpace(4),
+                Text(time, style: AppTextStyles.font11Regular),
               ],
             ),
           ),

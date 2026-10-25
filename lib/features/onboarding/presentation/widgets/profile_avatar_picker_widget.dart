@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/app/app_spaces.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 
@@ -16,39 +18,40 @@ class ProfileAvatarPickerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: GestureDetector(
-        onTap: onTap,
-        child: Stack(
-          children: [
-            CircleAvatar(
-              radius: 38.r,
-              backgroundColor: AppColors.brandNavy,
-              child: Text(
-                initials,
-                style: AppTextStyles.font22Bold.copyWith(
-                  color: AppColors.white,
-                ),
-              ),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(38.r),
+      child: Row(
+        children: [
+          Container(
+            width: 76.r,
+            height: 76.r,
+            alignment: Alignment.center,
+            decoration: const BoxDecoration(
+              color: AppColors.brandNavy,
+              shape: BoxShape.circle,
             ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: Container(
-                padding: EdgeInsets.all(4.w),
-                decoration: const BoxDecoration(
-                  color: AppColors.brandRed,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.camera_alt_rounded,
-                  size: 16.sp,
-                  color: AppColors.white,
-                ),
-              ),
+            child: Text(
+              initials,
+              style: AppTextStyles.font26Bold.copyWith(color: AppColors.white),
             ),
-          ],
-        ),
+          ),
+          vSpace(14),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'onboarding.profile_setup.avatar_title'.tr(context: context),
+                style: AppTextStyles.font15Bold,
+              ),
+              hSpace(4),
+              Text(
+                'onboarding.profile_setup.avatar_sub'.tr(context: context),
+                style: AppTextStyles.font12Regular,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

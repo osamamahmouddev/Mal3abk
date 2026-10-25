@@ -22,17 +22,17 @@ class OnboardingFeatureItemWidget extends StatelessWidget {
     return Row(
       children: [
         Container(
-          width: 44.w,
-          height: 44.h,
+          width: 44.r,
+          height: 44.r,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: AppColors.lightSurface,
+            color: AppColors.white10,
             borderRadius: BorderRadius.circular(12.r),
           ),
           child: Text(
             number,
             style: AppTextStyles.font16Bold.copyWith(
-              color: AppColors.brandNavy,
+              color: AppColors.accentGold,
             ),
           ),
         ),
@@ -43,12 +43,15 @@ class OnboardingFeatureItemWidget extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: AppTextStyles.font15Bold,
+                style: AppTextStyles.font16Bold.copyWith(
+                  color: AppColors.white,
+                ),
               ),
-              hSpace(2),
               Text(
                 subtitle,
-                style: AppTextStyles.font13Regular,
+                style: AppTextStyles.font13Regular.copyWith(
+                  color: AppColors.onNavyMuted,
+                ),
               ),
             ],
           ),

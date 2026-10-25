@@ -7,6 +7,9 @@ import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_button.dart';
+import '../../../../core/widgets/primary_cta_button_widget.dart';
+import '../widgets/location_illustration_widget.dart';
+import '../widgets/onboarding_step_header_widget.dart';
 
 class LocationPermissionScreen extends StatelessWidget {
   const LocationPermissionScreen({super.key});
@@ -14,102 +17,53 @@ class LocationPermissionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
-      appBar: AppBar(
-        backgroundColor: AppColors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: AppColors.brandNavy,
-          ),
-          onPressed: () => Navigator.of(context).maybePop(),
-        ),
-      ),
+      backgroundColor: AppColors.pageBackground,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
+          padding: EdgeInsets.fromLTRB(16.w, 14.h, 16.w, 24.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'onboarding.location.step'.tr(context: context),
-                    style: AppTextStyles.font13Regular,
-                  ),
-                ],
+              OnboardingStepHeaderWidget(
+                stepLabel: 'onboarding.location.step'.tr(context: context),
+                completedSteps: 2,
               ),
-              hSpace(8),
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 4.h,
-                      decoration: BoxDecoration(
-                        color: AppColors.brandRed,
-                        borderRadius: BorderRadius.circular(2.r),
-                      ),
-                    ),
-                  ),
-                  vSpace(8),
-                  Expanded(
-                    child: Container(
-                      height: 4.h,
-                      decoration: BoxDecoration(
-                        color: AppColors.brandRed,
-                        borderRadius: BorderRadius.circular(2.r),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const Spacer(),
-              Center(
-                child: Container(
-                  width: 140.w,
-                  height: 140.h,
-                  decoration: const BoxDecoration(
-                    color: AppColors.lightSurface,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Center(
-                    child: Icon(
-                      Icons.location_on_rounded,
-                      size: 64.sp,
-                      color: AppColors.brandRed,
-                    ),
-                  ),
-                ),
-              ),
-              hSpace(32),
+              hSpace(48),
+              const Center(child: LocationIllustrationWidget()),
+              hSpace(17),
               Text(
                 'onboarding.location.title'.tr(context: context),
                 style: AppTextStyles.font22Bold,
                 textAlign: TextAlign.center,
               ),
-              hSpace(12),
-              Text(
-                'onboarding.location.desc'.tr(context: context),
-                style: AppTextStyles.font14Regular,
-                textAlign: TextAlign.center,
+              hSpace(26),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 7.w),
+                child: Text(
+                  'onboarding.location.desc'.tr(context: context),
+                  style: AppTextStyles.font14Regular.copyWith(height: 23 / 14),
+                  textAlign: TextAlign.center,
+                ),
               ),
               const Spacer(),
-              CustomButton(
+              PrimaryCtaButtonWidget(
                 text: 'onboarding.location.allow'.tr(context: context),
-                type: CustomButtonType.primary,
-                height: 52.h,
-                onTap: () => Navigator.of(context).pushNamed(AppRoutes.notificationsPermission),
+                onTap: () => Navigator.of(context)
+                    .pushNamed(AppRoutes.notificationsPermission),
               ),
-              hSpace(12),
+              hSpace(8),
               CustomButton(
                 text: 'onboarding.location.manual'.tr(context: context),
                 type: CustomButtonType.outline,
                 height: 48.h,
-                onTap: () => Navigator.of(context).pushNamed(AppRoutes.notificationsPermission),
+                borderRadius: 12,
+                backgroundColor: AppColors.white,
+                textStyle: AppTextStyles.font15SemiBold.copyWith(
+                  color: AppColors.brandNavy,
+                ),
+                onTap: () => Navigator.of(context)
+                    .pushNamed(AppRoutes.notificationsPermission),
               ),
-              hSpace(16),
             ],
           ),
         ),

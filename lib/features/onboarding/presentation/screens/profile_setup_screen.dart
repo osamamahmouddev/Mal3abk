@@ -7,9 +7,13 @@ import '../../../../core/app/app_spaces.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
-import '../../../../core/widgets/custom_button.dart';
+import '../../../../core/widgets/bottom_action_bar_widget.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
+import '../../../../core/widgets/form_field_label_widget.dart';
+import '../../../../core/widgets/primary_cta_button_widget.dart';
+import '../widgets/onboarding_step_header_widget.dart';
 import '../widgets/profile_avatar_picker_widget.dart';
+import '../widgets/profile_setup_area_selector_widget.dart';
 import '../widgets/profile_setup_level_selector_widget.dart';
 import '../widgets/profile_setup_position_selector_widget.dart';
 
@@ -19,111 +23,88 @@ class ProfileSetupScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final nameController = useTextEditingController();
-    final areaController = useTextEditingController();
-    final selectedPosition = useState('pos_mid');
+    final selectedArea = useState('nasr_city');
+    final selectedPositions = useState(<String>{'pos_mid', 'pos_fwd'});
     final selectedLevel = useState('mid');
 
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
-      appBar: AppBar(
-        backgroundColor: AppColors.pageBackground,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.brandNavy),
-          onPressed: () => Navigator.of(context).maybePop(),
+      bottomNavigationBar: BottomActionBarWidget(
+        child: PrimaryCtaButtonWidget(
+          text: 'onboarding.profile_setup.next'.tr(context: context),
+          onTap: () =>
+              Navigator.of(context).pushNamed(AppRoutes.locationPermission),
         ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+          padding: EdgeInsets.fromLTRB(16.w, 14.h, 16.w, 24.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'onboarding.profile_setup.step'.tr(context: context),
-                    style: AppTextStyles.font13Regular,
-                  ),
-                ],
+              OnboardingStepHeaderWidget(
+                stepLabel: 'onboarding.profile_setup.step'.tr(context: context),
+                completedSteps: 1,
               ),
-              hSpace(8),
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 4.h,
-                      decoration: BoxDecoration(
-                        color: AppColors.brandRed,
-                        borderRadius: BorderRadius.circular(2.r),
-                      ),
-                    ),
-                  ),
-                  vSpace(8),
-                  Expanded(
-                    child: Container(
-                      height: 4.h,
-                      decoration: BoxDecoration(
-                        color: AppColors.borderInput,
-                        borderRadius: BorderRadius.circular(2.r),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              hSpace(20),
+              hSpace(6),
               Text(
                 'onboarding.profile_setup.title'.tr(context: context),
                 style: AppTextStyles.font22Bold,
               ),
-              hSpace(6),
+              hSpace(8),
               Text(
                 'onboarding.profile_setup.desc'.tr(context: context),
                 style: AppTextStyles.font13Regular,
               ),
-              hSpace(24),
-              const ProfileAvatarPickerWidget(initials: 'أس'),
-              hSpace(24),
+              hSpace(38),
+              ProfileAvatarPickerWidget(
+                initials: 'onboarding.profile_setup.sample_initials'.tr(context: context),
+              ),
+              hSpace(14),
+              FormFieldLabelWidget(
+                label: 'onboarding.profile_setup.name_label'.tr(context: context),
+                isRequired: true,
+              ),
+              hSpace(12),
               CustomTextFormField(
                 controller: nameController,
-                labelText: 'onboarding.profile_setup.name_label'.tr(context: context),
                 hintText: 'onboarding.profile_setup.name_hint'.tr(context: context),
+                style: AppTextStyles.font16Regular,
               ),
-              hSpace(16),
-              CustomTextFormField(
-                controller: areaController,
-                labelText: 'onboarding.profile_setup.area_label'.tr(context: context),
-                hintText: 'onboarding.profile_setup.area_hint'.tr(context: context),
+              hSpace(14),
+              FormFieldLabelWidget(
+                label: 'onboarding.profile_setup.area_label'.tr(context: context),
+                isRequired: true,
               ),
-              hSpace(20),
-              Text(
-                'onboarding.profile_setup.pos_label'.tr(context: context),
-                style: AppTextStyles.font14SemiBold,
+              hSpace(14),
+              ProfileSetupAreaSelectorWidget(
+                selectedArea: selectedArea.value,
+                onSelect: (value) => selectedArea.value = value,
               ),
-              hSpace(10),
+              hSpace(14),
+              FormFieldLabelWidget(
+                label: 'onboarding.profile_setup.pos_label'.tr(context: context),
+                hint: 'onboarding.profile_setup.pos_hint'.tr(context: context),
+              ),
+              hSpace(14),
               ProfileSetupPositionSelectorWidget(
-                selectedPosition: selectedPosition.value,
-                onSelect: (val) => selectedPosition.value = val,
+                selectedPositions: selectedPositions.value,
+                onToggle: (key) {
+                  final next = {...selectedPositions.value};
+                  if (!next.remove(key)) next.add(key);
+                  selectedPositions.value = next;
+                },
               ),
-              hSpace(20),
-              Text(
-                'onboarding.profile_setup.level_label'.tr(context: context),
-                style: AppTextStyles.font14SemiBold,
+              hSpace(14),
+              FormFieldLabelWidget(
+                label: 'onboarding.profile_setup.level_label'.tr(context: context),
+                hint: 'onboarding.profile_setup.optional'.tr(context: context),
               ),
-              hSpace(10),
+              hSpace(14),
               ProfileSetupLevelSelectorWidget(
                 selectedLevel: selectedLevel.value,
-                onSelect: (val) => selectedLevel.value = val,
+                onSelect: (value) => selectedLevel.value = value,
               ),
-              hSpace(36),
-              CustomButton(
-                text: 'onboarding.profile_setup.next'.tr(context: context),
-                type: CustomButtonType.primary,
-                height: 52.h,
-                onTap: () => Navigator.of(context).pushNamed(AppRoutes.locationPermission),
-              ),
-              hSpace(16),
             ],
           ),
         ),
