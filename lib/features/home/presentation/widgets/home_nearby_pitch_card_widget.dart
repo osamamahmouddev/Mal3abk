@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/app/app_spaces.dart';
+import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_shadows.dart';
 import '../../../../core/styles/app_text_styles.dart';
 
 class HomeNearbyPitchCardWidget extends StatelessWidget {
@@ -23,56 +26,68 @@ class HomeNearbyPitchCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(16.r),
-      child: Container(
-        width: 210.w,
-        padding: EdgeInsets.all(12.w),
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(color: AppColors.borderCard, width: 1),
+    final radius = BorderRadius.circular(20.r);
+
+    return Container(
+      width: 222.w,
+      decoration: BoxDecoration(
+        borderRadius: radius,
+        boxShadow: AppShadows.card,
+      ),
+      child: Material(
+        color: AppColors.white,
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+          borderRadius: radius,
+          side: const BorderSide(color: AppColors.borderCard),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: 90.h,
-              decoration: BoxDecoration(
-                color: AppColors.pitchGreen,
-                borderRadius: BorderRadius.circular(12.r),
+        child: InkWell(
+          onTap: onTap,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SvgPicture.asset(
+                AppAssets.pitchThumbWide,
+                height: 96.h,
+                fit: BoxFit.cover,
               ),
-              child: Center(
-                child: Icon(Icons.sports_soccer_rounded, size: 36.sp, color: AppColors.white),
-              ),
-            ),
-            hSpace(8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(child: Text(name, style: AppTextStyles.font14Bold, maxLines: 1)),
-                Row(
+              Padding(
+                padding: EdgeInsets.fromLTRB(12.w, 5.h, 12.w, 12.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.star_rounded, size: 14.sp, color: AppColors.goldDark),
-                    vSpace(2),
-                    Text(rating, style: AppTextStyles.font12Bold.copyWith(color: AppColors.goldDark)),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            name,
+                            style: AppTextStyles.font14Bold,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Text(
+                          '★ $rating',
+                          style: AppTextStyles.font12Bold.copyWith(
+                            color: AppColors.goldDark,
+                          ),
+                        ),
+                      ],
+                    ),
+                    hSpace(4),
+                    Text(dist, style: AppTextStyles.font12Regular),
+                    hSpace(4),
+                    Text(
+                      slot,
+                      style: AppTextStyles.font12Bold.copyWith(
+                        color: AppColors.successGreen,
+                      ),
+                    ),
                   ],
                 ),
-              ],
-            ),
-            hSpace(4),
-            Text(dist, style: AppTextStyles.font12Regular),
-            hSpace(6),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
-              decoration: BoxDecoration(
-                color: AppColors.successLight,
-                borderRadius: BorderRadius.circular(6.r),
               ),
-              child: Text(slot, style: AppTextStyles.font11Bold.copyWith(color: AppColors.successGreen)),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
