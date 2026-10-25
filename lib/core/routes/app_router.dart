@@ -16,6 +16,7 @@ import '../../features/explore/presentation/screens/filters_and_sort_screen.dart
 import '../../features/explore/presentation/screens/pitch_and_time_screen.dart';
 import '../../features/explore/presentation/screens/venue_profile_screen.dart';
 import '../../features/home/presentation/screens/home_screen.dart';
+import '../../features/main_shell/presentation/screens/main_shell_screen.dart';
 import '../../features/matches/presentation/screens/challenge_details_screen.dart';
 import '../../features/matches/presentation/screens/challenge_received_screen.dart';
 import '../../features/matches/presentation/screens/challenge_team_screen.dart';
@@ -86,6 +87,12 @@ class AppRouter {
         return MaterialPageRoute(
           settings: const RouteSettings(name: AppRoutes.notificationsPermission),
           builder: (_) => const NotificationsPermissionScreen(),
+        );
+
+      case AppRoutes.main:
+        return MaterialPageRoute(
+          settings: const RouteSettings(name: AppRoutes.main),
+          builder: (_) => const MainShellScreen(),
         );
 
       case AppRoutes.home:

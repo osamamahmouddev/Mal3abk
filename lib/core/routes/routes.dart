@@ -8,6 +8,7 @@ class AppRoutes {
   static const String locationPermission = '/location-permission';
   static const String notificationsPermission = '/notifications-permission';
 
+  static const String main = '/main';
   static const String home = '/home';
   static const String exploreList = '/explore-list';
   static const String exploreMap = '/explore-map';

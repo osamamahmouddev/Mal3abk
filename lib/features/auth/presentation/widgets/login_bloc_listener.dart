@@ -19,7 +19,7 @@ class LoginBlocListener extends StatelessWidget {
         switch (state) {
           case LoginSuccess():
             context.pushNamedAndRemoveUntil(
-              AppRoutes.home,
+              AppRoutes.main,
               (route) => false,
             );
           case LoginError(:final message):
