@@ -5,11 +5,12 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/routes/routes.dart';
-import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
-import '../../../../core/widgets/custom_button.dart';
-import '../../../../core/widgets/custom_text_form_field.dart';
+import '../../../../core/widgets/app_back_button_widget.dart';
+import '../../../../core/widgets/brand_wordmark_widget.dart';
+import '../widgets/login_otp_step_widget.dart';
+import '../widgets/login_phone_step_widget.dart';
 
 class LoginScreen extends HookWidget {
   const LoginScreen({super.key});
@@ -42,37 +43,34 @@ class LoginScreen extends HookWidget {
 
     return Scaffold(
       backgroundColor: AppColors.white,
-      appBar: AppBar(
-        backgroundColor: AppColors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: AppColors.brandNavy,
-          ),
-          onPressed: () => Navigator.of(context).maybePop(),
-        ),
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
+          padding: EdgeInsets.fromLTRB(24.w, 16.h, 24.w, 24.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Center(
-                child: Image.asset(
-                  AppAssets.logoStacked,
-                  width: 120.w,
-                  fit: BoxFit.contain,
-                ),
+              const Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: AppBackButtonWidget(),
               ),
-              hSpace(24),
+              hSpace(18),
+              BrandWordmarkWidget(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                titleStyle: AppTextStyles.font44Bold.copyWith(
+                  color: AppColors.brandNavy,
+                ),
+                latinStyle: AppTextStyles.font15SemiBold.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+                accentColor: AppColors.brandRed,
+              ),
+              hSpace(35),
               Text(
                 'auth.login.title'.tr(context: context),
-                style: AppTextStyles.font22Bold,
+                style: AppTextStyles.font24Bold,
                 textAlign: TextAlign.center,
               ),
-              hSpace(8),
+              hSpace(12),
               Text(
                 isOtpSent.value
                     ? 'auth.login.otp_sent_hint'.tr(context: context)
@@ -80,66 +78,20 @@ class LoginScreen extends HookWidget {
                 style: AppTextStyles.font14Regular,
                 textAlign: TextAlign.center,
               ),
-              hSpace(32),
-              if (!isOtpSent.value) ...[
-                CustomTextFormField(
-                  controller: phoneController,
-                  labelText: 'auth.login.phone_label'.tr(context: context),
-                  hintText: '01012345678',
-                  keyboardType: TextInputType.phone,
-                  prefixIcon: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    child: Center(
-                      widthFactor: 1.0,
-                      child: Text(
-                        '+20',
-                        style: AppTextStyles.font14Bold.copyWith(
-                          color: AppColors.brandNavy,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                hSpace(24),
-                CustomButton(
-                  text: 'auth.login.send_code'.tr(context: context),
-                  type: CustomButtonType.primary,
-                  height: 54.h,
-                  isLoading: isLoading.value,
-                  onTap: handleSendCode,
-                ),
-                hSpace(16),
-                Text(
-                  'auth.login.new_account_notice'.tr(context: context),
-                  style: AppTextStyles.font13Regular.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ] else ...[
-                CustomTextFormField(
+              hSpace(26),
+              if (isOtpSent.value)
+                LoginOtpStepWidget(
                   controller: otpController,
-                  labelText: 'auth.login.otp_label'.tr(context: context),
-                  hintText: '••••',
-                  keyboardType: TextInputType.number,
-                  textAlign: TextAlign.center,
-                ),
-                hSpace(24),
-                CustomButton(
-                  text: 'auth.login.verify_and_enter'.tr(context: context),
-                  type: CustomButtonType.primary,
-                  height: 54.h,
                   isLoading: isLoading.value,
-                  onTap: handleVerifyOtp,
+                  onSubmit: handleVerifyOtp,
+                  onEditPhone: () => isOtpSent.value = false,
+                )
+              else
+                LoginPhoneStepWidget(
+                  controller: phoneController,
+                  isLoading: isLoading.value,
+                  onSubmit: handleSendCode,
                 ),
-                hSpace(16),
-                CustomButton(
-                  text: 'auth.login.edit_phone'.tr(context: context),
-                  type: CustomButtonType.ghost,
-                  height: 44.h,
-                  onTap: () => isOtpSent.value = false,
-                ),
-              ],
             ],
           ),
         ),
