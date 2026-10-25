@@ -1,8 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
-import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
 
@@ -23,8 +23,9 @@ class VenuePitchOptionCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomCardWidget(
-      margin: EdgeInsets.only(bottom: 10.h),
       onTap: onTap,
+      borderRadius: 18,
+      padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 9.h),
       child: Row(
         children: [
           Expanded(
@@ -32,14 +33,23 @@ class VenuePitchOptionCardWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title, style: AppTextStyles.font15Bold),
-                hSpace(2),
-                Text(subtitle, style: AppTextStyles.font12Regular),
                 hSpace(4),
-                Text(price, style: AppTextStyles.font14Bold.copyWith(color: AppColors.brandNavy)),
+                Text(subtitle, style: AppTextStyles.font12Regular),
               ],
             ),
           ),
-          Icon(Icons.arrow_forward_ios_rounded, size: 16.sp, color: AppColors.brandNavy),
+          Text.rich(
+            TextSpan(
+              text: price,
+              style: AppTextStyles.font15Bold,
+              children: [
+                TextSpan(
+                  text: 'explore.venue.per_hour_short'.tr(context: context),
+                  style: AppTextStyles.font12Medium,
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

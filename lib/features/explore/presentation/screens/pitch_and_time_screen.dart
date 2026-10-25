@@ -8,198 +8,83 @@ import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
-import '../../../../core/widgets/custom_button.dart';
+import '../../../../core/widgets/price_action_footer_widget.dart';
+import '../../../../core/widgets/selectable_tile_widget.dart';
+import '../widgets/pitch_day_selector_widget.dart';
+import '../widgets/pitch_duration_selector_widget.dart';
+import '../widgets/pitch_slot_legend_widget.dart';
+import '../widgets/pitch_time_grid_widget.dart';
 
 class PitchAndTimeScreen extends HookWidget {
   const PitchAndTimeScreen({super.key});
 
-  static const List<String> _slots = [
-    '٧:٠٠ م',
-    '٨:٠٠ م',
-    '٩:٠٠ م',
-    '١٠:٠٠ م',
-    '١١:٠٠ م',
-    '١٢:٠٠ ص',
-  ];
-
   @override
   Widget build(BuildContext context) {
-    final selectedDateIndex = useState(0);
-    final selectedSlot = useState('٩:٠٠ م');
-    final duration = useState('ساعة');
+    final selectedDay = useState(0);
+    final selectedPitch = useState(0);
+    final selectedSlot = useState('t8');
 
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
       appBar: CustomAppBarWidget(
-        title: 'explore.pitch_and_time'.tr(context: context),
-        subtitle: 'ملعب النجوم — ملعب ١ (خماسي)',
+        title: 'explore.slots.title'.tr(context: context),
+        subtitle: 'explore.venue.name'.tr(context: context),
       ),
-      bottomNavigationBar: SafeArea(
-        child: Container(
-          padding: EdgeInsets.all(16.w),
-          decoration: const BoxDecoration(
-            color: AppColors.white,
-            border: Border(top: BorderSide(color: AppColors.border, width: 1)),
+      bottomNavigationBar: PriceActionFooterWidget(
+        caption: 'explore.slots.summary'.tr(context: context),
+        price: 'explore.sample1_price'.tr(context: context),
+        ctaText: 'explore.slots.continue'.tr(context: context),
+        onTap: () => Navigator.of(context).pushNamed(AppRoutes.bookingReview),
+      ),
+      body: ListView(
+        padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 24.h),
+        children: [
+          PitchDaySelectorWidget(
+            selectedIndex: selectedDay.value,
+            onSelect: (index) => selectedDay.value = index,
           ),
-          child: Row(
+          hSpace(16),
+          Row(
             children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('الإجمالي المطلوب', style: AppTextStyles.font11Regular),
-                  Text('١٥٠ ج.م', style: AppTextStyles.font18Bold.copyWith(color: AppColors.brandNavy)),
-                ],
-              ),
-              const Spacer(),
-              CustomButton(
-                text: 'مراجعة الحجز',
-                type: CustomButtonType.primary,
-                width: 170.w,
-                height: 48.h,
-                onTap: () => Navigator.of(context).pushNamed(AppRoutes.bookingReview),
-              ),
+              for (var i = 0; i < 2; i++) ...[
+                if (i > 0) vSpace(8),
+                Expanded(
+                  child: SelectableTileWidget(
+                    title: 'explore.slots.pitch${i + 1}'.tr(context: context),
+                    subtitle: 'explore.slots.price_${i == 0 ? 150 : 220}'
+                        .tr(context: context),
+                    subtitleStyle: AppTextStyles.font12Regular,
+                    subtitleOpacity: 0.85,
+                    boldTitle: true,
+                    isSelected: selectedPitch.value == i,
+                    onTap: () => selectedPitch.value = i,
+                    height: 58,
+                    borderRadius: 12,
+                  ),
+                ),
+              ],
             ],
           ),
-        ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('اختر اليوم', style: AppTextStyles.font15Bold),
-              hSpace(10),
-              RSizedBox(
-                height: 72.h,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 7,
-                  separatorBuilder: (_, _) => vSpace(8),
-                  itemBuilder: (context, index) {
-                    final isSelected = selectedDateIndex.value == index;
-                    return InkWell(
-                      onTap: () => selectedDateIndex.value = index,
-                      borderRadius: BorderRadius.circular(14.r),
-                      child: Container(
-                        width: 64.w,
-                        padding: EdgeInsets.symmetric(vertical: 8.h),
-                        decoration: BoxDecoration(
-                          color: isSelected ? AppColors.brandNavy : AppColors.white,
-                          borderRadius: BorderRadius.circular(14.r),
-                          border: Border.all(
-                            color: isSelected ? AppColors.brandNavy : AppColors.borderInput,
-                            width: 1,
-                          ),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              index == 0 ? 'اليوم' : 'السبت',
-                              style: AppTextStyles.font11Regular.copyWith(
-                                color: isSelected ? AppColors.white.withValues(alpha: 0.8) : AppColors.textSecondary,
-                              ),
-                            ),
-                            hSpace(4),
-                            Text(
-                              '${26 + index}',
-                              style: AppTextStyles.font16Bold.copyWith(
-                                color: isSelected ? AppColors.white : AppColors.textPrimary,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              hSpace(24),
-              Text('المواعيد المتاحة', style: AppTextStyles.font15Bold),
-              hSpace(10),
-              GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 10.w,
-                  mainAxisSpacing: 10.h,
-                  childAspectRatio: 2.1,
-                ),
-                itemCount: _slots.length,
-                itemBuilder: (context, index) {
-                  final slot = _slots[index];
-                  final isBooked = index == 1;
-                  final isSelected = selectedSlot.value == slot;
-
-                  return InkWell(
-                    onTap: isBooked ? null : () => selectedSlot.value = slot,
-                    borderRadius: BorderRadius.circular(10.r),
-                    child: Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: isBooked
-                            ? AppColors.lightSurface
-                            : (isSelected ? AppColors.brandNavy : AppColors.white),
-                        borderRadius: BorderRadius.circular(10.r),
-                        border: Border.all(
-                          color: isSelected ? AppColors.brandNavy : AppColors.borderInput,
-                          width: 1,
-                        ),
-                      ),
-                      child: Text(
-                        isBooked ? '$slot (محجوز)' : slot,
-                        style: isSelected
-                            ? AppTextStyles.font13SemiBold.copyWith(color: AppColors.white)
-                            : (isBooked
-                                ? AppTextStyles.font11Regular.copyWith(color: AppColors.textMuted)
-                                : AppTextStyles.font13SemiBold.copyWith(color: AppColors.textPrimary)),
-                      ),
-                    ),
-                  );
-                },
-              ),
-              hSpace(24),
-              Text('مدة الحجز', style: AppTextStyles.font15Bold),
-              hSpace(10),
-              Row(
-                children: ['ساعة', 'ساعتين'].map((dur) {
-                  final isSelected = duration.value == dur;
-                  return Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 4.w),
-                      child: InkWell(
-                        onTap: () => duration.value = dur,
-                        borderRadius: BorderRadius.circular(10.r),
-                        child: Container(
-                          height: 46.h,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: isSelected ? AppColors.brandNavy : AppColors.white,
-                            borderRadius: BorderRadius.circular(10.r),
-                            border: Border.all(
-                              color: isSelected ? AppColors.brandNavy : AppColors.borderInput,
-                              width: 1,
-                            ),
-                          ),
-                          child: Text(
-                            dur,
-                            style: isSelected
-                                ? AppTextStyles.font14Bold.copyWith(color: AppColors.white)
-                                : AppTextStyles.font14Medium,
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-              hSpace(20),
-            ],
+          hSpace(16),
+          Text(
+            'explore.slots.section'.tr(context: context),
+            style: AppTextStyles.font15Bold,
           ),
-        ),
+          hSpace(14),
+          PitchTimeGridWidget(
+            selectedKey: selectedSlot.value,
+            onSelect: (key) => selectedSlot.value = key,
+          ),
+          hSpace(12),
+          const PitchSlotLegendWidget(),
+          hSpace(24),
+          Text(
+            'explore.slots.duration'.tr(context: context),
+            style: AppTextStyles.font15Bold,
+          ),
+          hSpace(12),
+          const PitchDurationSelectorWidget(),
+        ],
       ),
     );
   }

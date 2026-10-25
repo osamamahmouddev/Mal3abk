@@ -6,91 +6,87 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
-import '../../../../core/widgets/custom_app_bar_widget.dart';
-import '../../../../core/widgets/custom_chip_widget.dart';
-import '../../../../core/widgets/custom_search_field_widget.dart';
+import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/pitch_card_widget.dart';
+import '../widgets/explore_quick_filters_widget.dart';
+import '../widgets/explore_search_summary_widget.dart';
+import '../widgets/explore_view_toggle_widget.dart';
 
 class ExploreListScreen extends HookWidget {
   const ExploreListScreen({super.key});
 
-  static const List<String> _filters = ['الكل', 'قريب مني', 'متاح النهارده', 'نجيل طبيعي', '٥ ضد ٥'];
-
   @override
   Widget build(BuildContext context) {
-    final selectedFilterChip = useState(0);
+    final favorites = useState(<int>{0});
+
+    void openPitchAndTime(String _) =>
+        Navigator.of(context).pushNamed(AppRoutes.pitchAndTime);
+
+    void toggleFavorite(int index) {
+      final next = {...favorites.value};
+      if (!next.remove(index)) next.add(index);
+      favorites.value = next;
+    }
 
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
-      appBar: CustomAppBarWidget(
-        title: 'explore.list_title'.tr(context: context),
-        subtitle: 'القاهرة، مدينة نصر (١٢ ملعب)',
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.map_outlined, color: AppColors.brandNavy),
-            onPressed: () => Navigator.of(context).pushNamed(AppRoutes.exploreMap),
-          ),
-        ],
-      ),
       body: SafeArea(
+        bottom: false,
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-              child: CustomSearchFieldWidget(
-                hintText: 'explore.search_hint'.tr(context: context),
-                onFilterTap: () => Navigator.of(context).pushNamed(AppRoutes.filtersAndSort),
-                hasActiveFilters: true,
+              padding: EdgeInsets.fromLTRB(16.w, 14.h, 16.w, 10.h),
+              child: const ExploreSearchSummaryWidget(),
+            ),
+            const ExploreQuickFiltersWidget(),
+            Padding(
+              padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'explore.results_count'.tr(context: context, args: ['٢']),
+                    style: AppTextStyles.font13Regular,
+                  ),
+                  const ExploreViewToggleWidget(isMap: false),
+                ],
               ),
             ),
-            RSizedBox(
-              height: 42.h,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                itemCount: _filters.length,
-                separatorBuilder: (_, _) => vSpace(8),
-                itemBuilder: (context, index) {
-                  return CustomChipWidget(
-                    label: _filters[index],
-                    isSelected: selectedFilterChip.value == index,
-                    onTap: () => selectedFilterChip.value = index,
-                  );
-                },
-              ),
-            ),
-            hSpace(12),
             Expanded(
               child: ListView(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                padding: EdgeInsets.fromLTRB(16.w, 26.h, 16.w, 16.h),
                 children: [
                   PitchCardWidget(
-                    name: 'ملعب النجوم',
-                    specs: 'ملعب ١ · ٥ لاعب · نجيل صناعي · ١٫٢ كم',
-                    pricePerHour: '١٥٠ ج.م',
-                    rating: 4.8,
-                    isFavorite: true,
-                    availableSlots: const ['٨:٠٠ م', '١١:٠٠ م', '١٢:٠٠ ص'],
-                    onTap: () => Navigator.of(context).pushNamed(AppRoutes.venueProfile),
-                    onSlotTap: (slot) => Navigator.of(context).pushNamed(AppRoutes.pitchAndTime),
+                    name: 'explore.sample1_name'.tr(context: context),
+                    specs: 'explore.sample1_specs'.tr(context: context),
+                    pricePerHour: 'explore.sample1_price'.tr(context: context),
+                    rating: 'explore.sample1_rating'.tr(context: context),
+                    isFavorite: favorites.value.contains(0),
+                    onFavoriteTap: () => toggleFavorite(0),
+                    availableSlots: [
+                      'explore.slot_8pm'.tr(context: context),
+                      'explore.slot_11pm'.tr(context: context),
+                      'explore.slot_12am'.tr(context: context),
+                    ],
+                    onTap: () =>
+                        Navigator.of(context).pushNamed(AppRoutes.venueProfile),
+                    onSlotTap: openPitchAndTime,
                   ),
+                  hSpace(12),
                   PitchCardWidget(
-                    name: 'أكاديمية الدلتا',
-                    specs: 'ملعب ٢ · ٧ لاعب · إضاءة ليد · ٢٫٥ كم',
-                    pricePerHour: '٢٠٠ ج.م',
-                    rating: 4.6,
-                    availableSlots: const ['٩:٠٠ م', '١٠:٠٠ م'],
-                    onTap: () => Navigator.of(context).pushNamed(AppRoutes.venueProfile),
-                    onSlotTap: (slot) => Navigator.of(context).pushNamed(AppRoutes.pitchAndTime),
-                  ),
-                  PitchCardWidget(
-                    name: 'ملعب المدينة',
-                    specs: 'ملعب ١ · ٥ لاعب · مكيف كافيتريا · ٨٠٠ م',
-                    pricePerHour: '١٨٠ ج.م',
-                    rating: 4.7,
-                    availableSlots: const ['٧:٠٠ م', '١٠:٠٠ م'],
-                    onTap: () => Navigator.of(context).pushNamed(AppRoutes.venueProfile),
-                    onSlotTap: (slot) => Navigator.of(context).pushNamed(AppRoutes.pitchAndTime),
+                    name: 'explore.sample2_name'.tr(context: context),
+                    specs: 'explore.sample2_specs'.tr(context: context),
+                    pricePerHour: 'explore.sample2_price'.tr(context: context),
+                    rating: 'explore.sample2_rating'.tr(context: context),
+                    isFavorite: favorites.value.contains(1),
+                    onFavoriteTap: () => toggleFavorite(1),
+                    availableSlots: [
+                      'explore.slot_8pm'.tr(context: context),
+                      'explore.slot_9pm'.tr(context: context),
+                    ],
+                    onTap: () =>
+                        Navigator.of(context).pushNamed(AppRoutes.venueProfile),
+                    onSlotTap: openPitchAndTime,
                   ),
                 ],
               ),
