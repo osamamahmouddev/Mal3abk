@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
+import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
+import '../../../../core/widgets/bottom_action_bar_widget.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
-import '../../../../core/widgets/custom_card_widget.dart';
+import '../../../../core/widgets/custom_search_field_widget.dart';
+import '../widgets/invite_code_card_widget.dart';
+import '../widgets/invite_players_list_widget.dart';
 
 class InvitePlayersScreen extends StatelessWidget {
   const InvitePlayersScreen({super.key});
@@ -17,46 +21,40 @@ class InvitePlayersScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
       appBar: CustomAppBarWidget(
-        title: 'teams.invite_players_title'.tr(context: context),
+        title: 'teams.invite.title'.tr(context: context),
+        subtitle: 'teams.profile.mine_name'.tr(context: context),
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              CustomCardWidget(
-                child: Column(
-                  children: [
-                    Text('كود دعوة الفريق', style: AppTextStyles.font14Regular),
-                    hSpace(8),
-                    Text(
-                      'NGM-7842',
-                      style: AppTextStyles.font24Bold.copyWith(
-                        color: AppColors.brandNavy,
-                        letterSpacing: 2,
-                      ),
-                    ),
-                    hSpace(12),
-                    Text(
-                      'شارك الكود ده مع أي لاعب عشان ينضم لفريقك فوراً من التطبيق.',
-                      style: AppTextStyles.font12Regular,
-                      textAlign: TextAlign.center,
-                    ),
-                    hSpace(16),
-                    CustomButton(
-                      text: 'نسخ الكود ومشاركته',
-                      icon: const Icon(Icons.share_rounded, color: AppColors.white),
-                      type: CustomButtonType.secondary,
-                      height: 46.h,
-                      onTap: () {},
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+      bottomNavigationBar: BottomActionBarWidget(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'teams.invite.footer_note'.tr(context: context),
+              style: AppTextStyles.font12Regular,
+            ),
+            hSpace(8),
+            CustomButton(
+              text: 'teams.invite.done'.tr(context: context),
+              type: CustomButtonType.secondary,
+              height: 52.h,
+              borderRadius: 16,
+              textStyle: AppTextStyles.font16Bold.copyWith(color: AppColors.white),
+              onTap: () => Navigator.of(context).pushNamed(AppRoutes.manageMembers),
+            ),
+          ],
         ),
+      ),
+      body: ListView(
+        padding: EdgeInsets.fromLTRB(16.w, 17.h, 16.w, 16.h),
+        children: [
+          InviteCodeCardWidget(code: 'teams.invite.sample_code'.tr(context: context)),
+          hSpace(12),
+          Text('teams.invite.search_title'.tr(context: context), style: AppTextStyles.font15Bold),
+          hSpace(14),
+          CustomSearchFieldWidget(hintText: 'teams.invite.search_hint'.tr(context: context)),
+          hSpace(10),
+          const InvitePlayersListWidget(),
+        ],
       ),
     );
   }

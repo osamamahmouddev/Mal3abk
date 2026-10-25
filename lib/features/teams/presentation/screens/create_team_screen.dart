@@ -6,85 +6,72 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
+import '../../../../core/widgets/bottom_action_bar_widget.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
+import '../../../../core/widgets/plain_note_box_widget.dart';
+import '../widgets/create_team_logo_picker_widget.dart';
+import '../widgets/create_team_preferences_widget.dart';
 
 class CreateTeamScreen extends HookWidget {
   const CreateTeamScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final teamNameController = useTextEditingController();
-    final areaController = useTextEditingController();
-    final isPublic = useState(true);
+    final nameController = useTextEditingController();
+    final bioController = useTextEditingController();
 
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
       appBar: CustomAppBarWidget(
-        title: 'teams.create_team_title'.tr(context: context),
+        title: 'teams.create.title'.tr(context: context),
+        isClose: true,
       ),
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-          child: CustomButton(
-            text: 'teams.create_team_title'.tr(context: context),
-            type: CustomButtonType.primary,
-            height: 52.h,
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-          ),
+      bottomNavigationBar: BottomActionBarWidget(
+        child: CustomButton(
+          text: 'teams.create.submit'.tr(context: context),
+          height: 52.h,
+          borderRadius: 16,
+          textStyle: AppTextStyles.font16Bold.copyWith(color: AppColors.white),
+          onTap: () => Navigator.of(context).pop(),
         ),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              CustomTextFormField(
-                controller: teamNameController,
-                labelText: 'اسم الفريق *',
-                hintText: 'مثال: نسور الشرق',
-              ),
-              hSpace(16),
-              CustomTextFormField(
-                controller: areaController,
-                labelText: 'المنطقة الأساسية للعب *',
-                hintText: 'مدينة نصر، القاهرة',
-              ),
-              hSpace(20),
-              Container(
-                padding: EdgeInsets.all(14.w),
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(14.r),
-                  border: Border.all(color: AppColors.border, width: 1),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('فريق عام (يظهر في البحث)', style: AppTextStyles.font14Bold),
-                          hSpace(2),
-                          Text('يقدر أي كابتن في منطقتك يبعت لفريقك تحديات ومباريات.', style: AppTextStyles.font12Regular),
-                        ],
-                      ),
-                    ),
-                    Switch(
-                      value: isPublic.value,
-                      activeThumbColor: AppColors.brandNavy,
-                      onChanged: (val) => isPublic.value = val,
-                    ),
-                  ],
-                ),
-              ),
-            ],
+      body: ListView(
+        padding: EdgeInsets.fromLTRB(16.w, 18.h, 16.w, 18.h),
+        children: [
+          CreateTeamLogoPickerWidget(initials: 'teams.sample.nogoum_i'.tr(context: context)),
+          hSpace(14),
+          Text('${'teams.create.name'.tr(context: context)} *', style: AppTextStyles.font14SemiBold),
+          hSpace(12),
+          CustomTextFormField(
+            controller: nameController,
+            hintText: 'teams.create.name_hint'.tr(context: context),
+            style: AppTextStyles.font16Regular,
           ),
-        ),
+          hSpace(4),
+          Text(
+            'teams.create.name_available'.tr(context: context),
+            style: AppTextStyles.font12SemiBold.copyWith(color: AppColors.successGreen),
+          ),
+          hSpace(14),
+          Text(
+            '${'teams.create.bio'.tr(context: context)} ${'onboarding.profile_setup.optional'.tr(context: context)}',
+            style: AppTextStyles.font14SemiBold,
+          ),
+          hSpace(12),
+          CustomTextFormField(
+            controller: bioController,
+            hintText: 'teams.create.bio_hint'.tr(context: context),
+            minLines: 2,
+            maxLines: 2,
+            contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
+          ),
+          hSpace(14),
+          const CreateTeamPreferencesWidget(),
+          hSpace(18),
+          PlainNoteBoxWidget(text: 'teams.create.captain_note'.tr(context: context)),
+        ],
       ),
     );
   }

@@ -6,34 +6,32 @@ import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 
 class CaptaincyPerkItemWidget extends StatelessWidget {
-  const CaptaincyPerkItemWidget({
-    required this.text,
-    super.key,
-  });
+  const CaptaincyPerkItemWidget({required this.text, super.key});
 
   final String text;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 12.h),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 12.r,
-            backgroundColor: AppColors.successLight,
-            child: Icon(
-              Icons.check_rounded,
-              color: AppColors.successGreen,
-              size: 14.sp,
-            ),
+    return Row(
+      children: [
+        Container(
+          width: 26.r,
+          height: 26.r,
+          alignment: Alignment.center,
+          decoration: const BoxDecoration(
+            color: AppColors.successLight,
+            shape: BoxShape.circle,
           ),
-          vSpace(10),
-          Expanded(
-            child: Text(text, style: AppTextStyles.font14Regular),
+          child: Text('✓', style: AppTextStyles.font12Bold.copyWith(color: AppColors.successGreen)),
+        ),
+        vSpace(10),
+        Expanded(
+          child: Text(
+            text,
+            style: AppTextStyles.font14Regular.copyWith(color: AppColors.textPrimary),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

@@ -23,10 +23,10 @@ class TeamStatWidget extends StatelessWidget {
         Text(
           value,
           style: AppTextStyles.font16Bold.copyWith(
-            color: isRank ? AppColors.brandRed : AppColors.textPrimary,
+            color: isRank ? AppColors.goldDark : AppColors.textPrimary,
           ),
         ),
-        hSpace(2),
+        hSpace(4),
         Text(label, style: AppTextStyles.font11Regular),
       ],
     );
