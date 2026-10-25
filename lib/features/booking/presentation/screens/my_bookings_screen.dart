@@ -3,76 +3,82 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/app/app_spaces.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/widgets/booking_card_widget.dart';
-import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_tab_bar_widget.dart';
+import '../../../../core/widgets/page_title_header_widget.dart';
 
 class MyBookingsScreen extends HookWidget {
   const MyBookingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final selectedTab = useState(1); // Default to "معلّقة" as seen in Figma 10:128
-    final tabs = [
-      'booking.upcoming_tab'.tr(context: context),
-      'booking.pending_tab'.tr(context: context),
-      'booking.past_tab'.tr(context: context),
-      'booking.cancelled_tab'.tr(context: context),
-    ];
+    final selectedTab = useState(1);
 
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
-      appBar: CustomAppBarWidget(
-        title: 'booking.my_bookings_title'.tr(context: context),
-        showBackButton: true,
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(48.h),
-          child: CustomTabBarWidget(
-            tabs: tabs,
-            selectedIndex: selectedTab.value,
-            badgeCounts: const {0: 1, 1: 2},
-            onTabSelected: (index) => selectedTab.value = index,
+      body: Column(
+        children: [
+          PageTitleHeaderWidget(
+            title: 'booking.my_bookings_title'.tr(context: context),
+            bottom: CustomTabBarWidget(
+              tabs: [
+                'booking.upcoming_tab'.tr(context: context),
+                'booking.pending_tab'.tr(context: context),
+                'booking.past_tab'.tr(context: context),
+                'booking.cancelled_tab'.tr(context: context),
+              ],
+              selectedIndex: selectedTab.value,
+              badgeCounts: const {0: 1, 1: 2},
+              indicatorColor: AppColors.brandNavy,
+              showTopBorder: false,
+              onTabSelected: (index) => selectedTab.value = index,
+            ),
           ),
-        ),
-      ),
-      body: SafeArea(
-        child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
-          children: [
-            BookingCardWidget(
-              venueName: 'ملعب النجوم',
-              pitchName: 'ملعب ١',
-              dateTime: 'السبت ٢٦ يوليو · ٨:٠٠ م – ٩:٠٠ م',
-              bookingCode: 'KH-2607-0142',
-              status: BookingStatus.pendingReview,
-              statusText: 'booking.pending_review'.tr(context: context),
-              depositRowText: 'booking.deposit_receipt'.tr(context: context),
-              depositAmount: '٥٠ ج.م · مرفوع ٧:٠٩ م',
-              noteText: 'booking.pending_note'.tr(context: context),
-              secondaryActionText: 'booking.details_btn'.tr(context: context),
-              onSecondaryAction: () => Navigator.of(context).pushNamed(AppRoutes.bookingDetails),
-              onTap: () => Navigator.of(context).pushNamed(AppRoutes.bookingDetails),
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
+              children: [
+                BookingCardWidget(
+                  venueName: 'explore.sample1_name'.tr(context: context),
+                  pitchName: 'explore.venue.pitch1'.tr(context: context),
+                  dateTime: 'booking.list.sample1_time'.tr(context: context),
+                  bookingCode: 'booking.deposit.sample_booking_no'.tr(context: context),
+                  status: BookingStatus.pendingReview,
+                  statusText: 'home.in_review'.tr(context: context),
+                  depositRowText: 'booking.deposit_receipt'.tr(context: context),
+                  depositAmount: 'booking.list.sample1_deposit'.tr(context: context),
+                  noteText: 'booking.pending_note'.tr(context: context),
+                  secondaryActionText: 'booking.details_btn'.tr(context: context),
+                  onSecondaryAction: () =>
+                      Navigator.of(context).pushNamed(AppRoutes.bookingDetails),
+                  onTap: () => Navigator.of(context).pushNamed(AppRoutes.bookingDetails),
+                ),
+                hSpace(12),
+                BookingCardWidget(
+                  venueName: 'booking.list.sample2_venue'.tr(context: context),
+                  pitchName: 'explore.venue.pitch1'.tr(context: context),
+                  dateTime: 'booking.list.sample2_time'.tr(context: context),
+                  bookingCode: 'booking.rejected.sample_no'.tr(context: context),
+                  status: BookingStatus.rejected,
+                  statusText: 'booking.receipt_rejected'.tr(context: context),
+                  depositRowText: 'booking.deposit_required_label'.tr(context: context),
+                  depositAmount: 'booking.amount_60'.tr(context: context),
+                  noteText: 'booking.list.sample2_note'.tr(context: context),
+                  primaryActionText: 'booking.reupload_btn'.tr(context: context),
+                  secondaryActionText: 'booking.details_btn'.tr(context: context),
+                  onPrimaryAction: () =>
+                      Navigator.of(context).pushNamed(AppRoutes.uploadProof),
+                  onSecondaryAction: () =>
+                      Navigator.of(context).pushNamed(AppRoutes.proofRejected),
+                  onTap: () => Navigator.of(context).pushNamed(AppRoutes.proofRejected),
+                ),
+              ],
             ),
-            BookingCardWidget(
-              venueName: 'ملعب المدينة',
-              pitchName: 'ملعب ١',
-              dateTime: 'الإثنين ٢٨ يوليو · ١٠:٠٠ م – ١١:٠٠ م',
-              bookingCode: 'KH-2807-0151',
-              status: BookingStatus.rejected,
-              statusText: 'booking.receipt_rejected'.tr(context: context),
-              depositRowText: 'booking.deposit_required_label'.tr(context: context),
-              depositAmount: '٦٠ ج.م',
-              noteText: 'booking.rejected_note'.tr(context: context),
-              primaryActionText: 'booking.reupload_btn'.tr(context: context),
-              secondaryActionText: 'booking.details_btn'.tr(context: context),
-              onPrimaryAction: () => Navigator.of(context).pushNamed(AppRoutes.proofRejected),
-              onSecondaryAction: () => Navigator.of(context).pushNamed(AppRoutes.bookingDetails),
-              onTap: () => Navigator.of(context).pushNamed(AppRoutes.proofRejected),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

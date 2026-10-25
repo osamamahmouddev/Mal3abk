@@ -10,28 +10,37 @@ class BookingDetailRowWidget extends StatelessWidget {
     required this.value,
     super.key,
     this.isBold = false,
+    this.valueStyle,
   });
 
   final String label;
   final String value;
+
+  /// Total-style row: both sides 15 bold.
   final bool isBold;
+
+  /// Overrides the value style (e.g. semi-bold time, bold deposit).
+  final TextStyle? valueStyle;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 4.h),
+      padding: EdgeInsets.symmetric(vertical: 6.h),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             label,
-            style: isBold ? AppTextStyles.font14Bold : AppTextStyles.font13Regular,
+            style: isBold ? AppTextStyles.font15Bold : AppTextStyles.font14Regular,
           ),
+          const Spacer(),
           Text(
             value,
-            style: isBold
-                ? AppTextStyles.font15Bold.copyWith(color: AppColors.brandNavy)
-                : AppTextStyles.font13SemiBold,
+            style: valueStyle ??
+                (isBold
+                    ? AppTextStyles.font15Bold
+                    : AppTextStyles.font14Regular.copyWith(
+                        color: AppColors.textPrimary,
+                      )),
           ),
         ],
       ),

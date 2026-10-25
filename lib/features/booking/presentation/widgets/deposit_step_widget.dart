@@ -17,23 +17,31 @@ class DepositStepWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 6.h),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CircleAvatar(
-            radius: 12.r,
-            backgroundColor: AppColors.brandNavy,
-            child: Text(
-              number,
-              style: AppTextStyles.font11Bold.copyWith(color: AppColors.white),
+    return Row(
+      children: [
+        Container(
+          width: 26.r,
+          height: 26.r,
+          alignment: Alignment.center,
+          decoration: const BoxDecoration(
+            color: AppColors.brandNavy,
+            shape: BoxShape.circle,
+          ),
+          child: Text(
+            number,
+            style: AppTextStyles.font13Bold.copyWith(color: AppColors.white),
+          ),
+        ),
+        vSpace(10),
+        Expanded(
+          child: Text(
+            text,
+            style: AppTextStyles.font14Regular.copyWith(
+              color: AppColors.textPrimary,
             ),
           ),
-          vSpace(10),
-          Expanded(child: Text(text, style: AppTextStyles.font13Regular)),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
