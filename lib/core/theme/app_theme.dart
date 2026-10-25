@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../styles/app_colors.dart';
@@ -28,6 +29,14 @@ class AppTheme {
       dialogTheme: const DialogThemeData(
         backgroundColor: AppColors.white,
         shape: RoundedRectangleBorder(borderRadius: defaultBorderRadius),
+      ),
+      pageTransitionsTheme: const PageTransitionsTheme(
+        builders: {
+          TargetPlatform.android: FadeForwardsPageTransitionsBuilder(
+            backgroundColor: AppColors.pageBackground,
+          ),
+          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+        },
       ),
       useMaterial3: true,
       fontFamily: AppFontFamily.ibmPlexSansArabic,

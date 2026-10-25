@@ -10,6 +10,7 @@ import '../../../../core/widgets/page_title_header_widget.dart';
 import '../widgets/my_team_card_widget.dart';
 import '../widgets/my_teams_header_actions_widget.dart';
 import '../widgets/team_invite_card_widget.dart';
+import '../../../../core/widgets/fade_slide_in_widget.dart';
 
 class MyTeamsScreen extends HookWidget {
   const MyTeamsScreen({super.key});
@@ -41,9 +42,9 @@ class MyTeamsScreen extends HookWidget {
             child: ListView(
               padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
               children: [
-                const TeamInviteCardWidget(),
+                const FadeSlideInWidget(child: TeamInviteCardWidget()),
                 hSpace(12),
-                const MyTeamCardWidget(),
+                const FadeSlideInWidget(index: 1, child: MyTeamCardWidget()),
               ],
             ),
           ),

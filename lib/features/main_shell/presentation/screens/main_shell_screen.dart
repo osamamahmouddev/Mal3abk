@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../../../core/routes/navigation_logger_observer.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_motion.dart';
 import '../../../../core/widgets/main_nav_bar_widget.dart';
 import '../widgets/main_shell_scope_widget.dart';
 import '../widgets/main_tab_navigator_widget.dart';
@@ -25,6 +26,10 @@ class MainShellScreen extends HookWidget {
     final observers = useMemoized(
       () => List.generate(tabs.length, (_) => NavigationLoggerObserver()),
     );
+    final tabFade = useAnimationController(
+      duration: AppMotion.medium,
+      initialValue: 1,
+    );
 
     void switchTab(int index) {
       if (index == currentIndex.value) {
@@ -33,6 +38,7 @@ class MainShellScreen extends HookWidget {
       }
       visitedTabs.value.add(index);
       currentIndex.value = index;
+      tabFade.forward(from: 0);
     }
 
     return PopScope(
@@ -56,20 +62,23 @@ class MainShellScreen extends HookWidget {
             currentIndex: currentIndex.value,
             onTap: switchTab,
           ),
-          body: IndexedStack(
-            index: currentIndex.value,
-            children: [
-              for (var i = 0; i < tabs.length; i++)
-                if (visitedTabs.value.contains(i))
-                  MainTabNavigatorWidget(
-                    navigatorKey: navigatorKeys[i],
-                    initialRoute: tabs[i],
-                    observer: observers[i],
-                    isActive: i == currentIndex.value,
-                  )
-                else
-                  const Offstage(),
-            ],
+          body: FadeTransition(
+            opacity: tabFade,
+            child: IndexedStack(
+              index: currentIndex.value,
+              children: [
+                for (var i = 0; i < tabs.length; i++)
+                  if (visitedTabs.value.contains(i))
+                    MainTabNavigatorWidget(
+                      navigatorKey: navigatorKeys[i],
+                      initialRoute: tabs[i],
+                      observer: observers[i],
+                      isActive: i == currentIndex.value,
+                    )
+                  else
+                    const Offstage(),
+              ],
+            ),
           ),
         ),
       ),

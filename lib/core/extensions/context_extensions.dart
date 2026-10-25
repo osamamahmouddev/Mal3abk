@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../routes/routes.dart';
 import '../styles/app_font_family.dart';
 
 extension ContextExt on BuildContext {
@@ -43,4 +44,9 @@ extension ContextExt on BuildContext {
   }
 
   void pop<T extends Object?>([T? result]) => navigator.pop<T>(result);
+
+  /// Opens the main shell on the root navigator and clears the whole stack,
+  /// so it is never nested inside a tab's navigator.
+  void openMainShell() => Navigator.of(this, rootNavigator: true)
+      .pushNamedAndRemoveUntil(AppRoutes.main, (_) => false);
 }

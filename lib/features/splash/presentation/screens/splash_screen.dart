@@ -17,7 +17,7 @@ class SplashScreen extends StatelessWidget {
       listener: (context, state) {
         switch (state) {
           case SplashAuthenticated():
-            context.pushReplacementNamed(AppRoutes.main);
+            context.openMainShell();
           case SplashUnauthenticated():
             context.pushReplacementNamed(AppRoutes.login);
           default:

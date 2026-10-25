@@ -5,6 +5,7 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../../../core/widgets/fade_slide_in_widget.dart';
 import '../../../../core/widgets/section_header_widget.dart';
 import '../widgets/home_hero_search_card_widget.dart';
 import '../widgets/home_location_header_widget.dart';
@@ -32,66 +33,84 @@ class HomeScreen extends StatelessWidget {
               child: ListView(
                 padding: EdgeInsets.only(top: 14.h, bottom: 16.h),
                 children: [
-                  Padding(
-                    padding: padding,
-                    child: const HomeHeroSearchCardWidget(),
+                  FadeSlideInWidget(
+                    child: Padding(
+                      padding: padding,
+                      child: const HomeHeroSearchCardWidget(),
+                    ),
                   ),
                   hSpace(18),
-                  Padding(
-                    padding: padding,
-                    child: SectionHeaderWidget(
-                      title: 'home.upcoming_booking'.tr(context: context),
-                      actionText: 'home.bookings'.tr(context: context),
-                      onAction: () => MainShellScopeWidget.switchTab(
-                        context,
-                        MainShellScopeWidget.bookingsTab,
+                  FadeSlideInWidget(
+                    index: 1,
+                    child: Padding(
+                      padding: padding,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          SectionHeaderWidget(
+                            title: 'home.upcoming_booking'.tr(context: context),
+                            actionText: 'home.bookings'.tr(context: context),
+                            onAction: () => MainShellScopeWidget.switchTab(
+                              context,
+                              MainShellScopeWidget.bookingsTab,
+                            ),
+                          ),
+                          hSpace(12),
+                          const HomeUpcomingBookingCardWidget(),
+                        ],
                       ),
                     ),
                   ),
-                  hSpace(12),
-                  Padding(
-                    padding: padding,
-                    child: const HomeUpcomingBookingCardWidget(),
-                  ),
                   hSpace(18),
-                  Padding(
-                    padding: padding,
-                    child: SectionHeaderWidget(
-                      title: 'home.teams_activity'.tr(context: context),
-                      actionText: 'home.my_teams'.tr(context: context),
-                      onAction: () => MainShellScopeWidget.switchTab(
-                        context,
-                        MainShellScopeWidget.teamsTab,
+                  FadeSlideInWidget(
+                    index: 2,
+                    child: Padding(
+                      padding: padding,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          SectionHeaderWidget(
+                            title: 'home.teams_activity'.tr(context: context),
+                            actionText: 'home.my_teams'.tr(context: context),
+                            onAction: () => MainShellScopeWidget.switchTab(
+                              context,
+                              MainShellScopeWidget.teamsTab,
+                            ),
+                          ),
+                          hSpace(12),
+                          HomeTeamActivityCardWidget(
+                            onTap: () => Navigator.of(
+                              context,
+                            ).pushNamed(AppRoutes.challengeDetails),
+                          ),
+                          hSpace(10),
+                          const HomePendingResultCardWidget(),
+                        ],
                       ),
                     ),
                   ),
-                  hSpace(12),
-                  Padding(
-                    padding: padding,
-                    child: HomeTeamActivityCardWidget(
-                      onTap: () => Navigator.of(
-                        context,
-                      ).pushNamed(AppRoutes.challengeDetails),
-                    ),
-                  ),
-                  hSpace(10),
-                  Padding(
-                    padding: padding,
-                    child: const HomePendingResultCardWidget(),
-                  ),
                   hSpace(18),
-                  Padding(
-                    padding: padding,
-                    child: SectionHeaderWidget(
-                      title: 'home.nearby_pitches'.tr(context: context),
-                      actionText: 'home.on_map'.tr(context: context),
-                      actionColor: AppColors.brandRed,
-                      onAction: () =>
-                          Navigator.of(context).pushNamed(AppRoutes.exploreMap),
+                  FadeSlideInWidget(
+                    index: 3,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Padding(
+                          padding: padding,
+                          child: SectionHeaderWidget(
+                            title: 'home.nearby_pitches'.tr(context: context),
+                            actionText: 'home.on_map'.tr(context: context),
+                            actionColor: AppColors.brandRed,
+                            onAction: () => Navigator.of(
+                              context,
+                            ).pushNamed(AppRoutes.exploreMap),
+                          ),
+                        ),
+                        hSpace(12),
+                        const HomeNearbyPitchesCarouselWidget(),
+                      ],
                     ),
                   ),
-                  hSpace(12),
-                  const HomeNearbyPitchesCarouselWidget(),
                 ],
               ),
             ),

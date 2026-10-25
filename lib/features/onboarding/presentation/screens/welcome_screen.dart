@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
+import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
@@ -91,8 +92,7 @@ class WelcomeScreen extends StatelessWidget {
                     textStyle: AppTextStyles.font15SemiBold.copyWith(
                       color: AppColors.white,
                     ),
-                    onTap: () => Navigator.of(context)
-                        .pushReplacementNamed(AppRoutes.main),
+                    onTap: context.openMainShell,
                   ),
                   hSpace(10),
                   Text(

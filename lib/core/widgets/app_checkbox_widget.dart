@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../styles/app_colors.dart';
+import '../styles/app_motion.dart';
 
 /// 22px rounded checkbox from the design system (tap handled by the parent).
 class AppCheckboxWidget extends StatelessWidget {
@@ -12,7 +13,8 @@ class AppCheckboxWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+      duration: AppMotion.fast,
+      curve: AppMotion.standard,
       width: 22.r,
       height: 22.r,
       decoration: BoxDecoration(
@@ -23,9 +25,12 @@ class AppCheckboxWidget extends StatelessWidget {
           width: 2,
         ),
       ),
-      child: value
-          ? Icon(Icons.check_rounded, size: 16.r, color: AppColors.white)
-          : null,
+      child: AnimatedScale(
+        scale: value ? 1 : 0,
+        duration: AppMotion.medium,
+        curve: AppMotion.emphasized,
+        child: Icon(Icons.check_rounded, size: 16.r, color: AppColors.white),
+      ),
     );
   }
 }

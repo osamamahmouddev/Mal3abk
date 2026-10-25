@@ -11,6 +11,7 @@ import '../../../../core/widgets/pitch_card_widget.dart';
 import '../widgets/explore_quick_filters_widget.dart';
 import '../widgets/explore_search_summary_widget.dart';
 import '../widgets/explore_view_toggle_widget.dart';
+import '../../../../core/widgets/fade_slide_in_widget.dart';
 
 class ExploreListScreen extends HookWidget {
   const ExploreListScreen({super.key});
@@ -56,37 +57,48 @@ class ExploreListScreen extends HookWidget {
               child: ListView(
                 padding: EdgeInsets.fromLTRB(16.w, 26.h, 16.w, 16.h),
                 children: [
-                  PitchCardWidget(
-                    name: 'explore.sample1_name'.tr(context: context),
-                    specs: 'explore.sample1_specs'.tr(context: context),
-                    pricePerHour: 'explore.sample1_price'.tr(context: context),
-                    rating: 'explore.sample1_rating'.tr(context: context),
-                    isFavorite: favorites.value.contains(0),
-                    onFavoriteTap: () => toggleFavorite(0),
-                    availableSlots: [
-                      'explore.slot_8pm'.tr(context: context),
-                      'explore.slot_11pm'.tr(context: context),
-                      'explore.slot_12am'.tr(context: context),
-                    ],
-                    onTap: () =>
-                        Navigator.of(context).pushNamed(AppRoutes.venueProfile),
-                    onSlotTap: openPitchAndTime,
+                  FadeSlideInWidget(
+                    child: PitchCardWidget(
+                      name: 'explore.sample1_name'.tr(context: context),
+                      specs: 'explore.sample1_specs'.tr(context: context),
+                      pricePerHour: 'explore.sample1_price'.tr(
+                        context: context,
+                      ),
+                      rating: 'explore.sample1_rating'.tr(context: context),
+                      isFavorite: favorites.value.contains(0),
+                      onFavoriteTap: () => toggleFavorite(0),
+                      availableSlots: [
+                        'explore.slot_8pm'.tr(context: context),
+                        'explore.slot_11pm'.tr(context: context),
+                        'explore.slot_12am'.tr(context: context),
+                      ],
+                      onTap: () => Navigator.of(
+                        context,
+                      ).pushNamed(AppRoutes.venueProfile),
+                      onSlotTap: openPitchAndTime,
+                    ),
                   ),
                   hSpace(12),
-                  PitchCardWidget(
-                    name: 'explore.sample2_name'.tr(context: context),
-                    specs: 'explore.sample2_specs'.tr(context: context),
-                    pricePerHour: 'explore.sample2_price'.tr(context: context),
-                    rating: 'explore.sample2_rating'.tr(context: context),
-                    isFavorite: favorites.value.contains(1),
-                    onFavoriteTap: () => toggleFavorite(1),
-                    availableSlots: [
-                      'explore.slot_8pm'.tr(context: context),
-                      'explore.slot_9pm'.tr(context: context),
-                    ],
-                    onTap: () =>
-                        Navigator.of(context).pushNamed(AppRoutes.venueProfile),
-                    onSlotTap: openPitchAndTime,
+                  FadeSlideInWidget(
+                    index: 1,
+                    child: PitchCardWidget(
+                      name: 'explore.sample2_name'.tr(context: context),
+                      specs: 'explore.sample2_specs'.tr(context: context),
+                      pricePerHour: 'explore.sample2_price'.tr(
+                        context: context,
+                      ),
+                      rating: 'explore.sample2_rating'.tr(context: context),
+                      isFavorite: favorites.value.contains(1),
+                      onFavoriteTap: () => toggleFavorite(1),
+                      availableSlots: [
+                        'explore.slot_8pm'.tr(context: context),
+                        'explore.slot_9pm'.tr(context: context),
+                      ],
+                      onTap: () => Navigator.of(
+                        context,
+                      ).pushNamed(AppRoutes.venueProfile),
+                      onSlotTap: openPitchAndTime,
+                    ),
                   ),
                 ],
               ),

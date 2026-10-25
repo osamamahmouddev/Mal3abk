@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
-import '../app/app_spaces.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_shadows.dart';
-import '../styles/app_text_styles.dart';
+import 'custom_bottom_nav_bar_item_widget.dart';
 
 class CustomBottomNavBarItem {
-  const CustomBottomNavBarItem({
-    required this.title,
-    required this.iconAsset,
-  });
+  const CustomBottomNavBarItem({required this.title, required this.iconAsset});
 
   final String title;
   final String iconAsset;
@@ -44,46 +39,16 @@ class CustomBottomNavBarWidget extends StatelessWidget {
           boxShadow: AppShadows.navBar,
         ),
         child: Row(
-          children: List.generate(items.length, (index) {
-            final isSelected = currentIndex == index;
-            final item = items[index];
-            final color = isSelected ? AppColors.white : AppColors.textSecondary;
-
-            return Expanded(
-              child: Material(
-                color: isSelected ? AppColors.brandNavy : AppColors.transparent,
-                borderRadius: BorderRadius.circular(20.r),
-                child: InkWell(
+          children: [
+            for (var index = 0; index < items.length; index++)
+              Expanded(
+                child: CustomBottomNavBarItemWidget(
+                  item: items[index],
+                  isSelected: currentIndex == index,
                   onTap: () => onTap(index),
-                  borderRadius: BorderRadius.circular(20.r),
-                  child: Container(
-                    height: 52.h,
-                    padding: EdgeInsets.only(top: 5.h),
-                    child: Column(
-                      children: [
-                        SvgPicture.asset(
-                          item.iconAsset,
-                          width: 22.r,
-                          height: 22.r,
-                          colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
-                        ),
-                        hSpace(1),
-                        Text(
-                          item.title,
-                          style: (isSelected
-                                  ? AppTextStyles.font11Bold
-                                  : AppTextStyles.font11Regular)
-                              .copyWith(color: color),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
               ),
-            );
-          }),
+          ],
         ),
       ),
     );

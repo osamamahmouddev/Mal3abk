@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../styles/app_colors.dart';
+import '../styles/app_motion.dart';
 import '../styles/app_text_styles.dart';
+import 'press_scale_widget.dart';
 
 /// Navy-when-selected option used by chips, segmented choices and level cards.
 class SelectableTileWidget extends StatelessWidget {
@@ -39,38 +41,51 @@ class SelectableTileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final radius = BorderRadius.circular(borderRadius.r);
     final fg = isSelected ? AppColors.white : AppColors.textPrimary;
-    final baseStyle = titleStyle ??
+    final baseStyle =
+        titleStyle ??
         (boldTitle ? AppTextStyles.font14Bold : AppTextStyles.font14SemiBold);
 
-    return Material(
-      color: isSelected ? AppColors.brandNavy : AppColors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: radius,
-        side: BorderSide(
-          color: isSelected ? AppColors.brandNavy : borderColor,
+    return PressScaleWidget(
+      child: AnimatedContainer(
+        duration: AppMotion.medium,
+        curve: AppMotion.standard,
+        decoration: BoxDecoration(
+          color: isSelected ? AppColors.brandNavy : AppColors.white,
+          borderRadius: radius,
+          border: Border.all(
+            color: isSelected ? AppColors.brandNavy : borderColor,
+          ),
         ),
-      ),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: radius,
-        child: Container(
-          height: height.h,
-          padding: EdgeInsets.symmetric(horizontal: horizontalPadding.w),
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(title, style: baseStyle.copyWith(color: fg)),
-              if (subtitle != null)
-                Opacity(
-                  opacity: subtitleOpacity,
-                  child: Text(
-                    subtitle!,
-                    style: (subtitleStyle ?? AppTextStyles.font11Regular)
-                        .copyWith(color: fg),
+        child: Material(
+          type: MaterialType.transparency,
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: radius,
+            child: Container(
+              height: height.h,
+              padding: EdgeInsets.symmetric(horizontal: horizontalPadding.w),
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  AnimatedDefaultTextStyle(
+                    duration: AppMotion.medium,
+                    style: baseStyle.copyWith(color: fg),
+                    child: Text(title),
                   ),
-                ),
-            ],
+                  if (subtitle != null)
+                    Opacity(
+                      opacity: subtitleOpacity,
+                      child: AnimatedDefaultTextStyle(
+                        duration: AppMotion.medium,
+                        style: (subtitleStyle ?? AppTextStyles.font11Regular)
+                            .copyWith(color: fg),
+                        child: Text(subtitle!),
+                      ),
+                    ),
+                ],
+              ),
+            ),
           ),
         ),
       ),

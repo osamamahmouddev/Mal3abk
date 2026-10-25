@@ -3,14 +3,11 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../app/app_spaces.dart';
 import '../styles/app_colors.dart';
+import '../styles/app_motion.dart';
 import '../styles/app_text_styles.dart';
+import 'press_scale_widget.dart';
 
-enum CustomButtonType {
-  primary,
-  secondary,
-  outline,
-  ghost,
-}
+enum CustomButtonType { primary, secondary, outline, ghost }
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
@@ -84,48 +81,52 @@ class CustomButton extends StatelessWidget {
       fg = fg.withValues(alpha: 0.6);
     }
 
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: (enabled && !isLoading) ? onTap : null,
-        borderRadius: effectiveRadius,
-        child: Container(
-          width: width,
-          padding: padding ?? EdgeInsets.symmetric(horizontal: 16.w),
-          height: height ?? 52.h,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: bg,
-            borderRadius: effectiveRadius,
-            border: border,
-            boxShadow: boxShadow,
-          ),
-          child: isLoading
-              ? RSizedBox(
-                  width: 22.w,
-                  height: 22.h,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2.2,
-                    valueColor: AlwaysStoppedAnimation<Color>(fg),
-                  ),
-                )
-              : Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (icon != null) ...[
-                      icon!,
-                      vSpace(8),
-                    ],
-                    Text(
-                      text,
-                      style: textStyle ??
-                          AppTextStyles.font16SemiBold.copyWith(
-                            color: fg,
-                          ),
+    return PressScaleWidget(
+      enabled: enabled && !isLoading,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: (enabled && !isLoading) ? onTap : null,
+          borderRadius: effectiveRadius,
+          child: Container(
+            width: width,
+            padding: padding ?? EdgeInsets.symmetric(horizontal: 16.w),
+            height: height ?? 52.h,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: bg,
+              borderRadius: effectiveRadius,
+              border: border,
+              boxShadow: boxShadow,
+            ),
+            child: AnimatedSwitcher(
+              duration: AppMotion.fast,
+              child: isLoading
+                  ? RSizedBox(
+                      key: const ValueKey('loading'),
+                      width: 22.w,
+                      height: 22.h,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.2,
+                        valueColor: AlwaysStoppedAnimation<Color>(fg),
+                      ),
+                    )
+                  : Row(
+                      key: const ValueKey('content'),
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (icon != null) ...[icon!, vSpace(8)],
+                        Text(
+                          text,
+                          style:
+                              textStyle ??
+                              AppTextStyles.font16SemiBold.copyWith(color: fg),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+            ),
+          ),
         ),
       ),
     );
