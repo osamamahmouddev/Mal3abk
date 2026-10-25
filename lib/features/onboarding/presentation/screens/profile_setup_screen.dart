@@ -1,12 +1,17 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/app/app_spaces.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
+import '../widgets/profile_avatar_picker_widget.dart';
+import '../widgets/profile_setup_level_selector_widget.dart';
+import '../widgets/profile_setup_position_selector_widget.dart';
 
 class ProfileSetupScreen extends HookWidget {
   const ProfileSetupScreen({super.key});
@@ -15,8 +20,8 @@ class ProfileSetupScreen extends HookWidget {
   Widget build(BuildContext context) {
     final nameController = useTextEditingController();
     final areaController = useTextEditingController();
-    final selectedPosition = useState('وسط');
-    final selectedLevel = useState('متوسط');
+    final selectedPosition = useState('pos_mid');
+    final selectedLevel = useState('mid');
 
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
@@ -34,17 +39,16 @@ class ProfileSetupScreen extends HookWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Step indicator
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'خطوة ١ من ٢',
+                    'onboarding.profile_setup.step'.tr(context: context),
                     style: AppTextStyles.font13Regular,
                   ),
                 ],
               ),
-              SizedBox(height: 8.h),
+              hSpace(8),
               Row(
                 children: [
                   Expanded(
@@ -56,7 +60,7 @@ class ProfileSetupScreen extends HookWidget {
                       ),
                     ),
                   ),
-                  SizedBox(width: 8.w),
+                  vSpace(8),
                   Expanded(
                     child: Container(
                       height: 4.h,
@@ -68,168 +72,58 @@ class ProfileSetupScreen extends HookWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 20.h),
+              hSpace(20),
               Text(
-                'عرّفنا بنفسك',
+                'onboarding.profile_setup.title'.tr(context: context),
                 style: AppTextStyles.font22Bold,
               ),
-              SizedBox(height: 6.h),
+              hSpace(6),
               Text(
-                'الاسم والمنطقة بس مطلوبين. الباقي يساعد الكباتن يلاقوك.',
+                'onboarding.profile_setup.desc'.tr(context: context),
                 style: AppTextStyles.font13Regular,
               ),
-              SizedBox(height: 24.h),
-
-              // Profile Avatar
-              Center(
-                child: Stack(
-                  children: [
-                    CircleAvatar(
-                      radius: 38.r,
-                      backgroundColor: AppColors.brandNavy,
-                      child: Text(
-                        'أس',
-                        style: AppTextStyles.font22Bold.copyWith(
-                          color: AppColors.white,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        padding: EdgeInsets.all(4.w),
-                        decoration: const BoxDecoration(
-                          color: AppColors.brandRed,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.camera_alt_rounded,
-                          size: 16.sp,
-                          color: AppColors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 24.h),
-
+              hSpace(24),
+              const ProfileAvatarPickerWidget(initials: 'أس'),
+              hSpace(24),
               CustomTextFormField(
                 controller: nameController,
-                labelText: 'اسمك بالكامل *',
-                hintText: 'أحمد سامي',
+                labelText: 'onboarding.profile_setup.name_label'.tr(context: context),
+                hintText: 'onboarding.profile_setup.name_hint'.tr(context: context),
               ),
-              SizedBox(height: 16.h),
-
+              hSpace(16),
               CustomTextFormField(
                 controller: areaController,
-                labelText: 'المنطقة أو الحي *',
-                hintText: 'مدينة نصر، القاهرة',
+                labelText: 'onboarding.profile_setup.area_label'.tr(context: context),
+                hintText: 'onboarding.profile_setup.area_hint'.tr(context: context),
               ),
-              SizedBox(height: 20.h),
-
+              hSpace(20),
               Text(
-                'مركزك في الملعب (اختار واحد)',
+                'onboarding.profile_setup.pos_label'.tr(context: context),
                 style: AppTextStyles.font14SemiBold,
               ),
-              SizedBox(height: 10.h),
-              Row(
-                children: ['حارس', 'دفاع', 'وسط', 'هجوم'].map((pos) {
-                  final isSelected = selectedPosition.value == pos;
-                  return Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 4.w),
-                      child: InkWell(
-                        onTap: () => selectedPosition.value = pos,
-                        borderRadius: BorderRadius.circular(10.r),
-                        child: Container(
-                          height: 44.h,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: isSelected ? AppColors.brandNavy : AppColors.white,
-                            borderRadius: BorderRadius.circular(10.r),
-                            border: Border.all(
-                              color: isSelected ? AppColors.brandNavy : AppColors.borderInput,
-                              width: 1.2,
-                            ),
-                          ),
-                          child: Text(
-                            pos,
-                            style: isSelected
-                                ? AppTextStyles.font14Bold.copyWith(color: AppColors.white)
-                                : AppTextStyles.font14Medium.copyWith(color: AppColors.textPrimary),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                }).toList(),
+              hSpace(10),
+              ProfileSetupPositionSelectorWidget(
+                selectedPosition: selectedPosition.value,
+                onSelect: (val) => selectedPosition.value = val,
               ),
-              SizedBox(height: 20.h),
-
+              hSpace(20),
               Text(
-                'مستواك (اختياري)',
+                'onboarding.profile_setup.level_label'.tr(context: context),
                 style: AppTextStyles.font14SemiBold,
               ),
-              SizedBox(height: 10.h),
-              Row(
-                children: [
-                  {'title': 'مبتدئ', 'sub': 'بلعب للمتعة'},
-                  {'title': 'متوسط', 'sub': 'بلعب كل أسبوع'},
-                  {'title': 'متقدم', 'sub': 'لعبت في نادي'},
-                ].map((item) {
-                  final isSelected = selectedLevel.value == item['title'];
-                  return Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 4.w),
-                      child: InkWell(
-                        onTap: () => selectedLevel.value = item['title']!,
-                        borderRadius: BorderRadius.circular(10.r),
-                        child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 8.h),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: isSelected ? AppColors.brandNavy : AppColors.white,
-                            borderRadius: BorderRadius.circular(10.r),
-                            border: Border.all(
-                              color: isSelected ? AppColors.brandNavy : AppColors.borderInput,
-                              width: 1.2,
-                            ),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                item['title']!,
-                                style: isSelected
-                                    ? AppTextStyles.font14Bold.copyWith(color: AppColors.white)
-                                    : AppTextStyles.font14Medium.copyWith(color: AppColors.textPrimary),
-                              ),
-                              SizedBox(height: 2.h),
-                              Text(
-                                item['sub']!,
-                                style: AppTextStyles.font11Regular.copyWith(
-                                  color: isSelected ? AppColors.white.withValues(alpha: 0.8) : AppColors.textSecondary,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                }).toList(),
+              hSpace(10),
+              ProfileSetupLevelSelectorWidget(
+                selectedLevel: selectedLevel.value,
+                onSelect: (val) => selectedLevel.value = val,
               ),
-              SizedBox(height: 36.h),
-
+              hSpace(36),
               CustomButton(
-                text: 'التالي',
+                text: 'onboarding.profile_setup.next'.tr(context: context),
                 type: CustomButtonType.primary,
                 height: 52.h,
                 onTap: () => Navigator.of(context).pushNamed(AppRoutes.locationPermission),
               ),
-              SizedBox(height: 16.h),
+              hSpace(16),
             ],
           ),
         ),

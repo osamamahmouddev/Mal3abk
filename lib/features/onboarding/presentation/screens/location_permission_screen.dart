@@ -1,7 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
-import '../../../../core/core.dart';
+import '../../../../core/app/app_spaces.dart';
+import '../../../../core/routes/routes.dart';
+import '../../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_text_styles.dart';
+import '../../../../core/widgets/custom_button.dart';
 
 class LocationPermissionScreen extends StatelessWidget {
   const LocationPermissionScreen({super.key});
@@ -27,14 +32,16 @@ class LocationPermissionScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Step 2 indicator
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('خطوة ٢ من ٢', style: AppTextStyles.font13Regular),
+                  Text(
+                    'onboarding.location.step'.tr(context: context),
+                    style: AppTextStyles.font13Regular,
+                  ),
                 ],
               ),
-              SizedBox(height: 8.h),
+              hSpace(8),
               Row(
                 children: [
                   Expanded(
@@ -46,7 +53,7 @@ class LocationPermissionScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(width: 8.w),
+                  vSpace(8),
                   Expanded(
                     child: Container(
                       height: 4.h,
@@ -76,35 +83,33 @@ class LocationPermissionScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 32.h),
+              hSpace(32),
               Text(
-                'نوريك الملاعب الأقرب ليك',
+                'onboarding.location.title'.tr(context: context),
                 style: AppTextStyles.font22Bold,
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 12.h),
+              hSpace(12),
               Text(
-                'بنستخدم موقعك عشان نحسب المسافة لكل ملعب ونرتّب النتايج. موقعك بالظبط مش بيظهر لأي لاعب أو ملعب.',
+                'onboarding.location.desc'.tr(context: context),
                 style: AppTextStyles.font14Regular,
                 textAlign: TextAlign.center,
               ),
               const Spacer(),
               CustomButton(
-                text: 'اسمح باستخدام الموقع',
+                text: 'onboarding.location.allow'.tr(context: context),
                 type: CustomButtonType.primary,
                 height: 52.h,
-                onTap: () =>
-                    context.pushNamed(AppRoutes.notificationsPermission),
+                onTap: () => Navigator.of(context).pushNamed(AppRoutes.notificationsPermission),
               ),
-              SizedBox(height: 12.h),
+              hSpace(12),
               CustomButton(
-                text: 'اختار المنطقة بنفسي',
+                text: 'onboarding.location.manual'.tr(context: context),
                 type: CustomButtonType.outline,
                 height: 48.h,
-                onTap: () =>
-                    context.pushNamed(AppRoutes.notificationsPermission),
+                onTap: () => Navigator.of(context).pushNamed(AppRoutes.notificationsPermission),
               ),
-              SizedBox(height: 16.h),
+              hSpace(16),
             ],
           ),
         ),
