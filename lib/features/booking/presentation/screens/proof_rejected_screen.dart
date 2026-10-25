@@ -1,12 +1,15 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/app/app_spaces.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
+import '../widgets/booking_summary_row_widget.dart';
 
 class ProofRejectedScreen extends StatelessWidget {
   const ProofRejectedScreen({super.key});
@@ -15,7 +18,9 @@ class ProofRejectedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
-      appBar: const CustomAppBarWidget(title: 'تفاصيل الحجز'),
+      appBar: CustomAppBarWidget(
+        title: 'booking.proof_rejected_title'.tr(context: context),
+      ),
       bottomNavigationBar: SafeArea(
         child: Container(
           padding: EdgeInsets.all(16.w),
@@ -28,17 +33,17 @@ class ProofRejectedScreen extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: CustomButton(
-                  text: 'كلّم الملعب',
+                  text: 'common.call_venue'.tr(context: context),
                   type: CustomButtonType.outline,
                   height: 52.h,
                   onTap: () {},
                 ),
               ),
-              SizedBox(width: 12.w),
+              vSpace(12),
               Expanded(
                 flex: 2,
                 child: CustomButton(
-                  text: 'أعد رفع الإيصال',
+                  text: 'booking.reupload_proof_btn'.tr(context: context),
                   type: CustomButtonType.primary,
                   height: 52.h,
                   onTap: () => Navigator.of(context).pushNamed(AppRoutes.uploadProof),
@@ -54,7 +59,6 @@ class ProofRejectedScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Rejection Alert Card
               Container(
                 padding: EdgeInsets.all(16.w),
                 decoration: BoxDecoration(
@@ -72,11 +76,11 @@ class ProofRejectedScreen extends StatelessWidget {
                           backgroundColor: AppColors.redText,
                           child: Icon(Icons.close_rounded, color: AppColors.white, size: 18.sp),
                         ),
-                        SizedBox(width: 10.w),
+                        vSpace(10),
                         Text('الملعب رفض إيصال التحويل', style: AppTextStyles.font16Bold.copyWith(color: AppColors.redDark)),
                       ],
                     ),
-                    SizedBox(height: 12.h),
+                    hSpace(12),
                     Container(
                       width: double.infinity,
                       padding: EdgeInsets.all(12.w),
@@ -88,7 +92,7 @@ class ProofRejectedScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('سبب الرفض من ملعب المدينة · ٧:١٢ م', style: AppTextStyles.font11Regular),
-                          SizedBox(height: 4.h),
+                          hSpace(4),
                           Text(
                             'المبلغ في الإيصال ٣٠ ج.م بدل ٦٠ ج.م المطلوبة. حوّل الفرق وارفع الإيصالين في صورة واحدة.',
                             style: AppTextStyles.font13SemiBold,
@@ -96,11 +100,11 @@ class ProofRejectedScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 10.h),
+                    hSpace(10),
                     Row(
                       children: [
                         Icon(Icons.timer_outlined, size: 16.sp, color: AppColors.redDark),
-                        SizedBox(width: 6.w),
+                        vSpace(6),
                         Expanded(
                           child: Text(
                             'الميعاد لسه محجوز لك ٤٥ دقيقة. بعدها الطلب يتلغي تلقائياً.',
@@ -112,48 +116,40 @@ class ProofRejectedScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 16.h),
-
-              // Booking Specs
+              hSpace(16),
               CustomCardWidget(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('ملعب المدينة — ملعب ١', style: AppTextStyles.font16Bold),
-                    SizedBox(height: 4.h),
+                    hSpace(4),
                     Text('KH-2807-0151', style: AppTextStyles.font12Regular),
-                    SizedBox(height: 4.h),
+                    hSpace(4),
                     Text('الإثنين ٢٨ يوليو · ١٠:٠٠ م – ١١:٠٠ م · ٥ لاعب', style: AppTextStyles.font13Regular),
                     const Divider(height: 24, color: AppColors.border),
-                    _buildSummaryRow('الإجمالي', '١٨٠ ج.م'),
-                    SizedBox(height: 6.h),
-                    _buildSummaryRow('العربون المطلوب', '٦٠ ج.م', isBold: true),
-                    SizedBox(height: 6.h),
-                    _buildSummaryRow('المعتمد حتى الآن', '٠ ج.م'),
+                    BookingSummaryRowWidget(
+                      label: 'booking.total_price'.tr(context: context),
+                      value: '١٨٠ ج.م',
+                    ),
+                    hSpace(6),
+                    BookingSummaryRowWidget(
+                      label: 'booking.deposit_required'.tr(context: context),
+                      value: '٦٠ ج.م',
+                      isBold: true,
+                    ),
+                    hSpace(6),
+                    BookingSummaryRowWidget(
+                      label: 'booking.deposit_verified'.tr(context: context),
+                      value: '٠ ج.م',
+                    ),
                   ],
                 ),
               ),
-              SizedBox(height: 20.h),
+              hSpace(20),
             ],
           ),
         ),
       ),
     );
   }
-
-  Widget _buildSummaryRow(String label, String value, {bool isBold = false}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(label, style: isBold ? AppTextStyles.font14Bold : AppTextStyles.font13Regular),
-        Text(
-          value,
-          style: isBold
-              ? AppTextStyles.font15Bold.copyWith(color: AppColors.brandNavy)
-              : AppTextStyles.font14Regular,
-        ),
-      ],
-    );
-  }
 }
-
