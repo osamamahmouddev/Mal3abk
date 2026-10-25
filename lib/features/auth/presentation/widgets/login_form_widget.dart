@@ -43,14 +43,14 @@ class LoginFormWidget extends HookWidget {
           CustomTextFormField(
             controller: emailController,
             focusNode: emailFocusNode,
-            hintText: 'auth.email_hint'.tr(),
+            hintText: 'auth.email_hint'.tr(context: context),
             keyboardType: TextInputType.emailAddress,
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
-                return 'validation.email_required'.tr();
+                return 'validation.email_required'.tr(context: context);
               }
               if (!AppRegex.isEmailValid(value)) {
-                return 'validation.email_invalid'.tr();
+                return 'validation.email_invalid'.tr(context: context);
               }
               return null;
             },
@@ -63,14 +63,14 @@ class LoginFormWidget extends HookWidget {
           CustomTextFormField(
             controller: passwordController,
             focusNode: passwordFocusNode,
-            hintText: 'auth.password_hint'.tr(),
+            hintText: 'auth.password_hint'.tr(context: context),
             obscureText: isPasswordObscured.value,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'validation.password_required'.tr();
+                return 'validation.password_required'.tr(context: context);
               }
               if (value.length < 6) {
-                return 'validation.password_too_short'.tr();
+                return 'validation.password_too_short'.tr(context: context);
               }
               return null;
             },
@@ -95,7 +95,7 @@ class LoginFormWidget extends HookWidget {
             builder: (context, state) {
               final isLoading = state is LoginLoading;
               return CustomButton(
-                text: 'auth.login'.tr(),
+                text: 'auth.login'.tr(context: context),
                 isLoading: isLoading,
                 onTap: submit,
               );
