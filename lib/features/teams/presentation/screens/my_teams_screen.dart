@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/app/app_spaces.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
@@ -9,22 +11,24 @@ import '../../../../core/widgets/app_badge_widget.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
+import '../widgets/team_stat_widget.dart';
 
 class MyTeamsScreen extends HookWidget {
   const MyTeamsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final selectedTab = useState(0); // 0: فرقي, 1: اكتشف فرق
+    final selectedTab = useState(0);
 
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
       appBar: CustomAppBarWidget(
-        title: 'فرقي',
+        title: 'teams.my_teams_title'.tr(context: context),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pushNamed(AppRoutes.rankings),
-            child: Text('الترتيب', style: AppTextStyles.font13SemiBold.copyWith(color: AppColors.brandNavy)),
+          CustomButton(
+            text: 'teams.rankings_title'.tr(context: context),
+            type: CustomButtonType.ghost,
+            onTap: () => Navigator.of(context).pushNamed(AppRoutes.rankings),
           ),
           IconButton(
             icon: const Icon(Icons.qr_code_rounded, color: AppColors.brandNavy),
@@ -41,7 +45,6 @@ class MyTeamsScreen extends HookWidget {
       body: SafeArea(
         child: Column(
           children: [
-            // Tabs
             Container(
               color: AppColors.white,
               child: Row(
@@ -61,7 +64,7 @@ class MyTeamsScreen extends HookWidget {
                           ),
                         ),
                         child: Text(
-                          'فرقي',
+                          'teams.my_teams_title'.tr(context: context),
                           style: selectedTab.value == 0
                               ? AppTextStyles.font14Bold.copyWith(color: AppColors.brandNavy)
                               : AppTextStyles.font14Medium.copyWith(color: AppColors.textSecondary),
@@ -99,7 +102,6 @@ class MyTeamsScreen extends HookWidget {
               child: ListView(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
                 children: [
-                  // Team Invitation Card
                   CustomCardWidget(
                     backgroundColor: AppColors.goldLight,
                     borderColor: AppColors.goldBorder,
@@ -113,7 +115,7 @@ class MyTeamsScreen extends HookWidget {
                               backgroundColor: AppColors.brandNavy,
                               child: Text('أب', style: AppTextStyles.font12Bold.copyWith(color: AppColors.white)),
                             ),
-                            SizedBox(width: 10.w),
+                            vSpace(10),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,19 +128,19 @@ class MyTeamsScreen extends HookWidget {
                             ),
                           ],
                         ),
-                        SizedBox(height: 12.h),
+                        hSpace(12),
                         Row(
                           children: [
                             Expanded(
                               flex: 1,
                               child: CustomButton(
-                                text: 'رفض',
+                                text: 'common.cancel'.tr(context: context),
                                 type: CustomButtonType.outline,
                                 height: 40.h,
                                 onTap: () {},
                               ),
                             ),
-                            SizedBox(width: 8.w),
+                            vSpace(8),
                             Expanded(
                               flex: 2,
                               child: CustomButton(
@@ -153,9 +155,7 @@ class MyTeamsScreen extends HookWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 14.h),
-
-                  // Main Team Card (Figma 10:312)
+                  hSpace(14),
                   CustomCardWidget(
                     onTap: () => Navigator.of(context).pushNamed(AppRoutes.teamProfile),
                     child: Column(
@@ -168,7 +168,7 @@ class MyTeamsScreen extends HookWidget {
                               backgroundColor: AppColors.brandNavy,
                               child: Text('نج', style: AppTextStyles.font16Bold.copyWith(color: AppColors.white)),
                             ),
-                            SizedBox(width: 12.w),
+                            vSpace(12),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,19 +176,18 @@ class MyTeamsScreen extends HookWidget {
                                   Row(
                                     children: [
                                       Text('فريق النجوم', style: AppTextStyles.font16Bold),
-                                      SizedBox(width: 8.w),
+                                      vSpace(8),
                                       const AppBadgeWidget(text: 'كابتن', type: AppBadgeType.warning),
                                     ],
                                   ),
-                                  SizedBox(height: 2.h),
+                                  hSpace(2),
                                   Text('مدينة نصر · ٨ أعضاء', style: AppTextStyles.font12Regular),
                                 ],
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 14.h),
-                        // Stats row
+                        hSpace(14),
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
                           decoration: BoxDecoration(
@@ -198,14 +197,14 @@ class MyTeamsScreen extends HookWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              _buildStat('١٤', 'فوز'),
-                              _buildStat('٣', 'تعادل'),
-                              _buildStat('٥', 'خسارة'),
-                              _buildStat('#٤', 'الترتيب', isRank: true),
+                              TeamStatWidget(value: '١٤', label: 'teams.wins'.tr(context: context)),
+                              TeamStatWidget(value: '٣', label: 'teams.draws'.tr(context: context)),
+                              TeamStatWidget(value: '٥', label: 'teams.losses'.tr(context: context)),
+                              TeamStatWidget(value: '#٤', label: 'teams.rank'.tr(context: context), isRank: true),
                             ],
                           ),
                         ),
-                        SizedBox(height: 12.h),
+                        hSpace(12),
                         Container(
                           padding: EdgeInsets.all(10.w),
                           decoration: BoxDecoration(
@@ -215,7 +214,7 @@ class MyTeamsScreen extends HookWidget {
                           child: Row(
                             children: [
                               Icon(Icons.sports_soccer_rounded, size: 16.sp, color: AppColors.brandNavy),
-                              SizedBox(width: 6.w),
+                              vSpace(6),
                               Expanded(
                                 child: Text(
                                   'تحدي مع الصقور مستني حجز الملعب — السبت ٢ أغسطس',
@@ -225,21 +224,21 @@ class MyTeamsScreen extends HookWidget {
                             ],
                           ),
                         ),
-                        SizedBox(height: 14.h),
+                        hSpace(14),
                         Row(
                           children: [
                             Expanded(
                               child: CustomButton(
-                                text: 'تحدي جديد',
+                                text: 'matches.challenge_team_title'.tr(context: context),
                                 type: CustomButtonType.secondary,
                                 height: 44.h,
                                 onTap: () => Navigator.of(context).pushNamed(AppRoutes.challengeTeam),
                               ),
                             ),
-                            SizedBox(width: 10.w),
+                            vSpace(10),
                             Expanded(
                               child: CustomButton(
-                                text: 'إدارة الفريق',
+                                text: 'teams.manage_members_title'.tr(context: context),
                                 type: CustomButtonType.outline,
                                 height: 44.h,
                                 onTap: () => Navigator.of(context).pushNamed(AppRoutes.manageMembers),
@@ -256,21 +255,6 @@ class MyTeamsScreen extends HookWidget {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildStat(String val, String label, {bool isRank = false}) {
-    return Column(
-      children: [
-        Text(
-          val,
-          style: AppTextStyles.font16Bold.copyWith(
-            color: isRank ? AppColors.brandRed : AppColors.textPrimary,
-          ),
-        ),
-        SizedBox(height: 2.h),
-        Text(label, style: AppTextStyles.font11Regular),
-      ],
     );
   }
 }

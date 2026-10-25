@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/app/app_spaces.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
@@ -14,7 +16,9 @@ class InvitePlayersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
-      appBar: const CustomAppBarWidget(title: 'دعوة لاعبين للفريق'),
+      appBar: CustomAppBarWidget(
+        title: 'teams.invite_players_title'.tr(context: context),
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
@@ -25,7 +29,7 @@ class InvitePlayersScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Text('كود دعوة الفريق', style: AppTextStyles.font14Regular),
-                    SizedBox(height: 8.h),
+                    hSpace(8),
                     Text(
                       'NGM-7842',
                       style: AppTextStyles.font24Bold.copyWith(
@@ -33,13 +37,13 @@ class InvitePlayersScreen extends StatelessWidget {
                         letterSpacing: 2,
                       ),
                     ),
-                    SizedBox(height: 12.h),
+                    hSpace(12),
                     Text(
                       'شارك الكود ده مع أي لاعب عشان ينضم لفريقك فوراً من التطبيق.',
                       style: AppTextStyles.font12Regular,
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 16.h),
+                    hSpace(16),
                     CustomButton(
                       text: 'نسخ الكود ومشاركته',
                       icon: const Icon(Icons.share_rounded, color: AppColors.white),
@@ -57,4 +61,3 @@ class InvitePlayersScreen extends StatelessWidget {
     );
   }
 }
-
