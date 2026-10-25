@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/app/app_spaces.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_colors.dart';
@@ -44,7 +46,10 @@ class LoginScreen extends HookWidget {
         backgroundColor: AppColors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.brandNavy),
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: AppColors.brandNavy,
+          ),
           onPressed: () => Navigator.of(context).maybePop(),
         ),
       ),
@@ -61,25 +66,25 @@ class LoginScreen extends HookWidget {
                   fit: BoxFit.contain,
                 ),
               ),
-              SizedBox(height: 24.h),
+              hSpace(24),
               Text(
-                'سجّل الدخول',
+                'auth.login.title'.tr(context: context),
                 style: AppTextStyles.font22Bold,
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 8.h),
+              hSpace(8),
               Text(
                 isOtpSent.value
-                    ? 'أدخل كود التأكيد المرسل إلى رقمك'
-                    : 'هنبعتلك كود تأكيد على رقم موبايلك',
+                    ? 'auth.login.otp_sent_hint'.tr(context: context)
+                    : 'auth.login.phone_hint_subtitle'.tr(context: context),
                 style: AppTextStyles.font14Regular,
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 32.h),
+              hSpace(32),
               if (!isOtpSent.value) ...[
                 CustomTextFormField(
                   controller: phoneController,
-                  labelText: 'رقم الموبايل',
+                  labelText: 'auth.login.phone_label'.tr(context: context),
                   hintText: '01012345678',
                   keyboardType: TextInputType.phone,
                   prefixIcon: Container(
@@ -95,17 +100,17 @@ class LoginScreen extends HookWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 24.h),
+                hSpace(24),
                 CustomButton(
-                  text: 'إرسال الكود',
+                  text: 'auth.login.send_code'.tr(context: context),
                   type: CustomButtonType.primary,
                   height: 54.h,
                   isLoading: isLoading.value,
                   onTap: handleSendCode,
                 ),
-                SizedBox(height: 16.h),
+                hSpace(16),
                 Text(
-                  'أول مرة؟ هنعملك حساب جديد تلقائياً.',
+                  'auth.login.new_account_notice'.tr(context: context),
                   style: AppTextStyles.font13Regular.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -114,28 +119,25 @@ class LoginScreen extends HookWidget {
               ] else ...[
                 CustomTextFormField(
                   controller: otpController,
-                  labelText: 'كود التأكيد (OTP)',
+                  labelText: 'auth.login.otp_label'.tr(context: context),
                   hintText: '••••',
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 24.h),
+                hSpace(24),
                 CustomButton(
-                  text: 'تأكيد ودخول',
+                  text: 'auth.login.verify_and_enter'.tr(context: context),
                   type: CustomButtonType.primary,
                   height: 54.h,
                   isLoading: isLoading.value,
                   onTap: handleVerifyOtp,
                 ),
-                SizedBox(height: 16.h),
-                TextButton(
-                  onPressed: () => isOtpSent.value = false,
-                  child: Text(
-                    'تعديل رقم الموبايل',
-                    style: AppTextStyles.font14SemiBold.copyWith(
-                      color: AppColors.brandNavy,
-                    ),
-                  ),
+                hSpace(16),
+                CustomButton(
+                  text: 'auth.login.edit_phone'.tr(context: context),
+                  type: CustomButtonType.ghost,
+                  height: 44.h,
+                  onTap: () => isOtpSent.value = false,
                 ),
               ],
             ],

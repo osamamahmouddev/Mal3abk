@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
@@ -11,21 +12,25 @@ import '../../../../core/widgets/custom_tab_bar_widget.dart';
 class MyBookingsScreen extends HookWidget {
   const MyBookingsScreen({super.key});
 
-  static const List<String> _tabs = ['القادمة', 'معلّقة', 'المنتهية', 'الملغية'];
-
   @override
   Widget build(BuildContext context) {
     final selectedTab = useState(1); // Default to "معلّقة" as seen in Figma 10:128
+    final tabs = [
+      'booking.upcoming_tab'.tr(context: context),
+      'booking.pending_tab'.tr(context: context),
+      'booking.past_tab'.tr(context: context),
+      'booking.cancelled_tab'.tr(context: context),
+    ];
 
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
       appBar: CustomAppBarWidget(
-        title: 'حجوزاتي',
+        title: 'booking.my_bookings_title'.tr(context: context),
         showBackButton: true,
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(48.h),
           child: CustomTabBarWidget(
-            tabs: _tabs,
+            tabs: tabs,
             selectedIndex: selectedTab.value,
             badgeCounts: const {0: 1, 1: 2},
             onTabSelected: (index) => selectedTab.value = index,
@@ -42,11 +47,11 @@ class MyBookingsScreen extends HookWidget {
               dateTime: 'السبت ٢٦ يوليو · ٨:٠٠ م – ٩:٠٠ م',
               bookingCode: 'KH-2607-0142',
               status: BookingStatus.pendingReview,
-              statusText: 'قيد المراجعة',
-              depositRowText: 'إيصال العربون',
+              statusText: 'booking.pending_review'.tr(context: context),
+              depositRowText: 'booking.deposit_receipt'.tr(context: context),
               depositAmount: '٥٠ ج.م · مرفوع ٧:٠٩ م',
-              noteText: 'الملعب بيراجع التحويل — الرد متوقع قبل ٩:٠٩ م',
-              secondaryActionText: 'التفاصيل',
+              noteText: 'booking.pending_note'.tr(context: context),
+              secondaryActionText: 'booking.details_btn'.tr(context: context),
               onSecondaryAction: () => Navigator.of(context).pushNamed(AppRoutes.bookingDetails),
               onTap: () => Navigator.of(context).pushNamed(AppRoutes.bookingDetails),
             ),
@@ -56,12 +61,12 @@ class MyBookingsScreen extends HookWidget {
               dateTime: 'الإثنين ٢٨ يوليو · ١٠:٠٠ م – ١١:٠٠ م',
               bookingCode: 'KH-2807-0151',
               status: BookingStatus.rejected,
-              statusText: '✕ الإيصال مرفوض',
-              depositRowText: 'العربون المطلوب',
+              statusText: 'booking.receipt_rejected'.tr(context: context),
+              depositRowText: 'booking.deposit_required_label'.tr(context: context),
               depositAmount: '٦٠ ج.م',
-              noteText: 'السبب: المبلغ في الإيصال ٣٠ ج.م بدل ٦٠ ج.م. أعد الرفع خلال ٤٥ دقيقة.',
-              primaryActionText: 'أعد رفع الإيصال',
-              secondaryActionText: 'التفاصيل',
+              noteText: 'booking.rejected_note'.tr(context: context),
+              primaryActionText: 'booking.reupload_btn'.tr(context: context),
+              secondaryActionText: 'booking.details_btn'.tr(context: context),
               onPrimaryAction: () => Navigator.of(context).pushNamed(AppRoutes.proofRejected),
               onSecondaryAction: () => Navigator.of(context).pushNamed(AppRoutes.bookingDetails),
               onTap: () => Navigator.of(context).pushNamed(AppRoutes.proofRejected),

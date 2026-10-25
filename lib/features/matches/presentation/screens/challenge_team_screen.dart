@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/app/app_spaces.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
@@ -19,7 +21,9 @@ class ChallengeTeamScreen extends HookWidget {
 
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
-      appBar: const CustomAppBarWidget(title: 'تحدي فريق'),
+      appBar: CustomAppBarWidget(
+        title: 'matches.challenge_team_title'.tr(context: context),
+      ),
       bottomNavigationBar: SafeArea(
         child: Container(
           padding: EdgeInsets.all(16.w),
@@ -31,7 +35,7 @@ class ChallengeTeamScreen extends HookWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text('السبت ٢ أغسطس · ٨:٠٠ م · ملعب النجوم', style: AppTextStyles.font12Regular),
-              SizedBox(height: 8.h),
+              hSpace(8),
               CustomButton(
                 text: 'أرسل التحدي',
                 type: CustomButtonType.primary,
@@ -50,7 +54,6 @@ class ChallengeTeamScreen extends HookWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Versus Hero Box
               Container(
                 padding: EdgeInsets.all(16.w),
                 decoration: BoxDecoration(
@@ -67,12 +70,15 @@ class ChallengeTeamScreen extends HookWidget {
                           backgroundColor: AppColors.white,
                           child: Text('نج', style: AppTextStyles.font16Bold.copyWith(color: AppColors.brandNavy)),
                         ),
-                        SizedBox(height: 6.h),
+                        hSpace(6),
                         Text('فريق النجوم', style: AppTextStyles.font14Bold.copyWith(color: AppColors.white)),
                         Text('فريقك', style: AppTextStyles.font11Regular.copyWith(color: AppColors.white.withValues(alpha: 0.8))),
                       ],
                     ),
-                    Text('ضد', style: AppTextStyles.font18Bold.copyWith(color: AppColors.accentGold)),
+                    Text(
+                      'common.vs'.tr(context: context),
+                      style: AppTextStyles.font18Bold.copyWith(color: AppColors.accentGold),
+                    ),
                     Column(
                       children: [
                         CircleAvatar(
@@ -80,7 +86,7 @@ class ChallengeTeamScreen extends HookWidget {
                           backgroundColor: AppColors.brandRed,
                           child: Text('صق', style: AppTextStyles.font16Bold.copyWith(color: AppColors.white)),
                         ),
-                        SizedBox(height: 6.h),
+                        hSpace(6),
                         Text('فريق الصقور', style: AppTextStyles.font14Bold.copyWith(color: AppColors.white)),
                         Text('#٢ في مدينة نصر', style: AppTextStyles.font11Regular.copyWith(color: AppColors.white.withValues(alpha: 0.8))),
                       ],
@@ -88,16 +94,15 @@ class ChallengeTeamScreen extends HookWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 18.h),
-
+              hSpace(18),
               Text('اليوم المقترح', style: AppTextStyles.font15Bold),
-              SizedBox(height: 10.h),
-              SizedBox(
+              hSpace(10),
+              RSizedBox(
                 height: 64.h,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   itemCount: 5,
-                  separatorBuilder: (_, _) => SizedBox(width: 8.w),
+                  separatorBuilder: (_, _) => vSpace(8),
                   itemBuilder: (context, index) {
                     final isSelected = selectedDayIndex.value == index;
                     return InkWell(
@@ -133,10 +138,9 @@ class ChallengeTeamScreen extends HookWidget {
                   },
                 ),
               ),
-              SizedBox(height: 18.h),
-
+              hSpace(18),
               Text('الساعة', style: AppTextStyles.font15Bold),
-              SizedBox(height: 10.h),
+              hSpace(10),
               Wrap(
                 spacing: 8.w,
                 runSpacing: 8.h,
@@ -162,10 +166,9 @@ class ChallengeTeamScreen extends HookWidget {
                   );
                 }).toList(),
               ),
-              SizedBox(height: 18.h),
-
+              hSpace(18),
               Text('الملعب', style: AppTextStyles.font15Bold),
-              SizedBox(height: 10.h),
+              hSpace(10),
               CustomCardWidget(
                 onTap: () => venueOption.value = 0,
                 borderColor: venueOption.value == 0 ? AppColors.brandNavy : AppColors.borderCard,
@@ -176,7 +179,7 @@ class ChallengeTeamScreen extends HookWidget {
                       color: AppColors.brandNavy,
                       size: 20.sp,
                     ),
-                    SizedBox(width: 10.w),
+                    vSpace(10),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -189,7 +192,7 @@ class ChallengeTeamScreen extends HookWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 10.h),
+              hSpace(10),
               CustomCardWidget(
                 onTap: () => venueOption.value = 1,
                 borderColor: venueOption.value == 1 ? AppColors.brandNavy : AppColors.borderCard,
@@ -200,7 +203,7 @@ class ChallengeTeamScreen extends HookWidget {
                       color: AppColors.brandNavy,
                       size: 20.sp,
                     ),
-                    SizedBox(width: 10.w),
+                    vSpace(10),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

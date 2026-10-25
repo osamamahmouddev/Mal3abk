@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../app/app_spaces.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 import 'app_badge_widget.dart';
@@ -58,7 +60,7 @@ class MatchCardWidget extends StatelessWidget {
                 ),
             ],
           ),
-          SizedBox(height: 12.h),
+          hSpace(12),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -76,7 +78,7 @@ class MatchCardWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(height: 6.h),
+                    hSpace(6),
                     Text(
                       team1Name,
                       style: AppTextStyles.font14SemiBold,
@@ -95,7 +97,9 @@ class MatchCardWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Text(
-                  hasScore ? '$scoreTeam1  –  $scoreTeam2' : 'ضد',
+                  hasScore
+                      ? '$scoreTeam1  –  $scoreTeam2'
+                      : 'common.vs'.tr(context: context),
                   style: hasScore
                       ? AppTextStyles.font18Bold.copyWith(
                           color: AppColors.brandNavy,
@@ -119,7 +123,7 @@ class MatchCardWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(height: 6.h),
+                    hSpace(6),
                     Text(
                       team2Name,
                       style: AppTextStyles.font14SemiBold,
@@ -132,7 +136,7 @@ class MatchCardWidget extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 12.h),
+          hSpace(12),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -141,7 +145,7 @@ class MatchCardWidget extends StatelessWidget {
                 size: 14.sp,
                 color: AppColors.textSecondary,
               ),
-              SizedBox(width: 4.w),
+              vSpace(4),
               Text(
                 pitchName,
                 style: AppTextStyles.font12Regular,

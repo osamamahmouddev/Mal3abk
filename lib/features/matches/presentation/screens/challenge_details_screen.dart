@@ -1,12 +1,15 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/app/app_spaces.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/app_badge_widget.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
+import '../widgets/attendance_chip_widget.dart';
 
 class ChallengeDetailsScreen extends StatelessWidget {
   const ChallengeDetailsScreen({super.key});
@@ -15,7 +18,9 @@ class ChallengeDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
-      appBar: const CustomAppBarWidget(title: 'تفاصيل التحدي'),
+      appBar: CustomAppBarWidget(
+        title: 'matches.challenge_details_title'.tr(context: context),
+      ),
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
@@ -44,12 +49,15 @@ class ChallengeDetailsScreen extends StatelessWidget {
                         const AppBadgeWidget(text: '✓ مقبول', type: AppBadgeType.success),
                       ],
                     ),
-                    SizedBox(height: 12.h),
+                    hSpace(12),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text('النجوم', style: AppTextStyles.font16Bold),
-                        Text('ضد', style: AppTextStyles.font14Bold.copyWith(color: AppColors.textSecondary)),
+                        Text(
+                          'common.vs'.tr(context: context),
+                          style: AppTextStyles.font14Bold.copyWith(color: AppColors.textSecondary),
+                        ),
                         Text('الصقور', style: AppTextStyles.font16Bold),
                       ],
                     ),
@@ -58,8 +66,7 @@ class ChallengeDetailsScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 14.h),
-
+              hSpace(14),
               Container(
                 padding: EdgeInsets.all(12.w),
                 decoration: BoxDecoration(
@@ -71,9 +78,7 @@ class ChallengeDetailsScreen extends StatelessWidget {
                   style: AppTextStyles.font13Regular.copyWith(color: AppColors.goldDark),
                 ),
               ),
-              SizedBox(height: 16.h),
-
-              // Attendance Tracker
+              hSpace(16),
               CustomCardWidget(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,7 +90,7 @@ class ChallengeDetailsScreen extends StatelessWidget {
                         Text('٤ من ٥ مطلوبين', style: AppTextStyles.font12Medium),
                       ],
                     ),
-                    SizedBox(height: 12.h),
+                    hSpace(12),
                     Row(
                       children: [
                         Expanded(
@@ -96,7 +101,7 @@ class ChallengeDetailsScreen extends StatelessWidget {
                             onTap: () {},
                           ),
                         ),
-                        SizedBox(width: 10.w),
+                        vSpace(10),
                         Expanded(
                           child: CustomButton(
                             text: 'مش هقدر',
@@ -107,16 +112,16 @@ class ChallengeDetailsScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 12.h),
-                    Wrap(
-                      spacing: 8.w,
-                      runSpacing: 6.h,
+                    hSpace(12),
+                    const Wrap(
+                      spacing: 8,
+                      runSpacing: 6,
                       children: [
-                        _buildAttendanceChip('✓ أحمد (أنت)', true),
-                        _buildAttendanceChip('✓ كريم', true),
-                        _buildAttendanceChip('✓ محمد', true),
-                        _buildAttendanceChip('✓ يوسف', true),
-                        _buildAttendanceChip('✕ عمر', false),
+                        AttendanceChipWidget(name: '✓ أحمد (أنت)', isComing: true),
+                        AttendanceChipWidget(name: '✓ كريم', isComing: true),
+                        AttendanceChipWidget(name: '✓ محمد', isComing: true),
+                        AttendanceChipWidget(name: '✓ يوسف', isComing: true),
+                        AttendanceChipWidget(name: '✕ عمر', isComing: false),
                       ],
                     ),
                   ],
@@ -128,21 +133,4 @@ class ChallengeDetailsScreen extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildAttendanceChip(String name, bool isComing) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
-      decoration: BoxDecoration(
-        color: isComing ? AppColors.successLight : AppColors.redLight,
-        borderRadius: BorderRadius.circular(8.r),
-      ),
-      child: Text(
-        name,
-        style: AppTextStyles.font11Bold.copyWith(
-          color: isComing ? AppColors.successGreen : AppColors.redText,
-        ),
-      ),
-    );
-  }
 }
-

@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/app/app_spaces.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
@@ -19,12 +21,14 @@ class CreateTeamScreen extends HookWidget {
 
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
-      appBar: const CustomAppBarWidget(title: 'إنشاء فريق جديد'),
+      appBar: CustomAppBarWidget(
+        title: 'teams.create_team_title'.tr(context: context),
+      ),
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
           child: CustomButton(
-            text: 'إنشاء الفريق',
+            text: 'teams.create_team_title'.tr(context: context),
             type: CustomButtonType.primary,
             height: 52.h,
             onTap: () {
@@ -44,13 +48,13 @@ class CreateTeamScreen extends HookWidget {
                 labelText: 'اسم الفريق *',
                 hintText: 'مثال: نسور الشرق',
               ),
-              SizedBox(height: 16.h),
+              hSpace(16),
               CustomTextFormField(
                 controller: areaController,
                 labelText: 'المنطقة الأساسية للعب *',
                 hintText: 'مدينة نصر، القاهرة',
               ),
-              SizedBox(height: 20.h),
+              hSpace(20),
               Container(
                 padding: EdgeInsets.all(14.w),
                 decoration: BoxDecoration(
@@ -65,7 +69,7 @@ class CreateTeamScreen extends HookWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('فريق عام (يظهر في البحث)', style: AppTextStyles.font14Bold),
-                          SizedBox(height: 2.h),
+                          hSpace(2),
                           Text('يقدر أي كابتن في منطقتك يبعت لفريقك تحديات ومباريات.', style: AppTextStyles.font12Regular),
                         ],
                       ),

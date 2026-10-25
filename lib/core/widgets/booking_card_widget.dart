@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../app/app_spaces.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 import 'app_badge_widget.dart';
@@ -104,7 +105,7 @@ class BookingCardWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(width: 12.w),
+              vSpace(12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,12 +116,12 @@ class BookingCardWidget extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(height: 4.h),
+                    hSpace(4),
                     Text(
                       dateTime,
                       style: AppTextStyles.font13Regular,
                     ),
-                    SizedBox(height: 4.h),
+                    hSpace(4),
                     Text(
                       bookingCode,
                       style: AppTextStyles.font12Medium,
@@ -135,7 +136,7 @@ class BookingCardWidget extends StatelessWidget {
             ],
           ),
           if (depositRowText != null && depositAmount != null) ...[
-            SizedBox(height: 12.h),
+            hSpace(12),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
               decoration: BoxDecoration(
@@ -158,7 +159,7 @@ class BookingCardWidget extends StatelessWidget {
             ),
           ],
           if (noteText != null) ...[
-            SizedBox(height: 8.h),
+            hSpace(8),
             Container(
               width: double.infinity,
               padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
@@ -173,7 +174,7 @@ class BookingCardWidget extends StatelessWidget {
             ),
           ],
           if (primaryActionText != null || secondaryActionText != null) ...[
-            SizedBox(height: 14.h),
+            hSpace(14),
             Row(
               children: [
                 if (secondaryActionText != null)
@@ -186,7 +187,7 @@ class BookingCardWidget extends StatelessWidget {
                     ),
                   ),
                 if (primaryActionText != null && secondaryActionText != null)
-                  SizedBox(width: 10.w),
+                  vSpace(10),
                 if (primaryActionText != null)
                   Expanded(
                     child: CustomButton(

@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/app/app_spaces.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
@@ -20,7 +22,9 @@ class LeaveTeamScreen extends HookWidget {
 
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
-      appBar: const CustomAppBarWidget(title: 'مغادرة الفريق'),
+      appBar: CustomAppBarWidget(
+        title: 'teams.leave_team_title'.tr(context: context),
+      ),
       bottomNavigationBar: SafeArea(
         child: Container(
           padding: EdgeInsets.all(16.w),
@@ -38,10 +42,10 @@ class LeaveTeamScreen extends HookWidget {
                   onTap: () => Navigator.of(context).pop(),
                 ),
               ),
-              SizedBox(width: 12.w),
+              vSpace(12),
               Expanded(
                 child: CustomButton(
-                  text: 'مغادرة الفريق',
+                  text: 'teams.confirm_leave'.tr(context: context),
                   type: CustomButtonType.primary,
                   height: 52.h,
                   onTap: () => Navigator.of(context).pop(),
@@ -65,7 +69,7 @@ class LeaveTeamScreen extends HookWidget {
                       backgroundColor: AppColors.brandNavy,
                       child: Text('أب', style: AppTextStyles.font14Bold.copyWith(color: AppColors.white)),
                     ),
-                    SizedBox(width: 12.w),
+                    vSpace(12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,8 +82,7 @@ class LeaveTeamScreen extends HookWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 16.h),
-
+              hSpace(16),
               Container(
                 padding: EdgeInsets.all(14.w),
                 decoration: BoxDecoration(
@@ -91,17 +94,16 @@ class LeaveTeamScreen extends HookWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('قبل ما تمشي', style: AppTextStyles.font14Bold.copyWith(color: AppColors.goldDark)),
-                    SizedBox(height: 8.h),
+                    hSpace(8),
                     Text('• نتايجك وسجلك القديم هيفضل محفوظ باسمك مع الفريق.', style: AppTextStyles.font12Regular),
-                    SizedBox(height: 4.h),
+                    hSpace(4),
                     Text('• عشان ترجع تاني هتحتاج دعوة أو كود جديد من الكابتن.', style: AppTextStyles.font12Regular),
                   ],
                 ),
               ),
-              SizedBox(height: 20.h),
-
+              hSpace(20),
               Text('السبب (اختياري — بيوصل للكابتن بس)', style: AppTextStyles.font14SemiBold),
-              SizedBox(height: 10.h),
+              hSpace(10),
               Wrap(
                 spacing: 8.w,
                 runSpacing: 8.h,

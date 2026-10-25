@@ -1,13 +1,19 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/app/app_spaces.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
+import '../widgets/booking_detail_row_widget.dart';
+import '../widgets/booking_policy_card_widget.dart';
+import '../widgets/booking_price_row_widget.dart';
+import '../widgets/booking_type_selector_widget.dart';
 
 class BookingReviewScreen extends HookWidget {
   const BookingReviewScreen({super.key});
@@ -19,12 +25,15 @@ class BookingReviewScreen extends HookWidget {
 
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
-      appBar: const CustomAppBarWidget(title: 'مراجعة الحجز'),
+      appBar: CustomAppBarWidget(
+        title: 'booking.review_title'.tr(context: context),
+        showBackButton: true,
+      ),
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
           child: CustomButton(
-            text: 'إرسال طلب الحجز',
+            text: 'booking.submit_request'.tr(context: context),
             type: CustomButtonType.primary,
             height: 52.h,
             enabled: agreedToPolicy.value,
@@ -38,86 +47,57 @@ class BookingReviewScreen extends HookWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Booking Type Switcher
-              Row(
-                children: [
-                  Expanded(
-                    child: InkWell(
-                      onTap: () => isTeamBooking.value = false,
-                      borderRadius: BorderRadius.circular(10.r),
-                      child: Container(
-                        height: 46.h,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: !isTeamBooking.value ? AppColors.brandNavy : AppColors.white,
-                          borderRadius: BorderRadius.circular(10.r),
-                          border: Border.all(color: !isTeamBooking.value ? AppColors.brandNavy : AppColors.borderInput),
-                        ),
-                        child: Text(
-                          'حجز فردي',
-                          style: !isTeamBooking.value
-                              ? AppTextStyles.font14Bold.copyWith(color: AppColors.white)
-                              : AppTextStyles.font14Medium,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 10.w),
-                  Expanded(
-                    child: InkWell(
-                      onTap: () => isTeamBooking.value = true,
-                      borderRadius: BorderRadius.circular(10.r),
-                      child: Container(
-                        height: 46.h,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: isTeamBooking.value ? AppColors.brandNavy : AppColors.white,
-                          borderRadius: BorderRadius.circular(10.r),
-                          border: Border.all(color: isTeamBooking.value ? AppColors.brandNavy : AppColors.borderInput),
-                        ),
-                        child: Text(
-                          'حجز باسم فريق',
-                          style: isTeamBooking.value
-                              ? AppTextStyles.font14Bold.copyWith(color: AppColors.white)
-                              : AppTextStyles.font14Medium,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+              BookingTypeSelectorWidget(
+                isTeamBooking: isTeamBooking.value,
+                onChanged: (val) => isTeamBooking.value = val,
               ),
-              SizedBox(height: 16.h),
-
-              // Booking Overview Card
+              hSpace(16),
               CustomCardWidget(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('ملعب النجوم — ملعب ١', style: AppTextStyles.font16Bold),
-                    SizedBox(height: 12.h),
-                    _buildDetailRow('الميعاد', 'السبت ٢٦ يوليو · ٨:٠٠ – ٩:٠٠ م'),
-                    SizedBox(height: 8.h),
-                    _buildDetailRow('الملعب', '٥ لاعب · نجيل صناعي'),
-                    SizedBox(height: 8.h),
-                    _buildDetailRow('المسؤول عن الحجز', 'أحمد سامي · ٠١٠١٢٣٤٥٦٧٨'),
+                    hSpace(12),
+                    BookingDetailRowWidget(
+                      label: 'booking.time_label'.tr(context: context),
+                      value: 'السبت ٢٦ يوليو · ٨:٠٠ – ٩:٠٠ م',
+                    ),
+                    BookingDetailRowWidget(
+                      label: 'booking.pitch_label'.tr(context: context),
+                      value: '٥ لاعب · نجيل صناعي',
+                    ),
+                    BookingDetailRowWidget(
+                      label: 'booking.manager_label'.tr(context: context),
+                      value: 'أحمد سامي · ٠١٠١٢٣٥٦٧٨',
+                    ),
                   ],
                 ),
               ),
-              SizedBox(height: 14.h),
-
-              // Price Summary Card
+              hSpace(14),
               CustomCardWidget(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('ملخص السعر', style: AppTextStyles.font16Bold),
-                    SizedBox(height: 12.h),
-                    _buildPriceRow('ساعة واحدة × ١٥٠ ج.م', '١٥٠ ج.م'),
-                    SizedBox(height: 8.h),
-                    _buildPriceRow('رسوم الخدمة', '٠ ج.م'),
+                    Text(
+                      'booking.price_summary'.tr(context: context),
+                      style: AppTextStyles.font16Bold,
+                    ),
+                    hSpace(12),
+                    BookingPriceRowWidget(
+                      label: 'booking.one_hour_rate'.tr(context: context),
+                      value: '١٥٠ ج.م',
+                    ),
+                    BookingPriceRowWidget(
+                      label: 'booking.service_fee'.tr(context: context),
+                      value: '٠ ج.م',
+                    ),
                     const Divider(height: 24, color: AppColors.border),
-                    _buildPriceRow('الإجمالي', '١٥٠ ج.م', isBold: true),
-                    SizedBox(height: 10.h),
+                    BookingPriceRowWidget(
+                      label: 'booking.total_price'.tr(context: context),
+                      value: '١٥٠ ج.م',
+                      isBold: true,
+                    ),
+                    hSpace(10),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                       decoration: BoxDecoration(
@@ -127,19 +107,26 @@ class BookingReviewScreen extends HookWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('العربون المطلوب الآن', style: AppTextStyles.font13SemiBold.copyWith(color: AppColors.goldDark)),
-                          Text('٥٠ ج.م', style: AppTextStyles.font15Bold.copyWith(color: AppColors.goldDark)),
+                          Text(
+                            'booking.deposit_required_now'.tr(context: context),
+                            style: AppTextStyles.font13SemiBold.copyWith(color: AppColors.goldDark),
+                          ),
+                          Text(
+                            '٥٠ ج.م',
+                            style: AppTextStyles.font15Bold.copyWith(color: AppColors.goldDark),
+                          ),
                         ],
                       ),
                     ),
-                    SizedBox(height: 8.h),
-                    _buildPriceRow('المتبقي — يُدفع في الملعب', '١٠٠ ج.م'),
+                    hSpace(8),
+                    BookingPriceRowWidget(
+                      label: 'booking.remaining_price'.tr(context: context),
+                      value: '١٠٠ ج.م',
+                    ),
                   ],
                 ),
               ),
-              SizedBox(height: 14.h),
-
-              // Notice Banner
+              hSpace(14),
               Container(
                 padding: EdgeInsets.all(12.w),
                 decoration: BoxDecoration(
@@ -150,69 +137,26 @@ class BookingReviewScreen extends HookWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Icon(Icons.info_outline_rounded, size: 20.sp, color: AppColors.brandNavy),
-                    SizedBox(width: 8.w),
+                    vSpace(8),
                     Expanded(
                       child: Text(
-                        'لما تبعت الطلب، الميعاد بيتحجز لك مؤقتاً ٣٠ دقيقة لحد ما ترفع إيصال العربون. الحجز مش مؤكد غير بعد ما الملعب يراجع التحويل.',
+                        'booking.hold_notice'.tr(context: context),
                         style: AppTextStyles.font12Regular,
                       ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 14.h),
-
-              // Policy and Checkbox
-              CustomCardWidget(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('سياسة الحجز', style: AppTextStyles.font15Bold),
-                    SizedBox(height: 8.h),
-                    Text('• إلغاء مجاني مع استرداد العربون لحد ٦ ساعات قبل الميعاد.', style: AppTextStyles.font12Regular),
-                    SizedBox(height: 4.h),
-                    Text('• عدم الحضور أو التأخير أكتر من ١٥ دقيقة بيفقدك العربون.', style: AppTextStyles.font12Regular),
-                    SizedBox(height: 10.h),
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: agreedToPolicy.value,
-                          activeColor: AppColors.brandNavy,
-                          onChanged: (val) => agreedToPolicy.value = val ?? true,
-                        ),
-                        Expanded(
-                          child: Text('أوافق على سياسة الحجز والإلغاء', style: AppTextStyles.font13SemiBold),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+              hSpace(14),
+              BookingPolicyCardWidget(
+                agreedToPolicy: agreedToPolicy.value,
+                onChanged: (val) => agreedToPolicy.value = val ?? true,
               ),
-              SizedBox(height: 20.h),
+              hSpace(20),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildDetailRow(String label, String value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(label, style: AppTextStyles.font13Regular),
-        Text(value, style: AppTextStyles.font13SemiBold),
-      ],
-    );
-  }
-
-  Widget _buildPriceRow(String label, String value, {bool isBold = false}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(label, style: isBold ? AppTextStyles.font15Bold : AppTextStyles.font13Regular),
-        Text(value, style: isBold ? AppTextStyles.font16Bold.copyWith(color: AppColors.brandNavy) : AppTextStyles.font14SemiBold),
-      ],
     );
   }
 }

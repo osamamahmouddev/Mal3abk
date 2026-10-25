@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../app/app_spaces.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 
@@ -66,7 +67,7 @@ class CustomTabBarWidget extends StatelessWidget {
                               ),
                       ),
                       if (count != null && count > 0) ...[
-                        SizedBox(width: 6.w),
+                        vSpace(6),
                         Container(
                           padding: EdgeInsets.symmetric(
                             horizontal: 6.w,

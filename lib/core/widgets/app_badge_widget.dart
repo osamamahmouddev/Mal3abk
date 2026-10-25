@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../app/app_spaces.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 
@@ -76,7 +77,7 @@ class AppBadgeWidget extends StatelessWidget {
         children: [
           if (icon != null) ...[
             icon!,
-            SizedBox(width: 4.w),
+            vSpace(4),
           ],
           Text(
             text,

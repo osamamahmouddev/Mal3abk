@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/app/app_spaces.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
@@ -21,19 +23,18 @@ class FiltersAndSortScreen extends HookWidget {
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: CustomAppBarWidget(
-        title: 'الفلاتر والترتيب',
+        title: 'explore.filter_and_sort'.tr(context: context),
         actions: [
-          TextButton(
-            onPressed: () {
+          CustomButton(
+            text: 'explore.reset'.tr(context: context),
+            type: CustomButtonType.ghost,
+            foregroundColor: AppColors.brandRed,
+            onTap: () {
               selectedSort.value = 'الأقرب مسافة';
               selectedPitchType.value = 'نجيل صناعي';
               selectedPitchSize.value = '٥ ضد ٥';
               priceRange.value = const RangeValues(100, 300);
             },
-            child: Text(
-              'إعادة تعيين',
-              style: AppTextStyles.font13SemiBold.copyWith(color: AppColors.brandRed),
-            ),
           ),
         ],
       ),
@@ -41,7 +42,7 @@ class FiltersAndSortScreen extends HookWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
           child: CustomButton(
-            text: 'تطبيق الفلاتر',
+            text: 'explore.apply'.tr(context: context),
             type: CustomButtonType.primary,
             height: 52.h,
             onTap: () => Navigator.of(context).maybePop(),
@@ -54,8 +55,8 @@ class FiltersAndSortScreen extends HookWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('الترتيب حسب', style: AppTextStyles.font15Bold),
-              SizedBox(height: 10.h),
+              Text('explore.sort_by'.tr(context: context), style: AppTextStyles.font15Bold),
+              hSpace(10),
               Wrap(
                 spacing: 8.w,
                 runSpacing: 8.h,
@@ -67,10 +68,9 @@ class FiltersAndSortScreen extends HookWidget {
                   );
                 }).toList(),
               ),
-              SizedBox(height: 24.h),
-
+              hSpace(24),
               Text('نوع النجيل', style: AppTextStyles.font15Bold),
-              SizedBox(height: 10.h),
+              hSpace(10),
               Wrap(
                 spacing: 8.w,
                 runSpacing: 8.h,
@@ -82,10 +82,9 @@ class FiltersAndSortScreen extends HookWidget {
                   );
                 }).toList(),
               ),
-              SizedBox(height: 24.h),
-
+              hSpace(24),
               Text('حجم الملعب', style: AppTextStyles.font15Bold),
-              SizedBox(height: 10.h),
+              hSpace(10),
               Wrap(
                 spacing: 8.w,
                 runSpacing: 8.h,
@@ -97,8 +96,7 @@ class FiltersAndSortScreen extends HookWidget {
                   );
                 }).toList(),
               ),
-              SizedBox(height: 24.h),
-
+              hSpace(24),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -118,7 +116,7 @@ class FiltersAndSortScreen extends HookWidget {
                 inactiveColor: AppColors.border,
                 onChanged: (values) => priceRange.value = values,
               ),
-              SizedBox(height: 16.h),
+              hSpace(16),
             ],
           ),
         ),

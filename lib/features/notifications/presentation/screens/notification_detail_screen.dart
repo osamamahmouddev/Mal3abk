@@ -1,11 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/app/app_spaces.dart';
 import '../../../../core/styles/app_colors.dart';
-import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
-import '../../../../core/widgets/custom_card_widget.dart';
+import '../widgets/notification_detail_card_widget.dart';
 
 class NotificationDetailScreen extends StatelessWidget {
   const NotificationDetailScreen({super.key});
@@ -14,47 +15,24 @@ class NotificationDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
-      appBar: const CustomAppBarWidget(title: 'تفاصيل الإشعار'),
+      appBar: CustomAppBarWidget(
+        title: 'notifications.detail_title'.tr(context: context),
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              CustomCardWidget(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 20.r,
-                          backgroundColor: AppColors.successLight,
-                          child: Icon(Icons.check_circle_rounded, color: AppColors.successGreen, size: 22.sp),
-                        ),
-                        SizedBox(width: 12.w),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('اتأكد حجزك في ملعب النجوم', style: AppTextStyles.font16Bold),
-                              Text('منذ ١٠ دقائق', style: AppTextStyles.font11Regular),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Divider(height: 24, color: AppColors.border),
-                    Text(
-                      'إدارة ملعب النجوم اعتمدت إيصال التحويل، وحجزك ليوم السبت ٢٦ يوليو الساعة ٨:٠٠ م أصبح مؤكداً بنجاح. نتمنى لكم مباراة ممتعة!',
-                      style: AppTextStyles.font13Regular,
-                    ),
-                  ],
-                ),
+              NotificationDetailCardWidget(
+                icon: Icons.check_circle_rounded,
+                title: 'onboarding.notifications.preview1_title'.tr(context: context),
+                time: 'منذ ١٠ دقائق',
+                content: 'إدارة ملعب النجوم اعتمدت إيصال التحويل، وحجزك ليوم السبت ٢٦ يوليو الساعة ٨:٠٠ م أصبح مؤكداً بنجاح. نتمنى لكم مباراة ممتعة!',
               ),
-              SizedBox(height: 20.h),
+              hSpace(20),
               CustomButton(
-                text: 'عرض تفاصيل الحجز',
+                text: 'booking.view_booking_details'.tr(context: context),
                 type: CustomButtonType.secondary,
                 height: 48.h,
                 onTap: () => Navigator.of(context).pop(),
@@ -66,4 +44,3 @@ class NotificationDetailScreen extends StatelessWidget {
     );
   }
 }
-

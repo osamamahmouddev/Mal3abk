@@ -1,10 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../app/app_spaces.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 import 'custom_card_widget.dart';
+import 'pitch_placeholder_widget.dart';
 
 class PitchCardWidget extends StatelessWidget {
   const PitchCardWidget({
@@ -46,7 +49,7 @@ class PitchCardWidget extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(14.r),
-                child: SizedBox(
+                child: RSizedBox(
                   width: 76.w,
                   height: 76.h,
                   child: imageUrl != null && imageUrl!.isNotEmpty
@@ -59,12 +62,13 @@ class PitchCardWidget extends StatelessWidget {
                               child: CircularProgressIndicator(strokeWidth: 2),
                             ),
                           ),
-                          errorWidget: (context, url, error) => _buildPlaceholderPitch(),
+                          errorWidget: (context, url, error) =>
+                              const PitchPlaceholderWidget(),
                         )
-                      : _buildPlaceholderPitch(),
+                      : const PitchPlaceholderWidget(),
                 ),
               ),
-              SizedBox(width: 12.w),
+              vSpace(12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,7 +78,7 @@ class PitchCardWidget extends StatelessWidget {
                         Expanded(
                           child: Text(
                             name,
-                            style: AppTextStyles.font15Bold,
+                            style: AppTextStyles.font16Bold,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -86,7 +90,7 @@ class PitchCardWidget extends StatelessWidget {
                               isFavorite
                                   ? Icons.favorite_rounded
                                   : Icons.favorite_border_rounded,
-                              size: 22.sp,
+                              size: 20.sp,
                               color: isFavorite
                                   ? AppColors.brandRed
                                   : AppColors.textSecondary,
@@ -95,7 +99,7 @@ class PitchCardWidget extends StatelessWidget {
                       ],
                     ),
                     if (rating != null) ...[
-                      SizedBox(height: 4.h),
+                      hSpace(4),
                       Row(
                         children: [
                           Icon(
@@ -103,7 +107,7 @@ class PitchCardWidget extends StatelessWidget {
                             size: 16.sp,
                             color: AppColors.goldDark,
                           ),
-                          SizedBox(width: 4.w),
+                          vSpace(4),
                           Text(
                             rating!.toStringAsFixed(1),
                             style: AppTextStyles.font12Bold.copyWith(
@@ -113,14 +117,14 @@ class PitchCardWidget extends StatelessWidget {
                         ],
                       ),
                     ],
-                    SizedBox(height: 4.h),
+                    hSpace(4),
                     Text(
                       specs,
                       style: AppTextStyles.font12Regular,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(height: 4.h),
+                    hSpace(4),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.baseline,
                       textBaseline: TextBaseline.alphabetic,
@@ -131,9 +135,9 @@ class PitchCardWidget extends StatelessWidget {
                             color: AppColors.textPrimary,
                           ),
                         ),
-                        SizedBox(width: 4.w),
+                        vSpace(4),
                         Text(
-                          '/ ساعة',
+                          'common.per_hour'.tr(context: context),
                           style: AppTextStyles.font12Medium,
                         ),
                       ],
@@ -144,7 +148,7 @@ class PitchCardWidget extends StatelessWidget {
             ],
           ),
           if (availableSlots.isNotEmpty) ...[
-            SizedBox(height: 12.h),
+            hSpace(12),
             Wrap(
               spacing: 8.w,
               runSpacing: 6.h,
@@ -176,18 +180,4 @@ class PitchCardWidget extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildPlaceholderPitch() {
-    return Container(
-      color: AppColors.pitchGreen,
-      child: Center(
-        child: Icon(
-          Icons.sports_soccer_rounded,
-          size: 32.sp,
-          color: AppColors.white.withValues(alpha: 0.8),
-        ),
-      ),
-    );
-  }
 }
-

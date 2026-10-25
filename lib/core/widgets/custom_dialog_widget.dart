@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../app/app_spaces.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 import 'custom_button.dart';
@@ -68,21 +69,21 @@ class CustomDialogWidget extends StatelessWidget {
           children: [
             if (icon != null) ...[
               icon!,
-              SizedBox(height: 14.h),
+              hSpace(14),
             ],
             Text(
               title,
               style: AppTextStyles.font18Bold,
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 8.h),
+            hSpace(8),
             Text(
               description,
               style: AppTextStyles.font14Regular,
               textAlign: TextAlign.center,
             ),
             if (primaryActionText != null || secondaryActionText != null) ...[
-              SizedBox(height: 20.h),
+              hSpace(20),
               Row(
                 children: [
                   if (secondaryActionText != null)
@@ -95,7 +96,7 @@ class CustomDialogWidget extends StatelessWidget {
                       ),
                     ),
                   if (primaryActionText != null && secondaryActionText != null)
-                    SizedBox(width: 10.w),
+                    vSpace(10),
                   if (primaryActionText != null)
                     Expanded(
                       child: CustomButton(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../app/app_spaces.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 
@@ -66,7 +67,7 @@ class CustomAppBarWidget extends StatelessWidget implements PreferredSizeWidget 
                 ),
               ),
             ),
-            SizedBox(width: 12.w),
+            vSpace(12),
           ],
           Expanded(
             child: Column(
@@ -82,7 +83,7 @@ class CustomAppBarWidget extends StatelessWidget implements PreferredSizeWidget 
                   overflow: TextOverflow.ellipsis,
                 ),
                 if (subtitle != null) ...[
-                  SizedBox(height: 2.h),
+                  hSpace(2),
                   Text(
                     subtitle!,
                     style: AppTextStyles.font12Regular.copyWith(

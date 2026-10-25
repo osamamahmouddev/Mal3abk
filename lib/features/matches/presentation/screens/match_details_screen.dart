@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/app/app_spaces.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
@@ -16,12 +18,14 @@ class MatchDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
-      appBar: const CustomAppBarWidget(title: 'تفاصيل المباراة'),
+      appBar: CustomAppBarWidget(
+        title: 'matches.match_details_title'.tr(context: context),
+      ),
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
           child: CustomButton(
-            text: 'تسجيل / تأكيد النتيجة',
+            text: 'matches.submit_result_title'.tr(context: context),
             type: CustomButtonType.primary,
             height: 52.h,
             onTap: () => Navigator.of(context).pushNamed(AppRoutes.submitResult),
@@ -44,7 +48,7 @@ class MatchDetailsScreen extends StatelessWidget {
               statusText: 'بانتظار التأكيد',
               statusType: AppBadgeType.warning,
             ),
-            SizedBox(height: 14.h),
+            hSpace(14),
             Container(
               padding: EdgeInsets.all(14.w),
               decoration: BoxDecoration(
@@ -63,4 +67,3 @@ class MatchDetailsScreen extends StatelessWidget {
     );
   }
 }
-

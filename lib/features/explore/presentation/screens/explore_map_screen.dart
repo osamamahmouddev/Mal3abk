@@ -1,11 +1,14 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/app/app_spaces.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
+import '../widgets/explore_map_pin_widget.dart';
 
 class ExploreMapScreen extends StatelessWidget {
   const ExploreMapScreen({super.key});
@@ -15,8 +18,8 @@ class ExploreMapScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
       appBar: CustomAppBarWidget(
-        title: 'الخريطة',
-        subtitle: 'الملاعب القريبة منك',
+        title: 'explore.map_title'.tr(context: context),
+        subtitle: 'explore.all'.tr(context: context),
         actions: [
           IconButton(
             icon: const Icon(Icons.list_rounded, color: AppColors.brandNavy),
@@ -26,7 +29,6 @@ class ExploreMapScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          // Map Background Placeholder (Simulated Map Graphic)
           Container(
             color: const Color(0xFFE8ECEF),
             child: Center(
@@ -34,29 +36,27 @@ class ExploreMapScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.map_outlined, size: 72.sp, color: AppColors.borderInput),
-                  SizedBox(height: 8.h),
+                  hSpace(8),
                   Text('عرض الخريطة التفاعلية', style: AppTextStyles.font14Medium),
                 ],
               ),
             ),
           ),
-          // Sample Map Pins
           Positioned(
             top: 140.h,
             left: 80.w,
-            child: _buildMapPin('ملعب النجوم', '١٥٠ ج.م', true),
+            child: const ExploreMapPinWidget(name: 'ملعب النجوم', price: '١٥٠ ج.م', isSelected: true),
           ),
           Positioned(
             top: 220.h,
             right: 90.w,
-            child: _buildMapPin('أكاديمية الدلتا', '٢٠٠ ج.م', false),
+            child: const ExploreMapPinWidget(name: 'أكاديمية الدلتا', price: '٢٠٠ ج.م', isSelected: false),
           ),
           Positioned(
             top: 320.h,
             left: 140.w,
-            child: _buildMapPin('نادي الشباب', '١٦٠ ج.م', false),
+            child: const ExploreMapPinWidget(name: 'نادي الشباب', price: '١٦٠ ج.م', isSelected: false),
           ),
-          // Floating Bottom Preview Card
           Positioned(
             bottom: 24.h,
             left: 16.w,
@@ -90,24 +90,24 @@ class ExploreMapScreen extends StatelessWidget {
                           child: Icon(Icons.sports_soccer_rounded, color: AppColors.white),
                         ),
                       ),
-                      SizedBox(width: 12.w),
+                      vSpace(12),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('ملعب النجوم', style: AppTextStyles.font15Bold),
-                            SizedBox(height: 2.h),
+                            hSpace(2),
                             Text('مدينة نصر · ١٫٢ كم · ★ ٤٫٨', style: AppTextStyles.font12Regular),
-                            SizedBox(height: 2.h),
+                            hSpace(2),
                             Text('من ١٥٠ ج.م / ساعة', style: AppTextStyles.font13SemiBold),
                           ],
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 12.h),
+                  hSpace(12),
                   CustomButton(
-                    text: 'عرض تفاصيل الملعب والحجز',
+                    text: 'explore.venue_profile'.tr(context: context),
                     type: CustomButtonType.secondary,
                     height: 44.h,
                     onTap: () => Navigator.of(context).pushNamed(AppRoutes.venueProfile),
@@ -120,43 +120,4 @@ class ExploreMapScreen extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildMapPin(String name, String price, bool isSelected) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
-      decoration: BoxDecoration(
-        color: isSelected ? AppColors.brandNavy : AppColors.white,
-        borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(
-          color: isSelected ? AppColors.brandNavy : AppColors.borderInput,
-          width: 1.2,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.black.withValues(alpha: 0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.sports_soccer_rounded,
-            size: 14.sp,
-            color: isSelected ? AppColors.white : AppColors.brandRed,
-          ),
-          SizedBox(width: 4.w),
-          Text(
-            '$name · $price',
-            style: AppTextStyles.font11Bold.copyWith(
-              color: isSelected ? AppColors.white : AppColors.textPrimary,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
-

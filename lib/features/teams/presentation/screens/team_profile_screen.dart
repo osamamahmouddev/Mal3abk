@@ -1,12 +1,15 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/app/app_spaces.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
-import '../../../../core/widgets/app_badge_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
+import '../widgets/team_member_tile_widget.dart';
+import '../widgets/team_stat_box_widget.dart';
 
 class TeamProfileScreen extends StatelessWidget {
   const TeamProfileScreen({super.key});
@@ -41,11 +44,21 @@ class TeamProfileScreen extends StatelessWidget {
                       CircleAvatar(
                         radius: 36.r,
                         backgroundColor: AppColors.white,
-                        child: Text('نج', style: AppTextStyles.font22Bold.copyWith(color: AppColors.brandNavy)),
+                        child: Text(
+                          'نج',
+                          style: AppTextStyles.font22Bold.copyWith(
+                            color: AppColors.brandNavy,
+                          ),
+                        ),
                       ),
-                      SizedBox(height: 8.h),
+                      hSpace(8),
                       Text('فريق النجوم', style: AppTextStyles.font20Bold.copyWith(color: AppColors.white)),
-                      Text('مدينة نصر · الكابتن: أحمد سامي', style: AppTextStyles.font12Regular.copyWith(color: AppColors.white.withValues(alpha: 0.8))),
+                      Text(
+                        'مدينة نصر · الكابتن: أحمد سامي',
+                        style: AppTextStyles.font12Regular.copyWith(
+                          color: AppColors.white.withValues(alpha: 0.8),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -58,34 +71,40 @@ class TeamProfileScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Team Stats
                   CustomCardWidget(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        _buildStatBox('٢٢', 'مباراة ملعوبة'),
-                        _buildStatBox('١٤', 'فوز'),
-                        _buildStatBox('#٤', 'ترتيب الحي'),
+                        TeamStatBoxWidget(
+                          value: '٢٢',
+                          label: 'teams.played_matches'.tr(context: context),
+                        ),
+                        TeamStatBoxWidget(
+                          value: '١٤',
+                          label: 'teams.wins'.tr(context: context),
+                        ),
+                        TeamStatBoxWidget(
+                          value: '#٤',
+                          label: 'teams.rank'.tr(context: context),
+                        ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 16.h),
-
-                  // Actions
+                  hSpace(16),
                   Row(
                     children: [
                       Expanded(
                         child: CustomButton(
-                          text: 'دعوة لاعبين',
+                          text: 'teams.invite_players_title'.tr(context: context),
                           type: CustomButtonType.secondary,
                           height: 46.h,
                           onTap: () => Navigator.of(context).pushNamed(AppRoutes.invitePlayers),
                         ),
                       ),
-                      SizedBox(width: 10.w),
+                      vSpace(10),
                       Expanded(
                         child: CustomButton(
-                          text: 'تحدي الفريق',
+                          text: 'matches.challenge_team_title'.tr(context: context),
                           type: CustomButtonType.primary,
                           height: 46.h,
                           onTap: () => Navigator.of(context).pushNamed(AppRoutes.challengeTeam),
@@ -93,22 +112,25 @@ class TeamProfileScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 20.h),
-
+                  hSpace(20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('أعضاء الفريق (٨ لاعبين)', style: AppTextStyles.font16Bold),
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pushNamed(AppRoutes.manageMembers),
-                        child: Text('إدارة', style: AppTextStyles.font13SemiBold.copyWith(color: AppColors.brandNavy)),
+                      Text(
+                        'teams.team_members'.tr(context: context),
+                        style: AppTextStyles.font16Bold,
+                      ),
+                      CustomButton(
+                        text: 'common.edit'.tr(context: context),
+                        type: CustomButtonType.ghost,
+                        onTap: () => Navigator.of(context).pushNamed(AppRoutes.manageMembers),
                       ),
                     ],
                   ),
-                  _buildMemberTile('أحمد سامي', 'كابتن · وسط', true),
-                  _buildMemberTile('محمد علي', 'مدافع', false),
-                  _buildMemberTile('كريم محمود', 'حارس مرمى', false),
-                  _buildMemberTile('عمر خالد', 'مهاجم', false),
+                  const TeamMemberTileWidget(name: 'أحمد سامي', role: 'كابتن · وسط', isCaptain: true),
+                  const TeamMemberTileWidget(name: 'محمد علي', role: 'مدافع', isCaptain: false),
+                  const TeamMemberTileWidget(name: 'كريم محمود', role: 'حارس مرمى', isCaptain: false),
+                  const TeamMemberTileWidget(name: 'عمر خالد', role: 'مهاجم', isCaptain: false),
                 ],
               ),
             ),
@@ -117,42 +139,4 @@ class TeamProfileScreen extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildStatBox(String val, String label) {
-    return Column(
-      children: [
-        Text(val, style: AppTextStyles.font20Bold.copyWith(color: AppColors.brandNavy)),
-        SizedBox(height: 2.h),
-        Text(label, style: AppTextStyles.font11Regular),
-      ],
-    );
-  }
-
-  Widget _buildMemberTile(String name, String role, bool isCaptain) {
-    return CustomCardWidget(
-      margin: EdgeInsets.only(bottom: 8.h),
-      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 18.r,
-            backgroundColor: AppColors.lightSurface,
-            child: Text(name.substring(0, 1), style: AppTextStyles.font13SemiBold),
-          ),
-          SizedBox(width: 10.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(name, style: AppTextStyles.font14SemiBold),
-                Text(role, style: AppTextStyles.font11Regular),
-              ],
-            ),
-          ),
-          if (isCaptain) const AppBadgeWidget(text: 'كابتن', type: AppBadgeType.warning),
-        ],
-      ),
-    );
-  }
 }
-

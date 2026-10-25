@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../app/app_spaces.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 import 'custom_button.dart';
@@ -81,7 +82,7 @@ class CustomBottomModalWidget extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 16.h),
+          hSpace(16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -101,10 +102,10 @@ class CustomBottomModalWidget extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 16.h),
+          hSpace(16),
           content,
           if (primaryActionText != null || secondaryActionText != null) ...[
-            SizedBox(height: 24.h),
+            hSpace(24),
             Row(
               children: [
                 if (secondaryActionText != null)
@@ -117,7 +118,7 @@ class CustomBottomModalWidget extends StatelessWidget {
                     ),
                   ),
                 if (primaryActionText != null && secondaryActionText != null)
-                  SizedBox(width: 12.w),
+                  vSpace(12),
                 if (primaryActionText != null)
                   Expanded(
                     child: CustomButton(

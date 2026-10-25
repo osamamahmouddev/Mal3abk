@@ -45,7 +45,7 @@ class HomeHeaderWidget extends StatelessWidget {
             ),
             hSpace(12),
             Text(
-              'home.welcome'.tr(),
+              'home.welcome'.tr(context: context),
               style: AppTextStyles.font16Regular.copyWith(
                 color: AppColors.white,
               ),

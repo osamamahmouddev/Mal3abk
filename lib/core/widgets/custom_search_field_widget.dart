@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../app/app_spaces.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 
@@ -65,7 +66,7 @@ class CustomSearchFieldWidget extends StatelessWidget {
           ),
         ),
         if (onFilterTap != null) ...[
-          SizedBox(width: 10.w),
+          vSpace(10),
           Material(
             color: hasActiveFilters ? AppColors.brandNavy : AppColors.white,
             borderRadius: BorderRadius.circular(12.r),
