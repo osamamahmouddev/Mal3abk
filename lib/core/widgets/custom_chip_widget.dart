@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../app/app_spaces.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 
@@ -44,7 +45,7 @@ class CustomChipWidget extends StatelessWidget {
             children: [
               if (icon != null) ...[
                 icon!,
-                SizedBox(width: 6.w),
+                vSpace(6),
               ],
               Text(
                 label,
@@ -53,7 +54,7 @@ class CustomChipWidget extends StatelessWidget {
                     : AppTextStyles.font13Regular.copyWith(color: AppColors.textPrimary),
               ),
               if (count != null) ...[
-                SizedBox(width: 6.w),
+                vSpace(6),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                   decoration: BoxDecoration(

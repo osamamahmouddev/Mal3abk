@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../app/app_spaces.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 
@@ -97,7 +98,7 @@ class CustomButton extends StatelessWidget {
             border: border,
           ),
           child: isLoading
-              ? SizedBox(
+              ? RSizedBox(
                   width: 22.w,
                   height: 22.h,
                   child: CircularProgressIndicator(
@@ -111,7 +112,7 @@ class CustomButton extends StatelessWidget {
                   children: [
                     if (icon != null) ...[
                       icon!,
-                      SizedBox(width: 8.w),
+                      vSpace(8),
                     ],
                     Text(
                       text,

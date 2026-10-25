@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../app/app_spaces.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 
@@ -76,7 +77,7 @@ class AlertBannerWidget extends StatelessWidget {
             size: 20.sp,
             color: fg,
           ),
-          SizedBox(width: 10.w),
+          vSpace(10),
           Expanded(
             child: Text(
               message,
@@ -84,7 +85,7 @@ class AlertBannerWidget extends StatelessWidget {
             ),
           ),
           if (actionText != null) ...[
-            SizedBox(width: 8.w),
+            vSpace(8),
             GestureDetector(
               onTap: onActionTap,
               child: Text(

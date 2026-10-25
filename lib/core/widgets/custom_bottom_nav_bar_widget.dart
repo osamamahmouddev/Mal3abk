@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../app/app_spaces.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 
@@ -74,7 +75,7 @@ class CustomBottomNavBarWidget extends StatelessWidget {
                             ? AppColors.white
                             : AppColors.textSecondary,
                       ),
-                      SizedBox(height: 4.h),
+                      hSpace(4),
                       Text(
                         item.title,
                         style: isSelected

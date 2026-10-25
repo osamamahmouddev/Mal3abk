@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../app/app_spaces.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 import 'custom_card_widget.dart';
@@ -45,7 +47,7 @@ class TeamCardWidget extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: 14.w),
+          vSpace(14),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +63,7 @@ class TeamCardWidget extends StatelessWidget {
                       ),
                     ),
                     if (badgeText != null) ...[
-                      SizedBox(width: 6.w),
+                      vSpace(6),
                       Container(
                         padding: EdgeInsets.symmetric(
                           horizontal: 8.w,
@@ -81,15 +83,15 @@ class TeamCardWidget extends StatelessWidget {
                     ],
                   ],
                 ),
-                SizedBox(height: 4.h),
+                hSpace(4),
                 Text(
-                  'كابتن: $captainName',
+                  'teams.captain_prefix'.tr(context: context, args: [captainName]),
                   style: AppTextStyles.font13Regular,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 if (membersCountText != null || ratingText != null) ...[
-                  SizedBox(height: 4.h),
+                  hSpace(4),
                   Row(
                     children: [
                       if (membersCountText != null)
@@ -116,7 +118,7 @@ class TeamCardWidget extends StatelessWidget {
             ),
           ),
           if (actionWidget != null) ...[
-            SizedBox(width: 10.w),
+            vSpace(10),
             actionWidget!,
           ],
         ],

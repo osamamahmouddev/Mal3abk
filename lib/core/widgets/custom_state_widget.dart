@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../app/app_spaces.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 import 'custom_button.dart';
@@ -33,7 +34,7 @@ class CustomStateWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (isLoading) ...[
-              SizedBox(
+              RSizedBox(
                 width: 48.w,
                 height: 48.h,
                 child: const CircularProgressIndicator(
@@ -41,17 +42,17 @@ class CustomStateWidget extends StatelessWidget {
                   valueColor: AlwaysStoppedAnimation<Color>(AppColors.brandNavy),
                 ),
               ),
-              SizedBox(height: 20.h),
+              hSpace(20),
             ] else if (icon != null) ...[
               icon!,
-              SizedBox(height: 20.h),
+              hSpace(20),
             ],
             Text(
               title,
               style: AppTextStyles.font18Bold,
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 8.h),
+            hSpace(8),
             Text(
               description,
               style: AppTextStyles.font14Regular.copyWith(
@@ -60,7 +61,7 @@ class CustomStateWidget extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             if (actionText != null && onActionTap != null) ...[
-              SizedBox(height: 24.h),
+              hSpace(24),
               CustomButton(
                 text: actionText!,
                 onTap: onActionTap!,
