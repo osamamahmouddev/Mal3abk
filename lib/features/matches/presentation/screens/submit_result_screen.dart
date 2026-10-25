@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/app/app_spaces.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
@@ -17,12 +19,14 @@ class SubmitResultScreen extends HookWidget {
 
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
-      appBar: const CustomAppBarWidget(title: 'نتيجة المباراة'),
+      appBar: CustomAppBarWidget(
+        title: 'matches.submit_result_title'.tr(context: context),
+      ),
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
           child: CustomButton(
-            text: 'إرسال النتيجة للتأكيد',
+            text: 'matches.submit_result_btn'.tr(context: context),
             type: CustomButtonType.primary,
             height: 52.h,
             onTap: () {
@@ -43,7 +47,7 @@ class SubmitResultScreen extends HookWidget {
                 'السبت ١٩ يوليو · ملعب الأهلي الصغير — ملعب ٣',
                 style: AppTextStyles.font13Regular,
               ),
-              SizedBox(height: 20.h),
+              hSpace(20),
               Container(
                 padding: EdgeInsets.all(20.w),
                 decoration: BoxDecoration(
@@ -53,7 +57,6 @@ class SubmitResultScreen extends HookWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    // Team 1
                     Column(
                       children: [
                         CircleAvatar(
@@ -61,9 +64,9 @@ class SubmitResultScreen extends HookWidget {
                           backgroundColor: AppColors.white,
                           child: Text('نج', style: AppTextStyles.font16Bold.copyWith(color: AppColors.brandNavy)),
                         ),
-                        SizedBox(height: 6.h),
+                        hSpace(6),
                         Text('النجوم', style: AppTextStyles.font15Bold.copyWith(color: AppColors.white)),
-                        SizedBox(height: 10.h),
+                        hSpace(10),
                         Row(
                           children: [
                             IconButton(
@@ -80,7 +83,6 @@ class SubmitResultScreen extends HookWidget {
                       ],
                     ),
                     Text('–', style: AppTextStyles.font24Bold.copyWith(color: AppColors.accentGold)),
-                    // Team 2
                     Column(
                       children: [
                         CircleAvatar(
@@ -88,9 +90,9 @@ class SubmitResultScreen extends HookWidget {
                           backgroundColor: AppColors.brandRed,
                           child: Text('صق', style: AppTextStyles.font16Bold.copyWith(color: AppColors.white)),
                         ),
-                        SizedBox(height: 6.h),
+                        hSpace(6),
                         Text('الصقور', style: AppTextStyles.font15Bold.copyWith(color: AppColors.white)),
-                        SizedBox(height: 10.h),
+                        hSpace(10),
                         Row(
                           children: [
                             IconButton(
@@ -109,7 +111,7 @@ class SubmitResultScreen extends HookWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 20.h),
+              hSpace(20),
               Container(
                 padding: EdgeInsets.all(12.w),
                 decoration: BoxDecoration(

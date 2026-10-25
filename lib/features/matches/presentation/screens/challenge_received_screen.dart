@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/app/app_spaces.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
@@ -14,7 +16,9 @@ class ChallengeReceivedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
-      appBar: const CustomAppBarWidget(title: 'تحدي جديد لفريقك'),
+      appBar: CustomAppBarWidget(
+        title: 'matches.challenge_received_title'.tr(context: context),
+      ),
       bottomNavigationBar: SafeArea(
         child: Container(
           padding: EdgeInsets.all(16.w),
@@ -26,16 +30,16 @@ class ChallengeReceivedScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: CustomButton(
-                  text: 'رفض التحدي',
+                  text: 'matches.decline_challenge'.tr(context: context),
                   type: CustomButtonType.outline,
                   height: 52.h,
                   onTap: () => Navigator.of(context).pop(),
                 ),
               ),
-              SizedBox(width: 12.w),
+              vSpace(12),
               Expanded(
                 child: CustomButton(
-                  text: 'قبول التحدي',
+                  text: 'matches.accept_challenge'.tr(context: context),
                   type: CustomButtonType.primary,
                   height: 52.h,
                   onTap: () => Navigator.of(context).pop(),
@@ -69,7 +73,7 @@ class ChallengeReceivedScreen extends StatelessWidget {
                               backgroundColor: AppColors.brandRed,
                               child: Text('أس', style: AppTextStyles.font16Bold.copyWith(color: AppColors.white)),
                             ),
-                            SizedBox(height: 6.h),
+                            hSpace(6),
                             Text('أسود العباسية', style: AppTextStyles.font14Bold.copyWith(color: AppColors.white)),
                             Text('#٣ · ١٠ فوز', style: AppTextStyles.font11Regular.copyWith(color: AppColors.white.withValues(alpha: 0.8))),
                           ],
@@ -82,7 +86,7 @@ class ChallengeReceivedScreen extends StatelessWidget {
                               backgroundColor: AppColors.white,
                               child: Text('نج', style: AppTextStyles.font16Bold.copyWith(color: AppColors.brandNavy)),
                             ),
-                            SizedBox(height: 6.h),
+                            hSpace(6),
                             Text('فريق النجوم', style: AppTextStyles.font14Bold.copyWith(color: AppColors.white)),
                             Text('فريقك', style: AppTextStyles.font11Regular.copyWith(color: AppColors.white.withValues(alpha: 0.8))),
                           ],
@@ -92,18 +96,17 @@ class ChallengeReceivedScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 16.h),
-
+              hSpace(16),
               CustomCardWidget(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('تفاصيل الميعاد والملعب المقترح', style: AppTextStyles.font15Bold),
-                    SizedBox(height: 10.h),
+                    hSpace(10),
                     Text('الميعاد: الجمعة ٨ أغسطس · ٩:٠٠ م', style: AppTextStyles.font13SemiBold),
-                    SizedBox(height: 4.h),
+                    hSpace(4),
                     Text('الملعب: ملعب النجوم — مدينة نصر (ملعب ١)', style: AppTextStyles.font13Regular),
-                    SizedBox(height: 4.h),
+                    hSpace(4),
                     Text('الكابتن مقدم الطلب: هيثم كمال · متبقي ٢٤ ساعة للرد', style: AppTextStyles.font12Medium),
                   ],
                 ),
@@ -115,4 +118,3 @@ class ChallengeReceivedScreen extends StatelessWidget {
     );
   }
 }
-
