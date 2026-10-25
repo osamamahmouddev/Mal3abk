@@ -1,0 +1,10 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="220" height="96" viewBox="0 0 220 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="pitch">
+<rect id="Rectangle" x="27.5" width="27.5" height="96" fill="#287D4C"/>
+<rect id="Rectangle_2" x="82.5" width="27.5" height="96" fill="#287D4C"/>
+<rect id="Rectangle_3" x="137.5" width="27.5" height="96" fill="#287D4C"/>
+<rect id="Rectangle_4" x="192.5" width="27.5" height="96" fill="#287D4C"/>
+<rect id="Rectangle_5" x="109" width="2" height="96" fill="white" fill-opacity="0.55"/>
+<circle id="Ellipse" cx="110" cy="48" r="15.3408" stroke="white" stroke-opacity="0.55" stroke-width="1.9584"/>
+</g>
+</svg>

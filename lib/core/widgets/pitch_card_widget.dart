@@ -2,12 +2,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../app/app_spaces.dart';
+import '../styles/app_assets.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 import 'custom_card_widget.dart';
 import 'pitch_placeholder_widget.dart';
+import 'slot_chip_widget.dart';
 
 class PitchCardWidget extends StatelessWidget {
   const PitchCardWidget({
@@ -27,7 +30,7 @@ class PitchCardWidget extends StatelessWidget {
   final String name;
   final String specs;
   final String pricePerHour;
-  final double? rating;
+  final String? rating;
   final String? imageUrl;
   final List<String> availableSlots;
   final bool isFavorite;
@@ -39,8 +42,7 @@ class PitchCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomCardWidget(
       onTap: onTap,
-      padding: EdgeInsets.all(14.w),
-      margin: EdgeInsets.only(bottom: 12.h),
+      padding: EdgeInsets.all(12.r),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -48,21 +50,18 @@ class PitchCardWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(14.r),
-                child: RSizedBox(
-                  width: 76.w,
-                  height: 76.h,
+                borderRadius: BorderRadius.circular(12.r),
+                child: Container(
+                  width: 76.r,
+                  height: 76.r,
+                  color: AppColors.pitchGreenLight,
                   child: imageUrl != null && imageUrl!.isNotEmpty
                       ? CachedNetworkImage(
                           imageUrl: imageUrl!,
                           fit: BoxFit.cover,
-                          placeholder: (context, url) => Container(
-                            color: AppColors.lightSurface,
-                            child: const Center(
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            ),
-                          ),
-                          errorWidget: (context, url, error) =>
+                          memCacheWidth: 228,
+                          placeholder: (_, _) => const PitchPlaceholderWidget(),
+                          errorWidget: (_, _, _) =>
                               const PitchPlaceholderWidget(),
                         )
                       : const PitchPlaceholderWidget(),
@@ -78,102 +77,70 @@ class PitchCardWidget extends StatelessWidget {
                         Expanded(
                           child: Text(
                             name,
-                            style: AppTextStyles.font16Bold,
+                            style: AppTextStyles.font15Bold,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        if (onFavoriteTap != null)
-                          GestureDetector(
-                            onTap: onFavoriteTap,
-                            child: Icon(
-                              isFavorite
-                                  ? Icons.favorite_rounded
-                                  : Icons.favorite_border_rounded,
-                              size: 20.sp,
-                              color: isFavorite
-                                  ? AppColors.brandRed
-                                  : AppColors.textSecondary,
-                            ),
-                          ),
-                      ],
-                    ),
-                    if (rating != null) ...[
-                      hSpace(4),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.star_rounded,
-                            size: 16.sp,
-                            color: AppColors.goldDark,
-                          ),
-                          vSpace(4),
+                        if (rating != null)
                           Text(
-                            rating!.toStringAsFixed(1),
+                            '★ ${rating!}',
                             style: AppTextStyles.font12Bold.copyWith(
                               color: AppColors.goldDark,
                             ),
                           ),
-                        ],
-                      ),
-                    ],
-                    hSpace(4),
+                      ],
+                    ),
+                    hSpace(6),
                     Text(
                       specs,
                       style: AppTextStyles.font12Regular,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    hSpace(4),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.baseline,
-                      textBaseline: TextBaseline.alphabetic,
-                      children: [
-                        Text(
-                          pricePerHour,
-                          style: AppTextStyles.font15Bold.copyWith(
-                            color: AppColors.textPrimary,
+                    hSpace(2),
+                    Text.rich(
+                      TextSpan(
+                        text: pricePerHour,
+                        style: AppTextStyles.font15Bold,
+                        children: [
+                          TextSpan(
+                            text: ' ${'common.per_hour'.tr(context: context)}',
+                            style: AppTextStyles.font12Medium,
                           ),
-                        ),
-                        vSpace(4),
-                        Text(
-                          'common.per_hour'.tr(context: context),
-                          style: AppTextStyles.font12Medium,
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
+              if (onFavoriteTap != null)
+                InkWell(
+                  onTap: onFavoriteTap,
+                  borderRadius: BorderRadius.circular(10.r),
+                  child: Padding(
+                    padding: EdgeInsets.all(12.r),
+                    child: SvgPicture.asset(
+                      isFavorite ? AppAssets.icHeartFilled : AppAssets.icHeartOutline,
+                      width: 20.r,
+                      height: 20.r,
+                    ),
+                  ),
+                ),
             ],
           ),
           if (availableSlots.isNotEmpty) ...[
-            hSpace(12),
+            hSpace(10),
             Wrap(
-              spacing: 8.w,
+              spacing: 6.w,
               runSpacing: 6.h,
-              children: availableSlots.map((slot) {
-                return InkWell(
-                  onTap: () => onSlotTap?.call(slot),
-                  borderRadius: BorderRadius.circular(8.r),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 10.w,
-                      vertical: 6.h,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.successLight,
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    child: Text(
-                      slot,
-                      style: AppTextStyles.font12Bold.copyWith(
-                        color: AppColors.successGreen,
-                      ),
-                    ),
+              children: [
+                for (final slot in availableSlots)
+                  SlotChipWidget(
+                    label: slot,
+                    onTap: () => onSlotTap?.call(slot),
                   ),
-                );
-              }).toList(),
+              ],
             ),
           ],
         ],

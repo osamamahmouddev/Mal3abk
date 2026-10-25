@@ -7,6 +7,37 @@ class AppTextStyles {
   const AppTextStyles._();
 
   // Headings
+  static TextStyle get font56Bold => TextStyle(
+        fontSize: 56.sp,
+        fontWeight: FontWeight.w700,
+        height: 1.1,
+        color: AppColors.textPrimary,
+      );
+
+  static TextStyle get font28Bold => TextStyle(
+        fontSize: 28.sp,
+        fontWeight: FontWeight.w700,
+        color: AppColors.textPrimary,
+      );
+
+  static TextStyle get font17Bold => TextStyle(
+        fontSize: 17.sp,
+        fontWeight: FontWeight.w700,
+        color: AppColors.textPrimary,
+      );
+
+  static TextStyle get font26Bold => TextStyle(
+        fontSize: 26.sp,
+        fontWeight: FontWeight.w700,
+        color: AppColors.textPrimary,
+      );
+
+  static TextStyle get font21Bold => TextStyle(
+        fontSize: 21.sp,
+        fontWeight: FontWeight.w700,
+        color: AppColors.textPrimary,
+      );
+
   static TextStyle get font24Bold => TextStyle(
         fontSize: 24.sp,
         fontWeight: FontWeight.w700,
@@ -80,6 +111,24 @@ class AppTextStyles {
         color: AppColors.textPrimary,
       );
 
+  static TextStyle get font15Regular => TextStyle(
+        fontSize: 15.sp,
+        fontWeight: FontWeight.w400,
+        color: AppColors.textPrimary,
+      );
+
+  static TextStyle get font17Regular => TextStyle(
+        fontSize: 17.sp,
+        fontWeight: FontWeight.w400,
+        color: AppColors.textPrimary,
+      );
+
+  static TextStyle get font44Bold => TextStyle(
+        fontSize: 44.sp,
+        fontWeight: FontWeight.w700,
+        color: AppColors.textPrimary,
+      );
+
   static TextStyle get font14Bold => TextStyle(
         fontSize: 14.sp,
         fontWeight: FontWeight.w700,
@@ -149,6 +198,18 @@ class AppTextStyles {
       );
 
   // Micro / Tags
+  static TextStyle get font10Regular => TextStyle(
+        fontSize: 10.sp,
+        fontWeight: FontWeight.w400,
+        color: AppColors.textSecondary,
+      );
+
+  static TextStyle get font10Bold => TextStyle(
+        fontSize: 10.sp,
+        fontWeight: FontWeight.w700,
+        color: AppColors.textSecondary,
+      );
+
   static TextStyle get font11Bold => TextStyle(
         fontSize: 11.sp,
         fontWeight: FontWeight.w700,

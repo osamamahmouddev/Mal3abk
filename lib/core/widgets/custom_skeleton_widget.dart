@@ -20,20 +20,30 @@ class CustomSkeletonWidget extends HookWidget {
   Widget build(BuildContext context) {
     final controller = useAnimationController(
       duration: const Duration(milliseconds: 1200),
-    )..repeat(reverse: true);
+    );
+    useEffect(() {
+      controller.repeat(reverse: true);
+      return null;
+    }, [controller]);
 
-    final animation = useAnimation(
-      Tween<double>(begin: 0.3, end: 0.8).animate(
+    final opacity = useMemoized(
+      () => Tween<double>(begin: 0.55, end: 1).animate(
         CurvedAnimation(parent: controller, curve: Curves.easeInOut),
       ),
+      [controller],
     );
 
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        color: AppColors.border.withValues(alpha: animation),
-        borderRadius: BorderRadius.circular((borderRadius ?? 8).r),
+    return RepaintBoundary(
+      child: FadeTransition(
+        opacity: opacity,
+        child: Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+            color: AppColors.border,
+            borderRadius: BorderRadius.circular((borderRadius ?? 8).r),
+          ),
+        ),
       ),
     );
   }

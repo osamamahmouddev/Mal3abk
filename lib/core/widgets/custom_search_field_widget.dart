@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-import '../app/app_spaces.dart';
+import '../styles/app_assets.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 
@@ -14,8 +15,6 @@ class CustomSearchFieldWidget extends StatelessWidget {
     this.onSubmitted,
     this.onTap,
     this.readOnly = false,
-    this.onFilterTap,
-    this.hasActiveFilters = false,
   });
 
   final String hintText;
@@ -24,79 +23,37 @@ class CustomSearchFieldWidget extends StatelessWidget {
   final ValueChanged<String>? onSubmitted;
   final VoidCallback? onTap;
   final bool readOnly;
-  final VoidCallback? onFilterTap;
-  final bool hasActiveFilters;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            height: 50.h,
-            decoration: BoxDecoration(
-              color: AppColors.white,
-              borderRadius: BorderRadius.circular(12.r),
-              border: Border.all(color: AppColors.borderInput, width: 1),
-            ),
-            child: TextField(
-              controller: controller,
-              readOnly: readOnly,
-              onTap: onTap,
-              onChanged: onChanged,
-              onSubmitted: onSubmitted,
-              style: AppTextStyles.font14Medium,
-              decoration: InputDecoration(
-                hintText: hintText,
-                hintStyle: AppTextStyles.font14Regular.copyWith(
-                  color: AppColors.textMuted,
-                ),
-                prefixIcon: Icon(
-                  Icons.search_rounded,
-                  size: 22.sp,
-                  color: AppColors.textSecondary,
-                ),
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: 16.w,
-                  vertical: 12.h,
-                ),
-              ),
-            ),
+    return Container(
+      height: 50.h,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: AppColors.borderInput),
+      ),
+      child: TextField(
+        controller: controller,
+        readOnly: readOnly,
+        onTap: onTap,
+        onChanged: onChanged,
+        onSubmitted: onSubmitted,
+        style: AppTextStyles.font15Regular,
+        decoration: InputDecoration(
+          isDense: true,
+          hintText: hintText,
+          hintStyle: AppTextStyles.font15Regular.copyWith(color: AppColors.hintText),
+          prefixIcon: Padding(
+            padding: EdgeInsetsDirectional.only(start: 14.w, end: 9.w),
+            child: SvgPicture.asset(AppAssets.icSearch17, width: 17.r, height: 18.r),
           ),
+          prefixIconConstraints: const BoxConstraints(),
+          border: InputBorder.none,
+          contentPadding: EdgeInsetsDirectional.only(end: 14.w),
         ),
-        if (onFilterTap != null) ...[
-          vSpace(10),
-          Material(
-            color: hasActiveFilters ? AppColors.brandNavy : AppColors.white,
-            borderRadius: BorderRadius.circular(12.r),
-            child: InkWell(
-              onTap: onFilterTap,
-              borderRadius: BorderRadius.circular(12.r),
-              child: Container(
-                width: 50.w,
-                height: 50.h,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.r),
-                  border: Border.all(
-                    color: hasActiveFilters
-                        ? AppColors.brandNavy
-                        : AppColors.borderInput,
-                    width: 1,
-                  ),
-                ),
-                child: Icon(
-                  Icons.tune_rounded,
-                  size: 22.sp,
-                  color: hasActiveFilters ? AppColors.white : AppColors.brandNavy,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ],
+      ),
     );
   }
 }
-

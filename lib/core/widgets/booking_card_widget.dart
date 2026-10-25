@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../app/app_spaces.dart';
+import '../styles/app_assets.dart';
 import '../styles/app_colors.dart';
+import '../styles/app_shadows.dart';
 import '../styles/app_text_styles.dart';
 import 'app_badge_widget.dart';
 import 'custom_button.dart';
@@ -82,27 +85,19 @@ class BookingCardWidget extends StatelessWidget {
 
     return CustomCardWidget(
       onTap: onTap,
-      padding: EdgeInsets.all(16.w),
-      margin: EdgeInsets.only(bottom: 14.h),
+      padding: EdgeInsets.all(14.r),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: 54.w,
-                height: 54.h,
-                decoration: BoxDecoration(
-                  color: AppColors.pitchGreen,
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                child: Center(
-                  child: Icon(
-                    Icons.sports_soccer_rounded,
-                    color: AppColors.white,
-                    size: 26.sp,
-                  ),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12.r),
+                child: SvgPicture.asset(
+                  AppAssets.pitchThumbSquare,
+                  width: 56.r,
+                  height: 56.r,
                 ),
               ),
               vSpace(12),
@@ -110,59 +105,51 @@ class BookingCardWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '$venueName — $pitchName',
-                      style: AppTextStyles.font15Bold,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    Text('$venueName — $pitchName', style: AppTextStyles.font15Bold),
                     hSpace(4),
-                    Text(
-                      dateTime,
-                      style: AppTextStyles.font13Regular,
-                    ),
-                    hSpace(4),
+                    Text(dateTime, style: AppTextStyles.font13Regular),
+                    hSpace(2),
                     Text(
                       bookingCode,
-                      style: AppTextStyles.font12Medium,
+                      textDirection: TextDirection.ltr,
+                      style: AppTextStyles.font12Regular,
                     ),
                   ],
                 ),
               ),
+              vSpace(8),
               AppBadgeWidget(
                 text: statusText,
                 type: badgeType,
+                borderRadius: 13,
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
               ),
             ],
           ),
           if (depositRowText != null && depositAmount != null) ...[
-            hSpace(12),
+            hSpace(16),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+              height: 39.h,
+              padding: EdgeInsets.symmetric(horizontal: 12.w),
               decoration: BoxDecoration(
                 color: AppColors.lightGrayBackground,
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    depositRowText!,
-                    style: AppTextStyles.font13Regular,
-                  ),
-                  Text(
-                    depositAmount!,
-                    style: AppTextStyles.font13SemiBold,
-                  ),
+                  Text(depositRowText!, style: AppTextStyles.font13Regular),
+                  const Spacer(),
+                  Text(depositAmount!, style: AppTextStyles.font13SemiBold),
                 ],
               ),
             ),
           ],
           if (noteText != null) ...[
-            hSpace(8),
+            hSpace(12),
             Container(
-              width: double.infinity,
+              constraints: BoxConstraints(minHeight: 40.h),
               padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+              alignment: AlignmentDirectional.centerStart,
               decoration: BoxDecoration(
                 color: noteBg,
                 borderRadius: BorderRadius.circular(10.r),
@@ -174,29 +161,35 @@ class BookingCardWidget extends StatelessWidget {
             ),
           ],
           if (primaryActionText != null || secondaryActionText != null) ...[
-            hSpace(14),
+            hSpace(12),
             Row(
               children: [
+                if (primaryActionText != null)
+                  Expanded(
+                    child: CustomButton(
+                      text: primaryActionText!,
+                      onTap: onPrimaryAction ?? () {},
+                      height: 46.h,
+                      borderRadius: 10,
+                      boxShadow: AppShadows.redGlow,
+                      textStyle: AppTextStyles.font14Bold.copyWith(
+                        color: AppColors.white,
+                      ),
+                    ),
+                  ),
+                if (primaryActionText != null && secondaryActionText != null)
+                  vSpace(8),
                 if (secondaryActionText != null)
                   Expanded(
                     child: CustomButton(
                       text: secondaryActionText!,
                       onTap: onSecondaryAction ?? () {},
                       type: CustomButtonType.outline,
-                      height: 44.h,
-                    ),
-                  ),
-                if (primaryActionText != null && secondaryActionText != null)
-                  vSpace(10),
-                if (primaryActionText != null)
-                  Expanded(
-                    child: CustomButton(
-                      text: primaryActionText!,
-                      onTap: onPrimaryAction ?? () {},
-                      type: status == BookingStatus.rejected
-                          ? CustomButtonType.primary
-                          : CustomButtonType.secondary,
-                      height: 44.h,
+                      height: 46.h,
+                      borderRadius: 10,
+                      textStyle: AppTextStyles.font14SemiBold.copyWith(
+                        color: AppColors.brandNavy,
+                      ),
                     ),
                   ),
               ],
@@ -207,4 +200,3 @@ class BookingCardWidget extends StatelessWidget {
     );
   }
 }
-

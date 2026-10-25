@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../app/app_spaces.dart';
+import '../extensions/app_display_extensions.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 
@@ -12,25 +14,36 @@ class CustomTabBarWidget extends StatelessWidget {
     required this.onTabSelected,
     super.key,
     this.badgeCounts,
+    this.indicatorColor = AppColors.brandRed,
+    this.showTopBorder = true,
+    this.large = false,
   });
 
   final List<String> tabs;
   final int selectedIndex;
   final ValueChanged<int> onTabSelected;
   final Map<int, int>? badgeCounts;
+  final Color indicatorColor;
+  final bool showTopBorder;
+
+  /// 15px labels instead of 14px.
+  final bool large;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppColors.white,
         border: Border(
+          top: showTopBorder
+              ? const BorderSide(color: AppColors.lightSurface)
+              : BorderSide.none,
           bottom: BorderSide(
-            color: AppColors.border,
-            width: 1,
+            color: showTopBorder ? AppColors.lightSurface : AppColors.border,
           ),
         ),
       ),
+      padding: EdgeInsets.symmetric(horizontal: 8.w),
       child: Row(
         children: List.generate(tabs.length, (index) {
           final isSelected = selectedIndex == index;
@@ -47,7 +60,7 @@ class CustomTabBarWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
-                        color: isSelected ? AppColors.brandNavy : Colors.transparent,
+                        color: isSelected ? indicatorColor : Colors.transparent,
                         width: 3.h,
                       ),
                     ),
@@ -58,21 +71,22 @@ class CustomTabBarWidget extends StatelessWidget {
                     children: [
                       Text(
                         tabs[index],
-                        style: isSelected
-                            ? AppTextStyles.font14Bold.copyWith(
-                                color: AppColors.brandNavy,
-                              )
-                            : AppTextStyles.font14Medium.copyWith(
-                                color: AppColors.textSecondary,
-                              ),
+                        style: (isSelected
+                                ? AppTextStyles.font14Bold
+                                : AppTextStyles.font14Medium)
+                            .copyWith(
+                          fontSize: (large ? 15 : 14).sp,
+                          color: isSelected
+                              ? AppColors.brandNavy
+                              : AppColors.textSecondary,
+                        ),
                       ),
                       if (count != null && count > 0) ...[
                         vSpace(6),
                         Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 6.w,
-                            vertical: 2.h,
-                          ),
+                          width: 18.r,
+                          height: 18.r,
+                          alignment: Alignment.center,
                           decoration: BoxDecoration(
                             color: isSelected
                                 ? AppColors.brandNavy
@@ -80,11 +94,11 @@ class CustomTabBarWidget extends StatelessWidget {
                             shape: BoxShape.circle,
                           ),
                           child: Text(
-                            count.toString(),
+                            count.toLocalizedDigits(context.locale.languageCode),
                             style: AppTextStyles.font11Bold.copyWith(
                               color: isSelected
                                   ? AppColors.white
-                                  : AppColors.textSecondary,
+                                  : AppColors.offlineBanner,
                             ),
                           ),
                         ),

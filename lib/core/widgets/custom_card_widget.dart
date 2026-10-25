@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../styles/app_colors.dart';
+import '../styles/app_shadows.dart';
 
 class CustomCardWidget extends StatelessWidget {
   const CustomCardWidget({
@@ -29,6 +30,10 @@ class CustomCardWidget extends StatelessWidget {
 
     return Container(
       margin: margin,
+      decoration: BoxDecoration(
+        borderRadius: effectiveRadius,
+        boxShadow: AppShadows.card,
+      ),
       child: Material(
         color: backgroundColor,
         borderRadius: effectiveRadius,
@@ -39,7 +44,7 @@ class CustomCardWidget extends StatelessWidget {
             padding: padding ?? EdgeInsets.all(16.w),
             decoration: BoxDecoration(
               borderRadius: effectiveRadius,
-              border: Border.all(color: borderColor, width: 1.2),
+              border: Border.all(color: borderColor),
             ),
             child: child,
           ),

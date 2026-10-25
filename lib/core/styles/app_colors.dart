@@ -31,6 +31,47 @@ class AppColors {
   static const Color goldDark = Color(0xFF7A4D00);
   static const Color goldBorder = Color(0xFFF8E3AD);
 
+  // On-navy text tones (Welcome / dark surfaces)
+  static const Color onNavyMuted = Color(0xFFC5CCDB);
+  static const Color onNavySubtle = Color(0xFFAEB7CA);
+  static const Color redSoft = Color(0xFFE8574A);
+  static const Color white10 = Color(0x1AFFFFFF);
+  static const Color white30 = Color(0x4DFFFFFF);
+  static const Color redShadow = Color(0xA6D63B2F);
+
+  static const Color navyShadow = Color(0x1A0F1B3D);
+  static const Color navyShadow30 = Color(0x4D0F1B3D);
+  static const Color navyShadow18 = Color(0x2E0F1B3D);
+  static const Color navyShadow16 = Color(0x290F1B3D);
+  static const Color navyShadow4 = Color(0x0A0F1B3D);
+  static const Color goldText = Color(0xFF6B4400);
+  static const Color pitchGreenLight = Color(0xFF2E8B55);
+  static const Color offlineBanner = Color(0xFF3B4352);
+  static const Color white40 = Color(0x66FFFFFF);
+  static const Color chipBorder = Color(0xFFDCE0E8);
+  static const Color mapBackground = Color(0xFFE6E9EE);
+  static const Color mapPark = Color(0xFFD5E3D3);
+  static const Color mapLabel = Color(0xFF6B7383);
+  static const Color mapUserDot = Color(0xFF2B4FA8);
+  static const Color navyShadow12 = Color(0x1F0F1B3D);
+  static const Color navyShadow15 = Color(0x260F1B3D);
+  static const Color navyShadow20 = Color(0x330F1B3D);
+  static const Color textBody = Color(0xFF333B4A);
+  static const Color white60 = Color(0x99FFFFFF);
+  static const Color textDisabled = Color(0xFF8A94AA);
+  static const Color checkboxBorder = Color(0xFF9AA3B2);
+  static const Color hintText = Color(0xFF757575);
+  static const Color onNavySoft = Color(0xFFD5DBE7);
+  static const Color successText = Color(0xFF155C33);
+  static const Color white14 = Color(0x24FFFFFF);
+  static const Color white25 = Color(0x40FFFFFF);
+  static const Color white35 = Color(0x59FFFFFF);
+  static const Color successBorderSoft = Color(0xFFB9E2C8);
+  static const Color tableHead = Color(0xFFF8F9FB);
+  static const Color white8 = Color(0x14FFFFFF);
+  static const Color white18 = Color(0x2EFFFFFF);
+  static const Color lightSurfaceDeep = Color(0xFFDCE0EA);
+
   // Neutral scale & Surfaces
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);

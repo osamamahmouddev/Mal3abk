@@ -29,6 +29,7 @@ class CustomButton extends StatelessWidget {
     this.textStyle,
     this.padding,
     this.icon,
+    this.boxShadow,
   });
 
   final String text;
@@ -45,6 +46,7 @@ class CustomButton extends StatelessWidget {
   final TextStyle? textStyle;
   final EdgeInsetsGeometry? padding;
   final Widget? icon;
+  final List<BoxShadow>? boxShadow;
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +98,7 @@ class CustomButton extends StatelessWidget {
             color: bg,
             borderRadius: effectiveRadius,
             border: border,
+            boxShadow: boxShadow,
           ),
           child: isLoading
               ? RSizedBox(

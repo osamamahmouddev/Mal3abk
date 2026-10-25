@@ -21,7 +21,7 @@ class Mal3abkApp extends StatelessWidget {
     AppLocale.update(context.locale.languageCode);
 
     return ScreenUtilPlusInit(
-      designSize: const Size(414, 883),
+      designSize: const Size(390, 844),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, _) => MaterialApp(

@@ -1,0 +1,14 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="560" height="860" viewBox="0 0 560 860" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="icon">
+<path id="Vector" d="M26 20H534C537.314 20 540 22.6863 540 26V834C540 837.314 537.314 840 534 840H26C22.6863 840 20 837.314 20 834V26C20 22.6863 22.6863 20 26 20Z" stroke-width="3" stroke="white" stroke-opacity="0.07"/>
+<path id="Vector_2" d="M20 430H540" stroke-width="3" stroke="white" stroke-opacity="0.07"/>
+<path id="Vector_3" d="M370 430C370 479.706 329.706 520 280 520C230.294 520 190 479.706 190 430C190 380.294 230.294 340 280 340C329.706 340 370 380.294 370 430Z" stroke-width="3" stroke="white" stroke-opacity="0.07"/>
+<path id="Vector_4" d="M280 435C282.761 435 285 432.761 285 430C285 427.239 282.761 425 280 425C277.239 425 275 427.239 275 430C275 432.761 277.239 435 280 435Z" fill="white" fill-opacity="0.12" stroke-width="3" stroke="white" stroke-opacity="0.07"/>
+<path id="Vector_5" d="M130 20H430V160H130V20Z" stroke-width="3" stroke="white" stroke-opacity="0.07"/>
+<path id="Vector_6" d="M205 20H355V75H205V20Z" stroke-width="3" stroke="white" stroke-opacity="0.07"/>
+<path id="Vector_7" d="M130 700H430V840H130V700Z" stroke-width="3" stroke="white" stroke-opacity="0.07"/>
+<path id="Vector_8" d="M205 785H355V840H205V785Z" stroke-width="3" stroke="white" stroke-opacity="0.07"/>
+<path id="Vector_9" d="M220 160C226.222 170.354 235.018 178.922 245.532 184.87C256.046 190.818 267.92 193.944 280 193.944C292.08 193.944 303.954 190.818 314.468 184.87C324.982 178.922 333.778 170.354 340 160" stroke-width="3" stroke="white" stroke-opacity="0.07"/>
+<path id="Vector_10" d="M220 700C226.222 689.646 235.018 681.078 245.532 675.13C256.046 669.182 267.92 666.056 280 666.056C292.08 666.056 303.954 669.182 314.468 675.13C324.982 681.078 333.778 689.646 340 700" stroke-width="3" stroke="white" stroke-opacity="0.07"/>
+</g>
+</svg>
