@@ -1,11 +1,15 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/app/app_spaces.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/app_badge_widget.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
+import '../widgets/faq_item_widget.dart';
+import '../widgets/help_topic_card_widget.dart';
 
 class HelpAndSupportScreen extends StatelessWidget {
   const HelpAndSupportScreen({super.key});
@@ -14,15 +18,20 @@ class HelpAndSupportScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
-      appBar: const CustomAppBarWidget(title: 'المساعدة والدعم'),
+      appBar: CustomAppBarWidget(
+        title: 'settings.help_and_support.title'.tr(context: context),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('محتاج مساعدة في إيه؟', style: AppTextStyles.font15Bold),
-              SizedBox(height: 10.h),
+              Text(
+                'settings.help_and_support.need_help_prompt'.tr(context: context),
+                style: AppTextStyles.font15Bold,
+              ),
+              hSpace(10),
               GridView.count(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -31,34 +40,59 @@ class HelpAndSupportScreen extends StatelessWidget {
                 crossAxisSpacing: 10.w,
                 childAspectRatio: 2.4,
                 children: [
-                  _buildHelpTopic('مشكلة في حجز'),
-                  _buildHelpTopic('تأكيد العربون'),
-                  _buildHelpTopic('إلغاء واسترداد'),
-                  _buildHelpTopic('شكوى من ملعب'),
-                  _buildHelpTopic('فريق أو نتيجة ماتش'),
-                  _buildHelpTopic('حسابي وبياناتي'),
+                  HelpTopicCardWidget(
+                    title: 'settings.help_and_support.topic_booking'.tr(context: context),
+                  ),
+                  HelpTopicCardWidget(
+                    title: 'settings.help_and_support.topic_deposit'.tr(context: context),
+                  ),
+                  HelpTopicCardWidget(
+                    title: 'settings.help_and_support.topic_cancellation'.tr(context: context),
+                  ),
+                  HelpTopicCardWidget(
+                    title: 'settings.help_and_support.topic_pitch_complaint'.tr(context: context),
+                  ),
+                  HelpTopicCardWidget(
+                    title: 'settings.help_and_support.topic_team'.tr(context: context),
+                  ),
+                  HelpTopicCardWidget(
+                    title: 'settings.help_and_support.topic_account'.tr(context: context),
+                  ),
                 ],
               ),
-              SizedBox(height: 20.h),
-
-              Text('أسئلة شائعة', style: AppTextStyles.font15Bold),
-              SizedBox(height: 10.h),
+              hSpace(20),
+              Text(
+                'settings.help_and_support.faq_title'.tr(context: context),
+                style: AppTextStyles.font15Bold,
+              ),
+              hSpace(10),
               CustomCardWidget(
                 padding: EdgeInsets.zero,
                 child: Column(
                   children: [
-                    _buildFaqItem('ليه حجزي لسه مش متأكد بعد ما رفعت الإيصال؟', 'الملعب لازم يتأكد إن التحويل وصل حسابه. ده بياخد لحد ساعتين. لو عدّى الوقت ومحدش رد، ابعت طلب من هنا وهنتابع مع الملعب.'),
+                    FaqItemWidget(
+                      question: 'settings.help_and_support.faq1_q'.tr(context: context),
+                      answer: 'settings.help_and_support.faq1_a'.tr(context: context),
+                    ),
                     const Divider(height: 1, color: AppColors.border),
-                    _buildFaqItem('هل ملعبك بيتأكد من التحويلات؟', 'نعم، يتم ربط إيصال التحويل مباشرة بنظام الملعب لتسريع اعتماده فوراً.'),
+                    FaqItemWidget(
+                      question: 'settings.help_and_support.faq2_q'.tr(context: context),
+                      answer: 'settings.help_and_support.faq2_a'.tr(context: context),
+                    ),
                     const Divider(height: 1, color: AppColors.border),
-                    _buildFaqItem('إمتى أسترد العربون لو لغيت؟', 'إذا تم الإلغاء قبل المهلة المحددة (٦ ساعات عادة)، يتم استرداد العربون تلقائياً أو عبر التواصل مع الملعب خلال ٣ أيام.'),
+                    FaqItemWidget(
+                      question: 'settings.help_and_support.faq3_q'.tr(context: context),
+                      answer: 'settings.help_and_support.faq3_a'.tr(context: context),
+                    ),
                   ],
                 ),
               ),
-              SizedBox(height: 20.h),
-
-              Text('طلبات الدعم السابقة', style: AppTextStyles.font15Bold),
-              SizedBox(height: 10.h),
+              hSpace(20),
+              Text(
+                'settings.help_and_support.past_requests'.tr(context: context),
+                style: AppTextStyles.font15Bold,
+              ),
+              hSpace(10),
               CustomCardWidget(
                 child: Row(
                   children: [
@@ -66,13 +100,22 @@ class HelpAndSupportScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('العربون ماترجعش بعد الإلغاء', style: AppTextStyles.font14Bold),
-                          SizedBox(height: 2.h),
-                          Text('#SUP-2193 · ١٢ يوليو', style: AppTextStyles.font11Regular),
+                          Text(
+                            'settings.help_and_support.sample_req_title'.tr(context: context),
+                            style: AppTextStyles.font14Bold,
+                          ),
+                          hSpace(2),
+                          Text(
+                            'settings.help_and_support.sample_req_sub'.tr(context: context),
+                            style: AppTextStyles.font11Regular,
+                          ),
                         ],
                       ),
                     ),
-                    const AppBadgeWidget(text: 'اتحلّت', type: AppBadgeType.success),
+                    AppBadgeWidget(
+                      text: 'settings.help_and_support.resolved'.tr(context: context),
+                      type: AppBadgeType.success,
+                    ),
                   ],
                 ),
               ),
@@ -82,27 +125,4 @@ class HelpAndSupportScreen extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildHelpTopic(String title) {
-    return Container(
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: AppColors.borderCard, width: 1),
-      ),
-      child: Text(title, style: AppTextStyles.font13SemiBold),
-    );
-  }
-
-  Widget _buildFaqItem(String question, String answer) {
-    return ExpansionTile(
-      title: Text(question, style: AppTextStyles.font13SemiBold),
-      childrenPadding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 14.h),
-      children: [
-        Text(answer, style: AppTextStyles.font12Regular),
-      ],
-    );
-  }
 }
-
