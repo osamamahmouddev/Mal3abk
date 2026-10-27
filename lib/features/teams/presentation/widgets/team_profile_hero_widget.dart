@@ -76,15 +76,17 @@ class TeamProfileHeroWidget extends StatelessWidget {
                   Container(
                     height: 27.h,
                     padding: EdgeInsets.symmetric(horizontal: 10.w),
-                    alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: rankedBadge ? AppColors.accentGold : AppColors.white14,
                       borderRadius: BorderRadius.circular(13.5.r),
                     ),
-                    child: Text(
-                      badgeText,
-                      style: AppTextStyles.font12Bold.copyWith(
-                        color: rankedBadge ? AppColors.brandNavy : AppColors.white,
+                    child: Center(
+                      widthFactor: 1,
+                      child: Text(
+                        badgeText,
+                        style: AppTextStyles.font12Bold.copyWith(
+                          color: rankedBadge ? AppColors.brandNavy : AppColors.white,
+                        ),
                       ),
                     ),
                   ),

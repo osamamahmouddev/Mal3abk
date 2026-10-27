@@ -41,7 +41,7 @@ class HomeLocationHeaderWidget extends StatelessWidget {
                       'home.default_city'.tr(context: context),
                       style: AppTextStyles.font16Bold,
                     ),
-                    vSpace(6),
+                    vSpace(2),
                     SvgPicture.asset(
                       AppAssets.icChevronDown,
                       width: 14.r,

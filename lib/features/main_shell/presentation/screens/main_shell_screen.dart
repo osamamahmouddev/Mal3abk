@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../../../core/routes/navigation_logger_observer.dart';
+import '../../../../core/routes/tab_root_observer.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_motion.dart';
 import '../../../../core/widgets/main_nav_bar_widget.dart';
@@ -25,6 +26,21 @@ class MainShellScreen extends HookWidget {
     );
     final observers = useMemoized(
       () => List.generate(tabs.length, (_) => NavigationLoggerObserver()),
+    );
+    final rootObservers = useMemoized(
+      () => List.generate(tabs.length, (_) => TabRootObserver()),
+    );
+    useEffect(
+      () => () {
+        for (final observer in rootObservers) {
+          observer.dispose();
+        }
+      },
+      const [],
+    );
+    // Figma shows the nav bar only on tab roots; pushed screens go full height.
+    final isAtTabRoot = useValueListenable(
+      rootObservers[currentIndex.value].isAtRoot,
     );
     final tabFade = useAnimationController(
       duration: AppMotion.medium,
@@ -58,10 +74,12 @@ class MainShellScreen extends HookWidget {
         onSwitchTab: switchTab,
         child: Scaffold(
           backgroundColor: AppColors.pageBackground,
-          bottomNavigationBar: MainNavBarWidget(
-            currentIndex: currentIndex.value,
-            onTap: switchTab,
-          ),
+          bottomNavigationBar: isAtTabRoot
+              ? MainNavBarWidget(
+                  currentIndex: currentIndex.value,
+                  onTap: switchTab,
+                )
+              : null,
           body: FadeTransition(
             opacity: tabFade,
             child: IndexedStack(
@@ -73,6 +91,7 @@ class MainShellScreen extends HookWidget {
                       navigatorKey: navigatorKeys[i],
                       initialRoute: tabs[i],
                       observer: observers[i],
+                      rootObserver: rootObservers[i],
                       isActive: i == currentIndex.value,
                     )
                   else

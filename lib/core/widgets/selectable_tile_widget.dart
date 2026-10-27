@@ -64,26 +64,30 @@ class SelectableTileWidget extends StatelessWidget {
             child: Container(
               height: height.h,
               padding: EdgeInsets.symmetric(horizontal: horizontalPadding.w),
-              alignment: Alignment.center,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  AnimatedDefaultTextStyle(
-                    duration: AppMotion.medium,
-                    style: baseStyle.copyWith(color: fg),
-                    child: Text(title),
-                  ),
-                  if (subtitle != null)
-                    Opacity(
-                      opacity: subtitleOpacity,
-                      child: AnimatedDefaultTextStyle(
-                        duration: AppMotion.medium,
-                        style: (subtitleStyle ?? AppTextStyles.font11Regular)
-                            .copyWith(color: fg),
-                        child: Text(subtitle!),
-                      ),
+              // widthFactor keeps chips hugging their label inside a Wrap
+              // instead of stretching to the full row.
+              child: Center(
+                widthFactor: 1,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AnimatedDefaultTextStyle(
+                      duration: AppMotion.medium,
+                      style: baseStyle.copyWith(color: fg),
+                      child: Text(title),
                     ),
-                ],
+                    if (subtitle != null)
+                      Opacity(
+                        opacity: subtitleOpacity,
+                        child: AnimatedDefaultTextStyle(
+                          duration: AppMotion.medium,
+                          style: (subtitleStyle ?? AppTextStyles.font11Regular)
+                              .copyWith(color: fg),
+                          child: Text(subtitle!),
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ),
           ),

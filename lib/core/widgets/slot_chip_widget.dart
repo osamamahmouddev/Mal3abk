@@ -23,11 +23,13 @@ class SlotChipWidget extends StatelessWidget {
         child: Container(
           height: 34.h,
           padding: EdgeInsets.symmetric(horizontal: 10.w),
-          alignment: Alignment.center,
-          child: Text(
-            label,
-            style: AppTextStyles.font12Bold.copyWith(
-              color: AppColors.successGreen,
+          child: Center(
+            widthFactor: 1,
+            child: Text(
+              label,
+              style: AppTextStyles.font12Bold.copyWith(
+                color: AppColors.successGreen,
+              ),
             ),
           ),
         ),
