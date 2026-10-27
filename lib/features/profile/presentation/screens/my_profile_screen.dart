@@ -19,6 +19,7 @@ class MyProfileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
       body: SafeArea(
+        top: false,
         child: SingleChildScrollView(
           child: Column(
             children: [
