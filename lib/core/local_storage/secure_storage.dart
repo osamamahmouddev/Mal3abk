@@ -78,6 +78,10 @@ class SharedPrefHelper {
     return _secureStorage.read(key: key).then((value) => value ?? '');
   }
 
+  static Future<void> removeSecuredData(String key) async {
+    await _secureStorage.delete(key: key);
+  }
+
   static Future<void> clearAllSecuredData() async {
     await _secureStorage.deleteAll();
   }

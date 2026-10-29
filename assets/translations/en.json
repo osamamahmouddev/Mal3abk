@@ -28,7 +28,28 @@
     "timeout": "Request timed out. Please try again.",
     "unauthorized": "Unauthorized access. Please login again.",
     "server": "A server error occurred. Please try again later.",
-    "unknown": "An unexpected error occurred."
+    "unknown": "An unexpected error occurred.",
+    "forbidden": "You don't have permission to do this.",
+    "not_found": "The requested item was not found.",
+    "conflict": "This changed in the meantime. Please refresh and try again.",
+    "validation_failed": "Some of the details are invalid. Please check them and try again.",
+    "identity": {
+      "invalid_phone": "Enter a valid Egyptian mobile number (010, 011, 012 or 015).",
+      "invalid_otp": "The verification code is incorrect.",
+      "otp_format": "Enter the 6-digit verification code.",
+      "otp_expired": "The verification code has expired. Request a new one.",
+      "otp_max_attempts": "Too many wrong codes. Please wait before trying again.",
+      "turnstile_failed": "We couldn't verify this device. Please try again.",
+      "otp_delivery_failed": "We couldn't send the code right now. Please try again shortly.",
+      "session_expired": "Your session has ended. Please log in again.",
+      "step_up_expired": "This took too long. Please start the phone change again.",
+      "phone_change_cooldown": "You changed your number recently. Please try again later.",
+      "phone_in_use": "This number is already used by another account.",
+      "same_phone": "This is already your current number.",
+      "phone_change_expired": "This phone change request has expired. Please start again.",
+      "recovery_link_invalid": "This recovery link is invalid or has expired.",
+      "user_not_found": "Account not found."
+    }
   },
   "auth": {
     "login": {
@@ -835,6 +856,42 @@
       "sample_req_title": "Deposit not refunded after cancellation",
       "sample_req_sub": "#SUP-2193 · Jul 12",
       "resolved": "Resolved"
+    },
+    "account_section": "Account",
+    "change_phone": "Change phone number",
+    "logout_all": "Log out of all devices",
+    "logout_all_confirm_title": "Log out everywhere?",
+    "logout_all_confirm_body": "You will be logged out on every device, including this one.",
+    "logout_all_confirm_action": "Log out all"
+  },
+  "phone_change": {
+    "title": "Change Phone Number",
+    "how_it_works_title": "How it works",
+    "how_it_works_body": "We'll send a code to your current number, then a code to your new number. After the change you'll log in again with the new number.",
+    "new_phone_label": "New phone number",
+    "send_code": "Continue",
+    "verify_old": {
+      "step": "Step 1 of 2",
+      "description": "Enter the code we sent to your current number.",
+      "submit": "Confirm current number"
+    },
+    "verify_new": {
+      "step": "Step 2 of 2",
+      "description": "Enter the code we sent to your new number.",
+      "submit": "Confirm new number",
+      "success": "Phone number changed. Log in with your new number."
+    },
+    "recover": {
+      "title": "Restore Phone Number",
+      "confirm_title": "Didn't change your number?",
+      "confirm_description": "If you did not request this change, restore your previous number. You will be logged out of all devices.",
+      "confirm_action": "Restore my number",
+      "loading_title": "Restoring your number",
+      "success_title": "Number restored",
+      "success_description": "Your previous number is active again. Log in with it to continue.",
+      "sign_in": "Go to login",
+      "error_title": "Couldn't restore the number",
+      "invalid_link_title": "Invalid link"
     }
   }
 }

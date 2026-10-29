@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import 'core/app/app_locale.dart';
+import 'core/routes/app_navigator.dart';
 import 'core/routes/app_router.dart';
 import 'core/routes/navigation_logger_observer.dart';
 import 'core/routes/routes.dart';
@@ -15,8 +16,6 @@ class Mal3abkApp extends StatelessWidget {
 
   static final NavigationLoggerObserver _navigationLoggerObserver =
       NavigationLoggerObserver();
-  static final GlobalKey<NavigatorState> navigatorKey =
-      GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +27,11 @@ class Mal3abkApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, _) => MaterialApp(
         debugShowCheckedModeBanner: false,
-        navigatorKey: navigatorKey,
+        navigatorKey: AppNavigator.navigatorKey,
         title: 'app.name'.tr(),
         theme: AppTheme.light,
         initialRoute: AppRoutes.splash,
+        onGenerateInitialRoutes: AppRouter.onGenerateInitialRoutes,
         onGenerateRoute: AppRouter.onGenerateRoute,
         navigatorObservers: [_navigationLoggerObserver],
         locale: context.locale,
