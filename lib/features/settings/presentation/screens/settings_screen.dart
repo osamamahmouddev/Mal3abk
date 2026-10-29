@@ -8,6 +8,7 @@ import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
+import '../widgets/settings_account_section_widget.dart';
 import '../widgets/settings_switch_tile_widget.dart';
 
 class SettingsScreen extends HookWidget {
@@ -98,6 +99,8 @@ class SettingsScreen extends HookWidget {
                   ],
                 ),
               ),
+              hSpace(20),
+              const SettingsAccountSectionWidget(),
             ],
           ),
         ),

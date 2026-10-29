@@ -1,29 +1,28 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-import '../app/app_locale.dart';
 import '../config/env_config.dart';
-import '../di/service_locator.dart';
-import '../local_storage/secure_storage.dart';
+import '../local_storage/device_id_storage.dart';
+import 'api_logging_interceptor.dart';
+import 'request_headers_interceptor.dart';
 
 class DioFactory {
   DioFactory._();
 
-  static Dio? _dio;
-  static const String _tokenKey = 'auth_token';
+  static const Duration _timeout = Duration(seconds: 30);
 
-  static Dio getDio() {
-    if (_dio != null) return _dio!;
-
-    const timeout = Duration(seconds: 30);
-    final envConfig = sl<EnvConfig>();
-
-    _dio = Dio(
+  /// Base client: JSON, timeouts, locale + device headers and safe logging.
+  /// `AuthInterceptor` is added on top in the service locator.
+  static Dio createDio({
+    required EnvConfig envConfig,
+    required DeviceIdStorage deviceIdStorage,
+  }) {
+    final dio = Dio(
       BaseOptions(
         baseUrl: envConfig.baseUrl,
-        connectTimeout: timeout,
-        receiveTimeout: timeout,
+        connectTimeout: _timeout,
+        sendTimeout: _timeout,
+        receiveTimeout: _timeout,
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
@@ -31,41 +30,12 @@ class DioFactory {
       ),
     );
 
-    _dio!.interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (options, handler) async {
-          final token = await SharedPrefHelper.getSecuredString(_tokenKey);
-          if (token.isNotEmpty) {
-            options.headers['Authorization'] = 'Bearer $token';
-          }
-          options.headers['Accept-Language'] = AppLocale.currentLanguage;
-          return handler.next(options);
-        },
-      ),
+    dio.interceptors.add(
+      RequestHeadersInterceptor(deviceIdStorage: deviceIdStorage),
     );
-
     if (kDebugMode) {
-      _dio!.interceptors.add(
-        PrettyDioLogger(
-          requestHeader: true,
-          requestBody: true,
-          responseHeader: false,
-        ),
-      );
+      dio.interceptors.add(ApiLoggingInterceptor());
     }
-
-    return _dio!;
-  }
-
-  static Future<void> saveToken(String token) async {
-    await SharedPrefHelper.setSecuredString(_tokenKey, token);
-  }
-
-  static Future<String> getToken() async {
-    return SharedPrefHelper.getSecuredString(_tokenKey);
-  }
-
-  static Future<void> clearToken() async {
-    await SharedPrefHelper.clearAllSecuredData();
+    return dio;
   }
 }

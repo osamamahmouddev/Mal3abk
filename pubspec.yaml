@@ -13,7 +13,6 @@ dependencies:
   # API & Networking
   dio: ^5.9.2
   retrofit: ^4.9.2
-  pretty_dio_logger: ^1.4.0
   freezed_annotation: ^3.1.0
   json_annotation: ^4.12.0
 

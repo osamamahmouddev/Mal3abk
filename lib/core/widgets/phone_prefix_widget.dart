@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
-import '../../../../core/styles/app_colors.dart';
-import '../../../../core/styles/app_text_styles.dart';
+import '../styles/app_colors.dart';
+import '../styles/app_text_styles.dart';
 
-class LoginPhonePrefixWidget extends StatelessWidget {
-  const LoginPhonePrefixWidget({super.key});
+/// `+20` country prefix shown inside phone number fields.
+class PhonePrefixWidget extends StatelessWidget {
+  const PhonePrefixWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -46,4 +46,11 @@ class AppRoutes {
   static const String notificationDetail = '/notification-detail';
   static const String settings = '/settings';
   static const String helpAndSupport = '/help-and-support';
+
+  static const String changePhone = '/change-phone';
+  static const String verifyOldPhone = '/change-phone/verify-old';
+  static const String verifyNewPhone = '/change-phone/verify-new';
+
+  /// Deep link: `https://malabak.app/recover-phone?token=…`.
+  static const String recoverPhone = '/recover-phone';
 }
