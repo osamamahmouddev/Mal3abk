@@ -10,7 +10,26 @@ import '../../../../core/widgets/custom_button.dart';
 import 'profile_stat_widget.dart';
 
 class ProfileHeaderCardWidget extends StatelessWidget {
-  const ProfileHeaderCardWidget({super.key});
+  const ProfileHeaderCardWidget({
+    super.key,
+    this.name,
+    this.subtitle,
+    this.memberSince,
+    this.initials,
+    this.matches,
+    this.wins,
+    this.bookings,
+    this.teams,
+  });
+
+  final String? name;
+  final String? subtitle;
+  final String? memberSince;
+  final String? initials;
+  final String? matches;
+  final String? wins;
+  final String? bookings;
+  final String? teams;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +47,7 @@ class ProfileHeaderCardWidget extends StatelessWidget {
                 radius: 36.r,
                 backgroundColor: AppColors.white,
                 child: Text(
-                  'أس',
+                  initials ?? 'أس',
                   style: AppTextStyles.font22Bold.copyWith(
                     color: AppColors.brandNavy,
                   ),
@@ -40,20 +59,20 @@ class ProfileHeaderCardWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'أحمد سامي',
+                      name ?? 'أحمد سامي',
                       style: AppTextStyles.font20Bold.copyWith(
                         color: AppColors.white,
                       ),
                     ),
                     hSpace(2),
                     Text(
-                      'مدينة نصر · وسط · هجوم',
+                      subtitle ?? 'مدينة نصر · وسط · هجوم',
                       style: AppTextStyles.font12Regular.copyWith(
                         color: AppColors.white.withValues(alpha: 0.8),
                       ),
                     ),
                     Text(
-                      'عضو من مارس ٢٠٢٦',
+                      memberSince ?? 'عضو من مارس ٢٠٢٦',
                       style: AppTextStyles.font11Regular.copyWith(
                         color: AppColors.white.withValues(alpha: 0.6),
                       ),
@@ -78,19 +97,19 @@ class ProfileHeaderCardWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               ProfileStatWidget(
-                value: '٢٢',
+                value: matches ?? '٢٢',
                 label: 'profile.matches'.tr(context: context),
               ),
               ProfileStatWidget(
-                value: '٦٤٪',
+                value: wins ?? '٦٤٪',
                 label: 'profile.wins'.tr(context: context),
               ),
               ProfileStatWidget(
-                value: '١٨',
+                value: bookings ?? '١٨',
                 label: 'profile.bookings'.tr(context: context),
               ),
               ProfileStatWidget(
-                value: '٢',
+                value: teams ?? '٢',
                 label: 'profile.teams'.tr(context: context),
               ),
             ],

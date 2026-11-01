@@ -1,0 +1,31 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'complete_profile_request_body.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+CompleteProfileRequestBody _$CompleteProfileRequestBodyFromJson(
+  Map<String, dynamic> json,
+) => CompleteProfileRequestBody(
+  fullName: json['fullName'] as String,
+  city: json['city'] as String,
+  area: json['area'] as String,
+  positions: (json['positions'] as List<dynamic>?)
+      ?.map((e) => e as String)
+      .toList(),
+  skillLevel: json['skillLevel'] as String?,
+  language: json['language'] as String?,
+);
+
+Map<String, dynamic> _$CompleteProfileRequestBodyToJson(
+  CompleteProfileRequestBody instance,
+) => <String, dynamic>{
+  'fullName': instance.fullName,
+  'city': instance.city,
+  'area': instance.area,
+  if (instance.positions != null) 'positions': instance.positions,
+  if (instance.skillLevel != null) 'skillLevel': instance.skillLevel,
+  if (instance.language != null) 'language': instance.language,
+};

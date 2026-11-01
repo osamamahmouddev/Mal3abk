@@ -6,7 +6,7 @@ import '../../../../core/app/app_spaces.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
-import '../widgets/profile_header_card_widget.dart';
+import '../widgets/profile_header_bloc_builder.dart';
 import '../widgets/profile_nav_tile_widget.dart';
 import '../widgets/profile_venue_owner_card_widget.dart';
 import '../../../main_shell/presentation/widgets/main_shell_scope_widget.dart';
@@ -22,7 +22,7 @@ class MyProfileScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const ProfileHeaderCardWidget(),
+              const ProfileHeaderBlocBuilder(),
               hSpace(16),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
