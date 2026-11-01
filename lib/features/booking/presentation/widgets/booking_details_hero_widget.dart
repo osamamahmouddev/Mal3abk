@@ -23,7 +23,10 @@ class BookingDetailsHeroWidget extends StatelessWidget {
       child: Stack(
         children: [
           Positioned.fill(
-            child: SvgPicture.asset(AppAssets.bookingHeroPattern, fit: BoxFit.fill),
+            child: SvgPicture.asset(
+              AppAssets.bookingHeroPattern,
+              fit: BoxFit.fill,
+            ),
           ),
           Padding(
             padding: EdgeInsets.all(16.r),
@@ -36,7 +39,10 @@ class BookingDetailsHeroWidget extends StatelessWidget {
                       text: 'booking.details.confirmed'.tr(context: context),
                       type: AppBadgeType.success,
                       borderRadius: 13,
-                      padding: EdgeInsets.symmetric(horizontal: 9.w, vertical: 3.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 9.w,
+                        vertical: 3.h,
+                      ),
                     ),
                     const Spacer(),
                     Text(
@@ -50,7 +56,9 @@ class BookingDetailsHeroWidget extends StatelessWidget {
                 hSpace(6),
                 Text(
                   'booking.details.sample_pitch'.tr(context: context),
-                  style: AppTextStyles.font20Bold.copyWith(color: AppColors.white),
+                  style: AppTextStyles.font20Bold.copyWith(
+                    color: AppColors.white,
+                  ),
                 ),
                 hSpace(4),
                 Text(

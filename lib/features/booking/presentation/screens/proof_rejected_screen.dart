@@ -46,8 +46,11 @@ class ProofRejectedScreen extends StatelessWidget {
                 height: 54.h,
                 borderRadius: 16,
                 boxShadow: AppShadows.redGlow,
-                textStyle: AppTextStyles.font16Bold.copyWith(color: AppColors.white),
-                onTap: () => Navigator.of(context).pushNamed(AppRoutes.uploadProof),
+                textStyle: AppTextStyles.font16Bold.copyWith(
+                  color: AppColors.white,
+                ),
+                onTap: () =>
+                    Navigator.of(context).pushNamed(AppRoutes.uploadProof),
               ),
             ),
           ],
@@ -65,9 +68,24 @@ class ProofRejectedScreen extends StatelessWidget {
           TimelineCardWidget(
             title: 'booking.log.title'.tr(context: context),
             entries: [
-              ('booking.log.sent'.tr(context: context), 'booking.log.t_640'.tr(context: context), AppColors.brandNavy, null),
-              ('booking.log.uploaded'.tr(context: context), 'booking.log.t_655'.tr(context: context), AppColors.brandNavy, null),
-              ('booking.log.rejected'.tr(context: context), 'booking.log.t_712'.tr(context: context), AppColors.redText, AppColors.redDark),
+              (
+                'booking.log.sent'.tr(context: context),
+                'booking.log.t_640'.tr(context: context),
+                AppColors.brandNavy,
+                null,
+              ),
+              (
+                'booking.log.uploaded'.tr(context: context),
+                'booking.log.t_655'.tr(context: context),
+                AppColors.brandNavy,
+                null,
+              ),
+              (
+                'booking.log.rejected'.tr(context: context),
+                'booking.log.t_712'.tr(context: context),
+                AppColors.redText,
+                AppColors.redDark,
+              ),
             ],
           ),
         ],

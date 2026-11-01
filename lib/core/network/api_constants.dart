@@ -23,6 +23,33 @@ class ApiConstants {
     recoverPhone,
   ];
 
+  /// Profile and onboarding
+  static const String myProfile = '/api/v1/me';
+  static const String onboardingProfile = '/api/v1/me/onboarding/profile';
+  static const String onboardingStatus = '/api/v1/me/onboarding';
+
+  /// Home and Venues
+  static const String home = '/api/v1/home';
+  static const String exploreVenues = '/api/v1/venues/explore';
+  static const String mapVenues = '/api/v1/venues/map';
+  static const String areas = '/api/v1/venues/areas';
+  static const String venueDetails = '/api/v1/venues/{id}';
+  static const String venuePitches = '/api/v1/venues/{id}/pitches';
+  static const String venueAvailability = '/api/v1/venues/{id}/availability';
+  static const String venuePaymentMethods =
+      '/api/v1/venues/{id}/payment-methods';
+
+  /// Bookings
+  static const String bookingQuote = '/api/v1/bookings/quote';
+  static const String createBooking = '/api/v1/bookings';
+  static const String myBookingsList = '/api/v1/me/bookings';
+  static const String myBookingDetail = '/api/v1/me/bookings/{id}';
+  static const String cancelBooking = '/api/v1/bookings/{id}/cancel';
+  static const String cancelPreview = '/api/v1/bookings/{id}/cancel-preview';
+  static const String submitProof = '/api/v1/bookings/{id}/proof';
+  static const String proofUploadUrl = '/api/v1/bookings/{id}/proof/upload-url';
+  static const String submitBookingProof = '/api/v1/bookings/{id}/proof/submit';
+
   static const String fields = '/fields';
   static const String fieldDetails = '/fields/{id}';
   static const String bookings = '/bookings';

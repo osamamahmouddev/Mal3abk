@@ -35,11 +35,19 @@ class BookingLocationCardWidget extends StatelessWidget {
                 children: [
                   Transform.rotate(
                     angle: -6 * math.pi / 180,
-                    child: Container(width: 440.w, height: 14.h, color: AppColors.white),
+                    child: Container(
+                      width: 440.w,
+                      height: 14.h,
+                      color: AppColors.white,
+                    ),
                   ),
                   Transform.rotate(
                     angle: 10 * math.pi / 180,
-                    child: Container(width: 12.w, height: 160.h, color: AppColors.white),
+                    child: Container(
+                      width: 12.w,
+                      height: 160.h,
+                      color: AppColors.white,
+                    ),
                   ),
                   Transform.rotate(
                     angle: -45 * math.pi / 180,

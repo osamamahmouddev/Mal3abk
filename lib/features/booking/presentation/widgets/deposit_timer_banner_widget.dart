@@ -26,7 +26,11 @@ class DepositTimerBannerWidget extends StatelessWidget {
         children: [
           Padding(
             padding: EdgeInsets.only(top: 4.h),
-            child: SvgPicture.asset(AppAssets.icClockGold, width: 22.r, height: 22.r),
+            child: SvgPicture.asset(
+              AppAssets.icClockGold,
+              width: 22.r,
+              height: 22.r,
+            ),
           ),
           vSpace(12),
           Expanded(
@@ -34,9 +38,13 @@ class DepositTimerBannerWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'booking.deposit.timer_title'
-                      .tr(context: context, args: [remaining]),
-                  style: AppTextStyles.font15Bold.copyWith(color: AppColors.goldDark),
+                  'booking.deposit.timer_title'.tr(
+                    context: context,
+                    args: [remaining],
+                  ),
+                  style: AppTextStyles.font15Bold.copyWith(
+                    color: AppColors.goldDark,
+                  ),
                 ),
                 hSpace(6),
                 Text(

@@ -10,12 +10,22 @@ import '../../../../core/widgets/app_badge_widget.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
 
 class UploadProofBookingCardWidget extends StatelessWidget {
-  const UploadProofBookingCardWidget({required this.remaining, super.key});
+  const UploadProofBookingCardWidget({
+    required this.remaining,
+    this.pitchName,
+    this.meta,
+    super.key,
+  });
 
   final String remaining;
+  final String? pitchName;
+  final String? meta;
 
   @override
   Widget build(BuildContext context) {
+    final title = pitchName ?? 'booking.sample_pitch'.tr(context: context);
+    final subtitle = meta ?? 'booking.upload.sample_meta'.tr(context: context);
+
     return CustomCardWidget(
       borderRadius: 18,
       padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
@@ -23,19 +33,20 @@ class UploadProofBookingCardWidget extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(10.r),
-            child: SvgPicture.asset(AppAssets.pitchThumb48, width: 48.r, height: 48.r),
+            child: SvgPicture.asset(
+              AppAssets.pitchThumb48,
+              width: 48.r,
+              height: 48.r,
+            ),
           ),
           vSpace(12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('booking.sample_pitch'.tr(context: context), style: AppTextStyles.font14Bold),
+                Text(title, style: AppTextStyles.font14Bold),
                 hSpace(4),
-                Text(
-                  'booking.upload.sample_meta'.tr(context: context),
-                  style: AppTextStyles.font12Regular,
-                ),
+                Text(subtitle, style: AppTextStyles.font12Regular),
               ],
             ),
           ),

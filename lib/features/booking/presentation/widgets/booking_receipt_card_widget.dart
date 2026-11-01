@@ -18,7 +18,10 @@ class BookingReceiptCardWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text('booking.receipt.title'.tr(context: context), style: AppTextStyles.font15Bold),
+          Text(
+            'booking.receipt.title'.tr(context: context),
+            style: AppTextStyles.font15Bold,
+          ),
           hSpace(14),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,8 +54,13 @@ class BookingReceiptCardWidget extends StatelessWidget {
                       text: 'booking.receipt.rejected'.tr(context: context),
                       type: AppBadgeType.error,
                       borderRadius: 10.5,
-                      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 1.h),
-                      textStyle: AppTextStyles.font11Bold.copyWith(color: AppColors.redText),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8.w,
+                        vertical: 1.h,
+                      ),
+                      textStyle: AppTextStyles.font11Bold.copyWith(
+                        color: AppColors.redText,
+                      ),
                     ),
                   ],
                 ),

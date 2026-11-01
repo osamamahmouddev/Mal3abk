@@ -35,14 +35,18 @@ class ProofRejectedBannerWidget extends StatelessWidget {
                 ),
                 child: Text(
                   '✕',
-                  style: AppTextStyles.font14Bold.copyWith(color: AppColors.white),
+                  style: AppTextStyles.font14Bold.copyWith(
+                    color: AppColors.white,
+                  ),
                 ),
               ),
               vSpace(10),
               Expanded(
                 child: Text(
                   'booking.rejected.title'.tr(context: context),
-                  style: AppTextStyles.font17Bold.copyWith(color: AppColors.redDark),
+                  style: AppTextStyles.font17Bold.copyWith(
+                    color: AppColors.redDark,
+                  ),
                 ),
               ),
             ],
@@ -75,7 +79,11 @@ class ProofRejectedBannerWidget extends StatelessWidget {
             children: [
               Padding(
                 padding: EdgeInsets.only(top: 2.h),
-                child: SvgPicture.asset(AppAssets.icClockRed, width: 16.r, height: 16.r),
+                child: SvgPicture.asset(
+                  AppAssets.icClockRed,
+                  width: 16.r,
+                  height: 16.r,
+                ),
               ),
               vSpace(7),
               Expanded(

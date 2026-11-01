@@ -5,6 +5,8 @@ import '../../features/auth/presentation/cubit/logout_cubit.dart';
 import '../../features/auth/presentation/cubit/send_otp_cubit.dart';
 import '../../features/auth/presentation/cubit/verify_otp_cubit.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
+import '../../features/booking/data/models/create_booking_response_model.dart';
+import '../../features/booking/presentation/cubit/my_bookings_cubit.dart';
 import '../../features/booking/presentation/screens/booking_details_screen.dart';
 import '../../features/booking/presentation/screens/booking_review_screen.dart';
 import '../../features/booking/presentation/screens/cancel_booking_screen.dart';
@@ -12,12 +14,16 @@ import '../../features/booking/presentation/screens/deposit_instructions_screen.
 import '../../features/booking/presentation/screens/my_bookings_screen.dart';
 import '../../features/booking/presentation/screens/proof_rejected_screen.dart';
 import '../../features/booking/presentation/screens/upload_proof_screen.dart';
+import '../../features/explore/presentation/cubit/explore_list_cubit.dart';
+import '../../features/explore/presentation/cubit/pitch_booking_cubit.dart';
+import '../../features/explore/presentation/cubit/venue_profile_cubit.dart';
 import '../../features/explore/presentation/screens/explore_list_screen.dart';
 import '../../features/explore/presentation/screens/explore_map_screen.dart';
 import '../../features/explore/presentation/screens/favorites_screen.dart';
 import '../../features/explore/presentation/screens/filters_and_sort_screen.dart';
 import '../../features/explore/presentation/screens/pitch_and_time_screen.dart';
 import '../../features/explore/presentation/screens/venue_profile_screen.dart';
+import '../../features/home/presentation/cubit/home_feed_cubit.dart';
 import '../../features/home/presentation/screens/home_screen.dart';
 import '../../features/main_shell/presentation/screens/main_shell_screen.dart';
 import '../../features/matches/presentation/screens/challenge_details_screen.dart';
@@ -27,6 +33,7 @@ import '../../features/matches/presentation/screens/match_details_screen.dart';
 import '../../features/matches/presentation/screens/submit_result_screen.dart';
 import '../../features/notifications/presentation/screens/notification_detail_screen.dart';
 import '../../features/notifications/presentation/screens/notifications_screen.dart';
+import '../../features/onboarding/presentation/cubit/profile_setup_cubit.dart';
 import '../../features/onboarding/presentation/screens/location_permission_screen.dart';
 import '../../features/onboarding/presentation/screens/notifications_permission_screen.dart';
 import '../../features/onboarding/presentation/screens/profile_setup_screen.dart';
@@ -39,6 +46,7 @@ import '../../features/phone_change/presentation/screens/change_phone_screen.dar
 import '../../features/phone_change/presentation/screens/recover_phone_screen.dart';
 import '../../features/phone_change/presentation/screens/verify_new_phone_screen.dart';
 import '../../features/phone_change/presentation/screens/verify_old_phone_screen.dart';
+import '../../features/profile/presentation/cubit/profile_cubit.dart';
 import '../../features/profile/presentation/screens/my_profile_screen.dart';
 import '../../features/settings/presentation/screens/help_and_support_screen.dart';
 import '../../features/settings/presentation/screens/settings_screen.dart';
@@ -104,7 +112,10 @@ class AppRouter {
       case AppRoutes.profileSetup:
         return MaterialPageRoute(
           settings: const RouteSettings(name: AppRoutes.profileSetup),
-          builder: (_) => const ProfileSetupScreen(),
+          builder: (_) => BlocProvider<ProfileSetupCubit>(
+            create: (_) => sl<ProfileSetupCubit>(),
+            child: const ProfileSetupScreen(),
+          ),
         );
 
       case AppRoutes.locationPermission:
@@ -115,7 +126,9 @@ class AppRouter {
 
       case AppRoutes.notificationsPermission:
         return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.notificationsPermission),
+          settings: const RouteSettings(
+            name: AppRoutes.notificationsPermission,
+          ),
           builder: (_) => const NotificationsPermissionScreen(),
         );
 
@@ -128,13 +141,19 @@ class AppRouter {
       case AppRoutes.home:
         return MaterialPageRoute(
           settings: const RouteSettings(name: AppRoutes.home),
-          builder: (_) => const HomeScreen(),
+          builder: (_) => BlocProvider<HomeFeedCubit>(
+            create: (_) => sl<HomeFeedCubit>()..fetchFeed(),
+            child: const HomeScreen(),
+          ),
         );
 
       case AppRoutes.exploreList:
         return MaterialPageRoute(
           settings: const RouteSettings(name: AppRoutes.exploreList),
-          builder: (_) => const ExploreListScreen(),
+          builder: (_) => BlocProvider<ExploreListCubit>(
+            create: (_) => sl<ExploreListCubit>()..fetchVenues(),
+            child: const ExploreListScreen(),
+          ),
         );
 
       case AppRoutes.exploreMap:
@@ -150,15 +169,20 @@ class AppRouter {
         );
 
       case AppRoutes.venueProfile:
+        final venueId = settings.arguments as String?;
         return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.venueProfile),
-          builder: (_) => const VenueProfileScreen(),
+          settings: settings,
+          builder: (_) => BlocProvider<VenueProfileCubit>(
+            create: (_) => sl<VenueProfileCubit>(),
+            child: VenueProfileScreen(venueId: venueId),
+          ),
         );
 
       case AppRoutes.pitchAndTime:
+        final venueId = settings.arguments as String?;
         return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.pitchAndTime),
-          builder: (_) => const PitchAndTimeScreen(),
+          settings: settings,
+          builder: (_) => PitchAndTimeScreen(venueId: venueId),
         );
 
       case AppRoutes.favorites:
@@ -168,21 +192,38 @@ class AppRouter {
         );
 
       case AppRoutes.bookingReview:
+        final cubit = settings.arguments as PitchBookingCubit?;
         return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.bookingReview),
-          builder: (_) => const BookingReviewScreen(),
+          settings: settings,
+          builder: (_) => BookingReviewScreen(cubit: cubit),
         );
 
       case AppRoutes.depositInstructions:
+        final args = settings.arguments as Map<String, dynamic>?;
         return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.depositInstructions),
-          builder: (_) => const DepositInstructionsScreen(),
+          settings: settings,
+          builder: (_) => DepositInstructionsScreen(arguments: args),
         );
 
       case AppRoutes.uploadProof:
+        final args = settings.arguments;
+        String? bookingId;
+        CreateBookingResponseModel? booking;
+        double? depositAmount;
+        if (args is String) {
+          bookingId = args;
+        } else if (args is Map<String, dynamic>) {
+          bookingId = args['bookingId'] as String?;
+          booking = args['booking'] as CreateBookingResponseModel?;
+          depositAmount = args['depositAmount'] as double?;
+        }
         return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.uploadProof),
-          builder: (_) => const UploadProofScreen(),
+          settings: settings,
+          builder: (_) => UploadProofScreen(
+            bookingId: bookingId,
+            booking: booking,
+            depositAmount: depositAmount,
+          ),
         );
 
       case AppRoutes.proofRejected:
@@ -194,7 +235,10 @@ class AppRouter {
       case AppRoutes.myBookings:
         return MaterialPageRoute(
           settings: const RouteSettings(name: AppRoutes.myBookings),
-          builder: (_) => const MyBookingsScreen(),
+          builder: (_) => BlocProvider<MyBookingsCubit>(
+            create: (_) => sl<MyBookingsCubit>()..fetchBookings(),
+            child: const MyBookingsScreen(),
+          ),
         );
 
       case AppRoutes.bookingDetails:
@@ -296,7 +340,10 @@ class AppRouter {
       case AppRoutes.myProfile:
         return MaterialPageRoute(
           settings: const RouteSettings(name: AppRoutes.myProfile),
-          builder: (_) => const MyProfileScreen(),
+          builder: (_) => BlocProvider<ProfileCubit>(
+            create: (_) => sl<ProfileCubit>()..fetchProfile(),
+            child: const MyProfileScreen(),
+          ),
         );
 
       case AppRoutes.notifications:
@@ -382,10 +429,6 @@ class AppRouter {
   }
 
   static Route _errorRoute(String message) => MaterialPageRoute(
-        builder: (_) => Scaffold(
-          body: Center(
-            child: Text(message),
-          ),
-        ),
-      );
+    builder: (_) => Scaffold(body: Center(child: Text(message))),
+  );
 }

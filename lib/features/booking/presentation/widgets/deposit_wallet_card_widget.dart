@@ -13,22 +13,39 @@ import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
 
 class DepositWalletCardWidget extends StatelessWidget {
-  const DepositWalletCardWidget({super.key});
+  const DepositWalletCardWidget({
+    this.accountNumber,
+    this.recipientName,
+    this.bookingNo,
+    this.instructions,
+    this.label,
+    super.key,
+  });
+
+  final String? accountNumber;
+  final String? recipientName;
+  final String? bookingNo;
+  final String? instructions;
+  final String? label;
 
   @override
   Widget build(BuildContext context) {
-    final wallet = 'booking.deposit.sample_wallet'.tr(context: context);
-    final bookingNo = 'booking.deposit.sample_booking_no'.tr(context: context);
+    final wallet =
+        accountNumber ?? 'booking.deposit.sample_wallet'.tr(context: context);
+    final bookingReference =
+        bookingNo ?? 'booking.deposit.sample_booking_no'.tr(context: context);
+    final recipient =
+        recipientName ??
+        'booking.deposit.sample_recipient'.tr(context: context);
+    final displayLabel =
+        label ?? 'booking.deposit.wallet_number'.tr(context: context);
 
     return CustomCardWidget(
       padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 16.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            'booking.deposit.wallet_number'.tr(context: context),
-            style: AppTextStyles.font12Regular,
-          ),
+          Text(displayLabel, style: AppTextStyles.font12Regular),
           hSpace(10),
           Row(
             children: [
@@ -40,7 +57,11 @@ class DepositWalletCardWidget extends StatelessWidget {
                 borderRadius: 10,
                 backgroundColor: AppColors.white,
                 padding: EdgeInsets.symmetric(horizontal: 12.w),
-                icon: SvgPicture.asset(AppAssets.icCopy, width: 16.r, height: 16.r),
+                icon: SvgPicture.asset(
+                  AppAssets.icCopy,
+                  width: 16.r,
+                  height: 16.r,
+                ),
                 textStyle: AppTextStyles.font13SemiBold.copyWith(
                   color: AppColors.brandNavy,
                 ),
@@ -62,12 +83,18 @@ class DepositWalletCardWidget extends StatelessWidget {
                 style: AppTextStyles.font14Regular,
               ),
               const Spacer(),
-              Text(
-                'booking.deposit.sample_recipient'.tr(context: context),
-                style: AppTextStyles.font14SemiBold,
-              ),
+              Text(recipient, style: AppTextStyles.font14SemiBold),
             ],
           ),
+          if (instructions != null && instructions!.isNotEmpty) ...[
+            hSpace(10),
+            Text(
+              instructions!,
+              style: AppTextStyles.font12Regular.copyWith(
+                color: AppColors.brandNavy,
+              ),
+            ),
+          ],
           hSpace(14),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 13.w, vertical: 13.h),
@@ -76,7 +103,10 @@ class DepositWalletCardWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(10.r),
             ),
             child: Text(
-              'booking.deposit.tip'.tr(context: context, args: [bookingNo]),
+              'booking.deposit.tip'.tr(
+                context: context,
+                args: [bookingReference],
+              ),
               style: AppTextStyles.font13Regular.copyWith(
                 color: AppColors.textBody,
                 height: 21 / 13,

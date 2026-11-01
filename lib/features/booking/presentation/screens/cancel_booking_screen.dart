@@ -45,7 +45,10 @@ class CancelBookingScreen extends HookWidget {
             );
             return;
           }
-          AppTopSnackBar.showSuccess(context, 'booking.cancel.done'.tr(context: context));
+          AppTopSnackBar.showSuccess(
+            context,
+            'booking.cancel.done'.tr(context: context),
+          );
           Navigator.of(context).pop();
         },
       ),

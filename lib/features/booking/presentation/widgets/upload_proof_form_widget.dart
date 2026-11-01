@@ -20,6 +20,11 @@ class UploadProofFormWidget extends HookWidget {
     required this.confirmed,
     required this.onPickFile,
     required this.onConfirmChanged,
+    this.remaining = '١٤:٥٩',
+    this.pitchName,
+    this.meta,
+    this.depositAmount,
+    this.onSenderChanged,
     super.key,
   });
 
@@ -27,20 +32,43 @@ class UploadProofFormWidget extends HookWidget {
   final bool confirmed;
   final VoidCallback onPickFile;
   final ValueChanged<bool> onConfirmChanged;
+  final String remaining;
+  final String? pitchName;
+  final String? meta;
+  final double? depositAmount;
+  final ValueChanged<String>? onSenderChanged;
 
   @override
   Widget build(BuildContext context) {
-    final amountController = useTextEditingController(text: '٥٠');
+    final defaultAmount = depositAmount != null
+        ? depositAmount!.toInt().toString()
+        : '٥٠';
+    final amountController = useTextEditingController(text: defaultAmount);
     final senderController = useTextEditingController();
+
+    useEffect(() {
+      void listener() {
+        onSenderChanged?.call(senderController.text);
+      }
+
+      senderController.addListener(listener);
+      return () => senderController.removeListener(listener);
+    }, [senderController]);
 
     return ListView(
       padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
       children: [
-        const UploadProofBookingCardWidget(remaining: '٢٨:٤٥'),
+        UploadProofBookingCardWidget(
+          remaining: remaining,
+          pitchName: pitchName,
+          meta: meta,
+        ),
         hSpace(14),
         UploadProofDropzoneWidget(hasFile: hasFile, onTap: onPickFile),
         hSpace(10),
-        FormFieldLabelWidget(label: 'booking.upload.amount_label'.tr(context: context)),
+        FormFieldLabelWidget(
+          label: 'booking.upload.amount_label'.tr(context: context),
+        ),
         hSpace(12),
         CustomTextFormField(
           controller: amountController,
@@ -56,14 +84,18 @@ class UploadProofFormWidget extends HookWidget {
           ),
         ),
         hSpace(10),
-        FormFieldLabelWidget(label: 'booking.upload.sender_label'.tr(context: context)),
+        FormFieldLabelWidget(
+          label: 'booking.upload.sender_label'.tr(context: context),
+        ),
         hSpace(12),
         CustomTextFormField(
           controller: senderController,
           hintText: 'booking.upload.sender_hint'.tr(context: context),
           keyboardType: TextInputType.number,
           style: AppTextStyles.font15Regular,
-          hintStyle: AppTextStyles.font15Regular.copyWith(color: AppColors.hintText),
+          hintStyle: AppTextStyles.font15Regular.copyWith(
+            color: AppColors.hintText,
+          ),
         ),
         hSpace(14),
         GestureDetector(

@@ -30,12 +30,15 @@ class BookingDetailRowWidget extends StatelessWidget {
         children: [
           Text(
             label,
-            style: isBold ? AppTextStyles.font15Bold : AppTextStyles.font14Regular,
+            style: isBold
+                ? AppTextStyles.font15Bold
+                : AppTextStyles.font14Regular,
           ),
           const Spacer(),
           Text(
             value,
-            style: valueStyle ??
+            style:
+                valueStyle ??
                 (isBold
                     ? AppTextStyles.font15Bold
                     : AppTextStyles.font14Regular.copyWith(

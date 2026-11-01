@@ -48,7 +48,11 @@ class UploadProofDropzoneWidget extends StatelessWidget {
                   color: AppColors.lightSurface,
                   shape: BoxShape.circle,
                 ),
-                child: SvgPicture.asset(AppAssets.icUpload, width: 26.r, height: 26.r),
+                child: SvgPicture.asset(
+                  AppAssets.icUpload,
+                  width: 26.r,
+                  height: 26.r,
+                ),
               ),
               hSpace(8),
               Text(

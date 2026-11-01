@@ -19,7 +19,10 @@ class BookingPaymentCardWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text('booking.details.payment'.tr(context: context), style: AppTextStyles.font15Bold),
+          Text(
+            'booking.details.payment'.tr(context: context),
+            style: AppTextStyles.font15Bold,
+          ),
           hSpace(6),
           BookingDetailRowWidget(
             label: 'booking.details.total_at_booking'.tr(context: context),
@@ -36,7 +39,9 @@ class BookingPaymentCardWidget extends StatelessWidget {
                 const Spacer(),
                 Text(
                   'booking.amount_70'.tr(context: context),
-                  style: AppTextStyles.font14Regular.copyWith(color: AppColors.textPrimary),
+                  style: AppTextStyles.font14Regular.copyWith(
+                    color: AppColors.textPrimary,
+                  ),
                 ),
                 vSpace(6),
                 AppBadgeWidget(
@@ -44,7 +49,9 @@ class BookingPaymentCardWidget extends StatelessWidget {
                   type: AppBadgeType.success,
                   borderRadius: 10.5,
                   padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 1.h),
-                  textStyle: AppTextStyles.font11Bold.copyWith(color: AppColors.successGreen),
+                  textStyle: AppTextStyles.font11Bold.copyWith(
+                    color: AppColors.successGreen,
+                  ),
                 ),
               ],
             ),
@@ -61,7 +68,9 @@ class BookingPaymentCardWidget extends StatelessWidget {
             onTap: () {},
             child: Text(
               'booking.details.view_receipt'.tr(context: context),
-              style: AppTextStyles.font13SemiBold.copyWith(color: AppColors.brandNavy),
+              style: AppTextStyles.font13SemiBold.copyWith(
+                color: AppColors.brandNavy,
+              ),
             ),
           ),
         ],

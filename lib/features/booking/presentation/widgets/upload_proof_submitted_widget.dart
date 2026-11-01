@@ -30,7 +30,9 @@ class UploadProofSubmittedWidget extends StatelessWidget {
               ),
               child: Text(
                 '✓',
-                style: AppTextStyles.font28Bold.copyWith(color: AppColors.successGreen),
+                style: AppTextStyles.font28Bold.copyWith(
+                  color: AppColors.successGreen,
+                ),
               ),
             ),
           ),
@@ -48,12 +50,20 @@ class UploadProofSubmittedWidget extends StatelessWidget {
           ),
           hSpace(36),
           CustomButton(
-            text: 'booking.view_booking_details'.tr(context: context),
-            type: CustomButtonType.secondary,
+            text: 'booking.my_bookings_title'.tr(context: context),
             height: 52.h,
             borderRadius: 16,
-            onTap: () => Navigator.of(context)
-                .pushReplacementNamed(AppRoutes.bookingDetails),
+            onTap: () => Navigator.of(
+              context,
+            ).pushReplacementNamed(AppRoutes.myBookings),
+          ),
+          hSpace(12),
+          CustomButton(
+            text: 'booking.back_to_home'.tr(context: context),
+            type: CustomButtonType.ghost,
+            height: 44.h,
+            onTap: () =>
+                Navigator.of(context).popUntil((route) => route.isFirst),
           ),
         ],
       ),

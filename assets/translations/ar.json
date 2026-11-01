@@ -361,6 +361,7 @@
     }
   },
   "booking": {
+    "back_to_home": "العودة للرئيسية",
     "review_title": "مراجعة الحجز",
     "details_title": "تفاصيل الحجز",
     "my_bookings_title": "حجوزاتي",

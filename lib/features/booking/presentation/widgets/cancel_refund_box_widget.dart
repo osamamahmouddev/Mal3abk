@@ -25,7 +25,9 @@ class CancelRefundBoxWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            (isAfterDeadline ? 'booking.cancel.late_header' : 'booking.cancel.free_header')
+            (isAfterDeadline
+                    ? 'booking.cancel.late_header'
+                    : 'booking.cancel.free_header')
                 .tr(context: context),
             style: AppTextStyles.font13SemiBold.copyWith(color: fg),
           ),
@@ -52,17 +54,23 @@ class CancelRefundBoxWidget extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                (isAfterDeadline ? 'booking.amount_0' : 'booking.amount_70')
-                    .tr(context: context),
+                (isAfterDeadline ? 'booking.amount_0' : 'booking.amount_70').tr(
+                  context: context,
+                ),
                 style: AppTextStyles.font24Bold.copyWith(color: fg),
               ),
             ],
           ),
           hSpace(6),
           Text(
-            (isAfterDeadline ? 'booking.cancel.late_note' : 'booking.cancel.free_note')
+            (isAfterDeadline
+                    ? 'booking.cancel.late_note'
+                    : 'booking.cancel.free_note')
                 .tr(context: context),
-            style: AppTextStyles.font12Regular.copyWith(color: fg, height: 19 / 12),
+            style: AppTextStyles.font12Regular.copyWith(
+              color: fg,
+              height: 19 / 12,
+            ),
           ),
         ],
       ),

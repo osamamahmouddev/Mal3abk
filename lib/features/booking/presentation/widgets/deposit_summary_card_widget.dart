@@ -9,10 +9,43 @@ import '../../../../core/widgets/custom_card_widget.dart';
 import 'booking_detail_row_widget.dart';
 
 class DepositSummaryCardWidget extends StatelessWidget {
-  const DepositSummaryCardWidget({super.key});
+  const DepositSummaryCardWidget({
+    this.bookingReference,
+    this.pitchName,
+    this.slotLabel,
+    this.totalPrice,
+    this.depositAmount,
+    this.remainingPrice,
+    this.currency = 'ج.م',
+    super.key,
+  });
+
+  final String? bookingReference;
+  final String? pitchName;
+  final String? slotLabel;
+  final double? totalPrice;
+  final double? depositAmount;
+  final double? remainingPrice;
+  final String currency;
 
   @override
   Widget build(BuildContext context) {
+    final ref =
+        bookingReference ??
+        'booking.deposit.sample_booking_no'.tr(context: context);
+    final pitch = pitchName ?? 'booking.sample_pitch'.tr(context: context);
+    final slot =
+        slotLabel ?? 'booking.deposit.sample_slot'.tr(context: context);
+    final total = totalPrice != null
+        ? '${totalPrice!.toInt()} $currency'
+        : 'booking.amount_150'.tr(context: context);
+    final remaining = remainingPrice != null
+        ? '${remainingPrice!.toInt()} $currency'
+        : 'booking.amount_100'.tr(context: context);
+    final deposit = depositAmount != null
+        ? '${depositAmount!.toInt()} $currency'
+        : 'booking.amount_50'.tr(context: context);
+
     return CustomCardWidget(
       padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 16.h),
       child: Column(
@@ -25,32 +58,23 @@ class DepositSummaryCardWidget extends StatelessWidget {
                 style: AppTextStyles.font13Regular,
               ),
               const Spacer(),
-              Text(
-                'booking.deposit.sample_booking_no'.tr(context: context),
-                style: AppTextStyles.font13SemiBold,
-              ),
+              Text(ref, style: AppTextStyles.font13SemiBold),
             ],
           ),
           hSpace(10),
-          Text(
-            'booking.sample_pitch'.tr(context: context),
-            style: AppTextStyles.font16Bold,
-          ),
+          Text(pitch, style: AppTextStyles.font16Bold),
           hSpace(12),
-          Text(
-            'booking.deposit.sample_slot'.tr(context: context),
-            style: AppTextStyles.font13Regular,
-          ),
+          Text(slot, style: AppTextStyles.font13Regular),
           hSpace(14),
           Container(height: 1, color: AppColors.border),
           hSpace(2),
           BookingDetailRowWidget(
             label: 'booking.total_price'.tr(context: context),
-            value: 'booking.amount_150'.tr(context: context),
+            value: total,
           ),
           BookingDetailRowWidget(
             label: 'booking.remaining_price'.tr(context: context),
-            value: 'booking.amount_100'.tr(context: context),
+            value: remaining,
           ),
           hSpace(8),
           Container(
@@ -64,12 +88,16 @@ class DepositSummaryCardWidget extends StatelessWidget {
               children: [
                 Text(
                   'booking.deposit_required_now'.tr(context: context),
-                  style: AppTextStyles.font15Bold.copyWith(color: AppColors.goldDark),
+                  style: AppTextStyles.font15Bold.copyWith(
+                    color: AppColors.goldDark,
+                  ),
                 ),
                 const Spacer(),
                 Text(
-                  'booking.amount_50'.tr(context: context),
-                  style: AppTextStyles.font20Bold.copyWith(color: AppColors.goldDark),
+                  deposit,
+                  style: AppTextStyles.font20Bold.copyWith(
+                    color: AppColors.goldDark,
+                  ),
                 ),
               ],
             ),

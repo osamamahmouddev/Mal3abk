@@ -30,7 +30,8 @@ class BookingDetailsScreen extends StatelessWidget {
         actions: [
           AppHeaderIconButtonWidget(
             iconAsset: AppAssets.icHelp,
-            onTap: () => Navigator.of(context).pushNamed(AppRoutes.helpAndSupport),
+            onTap: () =>
+                Navigator.of(context).pushNamed(AppRoutes.helpAndSupport),
           ),
         ],
       ),
@@ -41,7 +42,9 @@ class BookingDetailsScreen extends StatelessWidget {
           height: 52.h,
           borderRadius: 12,
           borderColor: AppColors.redBorder,
-          textStyle: AppTextStyles.font15Bold.copyWith(color: AppColors.redText),
+          textStyle: AppTextStyles.font15Bold.copyWith(
+            color: AppColors.redText,
+          ),
           onTap: () => Navigator.of(context).pushNamed(AppRoutes.cancelBooking),
         ),
       ),
@@ -87,9 +90,24 @@ class BookingDetailsScreen extends StatelessWidget {
             title: 'booking.details.log'.tr(context: context),
             compact: true,
             entries: [
-              ('booking.details.log_sent'.tr(context: context), 'booking.details.t1'.tr(context: context), AppColors.brandNavy, null),
-              ('booking.details.log_uploaded'.tr(context: context), 'booking.details.t2'.tr(context: context), AppColors.brandNavy, null),
-              ('booking.details.log_confirmed'.tr(context: context), 'booking.details.t3'.tr(context: context), AppColors.successGreen, AppColors.textPrimary),
+              (
+                'booking.details.log_sent'.tr(context: context),
+                'booking.details.t1'.tr(context: context),
+                AppColors.brandNavy,
+                null,
+              ),
+              (
+                'booking.details.log_uploaded'.tr(context: context),
+                'booking.details.t2'.tr(context: context),
+                AppColors.brandNavy,
+                null,
+              ),
+              (
+                'booking.details.log_confirmed'.tr(context: context),
+                'booking.details.t3'.tr(context: context),
+                AppColors.successGreen,
+                AppColors.textPrimary,
+              ),
             ],
           ),
         ],

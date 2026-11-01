@@ -361,6 +361,7 @@
     }
   },
   "booking": {
+    "back_to_home": "Back to Home",
     "review_title": "Booking Review",
     "details_title": "Booking Details",
     "my_bookings_title": "My Bookings",
