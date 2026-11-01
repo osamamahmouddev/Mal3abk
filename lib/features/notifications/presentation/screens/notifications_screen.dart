@@ -32,10 +32,13 @@ class NotificationsScreen extends StatelessWidget {
             NotificationItemCardWidget(
               icon: Icons.check_circle_rounded,
               iconColor: AppColors.successGreen,
-              title: 'onboarding.notifications.preview1_title'.tr(context: context),
+              title: 'onboarding.notifications.preview1_title'.tr(
+                context: context,
+              ),
               time: 'منذ ١٠ دقائق · العربون اتعتمد من الملعب',
               isUnread: true,
-              onTap: () => Navigator.of(context).pushNamed(AppRoutes.notificationDetail),
+              onTap: () =>
+                  Navigator.of(context).pushNamed(AppRoutes.notificationDetail),
             ),
             NotificationItemCardWidget(
               icon: Icons.sports_soccer_rounded,
@@ -43,7 +46,8 @@ class NotificationsScreen extends StatelessWidget {
               title: 'الصقور بيتحدوا فريقك في ماتش جديد',
               time: 'منذ ساعتين · السبت ٢ أغسطس ٩:٠٠ م',
               isUnread: true,
-              onTap: () => Navigator.of(context).pushNamed(AppRoutes.notificationDetail),
+              onTap: () =>
+                  Navigator.of(context).pushNamed(AppRoutes.notificationDetail),
             ),
             NotificationItemCardWidget(
               icon: Icons.alarm_rounded,
@@ -51,7 +55,8 @@ class NotificationsScreen extends StatelessWidget {
               title: 'ماتشك بعد ٣ ساعات في ملعب النجوم',
               time: 'منذ ٤ ساعات · ملعب ١',
               isUnread: false,
-              onTap: () => Navigator.of(context).pushNamed(AppRoutes.notificationDetail),
+              onTap: () =>
+                  Navigator.of(context).pushNamed(AppRoutes.notificationDetail),
             ),
           ],
         ),

@@ -44,24 +44,27 @@ void main() {
       await cubit.close();
     });
 
-    test('emits [loading, unauthenticated] when user is not logged in', () async {
-      when(() => mockUseCase()).thenAnswer((_) async => false);
-      final cubit = SplashCubit(
-        checkAuthStatusUseCase: mockUseCase,
-        delay: Duration.zero,
-      );
+    test(
+      'emits [loading, unauthenticated] when user is not logged in',
+      () async {
+        when(() => mockUseCase()).thenAnswer((_) async => false);
+        final cubit = SplashCubit(
+          checkAuthStatusUseCase: mockUseCase,
+          delay: Duration.zero,
+        );
 
-      final expectation = expectLater(
-        cubit.stream,
-        emitsInOrder([
-          const SplashState.loading(),
-          const SplashState.unauthenticated(),
-        ]),
-      );
+        final expectation = expectLater(
+          cubit.stream,
+          emitsInOrder([
+            const SplashState.loading(),
+            const SplashState.unauthenticated(),
+          ]),
+        );
 
-      await cubit.checkAuth();
-      await expectation;
-      await cubit.close();
-    });
+        await cubit.checkAuth();
+        await expectation;
+        await cubit.close();
+      },
+    );
   });
 }

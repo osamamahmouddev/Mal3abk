@@ -71,24 +71,59 @@ class ChallengeReceivedScreen extends StatelessWidget {
                             CircleAvatar(
                               radius: 24.r,
                               backgroundColor: AppColors.brandRed,
-                              child: Text('أس', style: AppTextStyles.font16Bold.copyWith(color: AppColors.white)),
+                              child: Text(
+                                'أس',
+                                style: AppTextStyles.font16Bold.copyWith(
+                                  color: AppColors.white,
+                                ),
+                              ),
                             ),
                             hSpace(6),
-                            Text('أسود العباسية', style: AppTextStyles.font14Bold.copyWith(color: AppColors.white)),
-                            Text('#٣ · ١٠ فوز', style: AppTextStyles.font11Regular.copyWith(color: AppColors.white.withValues(alpha: 0.8))),
+                            Text(
+                              'أسود العباسية',
+                              style: AppTextStyles.font14Bold.copyWith(
+                                color: AppColors.white,
+                              ),
+                            ),
+                            Text(
+                              '#٣ · ١٠ فوز',
+                              style: AppTextStyles.font11Regular.copyWith(
+                                color: AppColors.white.withValues(alpha: 0.8),
+                              ),
+                            ),
                           ],
                         ),
-                        Text('بيتحدوكم', style: AppTextStyles.font14Bold.copyWith(color: AppColors.accentGold)),
+                        Text(
+                          'بيتحدوكم',
+                          style: AppTextStyles.font14Bold.copyWith(
+                            color: AppColors.accentGold,
+                          ),
+                        ),
                         Column(
                           children: [
                             CircleAvatar(
                               radius: 24.r,
                               backgroundColor: AppColors.white,
-                              child: Text('نج', style: AppTextStyles.font16Bold.copyWith(color: AppColors.brandNavy)),
+                              child: Text(
+                                'نج',
+                                style: AppTextStyles.font16Bold.copyWith(
+                                  color: AppColors.brandNavy,
+                                ),
+                              ),
                             ),
                             hSpace(6),
-                            Text('فريق النجوم', style: AppTextStyles.font14Bold.copyWith(color: AppColors.white)),
-                            Text('فريقك', style: AppTextStyles.font11Regular.copyWith(color: AppColors.white.withValues(alpha: 0.8))),
+                            Text(
+                              'فريق النجوم',
+                              style: AppTextStyles.font14Bold.copyWith(
+                                color: AppColors.white,
+                              ),
+                            ),
+                            Text(
+                              'فريقك',
+                              style: AppTextStyles.font11Regular.copyWith(
+                                color: AppColors.white.withValues(alpha: 0.8),
+                              ),
+                            ),
                           ],
                         ),
                       ],
@@ -101,13 +136,25 @@ class ChallengeReceivedScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('تفاصيل الميعاد والملعب المقترح', style: AppTextStyles.font15Bold),
+                    Text(
+                      'تفاصيل الميعاد والملعب المقترح',
+                      style: AppTextStyles.font15Bold,
+                    ),
                     hSpace(10),
-                    Text('الميعاد: الجمعة ٨ أغسطس · ٩:٠٠ م', style: AppTextStyles.font13SemiBold),
+                    Text(
+                      'الميعاد: الجمعة ٨ أغسطس · ٩:٠٠ م',
+                      style: AppTextStyles.font13SemiBold,
+                    ),
                     hSpace(4),
-                    Text('الملعب: ملعب النجوم — مدينة نصر (ملعب ١)', style: AppTextStyles.font13Regular),
+                    Text(
+                      'الملعب: ملعب النجوم — مدينة نصر (ملعب ١)',
+                      style: AppTextStyles.font13Regular,
+                    ),
                     hSpace(4),
-                    Text('الكابتن مقدم الطلب: هيثم كمال · متبقي ٢٤ ساعة للرد', style: AppTextStyles.font12Medium),
+                    Text(
+                      'الكابتن مقدم الطلب: هيثم كمال · متبقي ٢٤ ساعة للرد',
+                      style: AppTextStyles.font12Medium,
+                    ),
                   ],
                 ),
               ),

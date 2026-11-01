@@ -4,7 +4,8 @@ import '../../../../core/utils/safe_emit_cubit_mixin.dart';
 import '../../domain/use_cases/check_auth_status_use_case.dart';
 import 'splash_state.dart';
 
-class SplashCubit extends Cubit<SplashState> with SafeEmitCubitMixin<SplashState> {
+class SplashCubit extends Cubit<SplashState>
+    with SafeEmitCubitMixin<SplashState> {
   SplashCubit({
     required this.checkAuthStatusUseCase,
     this.delay = const Duration(seconds: 2),

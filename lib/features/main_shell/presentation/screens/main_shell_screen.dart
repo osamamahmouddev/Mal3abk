@@ -20,11 +20,29 @@ class MainShellScreen extends HookWidget {
     const tabs = MainNavBarWidget.tabRoutes;
     final currentIndex = useState(MainShellScopeWidget.homeTab);
     final visitedTabs = useRef(<int>{MainShellScopeWidget.homeTab});
+    final canPopTabs = useState(List<bool>.filled(tabs.length, false));
     final navigatorKeys = useMemoized(
       () => List.generate(tabs.length, (_) => GlobalKey<NavigatorState>()),
     );
+
+    void updateTabCanPop(int index) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final canPop = navigatorKeys[index].currentState?.canPop() ?? false;
+        if (canPopTabs.value[index] != canPop) {
+          final updated = List<bool>.from(canPopTabs.value);
+          updated[index] = canPop;
+          canPopTabs.value = updated;
+        }
+      });
+    }
+
     final observers = useMemoized(
-      () => List.generate(tabs.length, (_) => NavigationLoggerObserver()),
+      () => List.generate(
+        tabs.length,
+        (i) => NavigationLoggerObserver(
+          onNavigationChanged: () => updateTabCanPop(i),
+        ),
+      ),
     );
     final tabFade = useAnimationController(
       duration: AppMotion.medium,
@@ -40,6 +58,8 @@ class MainShellScreen extends HookWidget {
       currentIndex.value = index;
       tabFade.forward(from: 0);
     }
+
+    final isInnerScreen = canPopTabs.value[currentIndex.value];
 
     return PopScope(
       canPop: false,
@@ -58,10 +78,12 @@ class MainShellScreen extends HookWidget {
         onSwitchTab: switchTab,
         child: Scaffold(
           backgroundColor: AppColors.pageBackground,
-          bottomNavigationBar: MainNavBarWidget(
-            currentIndex: currentIndex.value,
-            onTap: switchTab,
-          ),
+          bottomNavigationBar: isInnerScreen
+              ? null
+              : MainNavBarWidget(
+                  currentIndex: currentIndex.value,
+                  onTap: switchTab,
+                ),
           body: FadeTransition(
             opacity: tabFade,
             child: IndexedStack(

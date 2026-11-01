@@ -34,7 +34,10 @@ class ChallengeTeamScreen extends HookWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('السبت ٢ أغسطس · ٨:٠٠ م · ملعب النجوم', style: AppTextStyles.font12Regular),
+              Text(
+                'السبت ٢ أغسطس · ٨:٠٠ م · ملعب النجوم',
+                style: AppTextStyles.font12Regular,
+              ),
               hSpace(8),
               CustomButton(
                 text: 'أرسل التحدي',
@@ -68,27 +71,59 @@ class ChallengeTeamScreen extends HookWidget {
                         CircleAvatar(
                           radius: 24.r,
                           backgroundColor: AppColors.white,
-                          child: Text('نج', style: AppTextStyles.font16Bold.copyWith(color: AppColors.brandNavy)),
+                          child: Text(
+                            'نج',
+                            style: AppTextStyles.font16Bold.copyWith(
+                              color: AppColors.brandNavy,
+                            ),
+                          ),
                         ),
                         hSpace(6),
-                        Text('فريق النجوم', style: AppTextStyles.font14Bold.copyWith(color: AppColors.white)),
-                        Text('فريقك', style: AppTextStyles.font11Regular.copyWith(color: AppColors.white.withValues(alpha: 0.8))),
+                        Text(
+                          'فريق النجوم',
+                          style: AppTextStyles.font14Bold.copyWith(
+                            color: AppColors.white,
+                          ),
+                        ),
+                        Text(
+                          'فريقك',
+                          style: AppTextStyles.font11Regular.copyWith(
+                            color: AppColors.white.withValues(alpha: 0.8),
+                          ),
+                        ),
                       ],
                     ),
                     Text(
                       'common.vs'.tr(context: context),
-                      style: AppTextStyles.font18Bold.copyWith(color: AppColors.accentGold),
+                      style: AppTextStyles.font18Bold.copyWith(
+                        color: AppColors.accentGold,
+                      ),
                     ),
                     Column(
                       children: [
                         CircleAvatar(
                           radius: 24.r,
                           backgroundColor: AppColors.brandRed,
-                          child: Text('صق', style: AppTextStyles.font16Bold.copyWith(color: AppColors.white)),
+                          child: Text(
+                            'صق',
+                            style: AppTextStyles.font16Bold.copyWith(
+                              color: AppColors.white,
+                            ),
+                          ),
                         ),
                         hSpace(6),
-                        Text('فريق الصقور', style: AppTextStyles.font14Bold.copyWith(color: AppColors.white)),
-                        Text('#٢ في مدينة نصر', style: AppTextStyles.font11Regular.copyWith(color: AppColors.white.withValues(alpha: 0.8))),
+                        Text(
+                          'فريق الصقور',
+                          style: AppTextStyles.font14Bold.copyWith(
+                            color: AppColors.white,
+                          ),
+                        ),
+                        Text(
+                          '#٢ في مدينة نصر',
+                          style: AppTextStyles.font11Regular.copyWith(
+                            color: AppColors.white.withValues(alpha: 0.8),
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -112,9 +147,15 @@ class ChallengeTeamScreen extends HookWidget {
                         width: 60.w,
                         padding: EdgeInsets.symmetric(vertical: 6.h),
                         decoration: BoxDecoration(
-                          color: isSelected ? AppColors.brandNavy : AppColors.white,
+                          color: isSelected
+                              ? AppColors.brandNavy
+                              : AppColors.white,
                           borderRadius: BorderRadius.circular(12.r),
-                          border: Border.all(color: isSelected ? AppColors.brandNavy : AppColors.borderInput),
+                          border: Border.all(
+                            color: isSelected
+                                ? AppColors.brandNavy
+                                : AppColors.borderInput,
+                          ),
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -122,13 +163,17 @@ class ChallengeTeamScreen extends HookWidget {
                             Text(
                               'السبت',
                               style: AppTextStyles.font11Regular.copyWith(
-                                color: isSelected ? AppColors.white : AppColors.textSecondary,
+                                color: isSelected
+                                    ? AppColors.white
+                                    : AppColors.textSecondary,
                               ),
                             ),
                             Text(
                               '${index + 2}',
                               style: AppTextStyles.font15Bold.copyWith(
-                                color: isSelected ? AppColors.white : AppColors.textPrimary,
+                                color: isSelected
+                                    ? AppColors.white
+                                    : AppColors.textPrimary,
                               ),
                             ),
                           ],
@@ -144,38 +189,55 @@ class ChallengeTeamScreen extends HookWidget {
               Wrap(
                 spacing: 8.w,
                 runSpacing: 8.h,
-                children: ['٧:٠٠ م', '٨:٠٠ م', '٩:٠٠ م', '١٠:٠٠ م', '١٢:٠٠ ص'].map((time) {
-                  final isSelected = selectedTime.value == time;
-                  return InkWell(
-                    onTap: () => selectedTime.value = time,
-                    borderRadius: BorderRadius.circular(10.r),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
-                      decoration: BoxDecoration(
-                        color: isSelected ? AppColors.brandNavy : AppColors.white,
+                children: ['٧:٠٠ م', '٨:٠٠ م', '٩:٠٠ م', '١٠:٠٠ م', '١٢:٠٠ ص']
+                    .map((time) {
+                      final isSelected = selectedTime.value == time;
+                      return InkWell(
+                        onTap: () => selectedTime.value = time,
                         borderRadius: BorderRadius.circular(10.r),
-                        border: Border.all(color: isSelected ? AppColors.brandNavy : AppColors.borderInput),
-                      ),
-                      child: Text(
-                        time,
-                        style: isSelected
-                            ? AppTextStyles.font13SemiBold.copyWith(color: AppColors.white)
-                            : AppTextStyles.font13SemiBold,
-                      ),
-                    ),
-                  );
-                }).toList(),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 14.w,
+                            vertical: 8.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? AppColors.brandNavy
+                                : AppColors.white,
+                            borderRadius: BorderRadius.circular(10.r),
+                            border: Border.all(
+                              color: isSelected
+                                  ? AppColors.brandNavy
+                                  : AppColors.borderInput,
+                            ),
+                          ),
+                          child: Text(
+                            time,
+                            style: isSelected
+                                ? AppTextStyles.font13SemiBold.copyWith(
+                                    color: AppColors.white,
+                                  )
+                                : AppTextStyles.font13SemiBold,
+                          ),
+                        ),
+                      );
+                    })
+                    .toList(),
               ),
               hSpace(18),
               Text('الملعب', style: AppTextStyles.font15Bold),
               hSpace(10),
               CustomCardWidget(
                 onTap: () => venueOption.value = 0,
-                borderColor: venueOption.value == 0 ? AppColors.brandNavy : AppColors.borderCard,
+                borderColor: venueOption.value == 0
+                    ? AppColors.brandNavy
+                    : AppColors.borderCard,
                 child: Row(
                   children: [
                     Icon(
-                      venueOption.value == 0 ? Icons.radio_button_checked : Icons.radio_button_off,
+                      venueOption.value == 0
+                          ? Icons.radio_button_checked
+                          : Icons.radio_button_off,
                       color: AppColors.brandNavy,
                       size: 20.sp,
                     ),
@@ -184,8 +246,14 @@ class ChallengeTeamScreen extends HookWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('ملعب النجوم — مدينة نصر', style: AppTextStyles.font14Bold),
-                          Text('ملعب ١ · ٥ لاعب · ١٥٠ ج.م/ساعة', style: AppTextStyles.font12Regular),
+                          Text(
+                            'ملعب النجوم — مدينة نصر',
+                            style: AppTextStyles.font14Bold,
+                          ),
+                          Text(
+                            'ملعب ١ · ٥ لاعب · ١٥٠ ج.م/ساعة',
+                            style: AppTextStyles.font12Regular,
+                          ),
                         ],
                       ),
                     ),
@@ -195,11 +263,15 @@ class ChallengeTeamScreen extends HookWidget {
               hSpace(10),
               CustomCardWidget(
                 onTap: () => venueOption.value = 1,
-                borderColor: venueOption.value == 1 ? AppColors.brandNavy : AppColors.borderCard,
+                borderColor: venueOption.value == 1
+                    ? AppColors.brandNavy
+                    : AppColors.borderCard,
                 child: Row(
                   children: [
                     Icon(
-                      venueOption.value == 1 ? Icons.radio_button_checked : Icons.radio_button_off,
+                      venueOption.value == 1
+                          ? Icons.radio_button_checked
+                          : Icons.radio_button_off,
                       color: AppColors.brandNavy,
                       size: 20.sp,
                     ),
@@ -208,8 +280,14 @@ class ChallengeTeamScreen extends HookWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('نتفق على الملعب بعدين', style: AppTextStyles.font14Bold),
-                          Text('الكابتن التاني يقدر يقترح ملعب مناسب', style: AppTextStyles.font12Regular),
+                          Text(
+                            'نتفق على الملعب بعدين',
+                            style: AppTextStyles.font14Bold,
+                          ),
+                          Text(
+                            'الكابتن التاني يقدر يقترح ملعب مناسب',
+                            style: AppTextStyles.font12Regular,
+                          ),
                         ],
                       ),
                     ),

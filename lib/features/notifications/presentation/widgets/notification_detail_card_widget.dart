@@ -46,10 +46,7 @@ class NotificationDetailCardWidget extends StatelessWidget {
             ],
           ),
           const Divider(height: 24, color: AppColors.border),
-          Text(
-            content,
-            style: AppTextStyles.font13Regular,
-          ),
+          Text(content, style: AppTextStyles.font13Regular),
         ],
       ),
     );

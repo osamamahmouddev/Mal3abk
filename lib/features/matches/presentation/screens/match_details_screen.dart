@@ -28,7 +28,8 @@ class MatchDetailsScreen extends StatelessWidget {
             text: 'matches.submit_result_title'.tr(context: context),
             type: CustomButtonType.primary,
             height: 52.h,
-            onTap: () => Navigator.of(context).pushNamed(AppRoutes.submitResult),
+            onTap: () =>
+                Navigator.of(context).pushNamed(AppRoutes.submitResult),
           ),
         ),
       ),
@@ -58,7 +59,9 @@ class MatchDetailsScreen extends StatelessWidget {
               ),
               child: Text(
                 'أحمد سامي (كابتن النجوم) سجّل النتيجة ٤–٣. أكّدها أو اعترض خلال ٤٨ ساعة.',
-                style: AppTextStyles.font13Regular.copyWith(color: AppColors.goldDark),
+                style: AppTextStyles.font13Regular.copyWith(
+                  color: AppColors.goldDark,
+                ),
               ),
             ),
           ],

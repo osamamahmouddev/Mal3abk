@@ -26,9 +26,12 @@ class NotificationDetailScreen extends StatelessWidget {
             children: [
               NotificationDetailCardWidget(
                 icon: Icons.check_circle_rounded,
-                title: 'onboarding.notifications.preview1_title'.tr(context: context),
+                title: 'onboarding.notifications.preview1_title'.tr(
+                  context: context,
+                ),
                 time: 'منذ ١٠ دقائق',
-                content: 'إدارة ملعب النجوم اعتمدت إيصال التحويل، وحجزك ليوم السبت ٢٦ يوليو الساعة ٨:٠٠ م أصبح مؤكداً بنجاح. نتمنى لكم مباراة ممتعة!',
+                content:
+                    'إدارة ملعب النجوم اعتمدت إيصال التحويل، وحجزك ليوم السبت ٢٦ يوليو الساعة ٨:٠٠ م أصبح مؤكداً بنجاح. نتمنى لكم مباراة ممتعة!',
               ),
               hSpace(20),
               CustomButton(

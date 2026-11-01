@@ -31,7 +31,9 @@ class SubmitResultScreen extends HookWidget {
             height: 52.h,
             onTap: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('تم إرسال النتيجة لكابتن الفريق المنافس')),
+                const SnackBar(
+                  content: Text('تم إرسال النتيجة لكابتن الفريق المنافس'),
+                ),
               );
               Navigator.of(context).pop();
             },
@@ -62,47 +64,96 @@ class SubmitResultScreen extends HookWidget {
                         CircleAvatar(
                           radius: 26.r,
                           backgroundColor: AppColors.white,
-                          child: Text('نج', style: AppTextStyles.font16Bold.copyWith(color: AppColors.brandNavy)),
+                          child: Text(
+                            'نج',
+                            style: AppTextStyles.font16Bold.copyWith(
+                              color: AppColors.brandNavy,
+                            ),
+                          ),
                         ),
                         hSpace(6),
-                        Text('النجوم', style: AppTextStyles.font15Bold.copyWith(color: AppColors.white)),
+                        Text(
+                          'النجوم',
+                          style: AppTextStyles.font15Bold.copyWith(
+                            color: AppColors.white,
+                          ),
+                        ),
                         hSpace(10),
                         Row(
                           children: [
                             IconButton(
-                              onPressed: () => score1.value = (score1.value - 1).clamp(0, 99),
-                              icon: const Icon(Icons.remove_circle_outline, color: AppColors.white),
+                              onPressed: () => score1.value = (score1.value - 1)
+                                  .clamp(0, 99),
+                              icon: const Icon(
+                                Icons.remove_circle_outline,
+                                color: AppColors.white,
+                              ),
                             ),
-                            Text('${score1.value}', style: AppTextStyles.font24Bold.copyWith(color: AppColors.white)),
+                            Text(
+                              '${score1.value}',
+                              style: AppTextStyles.font24Bold.copyWith(
+                                color: AppColors.white,
+                              ),
+                            ),
                             IconButton(
                               onPressed: () => score1.value++,
-                              icon: const Icon(Icons.add_circle_outline, color: AppColors.white),
+                              icon: const Icon(
+                                Icons.add_circle_outline,
+                                color: AppColors.white,
+                              ),
                             ),
                           ],
                         ),
                       ],
                     ),
-                    Text('–', style: AppTextStyles.font24Bold.copyWith(color: AppColors.accentGold)),
+                    Text(
+                      '–',
+                      style: AppTextStyles.font24Bold.copyWith(
+                        color: AppColors.accentGold,
+                      ),
+                    ),
                     Column(
                       children: [
                         CircleAvatar(
                           radius: 26.r,
                           backgroundColor: AppColors.brandRed,
-                          child: Text('صق', style: AppTextStyles.font16Bold.copyWith(color: AppColors.white)),
+                          child: Text(
+                            'صق',
+                            style: AppTextStyles.font16Bold.copyWith(
+                              color: AppColors.white,
+                            ),
+                          ),
                         ),
                         hSpace(6),
-                        Text('الصقور', style: AppTextStyles.font15Bold.copyWith(color: AppColors.white)),
+                        Text(
+                          'الصقور',
+                          style: AppTextStyles.font15Bold.copyWith(
+                            color: AppColors.white,
+                          ),
+                        ),
                         hSpace(10),
                         Row(
                           children: [
                             IconButton(
-                              onPressed: () => score2.value = (score2.value - 1).clamp(0, 99),
-                              icon: const Icon(Icons.remove_circle_outline, color: AppColors.white),
+                              onPressed: () => score2.value = (score2.value - 1)
+                                  .clamp(0, 99),
+                              icon: const Icon(
+                                Icons.remove_circle_outline,
+                                color: AppColors.white,
+                              ),
                             ),
-                            Text('${score2.value}', style: AppTextStyles.font24Bold.copyWith(color: AppColors.white)),
+                            Text(
+                              '${score2.value}',
+                              style: AppTextStyles.font24Bold.copyWith(
+                                color: AppColors.white,
+                              ),
+                            ),
                             IconButton(
                               onPressed: () => score2.value++,
-                              icon: const Icon(Icons.add_circle_outline, color: AppColors.white),
+                              icon: const Icon(
+                                Icons.add_circle_outline,
+                                color: AppColors.white,
+                              ),
                             ),
                           ],
                         ),

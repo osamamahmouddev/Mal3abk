@@ -45,8 +45,14 @@ class ChallengeDetailsScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('السبت ٢ أغسطس · ٩:٠٠ م', style: AppTextStyles.font13Regular),
-                        const AppBadgeWidget(text: '✓ مقبول', type: AppBadgeType.success),
+                        Text(
+                          'السبت ٢ أغسطس · ٩:٠٠ م',
+                          style: AppTextStyles.font13Regular,
+                        ),
+                        const AppBadgeWidget(
+                          text: '✓ مقبول',
+                          type: AppBadgeType.success,
+                        ),
                       ],
                     ),
                     hSpace(12),
@@ -56,13 +62,18 @@ class ChallengeDetailsScreen extends StatelessWidget {
                         Text('النجوم', style: AppTextStyles.font16Bold),
                         Text(
                           'common.vs'.tr(context: context),
-                          style: AppTextStyles.font14Bold.copyWith(color: AppColors.textSecondary),
+                          style: AppTextStyles.font14Bold.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
                         ),
                         Text('الصقور', style: AppTextStyles.font16Bold),
                       ],
                     ),
                     const Divider(height: 24, color: AppColors.border),
-                    Text('ملعب النجوم — ملعب ١ · ٥ لاعب', style: AppTextStyles.font13SemiBold),
+                    Text(
+                      'ملعب النجوم — ملعب ١ · ٥ لاعب',
+                      style: AppTextStyles.font13SemiBold,
+                    ),
                   ],
                 ),
               ),
@@ -75,7 +86,9 @@ class ChallengeDetailsScreen extends StatelessWidget {
                 ),
                 child: Text(
                   'إنت الكابتن واتفقتوا إن الحجز عليكم. احجز قبل ما الميعاد يروح — ملعب ١ لسه فاضي ٩:٠٠ م.',
-                  style: AppTextStyles.font13Regular.copyWith(color: AppColors.goldDark),
+                  style: AppTextStyles.font13Regular.copyWith(
+                    color: AppColors.goldDark,
+                  ),
                 ),
               ),
               hSpace(16),
@@ -86,8 +99,14 @@ class ChallengeDetailsScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('مين جاي من النجوم؟', style: AppTextStyles.font15Bold),
-                        Text('٤ من ٥ مطلوبين', style: AppTextStyles.font12Medium),
+                        Text(
+                          'مين جاي من النجوم؟',
+                          style: AppTextStyles.font15Bold,
+                        ),
+                        Text(
+                          '٤ من ٥ مطلوبين',
+                          style: AppTextStyles.font12Medium,
+                        ),
                       ],
                     ),
                     hSpace(12),
@@ -117,7 +136,10 @@ class ChallengeDetailsScreen extends StatelessWidget {
                       spacing: 8,
                       runSpacing: 6,
                       children: [
-                        AttendanceChipWidget(name: '✓ أحمد (أنت)', isComing: true),
+                        AttendanceChipWidget(
+                          name: '✓ أحمد (أنت)',
+                          isComing: true,
+                        ),
                         AttendanceChipWidget(name: '✓ كريم', isComing: true),
                         AttendanceChipWidget(name: '✓ محمد', isComing: true),
                         AttendanceChipWidget(name: '✓ يوسف', isComing: true),
