@@ -9,7 +9,7 @@ import '../../../../core/widgets/fade_slide_in_widget.dart';
 import '../../../../core/widgets/section_header_widget.dart';
 import '../widgets/home_hero_search_card_widget.dart';
 import '../widgets/home_location_header_widget.dart';
-import '../widgets/home_nearby_pitches_carousel_widget.dart';
+import '../widgets/home_nearby_pitches_bloc_builder.dart';
 import '../widgets/home_pending_result_card_widget.dart';
 import '../widgets/home_team_activity_card_widget.dart';
 import '../widgets/home_upcoming_booking_card_widget.dart';
@@ -107,7 +107,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         hSpace(12),
-                        const HomeNearbyPitchesCarouselWidget(),
+                        const HomeNearbyPitchesBlocBuilder(),
                       ],
                     ),
                   ),
