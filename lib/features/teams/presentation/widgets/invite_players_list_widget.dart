@@ -41,7 +41,9 @@ class InvitePlayersListWidget extends HookWidget {
               initials: 'teams.sample.${key}_i'.tr(context: context),
               name: 'teams.sample.$key'.tr(context: context),
               meta: 'teams.invite.${metaKeys[key]}'.tr(context: context),
-              status: invited.value.contains(key) ? InvitePlayerStatus.sent : status,
+              status: invited.value.contains(key)
+                  ? InvitePlayerStatus.sent
+                  : status,
               onInvite: () => invited.value = {...invited.value, key},
             ),
         ],

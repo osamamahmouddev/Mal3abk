@@ -43,7 +43,12 @@ class TeamMemberRowWidget extends StatelessWidget {
               color: AppColors.lightSurface,
               shape: BoxShape.circle,
             ),
-            child: Text(initials, style: AppTextStyles.font14Bold.copyWith(color: AppColors.brandNavy)),
+            child: Text(
+              initials,
+              style: AppTextStyles.font14Bold.copyWith(
+                color: AppColors.brandNavy,
+              ),
+            ),
           ),
           vSpace(12),
           Expanded(
@@ -69,7 +74,11 @@ class TeamMemberRowWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(10.r),
               child: Padding(
                 padding: EdgeInsets.all(12.r),
-                child: SvgPicture.asset(AppAssets.icMoreVertical, width: 20.r, height: 20.r),
+                child: SvgPicture.asset(
+                  AppAssets.icMoreVertical,
+                  width: 20.r,
+                  height: 20.r,
+                ),
               ),
             ),
         ],

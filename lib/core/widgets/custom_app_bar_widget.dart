@@ -6,7 +6,8 @@ import '../styles/app_text_styles.dart';
 import 'app_back_button_widget.dart';
 
 /// Figma page header: back button at the start, title centered.
-class CustomAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
+class CustomAppBarWidget extends StatelessWidget
+    implements PreferredSizeWidget {
   const CustomAppBarWidget({
     required this.title,
     super.key,
@@ -29,9 +30,8 @@ class CustomAppBarWidget extends StatelessWidget implements PreferredSizeWidget 
   final bool isClose;
 
   @override
-  Size get preferredSize => Size.fromHeight(
-        72.h + (bottom?.preferredSize.height ?? 0),
-      );
+  Size get preferredSize =>
+      Size.fromHeight(72.h + (bottom?.preferredSize.height ?? 0));
 
   @override
   Widget build(BuildContext context) {

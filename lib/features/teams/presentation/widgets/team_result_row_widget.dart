@@ -47,8 +47,14 @@ class TeamResultRowWidget extends StatelessWidget {
             width: 28.r,
             height: 28.r,
             alignment: Alignment.center,
-            decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(8.r)),
-            child: Text(letter, style: AppTextStyles.font12Bold.copyWith(color: fg)),
+            decoration: BoxDecoration(
+              color: bg,
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            child: Text(
+              letter,
+              style: AppTextStyles.font12Bold.copyWith(color: fg),
+            ),
           ),
           vSpace(10),
           Expanded(

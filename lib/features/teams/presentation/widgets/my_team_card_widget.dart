@@ -42,9 +42,15 @@ class MyTeamCardWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('teams.list.sample_team'.tr(context: context), style: AppTextStyles.font16Bold),
+                      Text(
+                        'teams.list.sample_team'.tr(context: context),
+                        style: AppTextStyles.font16Bold,
+                      ),
                       hSpace(4),
-                      Text('teams.list.sample_meta'.tr(context: context), style: AppTextStyles.font12Regular),
+                      Text(
+                        'teams.list.sample_meta'.tr(context: context),
+                        style: AppTextStyles.font12Regular,
+                      ),
                     ],
                   ),
                 ),
@@ -63,9 +69,24 @@ class MyTeamCardWidget extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Expanded(child: TeamStatWidget(value: '١٤', label: 'teams.wins'.tr(context: context))),
-                Expanded(child: TeamStatWidget(value: '٣', label: 'teams.draws'.tr(context: context))),
-                Expanded(child: TeamStatWidget(value: '٥', label: 'teams.losses'.tr(context: context))),
+                Expanded(
+                  child: TeamStatWidget(
+                    value: '١٤',
+                    label: 'teams.wins'.tr(context: context),
+                  ),
+                ),
+                Expanded(
+                  child: TeamStatWidget(
+                    value: '٣',
+                    label: 'teams.draws'.tr(context: context),
+                  ),
+                ),
+                Expanded(
+                  child: TeamStatWidget(
+                    value: '٥',
+                    label: 'teams.losses'.tr(context: context),
+                  ),
+                ),
                 Expanded(
                   child: TeamStatWidget(
                     value: '#٤',
@@ -83,12 +104,16 @@ class MyTeamCardWidget extends StatelessWidget {
             alignment: AlignmentDirectional.centerStart,
             child: Text(
               'teams.list.sample_alert'.tr(context: context),
-              style: AppTextStyles.font13SemiBold.copyWith(color: AppColors.goldText),
+              style: AppTextStyles.font13SemiBold.copyWith(
+                color: AppColors.goldText,
+              ),
             ),
           ),
           MyTeamCardActionsWidget(
-            onTeamPage: () => Navigator.of(context).pushNamed(AppRoutes.teamProfile),
-            onManage: () => Navigator.of(context).pushNamed(AppRoutes.manageMembers),
+            onTeamPage: () =>
+                Navigator.of(context).pushNamed(AppRoutes.teamProfile),
+            onManage: () =>
+                Navigator.of(context).pushNamed(AppRoutes.manageMembers),
           ),
         ],
       ),

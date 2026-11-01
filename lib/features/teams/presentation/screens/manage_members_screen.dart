@@ -18,7 +18,12 @@ import '../widgets/team_member_row_widget.dart';
 class ManageMembersScreen extends StatelessWidget {
   const ManageMembersScreen({super.key});
 
-  static const List<String> memberKeys = ['karim', 'mohamed', 'youssef_h', 'ziad'];
+  static const List<String> memberKeys = [
+    'karim',
+    'mohamed',
+    'youssef_h',
+    'ziad',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +38,8 @@ class ManageMembersScreen extends StatelessWidget {
         actions: [
           AppHeaderIconButtonWidget(
             iconAsset: AppAssets.icUserPlus,
-            onTap: () => Navigator.of(context).pushNamed(AppRoutes.invitePlayers),
+            onTap: () =>
+                Navigator.of(context).pushNamed(AppRoutes.invitePlayers),
           ),
         ],
       ),
@@ -46,7 +52,10 @@ class ManageMembersScreen extends StatelessWidget {
               children: [
                 TeamMemberRowWidget(
                   initials: t('sample.ahmed_i'),
-                  name: 'teams.manage.you_suffix'.tr(context: context, args: [t('sample.ahmed')]),
+                  name: 'teams.manage.you_suffix'.tr(
+                    context: context,
+                    args: [t('sample.ahmed')],
+                  ),
                   details: t('manage.m_ahmed'),
                   isCaptain: true,
                 ),
@@ -64,7 +73,9 @@ class ManageMembersScreen extends StatelessWidget {
           hSpace(10),
           Text(
             t('manage.pending_title'),
-            style: AppTextStyles.font14Bold.copyWith(color: AppColors.textSecondary),
+            style: AppTextStyles.font14Bold.copyWith(
+              color: AppColors.textSecondary,
+            ),
           ),
           hSpace(14),
           CustomCardWidget(
@@ -79,7 +90,10 @@ class ManageMembersScreen extends StatelessWidget {
                 ),
                 PendingInviteRowWidget(
                   initials: t('manage.code_i'),
-                  title: 'teams.manage.code_invite'.tr(context: context, args: [t('invite.sample_code')]),
+                  title: 'teams.manage.code_invite'.tr(
+                    context: context,
+                    args: [t('invite.sample_code')],
+                  ),
                   meta: t('manage.code_valid'),
                   onCancel: () {},
                 ),
@@ -94,11 +108,17 @@ class ManageMembersScreen extends StatelessWidget {
             borderRadius: 12,
             backgroundColor: AppColors.white,
             borderColor: AppColors.border,
-            textStyle: AppTextStyles.font14SemiBold.copyWith(color: AppColors.textDisabled),
+            textStyle: AppTextStyles.font14SemiBold.copyWith(
+              color: AppColors.textDisabled,
+            ),
             onTap: () => AppTopSnackBar.showError(context, leaveNote),
           ),
           hSpace(4),
-          Text(leaveNote, style: AppTextStyles.font12Regular, textAlign: TextAlign.center),
+          Text(
+            leaveNote,
+            style: AppTextStyles.font12Regular,
+            textAlign: TextAlign.center,
+          ),
         ],
       ),
     );

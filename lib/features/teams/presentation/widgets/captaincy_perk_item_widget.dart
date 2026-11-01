@@ -22,13 +22,20 @@ class CaptaincyPerkItemWidget extends StatelessWidget {
             color: AppColors.successLight,
             shape: BoxShape.circle,
           ),
-          child: Text('✓', style: AppTextStyles.font12Bold.copyWith(color: AppColors.successGreen)),
+          child: Text(
+            '✓',
+            style: AppTextStyles.font12Bold.copyWith(
+              color: AppColors.successGreen,
+            ),
+          ),
         ),
         vSpace(10),
         Expanded(
           child: Text(
             text,
-            style: AppTextStyles.font14Regular.copyWith(color: AppColors.textPrimary),
+            style: AppTextStyles.font14Regular.copyWith(
+              color: AppColors.textPrimary,
+            ),
           ),
         ),
       ],

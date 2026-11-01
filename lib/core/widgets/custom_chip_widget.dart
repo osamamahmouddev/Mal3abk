@@ -43,15 +43,16 @@ class CustomChipWidget extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (icon != null) ...[
-                icon!,
-                vSpace(6),
-              ],
+              if (icon != null) ...[icon!, vSpace(6)],
               Text(
                 label,
                 style: isSelected
-                    ? AppTextStyles.font13SemiBold.copyWith(color: AppColors.white)
-                    : AppTextStyles.font13Regular.copyWith(color: AppColors.textPrimary),
+                    ? AppTextStyles.font13SemiBold.copyWith(
+                        color: AppColors.white,
+                      )
+                    : AppTextStyles.font13Regular.copyWith(
+                        color: AppColors.textPrimary,
+                      ),
               ),
               if (count != null) ...[
                 vSpace(6),
@@ -66,7 +67,9 @@ class CustomChipWidget extends StatelessWidget {
                   child: Text(
                     count.toString(),
                     style: AppTextStyles.font11Bold.copyWith(
-                      color: isSelected ? AppColors.white : AppColors.textPrimary,
+                      color: isSelected
+                          ? AppColors.white
+                          : AppColors.textPrimary,
                     ),
                   ),
                 ),
@@ -78,4 +81,3 @@ class CustomChipWidget extends StatelessWidget {
     );
   }
 }
-

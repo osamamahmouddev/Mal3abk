@@ -39,7 +39,9 @@ class CustomStateWidget extends StatelessWidget {
                 height: 48.h,
                 child: const CircularProgressIndicator(
                   strokeWidth: 3,
-                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.brandNavy),
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    AppColors.brandNavy,
+                  ),
                 ),
               ),
               hSpace(20),
@@ -76,4 +78,3 @@ class CustomStateWidget extends StatelessWidget {
     );
   }
 }
-

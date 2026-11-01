@@ -28,7 +28,9 @@ class HelpAndSupportScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'settings.help_and_support.need_help_prompt'.tr(context: context),
+                'settings.help_and_support.need_help_prompt'.tr(
+                  context: context,
+                ),
                 style: AppTextStyles.font15Bold,
               ),
               hSpace(10),
@@ -41,22 +43,34 @@ class HelpAndSupportScreen extends StatelessWidget {
                 childAspectRatio: 2.4,
                 children: [
                   HelpTopicCardWidget(
-                    title: 'settings.help_and_support.topic_booking'.tr(context: context),
+                    title: 'settings.help_and_support.topic_booking'.tr(
+                      context: context,
+                    ),
                   ),
                   HelpTopicCardWidget(
-                    title: 'settings.help_and_support.topic_deposit'.tr(context: context),
+                    title: 'settings.help_and_support.topic_deposit'.tr(
+                      context: context,
+                    ),
                   ),
                   HelpTopicCardWidget(
-                    title: 'settings.help_and_support.topic_cancellation'.tr(context: context),
+                    title: 'settings.help_and_support.topic_cancellation'.tr(
+                      context: context,
+                    ),
                   ),
                   HelpTopicCardWidget(
-                    title: 'settings.help_and_support.topic_pitch_complaint'.tr(context: context),
+                    title: 'settings.help_and_support.topic_pitch_complaint'.tr(
+                      context: context,
+                    ),
                   ),
                   HelpTopicCardWidget(
-                    title: 'settings.help_and_support.topic_team'.tr(context: context),
+                    title: 'settings.help_and_support.topic_team'.tr(
+                      context: context,
+                    ),
                   ),
                   HelpTopicCardWidget(
-                    title: 'settings.help_and_support.topic_account'.tr(context: context),
+                    title: 'settings.help_and_support.topic_account'.tr(
+                      context: context,
+                    ),
                   ),
                 ],
               ),
@@ -71,18 +85,30 @@ class HelpAndSupportScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     FaqItemWidget(
-                      question: 'settings.help_and_support.faq1_q'.tr(context: context),
-                      answer: 'settings.help_and_support.faq1_a'.tr(context: context),
+                      question: 'settings.help_and_support.faq1_q'.tr(
+                        context: context,
+                      ),
+                      answer: 'settings.help_and_support.faq1_a'.tr(
+                        context: context,
+                      ),
                     ),
                     const Divider(height: 1, color: AppColors.border),
                     FaqItemWidget(
-                      question: 'settings.help_and_support.faq2_q'.tr(context: context),
-                      answer: 'settings.help_and_support.faq2_a'.tr(context: context),
+                      question: 'settings.help_and_support.faq2_q'.tr(
+                        context: context,
+                      ),
+                      answer: 'settings.help_and_support.faq2_a'.tr(
+                        context: context,
+                      ),
                     ),
                     const Divider(height: 1, color: AppColors.border),
                     FaqItemWidget(
-                      question: 'settings.help_and_support.faq3_q'.tr(context: context),
-                      answer: 'settings.help_and_support.faq3_a'.tr(context: context),
+                      question: 'settings.help_and_support.faq3_q'.tr(
+                        context: context,
+                      ),
+                      answer: 'settings.help_and_support.faq3_a'.tr(
+                        context: context,
+                      ),
                     ),
                   ],
                 ),
@@ -101,19 +127,25 @@ class HelpAndSupportScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'settings.help_and_support.sample_req_title'.tr(context: context),
+                            'settings.help_and_support.sample_req_title'.tr(
+                              context: context,
+                            ),
                             style: AppTextStyles.font14Bold,
                           ),
                           hSpace(2),
                           Text(
-                            'settings.help_and_support.sample_req_sub'.tr(context: context),
+                            'settings.help_and_support.sample_req_sub'.tr(
+                              context: context,
+                            ),
                             style: AppTextStyles.font11Regular,
                           ),
                         ],
                       ),
                     ),
                     AppBadgeWidget(
-                      text: 'settings.help_and_support.resolved'.tr(context: context),
+                      text: 'settings.help_and_support.resolved'.tr(
+                        context: context,
+                      ),
                       type: AppBadgeType.success,
                     ),
                   ],

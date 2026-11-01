@@ -38,8 +38,11 @@ class InvitePlayersScreen extends StatelessWidget {
               type: CustomButtonType.secondary,
               height: 52.h,
               borderRadius: 16,
-              textStyle: AppTextStyles.font16Bold.copyWith(color: AppColors.white),
-              onTap: () => Navigator.of(context).pushNamed(AppRoutes.manageMembers),
+              textStyle: AppTextStyles.font16Bold.copyWith(
+                color: AppColors.white,
+              ),
+              onTap: () =>
+                  Navigator.of(context).pushNamed(AppRoutes.manageMembers),
             ),
           ],
         ),
@@ -47,11 +50,18 @@ class InvitePlayersScreen extends StatelessWidget {
       body: ListView(
         padding: EdgeInsets.fromLTRB(16.w, 17.h, 16.w, 16.h),
         children: [
-          InviteCodeCardWidget(code: 'teams.invite.sample_code'.tr(context: context)),
+          InviteCodeCardWidget(
+            code: 'teams.invite.sample_code'.tr(context: context),
+          ),
           hSpace(12),
-          Text('teams.invite.search_title'.tr(context: context), style: AppTextStyles.font15Bold),
+          Text(
+            'teams.invite.search_title'.tr(context: context),
+            style: AppTextStyles.font15Bold,
+          ),
           hSpace(14),
-          CustomSearchFieldWidget(hintText: 'teams.invite.search_hint'.tr(context: context)),
+          CustomSearchFieldWidget(
+            hintText: 'teams.invite.search_hint'.tr(context: context),
+          ),
           hSpace(10),
           const InvitePlayersListWidget(),
         ],

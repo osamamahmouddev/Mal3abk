@@ -24,10 +24,12 @@ class ProfileSetupLevelSelectorWidget extends StatelessWidget {
           if (i > 0) vSpace(8),
           Expanded(
             child: SelectableTileWidget(
-              title: 'onboarding.profile_setup.level_${levelKeys[i]}_title'
-                  .tr(context: context),
-              subtitle: 'onboarding.profile_setup.level_${levelKeys[i]}_sub'
-                  .tr(context: context),
+              title: 'onboarding.profile_setup.level_${levelKeys[i]}_title'.tr(
+                context: context,
+              ),
+              subtitle: 'onboarding.profile_setup.level_${levelKeys[i]}_sub'.tr(
+                context: context,
+              ),
               isSelected: selectedLevel == levelKeys[i],
               onTap: () => onSelect(levelKeys[i]),
               height: 62,

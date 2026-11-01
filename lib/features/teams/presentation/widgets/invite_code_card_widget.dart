@@ -20,10 +20,15 @@ class InviteCodeCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     void copy() {
       Clipboard.setData(ClipboardData(text: code));
-      AppTopSnackBar.showSuccess(context, 'teams.invite.copied'.tr(context: context));
+      AppTopSnackBar.showSuccess(
+        context,
+        'teams.invite.copied'.tr(context: context),
+      );
     }
 
-    final ghostStyle = AppTextStyles.font14SemiBold.copyWith(color: AppColors.white);
+    final ghostStyle = AppTextStyles.font14SemiBold.copyWith(
+      color: AppColors.white,
+    );
 
     return Container(
       clipBehavior: Clip.antiAlias,
@@ -34,7 +39,10 @@ class InviteCodeCardWidget extends StatelessWidget {
       child: Stack(
         children: [
           Positioned.fill(
-            child: SvgPicture.asset(AppAssets.inviteCodePattern, fit: BoxFit.fill),
+            child: SvgPicture.asset(
+              AppAssets.inviteCodePattern,
+              fit: BoxFit.fill,
+            ),
           ),
           Padding(
             padding: EdgeInsets.all(16.r),
@@ -43,7 +51,9 @@ class InviteCodeCardWidget extends StatelessWidget {
               children: [
                 Text(
                   'teams.invite.share_code'.tr(context: context),
-                  style: AppTextStyles.font14Bold.copyWith(color: AppColors.white),
+                  style: AppTextStyles.font14Bold.copyWith(
+                    color: AppColors.white,
+                  ),
                 ),
                 hSpace(4),
                 Row(
@@ -53,7 +63,9 @@ class InviteCodeCardWidget extends StatelessWidget {
                         code,
                         textDirection: TextDirection.ltr,
                         textAlign: TextAlign.start,
-                        style: AppTextStyles.font26Bold.copyWith(color: AppColors.accentGold),
+                        style: AppTextStyles.font26Bold.copyWith(
+                          color: AppColors.accentGold,
+                        ),
                       ),
                     ),
                     CustomButton(
@@ -63,7 +75,9 @@ class InviteCodeCardWidget extends StatelessWidget {
                       borderRadius: 10,
                       borderColor: AppColors.white35,
                       padding: EdgeInsets.symmetric(horizontal: 12.w),
-                      textStyle: AppTextStyles.font13SemiBold.copyWith(color: AppColors.white),
+                      textStyle: AppTextStyles.font13SemiBold.copyWith(
+                        color: AppColors.white,
+                      ),
                       onTap: copy,
                     ),
                   ],
@@ -77,8 +91,14 @@ class InviteCodeCardWidget extends StatelessWidget {
                         height: 44.h,
                         borderRadius: 10,
                         backgroundColor: AppColors.white,
-                        icon: SvgPicture.asset(AppAssets.icWhatsapp, width: 18.r, height: 18.r),
-                        textStyle: AppTextStyles.font14Bold.copyWith(color: AppColors.brandNavy),
+                        icon: SvgPicture.asset(
+                          AppAssets.icWhatsapp,
+                          width: 18.r,
+                          height: 18.r,
+                        ),
+                        textStyle: AppTextStyles.font14Bold.copyWith(
+                          color: AppColors.brandNavy,
+                        ),
                         onTap: () {},
                       ),
                     ),
@@ -99,7 +119,9 @@ class InviteCodeCardWidget extends StatelessWidget {
                 hSpace(8),
                 Text(
                   'teams.invite.code_note'.tr(context: context),
-                  style: AppTextStyles.font12Regular.copyWith(color: AppColors.onNavySubtle),
+                  style: AppTextStyles.font12Regular.copyWith(
+                    color: AppColors.onNavySubtle,
+                  ),
                 ),
               ],
             ),

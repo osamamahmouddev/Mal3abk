@@ -28,8 +28,12 @@ class NotificationsPermissionScreen extends StatelessWidget {
                 glyph: '✓',
                 glyphColor: AppColors.successGreen,
                 glyphBackground: AppColors.successLight,
-                title: 'onboarding.notifications.preview1_title'.tr(context: context),
-                time: 'onboarding.notifications.preview1_time'.tr(context: context),
+                title: 'onboarding.notifications.preview1_title'.tr(
+                  context: context,
+                ),
+                time: 'onboarding.notifications.preview1_time'.tr(
+                  context: context,
+                ),
               ),
               hSpace(4),
               Transform.translate(
@@ -38,8 +42,12 @@ class NotificationsPermissionScreen extends StatelessWidget {
                   glyph: '⇄',
                   glyphColor: AppColors.goldDark,
                   glyphBackground: AppColors.goldLight,
-                  title: 'onboarding.notifications.preview2_title'.tr(context: context),
-                  time: 'onboarding.notifications.preview2_time'.tr(context: context),
+                  title: 'onboarding.notifications.preview2_title'.tr(
+                    context: context,
+                  ),
+                  time: 'onboarding.notifications.preview2_time'.tr(
+                    context: context,
+                  ),
                 ),
               ),
               hSpace(6),
@@ -50,8 +58,12 @@ class NotificationsPermissionScreen extends StatelessWidget {
                   glyph: '!',
                   glyphColor: AppColors.redText,
                   glyphBackground: AppColors.redLight,
-                  title: 'onboarding.notifications.preview3_title'.tr(context: context),
-                  time: 'onboarding.notifications.preview3_time'.tr(context: context),
+                  title: 'onboarding.notifications.preview3_title'.tr(
+                    context: context,
+                  ),
+                  time: 'onboarding.notifications.preview3_time'.tr(
+                    context: context,
+                  ),
                 ),
               ),
               hSpace(14),

@@ -13,7 +13,9 @@ class RankingsTableWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String t(String key) => 'teams.$key'.tr(context: context);
-    final headStyle = AppTextStyles.font11Regular.copyWith(fontWeight: FontWeight.w600);
+    final headStyle = AppTextStyles.font11Regular.copyWith(
+      fontWeight: FontWeight.w600,
+    );
 
     return CustomCardWidget(
       padding: EdgeInsets.zero,
@@ -25,16 +27,37 @@ class RankingsTableWidget extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 14.w),
             child: Row(
               children: [
-                Container(width: 30.w, alignment: AlignmentDirectional.centerStart, child: Text(t('rankings.col_rank'), style: headStyle)),
-                Expanded(flex: 5, child: Text(t('rankings.col_team'), style: headStyle)),
-                Expanded(flex: 3, child: Text(t('rankings.col_record'), style: headStyle, textAlign: TextAlign.center)),
-                Container(width: 32.w, alignment: AlignmentDirectional.centerEnd, child: Text(t('rankings.col_points'), style: headStyle)),
+                Container(
+                  width: 30.w,
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text(t('rankings.col_rank'), style: headStyle),
+                ),
+                Expanded(
+                  flex: 5,
+                  child: Text(t('rankings.col_team'), style: headStyle),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Text(
+                    t('rankings.col_record'),
+                    style: headStyle,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Container(
+                  width: 32.w,
+                  alignment: AlignmentDirectional.centerEnd,
+                  child: Text(t('rankings.col_points'), style: headStyle),
+                ),
               ],
             ),
           ),
           TeamRankCardWidget(
             rank: '٤',
-            teamName: 'teams.rankings.your_team'.tr(context: context, args: [t('profile.mine_name')]),
+            teamName: 'teams.rankings.your_team'.tr(
+              context: context,
+              args: [t('profile.mine_name')],
+            ),
             trend: '▲ ٢',
             record: '١٤-٣-٥',
             points: '٣١',

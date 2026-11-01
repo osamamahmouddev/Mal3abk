@@ -29,23 +29,23 @@ class InvitePlayerRowWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final (label, bg, fg, border) = switch (status) {
       InvitePlayerStatus.sent => (
-          'teams.invite.sent',
-          AppColors.successLight,
-          AppColors.successGreen,
-          AppColors.successBorderSoft,
-        ),
+        'teams.invite.sent',
+        AppColors.successLight,
+        AppColors.successGreen,
+        AppColors.successBorderSoft,
+      ),
       InvitePlayerStatus.member => (
-          'teams.invite.in_team',
-          AppColors.lightSurface,
-          AppColors.textSecondary,
-          null,
-        ),
+        'teams.invite.in_team',
+        AppColors.lightSurface,
+        AppColors.textSecondary,
+        null,
+      ),
       InvitePlayerStatus.available => (
-          'teams.invite.invite',
-          AppColors.brandRed,
-          AppColors.white,
-          null,
-        ),
+        'teams.invite.invite',
+        AppColors.brandRed,
+        AppColors.white,
+        null,
+      ),
     };
 
     return Container(
@@ -64,7 +64,12 @@ class InvitePlayerRowWidget extends StatelessWidget {
               color: AppColors.lightSurface,
               shape: BoxShape.circle,
             ),
-            child: Text(initials, style: AppTextStyles.font14Bold.copyWith(color: AppColors.brandNavy)),
+            child: Text(
+              initials,
+              style: AppTextStyles.font14Bold.copyWith(
+                color: AppColors.brandNavy,
+              ),
+            ),
           ),
           vSpace(12),
           Expanded(
@@ -89,7 +94,9 @@ class InvitePlayerRowWidget extends StatelessWidget {
                 color: bg,
                 borderRadius: BorderRadius.circular(10.r),
                 border: border == null ? null : Border.all(color: border),
-                boxShadow: status == InvitePlayerStatus.available ? AppShadows.redGlow : null,
+                boxShadow: status == InvitePlayerStatus.available
+                    ? AppShadows.redGlow
+                    : null,
               ),
               child: Text(
                 label.tr(context: context),

@@ -27,9 +27,10 @@ class CustomSkeletonWidget extends HookWidget {
     }, [controller]);
 
     final opacity = useMemoized(
-      () => Tween<double>(begin: 0.55, end: 1).animate(
-        CurvedAnimation(parent: controller, curve: Curves.easeInOut),
-      ),
+      () => Tween<double>(
+        begin: 0.55,
+        end: 1,
+      ).animate(CurvedAnimation(parent: controller, curve: Curves.easeInOut)),
       [controller],
     );
 

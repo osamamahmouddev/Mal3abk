@@ -36,13 +36,17 @@ class RankingsSegmentWidget extends StatelessWidget {
                   duration: const Duration(milliseconds: 180),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: selectedIndex == i ? AppColors.white : AppColors.transparent,
+                    color: selectedIndex == i
+                        ? AppColors.white
+                        : AppColors.transparent,
                     borderRadius: BorderRadius.circular(9.r),
                   ),
                   child: Text(
                     labels[i],
                     style: AppTextStyles.font14SemiBold.copyWith(
-                      color: selectedIndex == i ? AppColors.brandNavy : AppColors.white,
+                      color: selectedIndex == i
+                          ? AppColors.brandNavy
+                          : AppColors.white,
                     ),
                   ),
                 ),

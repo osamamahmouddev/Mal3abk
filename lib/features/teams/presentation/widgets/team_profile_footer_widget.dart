@@ -20,7 +20,8 @@ class TeamProfileFooterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void openChallenge() => Navigator.of(context).pushNamed(AppRoutes.challengeTeam);
+    void openChallenge() =>
+        Navigator.of(context).pushNamed(AppRoutes.challengeTeam);
 
     if (variant == TeamProfileVariant.other) {
       return BottomActionBarWidget(
@@ -32,7 +33,9 @@ class TeamProfileFooterWidget extends StatelessWidget {
                 height: 54.h,
                 borderRadius: 16,
                 boxShadow: AppShadows.redGlow,
-                textStyle: AppTextStyles.font16Bold.copyWith(color: AppColors.white),
+                textStyle: AppTextStyles.font16Bold.copyWith(
+                  color: AppColors.white,
+                ),
                 onTap: openChallenge,
               ),
             ),
@@ -45,7 +48,11 @@ class TeamProfileFooterWidget extends StatelessWidget {
               borderRadius: 16,
               borderColor: AppColors.border,
               padding: EdgeInsets.zero,
-              icon: SvgPicture.asset(AppAssets.icFlag, width: 20.r, height: 20.r),
+              icon: SvgPicture.asset(
+                AppAssets.icFlag,
+                width: 20.r,
+                height: 20.r,
+              ),
               onTap: () {},
             ),
           ],
@@ -62,8 +69,11 @@ class TeamProfileFooterWidget extends StatelessWidget {
               type: CustomButtonType.outline,
               height: 52.h,
               borderRadius: 12,
-              textStyle: AppTextStyles.font15SemiBold.copyWith(color: AppColors.brandNavy),
-              onTap: () => Navigator.of(context).pushNamed(AppRoutes.invitePlayers),
+              textStyle: AppTextStyles.font15SemiBold.copyWith(
+                color: AppColors.brandNavy,
+              ),
+              onTap: () =>
+                  Navigator.of(context).pushNamed(AppRoutes.invitePlayers),
             ),
           ),
           vSpace(8),
@@ -73,7 +83,9 @@ class TeamProfileFooterWidget extends StatelessWidget {
               type: CustomButtonType.secondary,
               height: 52.h,
               borderRadius: 12,
-              textStyle: AppTextStyles.font15Bold.copyWith(color: AppColors.white),
+              textStyle: AppTextStyles.font15Bold.copyWith(
+                color: AppColors.white,
+              ),
               onTap: openChallenge,
             ),
           ),

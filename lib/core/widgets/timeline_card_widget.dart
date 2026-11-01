@@ -26,8 +26,12 @@ class TimelineCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dot = (compact ? 8 : 10).r;
-    final baseText = compact ? AppTextStyles.font13Regular : AppTextStyles.font14Regular;
-    final timeStyle = compact ? AppTextStyles.font13Regular : AppTextStyles.font12Regular;
+    final baseText = compact
+        ? AppTextStyles.font13Regular
+        : AppTextStyles.font14Regular;
+    final timeStyle = compact
+        ? AppTextStyles.font13Regular
+        : AppTextStyles.font12Regular;
 
     return CustomCardWidget(
       padding: EdgeInsets.fromLTRB(16.w, 11.h, 16.w, 14.h),
@@ -42,7 +46,10 @@ class TimelineCardWidget extends StatelessWidget {
                 Container(
                   width: dot,
                   height: dot,
-                  decoration: BoxDecoration(color: dotColor, shape: BoxShape.circle),
+                  decoration: BoxDecoration(
+                    color: dotColor,
+                    shape: BoxShape.circle,
+                  ),
                 ),
                 vSpace(compact ? 10 : 10),
                 Expanded(

@@ -17,7 +17,9 @@ class MyTeamCardActionsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = AppTextStyles.font14SemiBold.copyWith(color: AppColors.brandNavy);
+    final style = AppTextStyles.font14SemiBold.copyWith(
+      color: AppColors.brandNavy,
+    );
 
     return Container(
       height: 47.h,
@@ -30,7 +32,10 @@ class MyTeamCardActionsWidget extends StatelessWidget {
             child: InkWell(
               onTap: onTeamPage,
               child: Center(
-                child: Text('teams.list.team_page'.tr(context: context), style: style),
+                child: Text(
+                  'teams.list.team_page'.tr(context: context),
+                  style: style,
+                ),
               ),
             ),
           ),
@@ -39,7 +44,10 @@ class MyTeamCardActionsWidget extends StatelessWidget {
             child: InkWell(
               onTap: onManage,
               child: Center(
-                child: Text('teams.list.manage'.tr(context: context), style: style),
+                child: Text(
+                  'teams.list.manage'.tr(context: context),
+                  style: style,
+                ),
               ),
             ),
           ),

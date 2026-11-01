@@ -19,13 +19,19 @@ class RankingsHeaderWidget extends HookWidget {
   Widget build(BuildContext context) {
     final scope = useState(0);
     String t(String key) => 'teams.$key'.tr(context: context);
-    String pts(String value) => 'teams.rankings.points'.tr(context: context, args: [value]);
+    String pts(String value) =>
+        'teams.rankings.points'.tr(context: context, args: [value]);
 
     return Container(
       color: AppColors.brandNavy,
       child: Stack(
         children: [
-          Positioned.fill(child: SvgPicture.asset(AppAssets.rankingsPattern, fit: BoxFit.fill)),
+          Positioned.fill(
+            child: SvgPicture.asset(
+              AppAssets.rankingsPattern,
+              fit: BoxFit.fill,
+            ),
+          ),
           SafeArea(
             bottom: false,
             child: Padding(
@@ -39,7 +45,9 @@ class RankingsHeaderWidget extends HookWidget {
                         child: Text(
                           t('rankings.title'),
                           textAlign: TextAlign.center,
-                          style: AppTextStyles.font18Bold.copyWith(color: AppColors.white),
+                          style: AppTextStyles.font18Bold.copyWith(
+                            color: AppColors.white,
+                          ),
                         ),
                       ),
                       vSpace(44),

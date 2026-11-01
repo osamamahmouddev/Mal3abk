@@ -11,13 +11,7 @@ import 'app_badge_widget.dart';
 import 'custom_button.dart';
 import 'custom_card_widget.dart';
 
-enum BookingStatus {
-  confirmed,
-  pendingReview,
-  rejected,
-  completed,
-  cancelled,
-}
+enum BookingStatus { confirmed, pendingReview, rejected, completed, cancelled }
 
 class BookingCardWidget extends StatelessWidget {
   const BookingCardWidget({
@@ -105,7 +99,10 @@ class BookingCardWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('$venueName — $pitchName', style: AppTextStyles.font15Bold),
+                    Text(
+                      '$venueName — $pitchName',
+                      style: AppTextStyles.font15Bold,
+                    ),
                     hSpace(4),
                     Text(dateTime, style: AppTextStyles.font13Regular),
                     hSpace(2),

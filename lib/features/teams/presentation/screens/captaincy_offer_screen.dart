@@ -31,7 +31,9 @@ class CaptaincyOfferScreen extends StatelessWidget {
               type: CustomButtonType.secondary,
               height: 52.h,
               borderRadius: 16,
-              textStyle: AppTextStyles.font16Bold.copyWith(color: AppColors.white),
+              textStyle: AppTextStyles.font16Bold.copyWith(
+                color: AppColors.white,
+              ),
               onTap: () => Navigator.of(context).pop(),
             ),
             hSpace(8),
@@ -41,7 +43,9 @@ class CaptaincyOfferScreen extends StatelessWidget {
               height: 46.h,
               borderRadius: 14,
               backgroundColor: AppColors.white,
-              textStyle: AppTextStyles.font14SemiBold.copyWith(color: AppColors.brandNavy),
+              textStyle: AppTextStyles.font14SemiBold.copyWith(
+                color: AppColors.brandNavy,
+              ),
               onTap: () => Navigator.of(context).pop(),
             ),
           ],
@@ -58,13 +62,18 @@ class CaptaincyOfferScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(t('perks_title'), style: AppTextStyles.font15Bold),
-                for (final perk in const ['perk1', 'perk2', 'perk3', 'perk4']) ...[
-                  hSpace(12),
-                  CaptaincyPerkItemWidget(text: t(perk)),
-                ],
+                for (final perk in const [
+                  'perk1',
+                  'perk2',
+                  'perk3',
+                  'perk4',
+                ]) ...[hSpace(12), CaptaincyPerkItemWidget(text: t(perk))],
                 hSpace(12),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 13.w, vertical: 10.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 13.w,
+                    vertical: 10.h,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.pageBackground,
                     borderRadius: BorderRadius.circular(12.r),

@@ -21,7 +21,9 @@ class JoinTeamByCodeScreen extends HookWidget {
 
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
-      appBar: CustomAppBarWidget(title: 'teams.join.title'.tr(context: context)),
+      appBar: CustomAppBarWidget(
+        title: 'teams.join.title'.tr(context: context),
+      ),
       bottomNavigationBar: BottomActionBarWidget(
         child: CustomButton(
           text: 'teams.join.submit'.tr(
@@ -37,9 +39,15 @@ class JoinTeamByCodeScreen extends HookWidget {
       body: ListView(
         padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
         children: [
-          Text('teams.join.code_label'.tr(context: context), style: AppTextStyles.font15Bold),
+          Text(
+            'teams.join.code_label'.tr(context: context),
+            style: AppTextStyles.font15Bold,
+          ),
           hSpace(10),
-          Text('teams.join.code_desc'.tr(context: context), style: AppTextStyles.font13Regular),
+          Text(
+            'teams.join.code_desc'.tr(context: context),
+            style: AppTextStyles.font13Regular,
+          ),
           hSpace(14),
           CustomTextFormField(
             controller: codeController,
@@ -48,7 +56,9 @@ class JoinTeamByCodeScreen extends HookWidget {
             borderColor: AppColors.successGreen,
             focusedBorderColor: AppColors.successGreen,
             style: AppTextStyles.font22Bold,
-            hintStyle: AppTextStyles.font22Bold.copyWith(color: AppColors.textDisabled),
+            hintStyle: AppTextStyles.font22Bold.copyWith(
+              color: AppColors.textDisabled,
+            ),
           ),
           hSpace(62),
           const JoinTeamPreviewCardWidget(),

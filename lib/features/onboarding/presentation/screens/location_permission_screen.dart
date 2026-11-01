@@ -48,8 +48,9 @@ class LocationPermissionScreen extends StatelessWidget {
               const Spacer(),
               PrimaryCtaButtonWidget(
                 text: 'onboarding.location.allow'.tr(context: context),
-                onTap: () => Navigator.of(context)
-                    .pushNamed(AppRoutes.notificationsPermission),
+                onTap: () => Navigator.of(
+                  context,
+                ).pushNamed(AppRoutes.notificationsPermission),
               ),
               hSpace(8),
               CustomButton(
@@ -61,8 +62,9 @@ class LocationPermissionScreen extends StatelessWidget {
                 textStyle: AppTextStyles.font15SemiBold.copyWith(
                   color: AppColors.brandNavy,
                 ),
-                onTap: () => Navigator.of(context)
-                    .pushNamed(AppRoutes.notificationsPermission),
+                onTap: () => Navigator.of(
+                  context,
+                ).pushNamed(AppRoutes.notificationsPermission),
               ),
             ],
           ),

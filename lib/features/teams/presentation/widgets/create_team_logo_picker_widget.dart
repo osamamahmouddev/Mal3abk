@@ -7,7 +7,11 @@ import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/initials_avatar_widget.dart';
 
 class CreateTeamLogoPickerWidget extends StatelessWidget {
-  const CreateTeamLogoPickerWidget({required this.initials, super.key, this.onUpload});
+  const CreateTeamLogoPickerWidget({
+    required this.initials,
+    super.key,
+    this.onUpload,
+  });
 
   final String initials;
   final VoidCallback? onUpload;
@@ -26,13 +30,18 @@ class CreateTeamLogoPickerWidget extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('teams.create.logo'.tr(context: context), style: AppTextStyles.font15Bold),
+            Text(
+              'teams.create.logo'.tr(context: context),
+              style: AppTextStyles.font15Bold,
+            ),
             hSpace(12),
             GestureDetector(
               onTap: onUpload,
               child: Text(
                 'teams.create.upload'.tr(context: context),
-                style: AppTextStyles.font13SemiBold.copyWith(color: AppColors.brandNavy),
+                style: AppTextStyles.font13SemiBold.copyWith(
+                  color: AppColors.brandNavy,
+                ),
               ),
             ),
           ],

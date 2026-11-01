@@ -16,25 +16,34 @@ class TeamProfilePlayersSectionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String t(String key) => 'teams.$key'.tr(context: context);
-    String captain(String key) =>
-        'teams.profile.captain_suffix'.tr(context: context, args: [t('sample.$key')]);
+    String captain(String key) => 'teams.profile.captain_suffix'.tr(
+      context: context,
+      args: [t('sample.$key')],
+    );
 
     final (count, players) = switch (variant) {
-      TeamProfileVariant.mine => ('٨', [
+      TeamProfileVariant.mine => (
+        '٨',
+        [
           (t('sample.ahmed_i'), captain('ahmed'), t('positions.mid')),
           (t('sample.karim_i'), t('sample.karim'), t('positions.mid')),
           (t('sample.mohamed_i'), t('sample.mohamed'), t('positions.def')),
           (t('sample.youssef_h_i'), t('sample.youssef_h'), t('positions.gk')),
           (t('sample.ziad_i'), t('sample.ziad'), t('positions.mid')),
-        ]),
-      TeamProfileVariant.other => ('١٠', [
+        ],
+      ),
+      TeamProfileVariant.other => (
+        '١٠',
+        [
           (t('sample.youssef_i'), captain('youssef'), t('positions.fwd')),
           (t('sample.ali_i'), t('sample.ali'), t('positions.mid')),
           (t('sample.mostafa_i'), t('sample.mostafa'), t('positions.gk')),
-        ]),
-      TeamProfileVariant.fresh => ('١', [
-          (t('sample.ahmed_i'), captain('ahmed'), t('positions.mid')),
-        ]),
+        ],
+      ),
+      TeamProfileVariant.fresh => (
+        '١',
+        [(t('sample.ahmed_i'), captain('ahmed'), t('positions.mid'))],
+      ),
     };
 
     return Column(
@@ -45,7 +54,8 @@ class TeamProfilePlayersSectionWidget extends StatelessWidget {
           actionText: variant == TeamProfileVariant.other
               ? null
               : 'teams.profile.manage'.tr(context: context),
-          onAction: () => Navigator.of(context).pushNamed(AppRoutes.manageMembers),
+          onAction: () =>
+              Navigator.of(context).pushNamed(AppRoutes.manageMembers),
         ),
         hSpace(14),
         CustomCardWidget(
@@ -54,7 +64,11 @@ class TeamProfilePlayersSectionWidget extends StatelessWidget {
           child: Column(
             children: [
               for (final (initials, name, position) in players)
-                TeamPlayerRowWidget(initials: initials, name: name, position: position),
+                TeamPlayerRowWidget(
+                  initials: initials,
+                  name: name,
+                  position: position,
+                ),
             ],
           ),
         ),

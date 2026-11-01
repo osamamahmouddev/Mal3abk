@@ -27,7 +27,10 @@ class CreateTeamPreferencesWidget extends HookWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text('${'teams.create.area'.tr(context: context)} *', style: AppTextStyles.font14SemiBold),
+        Text(
+          '${'teams.create.area'.tr(context: context)} *',
+          style: AppTextStyles.font14SemiBold,
+        ),
         hSpace(14),
         PillChoiceWrapWidget(
           labels: [
@@ -40,7 +43,10 @@ class CreateTeamPreferencesWidget extends HookWidget {
           onSelect: (index) => area.value = index,
         ),
         hSpace(14),
-        Text('teams.create.pitch_type'.tr(context: context), style: AppTextStyles.font14SemiBold),
+        Text(
+          'teams.create.pitch_type'.tr(context: context),
+          style: AppTextStyles.font14SemiBold,
+        ),
         hSpace(14),
         Row(
           children: [
@@ -59,7 +65,10 @@ class CreateTeamPreferencesWidget extends HookWidget {
           ],
         ),
         hSpace(14),
-        Text('teams.create.visibility'.tr(context: context), style: AppTextStyles.font14SemiBold),
+        Text(
+          'teams.create.visibility'.tr(context: context),
+          style: AppTextStyles.font14SemiBold,
+        ),
         hSpace(14),
         RadioOptionCardWidget(
           title: 'teams.create.public'.tr(context: context),

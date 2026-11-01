@@ -22,15 +22,40 @@ class TeamProfileMatchesSectionWidget extends StatelessWidget {
 
     final results = switch (variant) {
       TeamProfileVariant.mine => [
-          (TeamResultType.pending, t('res_pending'), t('r1_title'), t('r1_meta'), '٤–٣'),
-          (TeamResultType.draw, t('res_draw'), t('r2_title'), t('r2_meta'), '٢–٢'),
-          (TeamResultType.loss, t('res_loss'), t('r3_title'), t('r3_meta'), '١–٣'),
-        ],
+        (
+          TeamResultType.pending,
+          t('res_pending'),
+          t('r1_title'),
+          t('r1_meta'),
+          '٤–٣',
+        ),
+        (
+          TeamResultType.draw,
+          t('res_draw'),
+          t('r2_title'),
+          t('r2_meta'),
+          '٢–٢',
+        ),
+        (
+          TeamResultType.loss,
+          t('res_loss'),
+          t('r3_title'),
+          t('r3_meta'),
+          '١–٣',
+        ),
+      ],
       TeamProfileVariant.other => [
-          (TeamResultType.win, t('res_win'), t('o1_title'), t('o1_meta'), '٥–٢'),
-          (TeamResultType.pending, t('res_pending'), t('o2_title'), t('o2_meta'), '٣–٤'),
-        ],
-      TeamProfileVariant.fresh => <(TeamResultType, String, String, String, String)>[],
+        (TeamResultType.win, t('res_win'), t('o1_title'), t('o1_meta'), '٥–٢'),
+        (
+          TeamResultType.pending,
+          t('res_pending'),
+          t('o2_title'),
+          t('o2_meta'),
+          '٣–٤',
+        ),
+      ],
+      TeamProfileVariant.fresh =>
+        <(TeamResultType, String, String, String, String)>[],
     };
 
     return Column(
@@ -59,14 +84,18 @@ class TeamProfileMatchesSectionWidget extends StatelessWidget {
                   type: AppBadgeType.warning,
                   borderRadius: 11.5,
                   padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
-                  textStyle: AppTextStyles.font11Bold.copyWith(color: AppColors.goldDark),
+                  textStyle: AppTextStyles.font11Bold.copyWith(
+                    color: AppColors.goldDark,
+                  ),
                 ),
               ],
             ),
           )
         else
           EmptyNoteBoxWidget(
-            text: variant == TeamProfileVariant.fresh ? t('no_matches_new') : t('no_matches'),
+            text: variant == TeamProfileVariant.fresh
+                ? t('no_matches_new')
+                : t('no_matches'),
           ),
         hSpace(10),
         Text(t('last_results'), style: AppTextStyles.font15Bold),

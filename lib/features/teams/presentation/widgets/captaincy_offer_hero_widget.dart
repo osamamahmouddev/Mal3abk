@@ -22,7 +22,10 @@ class CaptaincyOfferHeroWidget extends StatelessWidget {
       child: Stack(
         children: [
           Positioned.fill(
-            child: SvgPicture.asset(AppAssets.captaincyPattern, fit: BoxFit.fill),
+            child: SvgPicture.asset(
+              AppAssets.captaincyPattern,
+              fit: BoxFit.fill,
+            ),
           ),
           Padding(
             padding: EdgeInsets.fromLTRB(40.w, 22.h, 40.w, 24.h),
@@ -39,7 +42,9 @@ class CaptaincyOfferHeroWidget extends StatelessWidget {
                   ),
                   child: Text(
                     'teams.sample.nogoum_i'.tr(context: context),
-                    style: AppTextStyles.font24Bold.copyWith(color: AppColors.white),
+                    style: AppTextStyles.font24Bold.copyWith(
+                      color: AppColors.white,
+                    ),
                   ),
                 ),
                 hSpace(10),
@@ -53,7 +58,9 @@ class CaptaincyOfferHeroWidget extends StatelessWidget {
                   ),
                   child: Text(
                     'teams.captaincy.badge'.tr(context: context),
-                    style: AppTextStyles.font12Bold.copyWith(color: AppColors.brandNavy),
+                    style: AppTextStyles.font12Bold.copyWith(
+                      color: AppColors.brandNavy,
+                    ),
                   ),
                 ),
                 hSpace(10),
@@ -68,7 +75,9 @@ class CaptaincyOfferHeroWidget extends StatelessWidget {
                 hSpace(6),
                 Text(
                   'teams.captaincy.valid'.tr(context: context),
-                  style: AppTextStyles.font13Regular.copyWith(color: AppColors.onNavyMuted),
+                  style: AppTextStyles.font13Regular.copyWith(
+                    color: AppColors.onNavyMuted,
+                  ),
                 ),
               ],
             ),

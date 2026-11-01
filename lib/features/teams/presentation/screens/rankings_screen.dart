@@ -52,7 +52,9 @@ class RankingsScreen extends HookWidget {
                 hSpace(10),
                 const RankingsTableWidget(),
                 hSpace(10),
-                PlainNoteBoxWidget(text: 'teams.rankings.note'.tr(context: context)),
+                PlainNoteBoxWidget(
+                  text: 'teams.rankings.note'.tr(context: context),
+                ),
               ],
             ),
           ),

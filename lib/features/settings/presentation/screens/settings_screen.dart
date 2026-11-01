@@ -25,9 +25,7 @@ class SettingsScreen extends HookWidget {
 
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
-      appBar: CustomAppBarWidget(
-        title: 'settings.title'.tr(context: context),
-      ),
+      appBar: CustomAppBarWidget(title: 'settings.title'.tr(context: context)),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
@@ -44,22 +42,32 @@ class SettingsScreen extends HookWidget {
                 child: Column(
                   children: [
                     SettingsSwitchTileWidget(
-                      title: 'settings.booking_alerts_title'.tr(context: context),
-                      subtitle: 'settings.booking_alerts_sub'.tr(context: context),
+                      title: 'settings.booking_alerts_title'.tr(
+                        context: context,
+                      ),
+                      subtitle: 'settings.booking_alerts_sub'.tr(
+                        context: context,
+                      ),
                       value: bookingAlerts.value,
                       onChanged: (v) => bookingAlerts.value = v,
                     ),
                     const Divider(height: 1, color: AppColors.border),
                     SettingsSwitchTileWidget(
                       title: 'settings.team_invites_title'.tr(context: context),
-                      subtitle: 'settings.team_invites_sub'.tr(context: context),
+                      subtitle: 'settings.team_invites_sub'.tr(
+                        context: context,
+                      ),
                       value: teamInvites.value,
                       onChanged: (v) => teamInvites.value = v,
                     ),
                     const Divider(height: 1, color: AppColors.border),
                     SettingsSwitchTileWidget(
-                      title: 'settings.match_results_title'.tr(context: context),
-                      subtitle: 'settings.match_results_sub'.tr(context: context),
+                      title: 'settings.match_results_title'.tr(
+                        context: context,
+                      ),
+                      subtitle: 'settings.match_results_sub'.tr(
+                        context: context,
+                      ),
                       value: matchResults.value,
                       onChanged: (v) => matchResults.value = v,
                     ),
@@ -84,8 +92,12 @@ class SettingsScreen extends HookWidget {
                 child: Column(
                   children: [
                     SettingsSwitchTileWidget(
-                      title: 'settings.appear_in_search_title'.tr(context: context),
-                      subtitle: 'settings.appear_in_search_sub'.tr(context: context),
+                      title: 'settings.appear_in_search_title'.tr(
+                        context: context,
+                      ),
+                      subtitle: 'settings.appear_in_search_sub'.tr(
+                        context: context,
+                      ),
                       value: appearInSearch.value,
                       onChanged: (v) => appearInSearch.value = v,
                     ),

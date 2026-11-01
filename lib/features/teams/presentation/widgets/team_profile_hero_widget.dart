@@ -37,7 +37,10 @@ class TeamProfileHeroWidget extends StatelessWidget {
       child: Stack(
         children: [
           Positioned.fill(
-            child: SvgPicture.asset(AppAssets.teamHeroPattern, fit: BoxFit.fill),
+            child: SvgPicture.asset(
+              AppAssets.teamHeroPattern,
+              fit: BoxFit.fill,
+            ),
           ),
           SafeArea(
             bottom: false,
@@ -61,15 +64,24 @@ class TeamProfileHeroWidget extends StatelessWidget {
                     ),
                     child: Text(
                       initials,
-                      style: AppTextStyles.font28Bold.copyWith(color: avatarTextColor),
+                      style: AppTextStyles.font28Bold.copyWith(
+                        color: avatarTextColor,
+                      ),
                     ),
                   ),
                   hSpace(4),
-                  Text(name, style: AppTextStyles.font22Bold.copyWith(color: AppColors.white)),
+                  Text(
+                    name,
+                    style: AppTextStyles.font22Bold.copyWith(
+                      color: AppColors.white,
+                    ),
+                  ),
                   hSpace(10),
                   Text(
                     meta,
-                    style: AppTextStyles.font13Regular.copyWith(color: AppColors.onNavyMuted),
+                    style: AppTextStyles.font13Regular.copyWith(
+                      color: AppColors.onNavyMuted,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   hSpace(12),
@@ -78,13 +90,17 @@ class TeamProfileHeroWidget extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 10.w),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: rankedBadge ? AppColors.accentGold : AppColors.white14,
+                      color: rankedBadge
+                          ? AppColors.accentGold
+                          : AppColors.white14,
                       borderRadius: BorderRadius.circular(13.5.r),
                     ),
                     child: Text(
                       badgeText,
                       style: AppTextStyles.font12Bold.copyWith(
-                        color: rankedBadge ? AppColors.brandNavy : AppColors.white,
+                        color: rankedBadge
+                            ? AppColors.brandNavy
+                            : AppColors.white,
                       ),
                     ),
                   ),

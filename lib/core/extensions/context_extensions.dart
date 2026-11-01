@@ -47,11 +47,15 @@ extension ContextExt on BuildContext {
 
   /// Opens the main shell on the root navigator and clears the whole stack,
   /// so it is never nested inside a tab's navigator.
-  void openMainShell() => Navigator.of(this, rootNavigator: true)
-      .pushNamedAndRemoveUntil(AppRoutes.main, (_) => false);
+  void openMainShell() => Navigator.of(
+    this,
+    rootNavigator: true,
+  ).pushNamedAndRemoveUntil(AppRoutes.main, (_) => false);
 
   /// Opens login on the root navigator and clears the whole stack, used when
   /// the session ends (logout, phone change, phone recovery).
-  void openLogin() => Navigator.of(this, rootNavigator: true)
-      .pushNamedAndRemoveUntil(AppRoutes.login, (_) => false);
+  void openLogin() => Navigator.of(
+    this,
+    rootNavigator: true,
+  ).pushNamedAndRemoveUntil(AppRoutes.login, (_) => false);
 }

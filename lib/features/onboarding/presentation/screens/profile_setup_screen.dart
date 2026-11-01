@@ -46,34 +46,42 @@ class ProfileSetupScreen extends HookWidget {
                 stepLabel: 'onboarding.profile_setup.step'.tr(context: context),
                 completedSteps: 1,
               ),
-              hSpace(6),
+              vSpace(6),
               Text(
                 'onboarding.profile_setup.title'.tr(context: context),
                 style: AppTextStyles.font22Bold,
               ),
-              hSpace(8),
+              vSpace(8),
               Text(
                 'onboarding.profile_setup.desc'.tr(context: context),
                 style: AppTextStyles.font13Regular,
               ),
-              hSpace(38),
+              vSpace(38),
               ProfileAvatarPickerWidget(
-                initials: 'onboarding.profile_setup.sample_initials'.tr(context: context),
+                initials: 'onboarding.profile_setup.sample_initials'.tr(
+                  context: context,
+                ),
               ),
               hSpace(14),
               FormFieldLabelWidget(
-                label: 'onboarding.profile_setup.name_label'.tr(context: context),
+                label: 'onboarding.profile_setup.name_label'.tr(
+                  context: context,
+                ),
                 isRequired: true,
               ),
               hSpace(12),
               CustomTextFormField(
                 controller: nameController,
-                hintText: 'onboarding.profile_setup.name_hint'.tr(context: context),
+                hintText: 'onboarding.profile_setup.name_hint'.tr(
+                  context: context,
+                ),
                 style: AppTextStyles.font16Regular,
               ),
               hSpace(14),
               FormFieldLabelWidget(
-                label: 'onboarding.profile_setup.area_label'.tr(context: context),
+                label: 'onboarding.profile_setup.area_label'.tr(
+                  context: context,
+                ),
                 isRequired: true,
               ),
               hSpace(14),
@@ -83,7 +91,9 @@ class ProfileSetupScreen extends HookWidget {
               ),
               hSpace(14),
               FormFieldLabelWidget(
-                label: 'onboarding.profile_setup.pos_label'.tr(context: context),
+                label: 'onboarding.profile_setup.pos_label'.tr(
+                  context: context,
+                ),
                 hint: 'onboarding.profile_setup.pos_hint'.tr(context: context),
               ),
               hSpace(14),
@@ -97,7 +107,9 @@ class ProfileSetupScreen extends HookWidget {
               ),
               hSpace(14),
               FormFieldLabelWidget(
-                label: 'onboarding.profile_setup.level_label'.tr(context: context),
+                label: 'onboarding.profile_setup.level_label'.tr(
+                  context: context,
+                ),
                 hint: 'onboarding.profile_setup.optional'.tr(context: context),
               ),
               hSpace(14),

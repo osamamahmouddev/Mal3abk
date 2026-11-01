@@ -6,10 +6,7 @@ class AppConfig {
     defaultValue: 'https://api.dev.mal3abk.com',
   );
 
-  static const String env = String.fromEnvironment(
-    'ENV',
-    defaultValue: 'dev',
-  );
+  static const String env = String.fromEnvironment('ENV', defaultValue: 'dev');
 
   static bool get isDev => env == 'dev';
   static bool get isProd => env == 'prod';

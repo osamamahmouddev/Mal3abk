@@ -18,9 +18,7 @@ class FaqItemWidget extends StatelessWidget {
     return ExpansionTile(
       title: Text(question, style: AppTextStyles.font13SemiBold),
       childrenPadding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 14.h),
-      children: [
-        Text(answer, style: AppTextStyles.font12Regular),
-      ],
+      children: [Text(answer, style: AppTextStyles.font12Regular)],
     );
   }
 }

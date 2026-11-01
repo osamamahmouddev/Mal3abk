@@ -35,7 +35,9 @@ class JoinTeamPreviewCardWidget extends StatelessWidget {
                 ),
                 child: Text(
                   'teams.sample.nogoum_i'.tr(context: context),
-                  style: AppTextStyles.font20Bold.copyWith(color: AppColors.white),
+                  style: AppTextStyles.font20Bold.copyWith(
+                    color: AppColors.white,
+                  ),
                 ),
               ),
               vSpace(12),
@@ -43,11 +45,20 @@ class JoinTeamPreviewCardWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('teams.profile.mine_name'.tr(context: context), style: AppTextStyles.font17Bold),
+                    Text(
+                      'teams.profile.mine_name'.tr(context: context),
+                      style: AppTextStyles.font17Bold,
+                    ),
                     hSpace(2),
-                    Text('teams.join.team_meta'.tr(context: context), style: AppTextStyles.font13Regular),
+                    Text(
+                      'teams.join.team_meta'.tr(context: context),
+                      style: AppTextStyles.font13Regular,
+                    ),
                     hSpace(2),
-                    Text('teams.join.captain'.tr(context: context), style: AppTextStyles.font12Regular),
+                    Text(
+                      'teams.join.captain'.tr(context: context),
+                      style: AppTextStyles.font12Regular,
+                    ),
                   ],
                 ),
               ),

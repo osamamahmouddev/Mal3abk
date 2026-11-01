@@ -39,7 +39,12 @@ class PendingInviteRowWidget extends StatelessWidget {
               shape: BoxShape.circle,
               border: Border.all(color: AppColors.checkboxBorder, width: 2),
             ),
-            child: Text(initials, style: AppTextStyles.font12Bold.copyWith(color: AppColors.textSecondary)),
+            child: Text(
+              initials,
+              style: AppTextStyles.font12Bold.copyWith(
+                color: AppColors.textSecondary,
+              ),
+            ),
           ),
           vSpace(12),
           Expanded(
@@ -60,7 +65,9 @@ class PendingInviteRowWidget extends StatelessWidget {
             borderRadius: 9,
             backgroundColor: AppColors.white,
             padding: EdgeInsets.symmetric(horizontal: 10.w),
-            textStyle: AppTextStyles.font13SemiBold.copyWith(color: AppColors.brandNavy),
+            textStyle: AppTextStyles.font13SemiBold.copyWith(
+              color: AppColors.brandNavy,
+            ),
             onTap: onCancel,
           ),
         ],

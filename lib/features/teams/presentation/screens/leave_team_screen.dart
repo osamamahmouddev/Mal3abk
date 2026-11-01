@@ -22,7 +22,10 @@ class LeaveTeamScreen extends HookWidget {
   Widget build(BuildContext context) {
     final selectedReason = useState<String?>(null);
     String t(String key) => 'teams.leave.$key'.tr(context: context);
-    final warnStyle = AppTextStyles.font13Regular.copyWith(color: AppColors.goldText, height: 21 / 13);
+    final warnStyle = AppTextStyles.font13Regular.copyWith(
+      color: AppColors.goldText,
+      height: 21 / 13,
+    );
 
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
@@ -37,7 +40,9 @@ class LeaveTeamScreen extends HookWidget {
                 type: CustomButtonType.outline,
                 height: 54.h,
                 borderRadius: 16,
-                textStyle: AppTextStyles.font15SemiBold.copyWith(color: AppColors.brandNavy),
+                textStyle: AppTextStyles.font15SemiBold.copyWith(
+                  color: AppColors.brandNavy,
+                ),
                 onTap: () => Navigator.of(context).pop(),
               ),
             ),
@@ -49,7 +54,9 @@ class LeaveTeamScreen extends HookWidget {
                 height: 54.h,
                 borderRadius: 16,
                 backgroundColor: AppColors.redText,
-                textStyle: AppTextStyles.font15Bold.copyWith(color: AppColors.white),
+                textStyle: AppTextStyles.font15Bold.copyWith(
+                  color: AppColors.white,
+                ),
                 onTap: () => Navigator.of(context).pop(),
               ),
             ),
@@ -93,7 +100,12 @@ class LeaveTeamScreen extends HookWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(t('warning_title'), style: AppTextStyles.font14Bold.copyWith(color: AppColors.goldText)),
+                Text(
+                  t('warning_title'),
+                  style: AppTextStyles.font14Bold.copyWith(
+                    color: AppColors.goldText,
+                  ),
+                ),
                 for (final key in const ['w1', 'w2', 'w3']) ...[
                   hSpace(8),
                   Text(t(key), style: warnStyle),

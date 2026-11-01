@@ -37,7 +37,9 @@ class TeamInviteCardWidget extends StatelessWidget {
                   children: [
                     Text(
                       'teams.list.new_invite'.tr(context: context),
-                      style: AppTextStyles.font12Bold.copyWith(color: AppColors.goldDark),
+                      style: AppTextStyles.font12Bold.copyWith(
+                        color: AppColors.goldDark,
+                      ),
                     ),
                     hSpace(2),
                     Text(
@@ -79,7 +81,9 @@ class TeamInviteCardWidget extends StatelessWidget {
                   type: CustomButtonType.secondary,
                   height: 44.h,
                   borderRadius: 10,
-                  textStyle: AppTextStyles.font14Bold.copyWith(color: AppColors.white),
+                  textStyle: AppTextStyles.font14Bold.copyWith(
+                    color: AppColors.white,
+                  ),
                   onTap: () {},
                 ),
               ),

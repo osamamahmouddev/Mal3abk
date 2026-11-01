@@ -57,7 +57,9 @@ class PriceActionFooterWidget extends StatelessWidget {
             borderRadius: 12,
             padding: EdgeInsets.symmetric(horizontal: 25.w),
             boxShadow: AppShadows.redGlow,
-            textStyle: AppTextStyles.font16Bold.copyWith(color: AppColors.white),
+            textStyle: AppTextStyles.font16Bold.copyWith(
+              color: AppColors.white,
+            ),
             onTap: onTap,
           ),
         ],

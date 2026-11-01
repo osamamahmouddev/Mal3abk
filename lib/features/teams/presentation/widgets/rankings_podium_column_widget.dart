@@ -43,10 +43,18 @@ class RankingsPodiumColumnWidget extends StatelessWidget {
               width: 3,
             ),
           ),
-          child: Text(initials, style: AppTextStyles.font16Bold.copyWith(color: AppColors.brandNavy)),
+          child: Text(
+            initials,
+            style: AppTextStyles.font16Bold.copyWith(
+              color: AppColors.brandNavy,
+            ),
+          ),
         ),
         hSpace(4),
-        Text(name, style: AppTextStyles.font13Bold.copyWith(color: AppColors.white)),
+        Text(
+          name,
+          style: AppTextStyles.font13Bold.copyWith(color: AppColors.white),
+        ),
         hSpace(8),
         Container(
           height: blockHeight.h,
@@ -60,7 +68,10 @@ class RankingsPodiumColumnWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(rank, style: AppTextStyles.font20Bold.copyWith(color: fg)),
-              Text(points, style: AppTextStyles.font11Regular.copyWith(color: fg)),
+              Text(
+                points,
+                style: AppTextStyles.font11Regular.copyWith(color: fg),
+              ),
             ],
           ),
         ),

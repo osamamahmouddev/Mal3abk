@@ -5,13 +5,7 @@ import '../app/app_spaces.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 
-enum AppBadgeType {
-  success,
-  warning,
-  error,
-  neutral,
-  accent,
-}
+enum AppBadgeType { success, warning, error, neutral, accent }
 
 class AppBadgeWidget extends StatelessWidget {
   const AppBadgeWidget({
@@ -75,20 +69,15 @@ class AppBadgeWidget extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (icon != null) ...[
-            icon!,
-            vSpace(4),
-          ],
+          if (icon != null) ...[icon!, vSpace(4)],
           Text(
             text,
-            style: textStyle ??
-                AppTextStyles.font12Bold.copyWith(
-                  color: effectiveFg,
-                ),
+            style:
+                textStyle ??
+                AppTextStyles.font12Bold.copyWith(color: effectiveFg),
           ),
         ],
       ),
     );
   }
 }
-

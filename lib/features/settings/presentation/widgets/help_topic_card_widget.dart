@@ -5,11 +5,7 @@ import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 
 class HelpTopicCardWidget extends StatelessWidget {
-  const HelpTopicCardWidget({
-    required this.title,
-    super.key,
-    this.onTap,
-  });
+  const HelpTopicCardWidget({required this.title, super.key, this.onTap});
 
   final String title;
   final VoidCallback? onTap;

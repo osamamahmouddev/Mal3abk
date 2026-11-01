@@ -29,8 +29,9 @@ class ProfileSetupPositionSelectorWidget extends StatelessWidget {
           if (i > 0) vSpace(8),
           Expanded(
             child: SelectableTileWidget(
-              title: 'onboarding.profile_setup.${positionKeys[i]}'
-                  .tr(context: context),
+              title: 'onboarding.profile_setup.${positionKeys[i]}'.tr(
+                context: context,
+              ),
               isSelected: selectedPositions.contains(positionKeys[i]),
               onTap: () => onToggle(positionKeys[i]),
               height: 46,

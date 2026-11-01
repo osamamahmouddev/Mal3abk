@@ -42,9 +42,7 @@ class TeamCardWidget extends StatelessWidget {
             backgroundColor: AppColors.brandNavy,
             child: Text(
               initials,
-              style: AppTextStyles.font16Bold.copyWith(
-                color: AppColors.white,
-              ),
+              style: AppTextStyles.font16Bold.copyWith(color: AppColors.white),
             ),
           ),
           vSpace(14),
@@ -85,7 +83,10 @@ class TeamCardWidget extends StatelessWidget {
                 ),
                 hSpace(4),
                 Text(
-                  'teams.captain_prefix'.tr(context: context, args: [captainName]),
+                  'teams.captain_prefix'.tr(
+                    context: context,
+                    args: [captainName],
+                  ),
                   style: AppTextStyles.font13Regular,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -100,10 +101,7 @@ class TeamCardWidget extends StatelessWidget {
                           style: AppTextStyles.font12Medium,
                         ),
                       if (membersCountText != null && ratingText != null)
-                        Text(
-                          ' · ',
-                          style: AppTextStyles.font12Medium,
-                        ),
+                        Text(' · ', style: AppTextStyles.font12Medium),
                       if (ratingText != null)
                         Text(
                           ratingText!,
@@ -117,13 +115,9 @@ class TeamCardWidget extends StatelessWidget {
               ],
             ),
           ),
-          if (actionWidget != null) ...[
-            vSpace(10),
-            actionWidget!,
-          ],
+          if (actionWidget != null) ...[vSpace(10), actionWidget!],
         ],
       ),
     );
   }
 }
-

@@ -18,37 +18,55 @@ class TeamProfileHeaderSectionWidget extends StatelessWidget {
 
     final hero = switch (variant) {
       TeamProfileVariant.mine => TeamProfileHeroWidget(
-          initials: t('sample.nogoum_i'),
-          avatarColor: AppColors.brandRed,
-          name: t('profile.mine_name'),
-          meta: t('profile.mine_meta'),
-          badgeText: t('profile.mine_rank'),
-        ),
+        initials: t('sample.nogoum_i'),
+        avatarColor: AppColors.brandRed,
+        name: t('profile.mine_name'),
+        meta: t('profile.mine_meta'),
+        badgeText: t('profile.mine_rank'),
+      ),
       TeamProfileVariant.other => TeamProfileHeroWidget(
-          initials: t('sample.soqour_i'),
-          avatarColor: AppColors.white,
-          avatarTextColor: AppColors.brandNavy,
-          name: t('profile.other_name'),
-          meta: t('profile.other_meta'),
-          badgeText: t('profile.other_rank'),
-        ),
+        initials: t('sample.soqour_i'),
+        avatarColor: AppColors.white,
+        avatarTextColor: AppColors.brandNavy,
+        name: t('profile.other_name'),
+        meta: t('profile.other_meta'),
+        badgeText: t('profile.other_rank'),
+      ),
       TeamProfileVariant.fresh => TeamProfileHeroWidget(
-          initials: t('sample.raad_i'),
-          avatarColor: AppColors.mapUserDot,
-          name: t('profile.new_name'),
-          meta: t('profile.new_meta'),
-          badgeText: t('profile.new_rank'),
-          rankedBadge: false,
-        ),
+        initials: t('sample.raad_i'),
+        avatarColor: AppColors.mapUserDot,
+        name: t('profile.new_name'),
+        meta: t('profile.new_meta'),
+        badgeText: t('profile.new_rank'),
+        rankedBadge: false,
+      ),
     };
 
     final stats = switch (variant) {
       TeamProfileVariant.mine => const TeamStatsGridWidget(
-          wins: '١٤', draws: '٣', losses: '٥', goalsFor: '٦٨', goalsAgainst: '٤١', winRate: '٦٤٪'),
+        wins: '١٤',
+        draws: '٣',
+        losses: '٥',
+        goalsFor: '٦٨',
+        goalsAgainst: '٤١',
+        winRate: '٦٤٪',
+      ),
       TeamProfileVariant.other => const TeamStatsGridWidget(
-          wins: '١٨', draws: '٣', losses: '٤', goalsFor: '٧٩', goalsAgainst: '٤٤', winRate: '٧٢٪'),
+        wins: '١٨',
+        draws: '٣',
+        losses: '٤',
+        goalsFor: '٧٩',
+        goalsAgainst: '٤٤',
+        winRate: '٧٢٪',
+      ),
       TeamProfileVariant.fresh => const TeamStatsGridWidget(
-          wins: '٠', draws: '٠', losses: '٠', goalsFor: '٠', goalsAgainst: '٠', winRate: '—'),
+        wins: '٠',
+        draws: '٠',
+        losses: '٠',
+        goalsFor: '٠',
+        goalsAgainst: '٠',
+        winRate: '—',
+      ),
     };
 
     return Column(

@@ -40,9 +40,14 @@ class CreateTeamScreen extends HookWidget {
       body: ListView(
         padding: EdgeInsets.fromLTRB(16.w, 18.h, 16.w, 18.h),
         children: [
-          CreateTeamLogoPickerWidget(initials: 'teams.sample.nogoum_i'.tr(context: context)),
+          CreateTeamLogoPickerWidget(
+            initials: 'teams.sample.nogoum_i'.tr(context: context),
+          ),
           hSpace(14),
-          Text('${'teams.create.name'.tr(context: context)} *', style: AppTextStyles.font14SemiBold),
+          Text(
+            '${'teams.create.name'.tr(context: context)} *',
+            style: AppTextStyles.font14SemiBold,
+          ),
           hSpace(12),
           CustomTextFormField(
             controller: nameController,
@@ -52,7 +57,9 @@ class CreateTeamScreen extends HookWidget {
           hSpace(4),
           Text(
             'teams.create.name_available'.tr(context: context),
-            style: AppTextStyles.font12SemiBold.copyWith(color: AppColors.successGreen),
+            style: AppTextStyles.font12SemiBold.copyWith(
+              color: AppColors.successGreen,
+            ),
           ),
           hSpace(14),
           Text(
@@ -65,12 +72,17 @@ class CreateTeamScreen extends HookWidget {
             hintText: 'teams.create.bio_hint'.tr(context: context),
             minLines: 2,
             maxLines: 2,
-            contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 14.w,
+              vertical: 6.h,
+            ),
           ),
           hSpace(14),
           const CreateTeamPreferencesWidget(),
           hSpace(18),
-          PlainNoteBoxWidget(text: 'teams.create.captain_note'.tr(context: context)),
+          PlainNoteBoxWidget(
+            text: 'teams.create.captain_note'.tr(context: context),
+          ),
         ],
       ),
     );

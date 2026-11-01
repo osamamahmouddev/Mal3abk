@@ -38,7 +38,10 @@ class TeamStatsGridWidget extends StatelessWidget {
             ),
             vSpace(8),
             Expanded(
-              child: TeamStatBoxWidget(value: draws, label: 'teams.draws'.tr(context: context)),
+              child: TeamStatBoxWidget(
+                value: draws,
+                label: 'teams.draws'.tr(context: context),
+              ),
             ),
             vSpace(8),
             Expanded(

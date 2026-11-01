@@ -57,9 +57,7 @@ class CustomBottomModalWidget extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(24.r),
-        ),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
       ),
       padding: EdgeInsets.fromLTRB(
         20.w,
@@ -86,10 +84,7 @@ class CustomBottomModalWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                title,
-                style: AppTextStyles.font18Bold,
-              ),
+              Text(title, style: AppTextStyles.font18Bold),
               IconButton(
                 onPressed: () => Navigator.of(context).maybePop(),
                 icon: Icon(
@@ -112,7 +107,9 @@ class CustomBottomModalWidget extends StatelessWidget {
                   Expanded(
                     child: CustomButton(
                       text: secondaryActionText!,
-                      onTap: onSecondaryAction ?? () => Navigator.of(context).maybePop(),
+                      onTap:
+                          onSecondaryAction ??
+                          () => Navigator.of(context).maybePop(),
                       type: CustomButtonType.outline,
                       height: 48.h,
                     ),
@@ -138,4 +135,3 @@ class CustomBottomModalWidget extends StatelessWidget {
     );
   }
 }
-

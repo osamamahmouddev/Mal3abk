@@ -71,15 +71,16 @@ class CustomTabBarWidget extends StatelessWidget {
                     children: [
                       Text(
                         tabs[index],
-                        style: (isSelected
-                                ? AppTextStyles.font14Bold
-                                : AppTextStyles.font14Medium)
-                            .copyWith(
-                          fontSize: (large ? 15 : 14).sp,
-                          color: isSelected
-                              ? AppColors.brandNavy
-                              : AppColors.textSecondary,
-                        ),
+                        style:
+                            (isSelected
+                                    ? AppTextStyles.font14Bold
+                                    : AppTextStyles.font14Medium)
+                                .copyWith(
+                                  fontSize: (large ? 15 : 14).sp,
+                                  color: isSelected
+                                      ? AppColors.brandNavy
+                                      : AppColors.textSecondary,
+                                ),
                       ),
                       if (count != null && count > 0) ...[
                         vSpace(6),
@@ -94,7 +95,9 @@ class CustomTabBarWidget extends StatelessWidget {
                             shape: BoxShape.circle,
                           ),
                           child: Text(
-                            count.toLocalizedDigits(context.locale.languageCode),
+                            count.toLocalizedDigits(
+                              context.locale.languageCode,
+                            ),
                             style: AppTextStyles.font11Bold.copyWith(
                               color: isSelected
                                   ? AppColors.white
@@ -114,4 +117,3 @@ class CustomTabBarWidget extends StatelessWidget {
     );
   }
 }
-
