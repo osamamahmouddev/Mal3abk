@@ -1,0 +1,85 @@
+import '../../../../core/network/api_failure_mapper.dart';
+import '../../../../core/network/api_result.dart';
+import '../../domain/repos/explore_repo.dart';
+import '../apis/explore_api_service.dart';
+import '../models/explore_result_model.dart';
+import '../models/pitch_details_model.dart';
+import '../models/venue_availability_model.dart';
+import '../models/venue_details_model.dart';
+import '../models/venue_payment_method_model.dart';
+
+class ExploreRepoImpl implements ExploreRepo {
+  ExploreRepoImpl({required this.exploreApiService});
+
+  final ExploreApiService exploreApiService;
+
+  @override
+  Future<ApiResult<ExploreResultModel>> exploreVenues({
+    String? city,
+    String? area,
+    int? page,
+    int? pageSize,
+  }) async {
+    try {
+      final response = await exploreApiService.exploreVenues(
+        city: city,
+        area: area,
+        page: page,
+        pageSize: pageSize,
+      );
+      return ApiResult.success(response);
+    } catch (e, st) {
+      return ApiResult.failure(ApiFailureMapper.map(e, st));
+    }
+  }
+
+  @override
+  Future<ApiResult<VenueDetailsModel>> getVenueDetails(String venueId) async {
+    try {
+      final response = await exploreApiService.getVenueDetails(venueId);
+      return ApiResult.success(response);
+    } catch (e, st) {
+      return ApiResult.failure(ApiFailureMapper.map(e, st));
+    }
+  }
+
+  @override
+  Future<ApiResult<List<PitchDetailsModel>>> getVenuePitches(
+    String venueId,
+  ) async {
+    try {
+      final response = await exploreApiService.getVenuePitches(venueId);
+      return ApiResult.success(response);
+    } catch (e, st) {
+      return ApiResult.failure(ApiFailureMapper.map(e, st));
+    }
+  }
+
+  @override
+  Future<ApiResult<VenueAvailabilityModel>> getVenueAvailability(
+    String venueId,
+    String date,
+  ) async {
+    try {
+      final response = await exploreApiService.getVenueAvailability(
+        venueId,
+        date,
+      );
+      return ApiResult.success(response);
+    } catch (e, st) {
+      return ApiResult.failure(ApiFailureMapper.map(e, st));
+    }
+  }
+
+  @override
+  Future<ApiResult<List<VenuePaymentMethodModel>>> getVenuePaymentMethods(
+    String venueId,
+  ) async {
+    try {
+      final response = await exploreApiService.getVenuePaymentMethods(venueId);
+      return ApiResult.success(response);
+    } catch (e, st) {
+      return ApiResult.failure(ApiFailureMapper.map(e, st));
+    }
+  }
+}

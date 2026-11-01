@@ -45,7 +45,10 @@ class PitchDayTileWidget extends StatelessWidget {
                 style: AppTextStyles.font10Regular.copyWith(color: fg),
                 maxLines: 1,
               ),
-              Text(dayNumber, style: AppTextStyles.font17Bold.copyWith(color: fg)),
+              Text(
+                dayNumber,
+                style: AppTextStyles.font17Bold.copyWith(color: fg),
+              ),
             ],
           ),
         ),

@@ -35,8 +35,9 @@ class ExploreSearchSummaryWidget extends StatelessWidget {
             ),
           ]
         : null;
-    final background =
-        floating ? AppColors.white : AppColors.lightGrayBackground;
+    final background = floating
+        ? AppColors.white
+        : AppColors.lightGrayBackground;
 
     return Row(
       children: [
@@ -55,7 +56,11 @@ class ExploreSearchSummaryWidget extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 14.w),
                   child: Row(
                     children: [
-                      SvgPicture.asset(AppAssets.icSearch, width: 18.r, height: 18.r),
+                      SvgPicture.asset(
+                        AppAssets.icSearch,
+                        width: 18.r,
+                        height: 18.r,
+                      ),
                       vSpace(10),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,

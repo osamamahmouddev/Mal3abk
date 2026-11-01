@@ -14,9 +14,24 @@ class FiltersAndSortScreen extends HookWidget {
 
   /// (title, hint, options, allowsMultiple)
   static const List<(String, String?, List<String>, bool)> sections = [
-    ('sort', null, ['sort_nearest', 'sort_cheapest', 'sort_top_rated', 'sort_soonest'], false),
-    ('distance', 'distance_hint', ['dist_1', 'dist_3', 'dist_5', 'dist_10'], false),
-    ('time', 'time_hint', ['time_4_7', 'time_7_10', 'time_10_1', 'time_after_1'], false),
+    (
+      'sort',
+      null,
+      ['sort_nearest', 'sort_cheapest', 'sort_top_rated', 'sort_soonest'],
+      false,
+    ),
+    (
+      'distance',
+      'distance_hint',
+      ['dist_1', 'dist_3', 'dist_5', 'dist_10'],
+      false,
+    ),
+    (
+      'time',
+      'time_hint',
+      ['time_4_7', 'time_7_10', 'time_10_1', 'time_after_1'],
+      false,
+    ),
     ('max_price', null, ['price_150', 'price_200', 'price_250'], false),
     ('size', 'size_hint', ['size_5', 'size_7', 'size_11'], true),
     ('cover', null, ['cover_open', 'cover_covered'], false),
@@ -24,7 +39,13 @@ class FiltersAndSortScreen extends HookWidget {
     (
       'amenities',
       'amenities_hint',
-      ['amenity_lights', 'amenity_changing', 'amenity_shower', 'amenity_parking', 'amenity_cafe'],
+      [
+        'amenity_lights',
+        'amenity_changing',
+        'amenity_shower',
+        'amenity_parking',
+        'amenity_cafe',
+      ],
       true,
     ),
     ('rating', null, ['rating_4', 'rating_45'], false),

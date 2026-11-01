@@ -9,7 +9,16 @@ import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 
 class VenueInfoHeaderWidget extends StatelessWidget {
-  const VenueInfoHeaderWidget({super.key});
+  const VenueInfoHeaderWidget({
+    this.name,
+    this.address,
+    this.rating,
+    super.key,
+  });
+
+  final String? name;
+  final String? address;
+  final String? rating;
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +32,15 @@ class VenueInfoHeaderWidget extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  'explore.venue.name'.tr(context: context),
+                  name ?? 'explore.venue.name'.tr(context: context),
                   style: AppTextStyles.font21Bold,
                 ),
               ),
               Text(
-                '★ ${'explore.sample1_rating'.tr(context: context)}',
-                style: AppTextStyles.font14Bold.copyWith(color: AppColors.goldDark),
+                '★ ${rating ?? 'explore.sample1_rating'.tr(context: context)}',
+                style: AppTextStyles.font14Bold.copyWith(
+                  color: AppColors.goldDark,
+                ),
               ),
             ],
           ),
@@ -40,7 +51,7 @@ class VenueInfoHeaderWidget extends StatelessWidget {
               vSpace(4),
               Expanded(
                 child: Text(
-                  'explore.venue.address'.tr(context: context),
+                  address ?? 'explore.venue.address'.tr(context: context),
                   style: AppTextStyles.font13Regular,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

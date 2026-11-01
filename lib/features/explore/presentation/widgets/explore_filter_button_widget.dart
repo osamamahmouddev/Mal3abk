@@ -60,7 +60,9 @@ class ExploreFilterButtonWidget extends StatelessWidget {
               ),
               child: Text(
                 '$activeFilters',
-                style: AppTextStyles.font11Bold.copyWith(color: AppColors.white),
+                style: AppTextStyles.font11Bold.copyWith(
+                  color: AppColors.white,
+                ),
               ),
             ),
           ),

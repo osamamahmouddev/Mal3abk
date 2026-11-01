@@ -78,8 +78,10 @@ class ExploreMapVenueSheetWidget extends StatelessWidget {
                     ),
                     hSpace(2),
                     Text(
-                      'explore.price_from_per_hour'
-                          .tr(context: context, args: ['١٥٠']),
+                      'explore.price_from_per_hour'.tr(
+                        context: context,
+                        args: ['١٥٠'],
+                      ),
                       style: AppTextStyles.font14Bold,
                     ),
                   ],

@@ -44,8 +44,9 @@ class PitchTimeGridWidget extends StatelessWidget {
                 Expanded(
                   child: r * columns + c < slots.length
                       ? PitchTimeSlotTileWidget(
-                          time: 'explore.slots.${slots[r * columns + c].$1}'
-                              .tr(context: context),
+                          time: 'explore.slots.${slots[r * columns + c].$1}'.tr(
+                            context: context,
+                          ),
                           isBooked: slots[r * columns + c].$2,
                           isNextDay: slots[r * columns + c].$3,
                           isSelected: selectedKey == slots[r * columns + c].$1,

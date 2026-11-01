@@ -31,7 +31,11 @@ class ExploreMapLocateButtonWidget extends StatelessWidget {
           customBorder: const CircleBorder(),
           child: Padding(
             padding: EdgeInsets.all(13.r),
-            child: SvgPicture.asset(AppAssets.icLocate, width: 22.r, height: 22.r),
+            child: SvgPicture.asset(
+              AppAssets.icLocate,
+              width: 22.r,
+              height: 22.r,
+            ),
           ),
         ),
       ),

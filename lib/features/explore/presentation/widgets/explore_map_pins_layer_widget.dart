@@ -14,17 +14,23 @@ class ExploreMapPinsLayerWidget extends StatelessWidget {
         Positioned(
           left: 270.w,
           top: 250.h,
-          child: ExploreMapPinWidget(label: 'explore.pin_180'.tr(context: context)),
+          child: ExploreMapPinWidget(
+            label: 'explore.pin_180'.tr(context: context),
+          ),
         ),
         Positioned(
           left: 60.w,
           top: 470.h,
-          child: ExploreMapPinWidget(label: 'explore.pin_200'.tr(context: context)),
+          child: ExploreMapPinWidget(
+            label: 'explore.pin_200'.tr(context: context),
+          ),
         ),
         Positioned(
           left: 120.w,
           top: 560.h,
-          child: ExploreMapPinWidget(label: 'explore.pin_140'.tr(context: context)),
+          child: ExploreMapPinWidget(
+            label: 'explore.pin_140'.tr(context: context),
+          ),
         ),
         Positioned(
           left: 300.w,

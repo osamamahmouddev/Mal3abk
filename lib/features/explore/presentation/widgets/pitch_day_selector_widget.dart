@@ -12,7 +12,14 @@ class PitchDaySelectorWidget extends StatelessWidget {
     super.key,
   });
 
-  static const List<String> dayKeys = ['sat', 'sun', 'mon', 'tue', 'wed', 'thu'];
+  static const List<String> dayKeys = [
+    'sat',
+    'sun',
+    'mon',
+    'tue',
+    'wed',
+    'thu',
+  ];
   static const int firstDate = 26;
 
   final int selectedIndex;

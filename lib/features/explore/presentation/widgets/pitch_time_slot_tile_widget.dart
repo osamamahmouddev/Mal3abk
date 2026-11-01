@@ -48,7 +48,10 @@ class PitchTimeSlotTileWidget extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(time, style: AppTextStyles.font15Bold.copyWith(color: timeColor)),
+              Text(
+                time,
+                style: AppTextStyles.font15Bold.copyWith(color: timeColor),
+              ),
               if (isBooked)
                 Text(
                   'explore.slots.booked'.tr(context: context),

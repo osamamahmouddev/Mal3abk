@@ -38,7 +38,8 @@ class VenueHeroButtonWidget extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(12.r),
             child: Transform.flip(
-              flipX: mirrorInLtr &&
+              flipX:
+                  mirrorInLtr &&
                   Directionality.of(context) == TextDirection.ltr,
               child: SvgPicture.asset(iconAsset, width: 20.r, height: 20.r),
             ),

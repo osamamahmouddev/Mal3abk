@@ -49,8 +49,10 @@ class FiltersFooterWidget extends StatelessWidget {
               vSpace(8),
               Expanded(
                 child: PrimaryCtaButtonWidget(
-                  text: 'explore.filters.show_results'
-                      .tr(context: context, args: [resultCount]),
+                  text: 'explore.filters.show_results'.tr(
+                    context: context,
+                    args: [resultCount],
+                  ),
                   onTap: onApply,
                 ),
               ),

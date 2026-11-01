@@ -67,7 +67,9 @@ class FavoriteVenueCardWidget extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Expanded(child: Text(name, style: AppTextStyles.font16Bold)),
+                    Expanded(
+                      child: Text(name, style: AppTextStyles.font16Bold),
+                    ),
                     Text(
                       '★ $rating',
                       style: AppTextStyles.font13Bold.copyWith(
@@ -82,8 +84,10 @@ class FavoriteVenueCardWidget extends StatelessWidget {
                 FavoriteTodaySlotsWidget(slots: todaySlots),
                 hSpace(8),
                 CustomButton(
-                  text: 'explore.view_venue_from'
-                      .tr(context: context, args: [priceFrom]),
+                  text: 'explore.view_venue_from'.tr(
+                    context: context,
+                    args: [priceFrom],
+                  ),
                   type: CustomButtonType.outline,
                   height: 46.h,
                   borderRadius: 10,

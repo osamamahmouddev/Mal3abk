@@ -27,8 +27,10 @@ class ExploreMapTopOverlayWidget extends StatelessWidget {
             children: [
               const ExploreViewToggleWidget(isMap: true),
               ExploreMapPillWidget(
-                label: 'explore.map_available_count'
-                    .tr(context: context, args: ['٤']),
+                label: 'explore.map_available_count'.tr(
+                  context: context,
+                  args: ['٤'],
+                ),
               ),
             ],
           ),

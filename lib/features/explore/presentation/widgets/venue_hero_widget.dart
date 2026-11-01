@@ -8,11 +8,7 @@ import '../../../../core/styles/app_colors.dart';
 import 'venue_hero_button_widget.dart';
 
 class VenueHeroWidget extends StatelessWidget {
-  const VenueHeroWidget({
-    super.key,
-    this.photoCount = 3,
-    this.activePhoto = 0,
-  });
+  const VenueHeroWidget({super.key, this.photoCount = 3, this.activePhoto = 0});
 
   final int photoCount;
   final int activePhoto;
