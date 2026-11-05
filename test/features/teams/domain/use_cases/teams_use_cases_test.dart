@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mal3abk/core/network/api_result.dart';
 import 'package:mal3abk/core/network/app_api_failure.dart';
+import 'package:mal3abk/features/matches/data/models/team_challenge_model.dart';
+import 'package:mal3abk/features/matches/domain/repos/matches_repo.dart';
 import 'package:mal3abk/features/teams/data/models/create_team_request_body.dart';
 import 'package:mal3abk/features/teams/data/models/update_team_settings_request_body.dart';
 import 'package:mal3abk/features/teams/domain/repos/teams_repo.dart';
@@ -11,9 +13,12 @@ import 'package:mal3abk/features/teams/domain/use_cases/join_team_by_code_use_ca
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../helpers/api_result_matchers.dart';
+import '../../../../helpers/matches_fixtures.dart';
 import '../../../../helpers/teams_fixtures.dart';
 
 class MockTeamsRepo extends Mock implements TeamsRepo {}
+
+class MockMatchesRepo extends Mock implements MatchesRepo {}
 
 void main() {
   late MockTeamsRepo repo;
@@ -34,7 +39,30 @@ void main() {
   setUp(() => repo = MockTeamsRepo());
 
   group('GetTeamDashboardUseCase', () {
-    test('loads pending join requests for the captain', () async {
+    late MockMatchesRepo matchesRepo;
+    late GetTeamDashboardUseCase useCase;
+
+    setUp(() {
+      matchesRepo = MockMatchesRepo();
+      useCase = GetTeamDashboardUseCase(
+        teamsRepo: repo,
+        matchesRepo: matchesRepo,
+      );
+      when(
+        () => matchesRepo.getUpcomingMatches(teamId: testTeamId),
+      ).thenAnswer((_) async => ApiResult.success(pageOf([testMatch()])));
+      when(
+        () => matchesRepo.getMatchHistory(teamId: testTeamId, pageSize: 5),
+      ).thenAnswer((_) async => ApiResult.success(pageOf(const [])));
+      when(() => matchesRepo.getTeamChallenges(testTeamId)).thenAnswer(
+        (_) async => ApiResult.success([
+          testChallenge(),
+          testChallenge(id: 'old', status: ChallengeStatus.declined),
+        ]),
+      );
+    });
+
+    test('gives the captain join requests and open challenges', () async {
       when(
         () => repo.getTeamProfile(testTeamId),
       ).thenAnswer((_) async => ApiResult.success(teamProfile(callerRole: 1)));
@@ -42,20 +70,37 @@ void main() {
         () => repo.getPendingJoinRequests(testTeamId),
       ).thenAnswer((_) async => ApiResult.success([joinRequest]));
 
-      final result = await GetTeamDashboardUseCase(teamsRepo: repo)(testTeamId);
+      final dashboard = (await useCase(testTeamId) as Success).data;
 
-      expect(result, isA<Success>());
-      expect((result as Success).data.pendingJoinRequests, [joinRequest]);
+      expect(dashboard.pendingJoinRequests, [joinRequest]);
+      expect(dashboard.openChallenges.map((c) => c.id), ['challenge-1']);
+      expect(dashboard.upcomingMatches, hasLength(1));
     });
 
-    test('skips join requests for other members', () async {
+    test('keeps leader-only data from other members', () async {
       when(
         () => repo.getTeamProfile(testTeamId),
       ).thenAnswer((_) async => ApiResult.success(teamProfile(callerRole: 3)));
 
-      await GetTeamDashboardUseCase(teamsRepo: repo)(testTeamId);
+      final dashboard = (await useCase(testTeamId) as Success).data;
 
+      expect(dashboard.upcomingMatches, hasLength(1));
       verifyNever(() => repo.getPendingJoinRequests(any()));
+      verifyNever(() => matchesRepo.getTeamChallenges(any()));
+    });
+
+    test('still shows the profile when matches fail to load', () async {
+      when(
+        () => repo.getTeamProfile(testTeamId),
+      ).thenAnswer((_) async => ApiResult.success(teamProfile()));
+      when(() => matchesRepo.getUpcomingMatches(teamId: testTeamId)).thenAnswer(
+        (_) async =>
+            const ApiResult.failure(AppApiFailure(message: 'errors.network')),
+      );
+
+      final result = await useCase(testTeamId);
+
+      expect((result as Success).data.upcomingMatches, isEmpty);
     });
   });
 
