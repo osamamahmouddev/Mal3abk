@@ -28,6 +28,9 @@ import '../../features/home/presentation/screens/home_screen.dart';
 import '../../features/main_shell/presentation/screens/main_shell_screen.dart';
 import '../../features/home/presentation/cubit/home_team_activity_cubit.dart';
 import '../../features/matches/data/models/match_details_model.dart';
+import '../../features/notifications/data/models/notification_model.dart';
+import '../../features/notifications/presentation/cubit/notifications_cubit.dart';
+import '../../features/notifications/presentation/cubit/unread_notifications_cubit.dart';
 import '../../features/matches/presentation/cubit/challenge_details_cubit.dart';
 import '../../features/matches/presentation/cubit/challenge_response_cubit.dart';
 import '../../features/matches/presentation/cubit/match_details_cubit.dart';
@@ -165,6 +168,9 @@ class AppRouter {
               ),
               BlocProvider<HomeTeamActivityCubit>(
                 create: (_) => sl<HomeTeamActivityCubit>()..load(),
+              ),
+              BlocProvider<UnreadNotificationsCubit>(
+                create: (_) => sl<UnreadNotificationsCubit>()..refresh(),
               ),
             ],
             child: const HomeScreen(),
@@ -485,14 +491,21 @@ class AppRouter {
 
       case AppRoutes.notifications:
         return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.notifications),
-          builder: (_) => const NotificationsScreen(),
+          settings: settings,
+          builder: (_) => BlocProvider<NotificationsCubit>(
+            create: (_) => sl<NotificationsCubit>()..load(),
+            child: const NotificationsScreen(),
+          ),
         );
 
       case AppRoutes.notificationDetail:
+        final notification = settings.arguments;
+        if (notification is! NotificationModel) {
+          return _errorRoute('Missing notification');
+        }
         return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.notificationDetail),
-          builder: (_) => const NotificationDetailScreen(),
+          settings: settings,
+          builder: (_) => NotificationDetailScreen(notification: notification),
         );
 
       case AppRoutes.settings:

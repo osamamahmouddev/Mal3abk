@@ -4,6 +4,11 @@ import 'package:get_it/get_it.dart';
 import '../../features/home/domain/use_cases/get_home_team_activity_use_case.dart';
 import '../../features/home/presentation/cubit/home_team_activity_cubit.dart';
 import '../../features/matches/data/apis/matches_api_service.dart';
+import '../../features/notifications/data/apis/notifications_api_service.dart';
+import '../../features/notifications/data/repos/notifications_repo_impl.dart';
+import '../../features/notifications/domain/repos/notifications_repo.dart';
+import '../../features/notifications/presentation/cubit/notifications_cubit.dart';
+import '../../features/notifications/presentation/cubit/unread_notifications_cubit.dart';
 import '../../features/matches/data/repos/matches_repo_impl.dart';
 import '../../features/matches/domain/repos/matches_repo.dart';
 import '../../features/matches/domain/use_cases/get_challenge_details_use_case.dart';
@@ -408,6 +413,20 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
   sl.registerFactory<MatchDetailsCubit>(
     () =>
         MatchDetailsCubit(getMatchDetailsUseCase: sl<GetMatchDetailsUseCase>()),
+  );
+  sl.registerLazySingleton<NotificationsApiService>(
+    () => NotificationsApiService(sl<Dio>()),
+  );
+  sl.registerLazySingleton<NotificationsRepo>(
+    () => NotificationsRepoImpl(
+      notificationsApiService: sl<NotificationsApiService>(),
+    ),
+  );
+  sl.registerFactory<NotificationsCubit>(
+    () => NotificationsCubit(notificationsRepo: sl<NotificationsRepo>()),
+  );
+  sl.registerFactory<UnreadNotificationsCubit>(
+    () => UnreadNotificationsCubit(notificationsRepo: sl<NotificationsRepo>()),
   );
   sl.registerLazySingleton<GetHomeTeamActivityUseCase>(
     () => GetHomeTeamActivityUseCase(

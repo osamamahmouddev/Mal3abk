@@ -70,6 +70,17 @@ class ApiConstants {
   static const String leaderboard = '/api/v1/teams/leaderboard';
   static const String teamChallenges = '/api/v1/teams/{id}/challenges';
 
+  static const String notifications = '/api/v1/me/notifications';
+  static const String notificationsUnreadCount =
+      '/api/v1/me/notifications/unread-count';
+  static const String notificationRead = '/api/v1/me/notifications/{id}/read';
+  static const String notificationsReadAll =
+      '/api/v1/me/notifications/read-all';
+  static const String notificationPreferences =
+      '/api/v1/me/notification-preferences';
+  static const String notificationPreference =
+      '/api/v1/me/notification-preferences/{category}';
+
   static const String challenges = '/api/v1/matches/challenges';
   static const String challengeDetails = '/api/v1/matches/challenges/{id}';
   static const String respondToChallenge =

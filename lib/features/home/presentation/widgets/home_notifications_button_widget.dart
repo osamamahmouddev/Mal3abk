@@ -8,8 +8,8 @@ import '../../../../core/styles/app_colors.dart';
 class HomeNotificationsButtonWidget extends StatelessWidget {
   const HomeNotificationsButtonWidget({
     required this.onTap,
+    required this.hasUnread,
     super.key,
-    this.hasUnread = true,
   });
 
   final VoidCallback onTap;

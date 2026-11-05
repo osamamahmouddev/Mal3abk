@@ -4,11 +4,10 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/app/app_spaces.dart';
-import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
-import 'home_notifications_button_widget.dart';
+import 'home_notifications_button_bloc_builder.dart';
 
 class HomeLocationHeaderWidget extends StatelessWidget {
   const HomeLocationHeaderWidget({super.key});
@@ -52,10 +51,7 @@ class HomeLocationHeaderWidget extends StatelessWidget {
               ],
             ),
           ),
-          HomeNotificationsButtonWidget(
-            onTap: () =>
-                Navigator.of(context).pushNamed(AppRoutes.notifications),
-          ),
+          const HomeNotificationsButtonBlocBuilder(),
         ],
       ),
     );

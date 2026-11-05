@@ -21,7 +21,13 @@
     "vs": "VS",
     "step_of": "Step {current} of {total}",
     "too_many_requests": "Too many requests. Please try again later.",
-    "unexpected_error": "An unexpected error occurred. Please try again."
+    "unexpected_error": "An unexpected error occurred. Please try again.",
+    "ago": {
+      "now": "Just now",
+      "minutes": "{}m ago",
+      "hours": "{}h ago",
+      "days": "{}d ago"
+    }
   },
   "errors": {
     "network": "Unable to connect to the server. Please check your internet connection.",
@@ -864,7 +870,9 @@
   "notifications": {
     "title": "Notifications",
     "mark_all_read": "Mark all as read",
-    "detail_title": "Notification Details"
+    "detail_title": "Notification Details",
+    "empty_title": "No notifications",
+    "empty_desc": "Bookings, challenges and match results will show up here."
   },
   "settings": {
     "title": "Settings",

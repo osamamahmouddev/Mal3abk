@@ -9,6 +9,7 @@ import '../../../../core/widgets/custom_card_widget.dart';
 class NotificationDetailCardWidget extends StatelessWidget {
   const NotificationDetailCardWidget({
     required this.icon,
+    required this.iconColor,
     required this.title,
     required this.time,
     required this.content,
@@ -16,6 +17,7 @@ class NotificationDetailCardWidget extends StatelessWidget {
   });
 
   final IconData icon;
+  final Color iconColor;
   final String title;
   final String time;
   final String content;
@@ -30,8 +32,8 @@ class NotificationDetailCardWidget extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 20.r,
-                backgroundColor: AppColors.successLight,
-                child: Icon(icon, color: AppColors.successGreen, size: 22.sp),
+                backgroundColor: AppColors.lightSurface,
+                child: Icon(icon, color: iconColor, size: 22.sp),
               ),
               vSpace(12),
               Expanded(
