@@ -1,106 +1,60 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
-import '../../../../core/styles/app_colors.dart';
+import '../../../../core/extensions/app_display_extensions.dart';
 import '../../../../core/styles/app_text_styles.dart';
-import '../../../../core/widgets/app_badge_widget.dart';
+import '../../../../core/utils/cairo_time.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
 import '../../../../core/widgets/empty_note_box_widget.dart';
-import 'team_profile_variant.dart';
+import '../../data/models/match_summary_model.dart';
+import '../../data/models/team_profile_model.dart';
 import 'team_result_row_widget.dart';
 
 class TeamProfileMatchesSectionWidget extends StatelessWidget {
-  const TeamProfileMatchesSectionWidget({required this.variant, super.key});
+  const TeamProfileMatchesSectionWidget({required this.profile, super.key});
 
-  final TeamProfileVariant variant;
+  final TeamProfileModel profile;
 
   @override
   Widget build(BuildContext context) {
+    final lang = context.locale.languageCode;
     String t(String key) => 'teams.profile.$key'.tr(context: context);
-
-    final results = switch (variant) {
-      TeamProfileVariant.mine => [
-        (
-          TeamResultType.pending,
-          t('res_pending'),
-          t('r1_title'),
-          t('r1_meta'),
-          '٤–٣',
-        ),
-        (
-          TeamResultType.draw,
-          t('res_draw'),
-          t('r2_title'),
-          t('r2_meta'),
-          '٢–٢',
-        ),
-        (
-          TeamResultType.loss,
-          t('res_loss'),
-          t('r3_title'),
-          t('r3_meta'),
-          '١–٣',
-        ),
-      ],
-      TeamProfileVariant.other => [
-        (TeamResultType.win, t('res_win'), t('o1_title'), t('o1_meta'), '٥–٢'),
-        (
-          TeamResultType.pending,
-          t('res_pending'),
-          t('o2_title'),
-          t('o2_meta'),
-          '٣–٤',
-        ),
-      ],
-      TeamProfileVariant.fresh =>
-        <(TeamResultType, String, String, String, String)>[],
-    };
+    String score(MatchSummaryModel match) =>
+        '${(match.homeScore ?? 0).toLocalizedDigits(lang)}–${(match.awayScore ?? 0).toLocalizedDigits(lang)}';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(t('next_match'), style: AppTextStyles.font15Bold),
+        Text(t('upcoming'), style: AppTextStyles.font15Bold),
         hSpace(14),
-        if (variant == TeamProfileVariant.mine)
+        if (profile.upcomingMatches.isEmpty)
+          EmptyNoteBoxWidget(text: t('no_matches'))
+        else
           CustomCardWidget(
             borderRadius: 18,
-            padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 9.h),
-            child: Row(
+            padding: EdgeInsets.zero,
+            child: Column(
               children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(t('next_vs'), style: AppTextStyles.font14Bold),
-                      hSpace(4),
-                      Text(t('next_meta'), style: AppTextStyles.font12Regular),
-                    ],
+                for (final (i, match) in profile.upcomingMatches.indexed)
+                  TeamResultRowWidget(
+                    type: TeamResultType.pending,
+                    letter: t('res_pending'),
+                    title: 'teams.profile.vs'.tr(
+                      context: context,
+                      args: [match.opponentName(profile.id)],
+                    ),
+                    meta: CairoTime.dayAndTime(match.scheduledAtUtc, lang),
+                    score: '',
+                    showDivider: i < profile.upcomingMatches.length - 1,
                   ),
-                ),
-                AppBadgeWidget(
-                  text: t('not_booked'),
-                  type: AppBadgeType.warning,
-                  borderRadius: 11.5,
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
-                  textStyle: AppTextStyles.font11Bold.copyWith(
-                    color: AppColors.goldDark,
-                  ),
-                ),
               ],
             ),
-          )
-        else
-          EmptyNoteBoxWidget(
-            text: variant == TeamProfileVariant.fresh
-                ? t('no_matches_new')
-                : t('no_matches'),
           ),
         hSpace(10),
         Text(t('last_results'), style: AppTextStyles.font15Bold),
         hSpace(14),
-        if (results.isEmpty)
+        if (profile.recentMatches.isEmpty)
           EmptyNoteBoxWidget(text: t('no_results'))
         else
           CustomCardWidget(
@@ -108,13 +62,27 @@ class TeamProfileMatchesSectionWidget extends StatelessWidget {
             padding: EdgeInsets.zero,
             child: Column(
               children: [
-                for (final (type, letter, title, meta, score) in results)
+                for (final (i, match) in profile.recentMatches.indexed)
                   TeamResultRowWidget(
-                    type: type,
-                    letter: letter,
-                    title: title,
-                    meta: meta,
-                    score: score,
+                    type: switch (match.resultFor(profile.id)) {
+                      MatchResultForTeam.win => TeamResultType.win,
+                      MatchResultForTeam.draw => TeamResultType.draw,
+                      MatchResultForTeam.loss => TeamResultType.loss,
+                      MatchResultForTeam.pending => TeamResultType.pending,
+                    },
+                    letter: switch (match.resultFor(profile.id)) {
+                      MatchResultForTeam.win => t('res_win'),
+                      MatchResultForTeam.draw => t('res_draw'),
+                      MatchResultForTeam.loss => t('res_loss'),
+                      MatchResultForTeam.pending => t('res_pending'),
+                    },
+                    title: 'teams.profile.vs'.tr(
+                      context: context,
+                      args: [match.opponentName(profile.id)],
+                    ),
+                    meta: CairoTime.shortDate(match.scheduledAtUtc, lang),
+                    score: score(match),
+                    showDivider: i < profile.recentMatches.length - 1,
                   ),
               ],
             ),

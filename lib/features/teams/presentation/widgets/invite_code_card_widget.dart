@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -99,7 +100,14 @@ class InviteCodeCardWidget extends StatelessWidget {
                         textStyle: AppTextStyles.font14Bold.copyWith(
                           color: AppColors.brandNavy,
                         ),
-                        onTap: () {},
+                        onTap: () => SharePlus.instance.share(
+                          ShareParams(
+                            text: 'teams.invite.share_message'.tr(
+                              context: context,
+                              args: [code],
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                     vSpace(8),

@@ -9,8 +9,32 @@ extension ListNullOrEmpty<T> on List<T>? {
 }
 
 extension LocalizedArabicString on String {
-  static const _latinChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
-  static const _arabicChars = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩', '٫'];
+  static const _latinChars = [
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '.',
+  ];
+  static const _arabicChars = [
+    '٠',
+    '١',
+    '٢',
+    '٣',
+    '٤',
+    '٥',
+    '٦',
+    '٧',
+    '٨',
+    '٩',
+    '٫',
+  ];
 
   /// Converts Latin digits and decimal points to Arabic-Indic digits.
   String toArabicDigits() {
@@ -64,5 +88,13 @@ extension LatinDigits on String {
       }
     }
     return buffer.toString();
+  }
+}
+
+extension NameInitials on String {
+  /// First letters of up to the first two words: "فريق النجوم" -> "فن".
+  String get initials {
+    final words = trim().split(RegExp(r'\s+')).where((w) => w.isNotEmpty);
+    return words.take(2).map((w) => String.fromCharCode(w.runes.first)).join();
   }
 }

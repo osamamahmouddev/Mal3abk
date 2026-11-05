@@ -61,6 +61,28 @@ import '../../features/splash/data/repos/splash_repo_impl.dart';
 import '../../features/splash/domain/repos/splash_repo.dart';
 import '../../features/splash/domain/use_cases/check_auth_status_use_case.dart';
 import '../../features/splash/presentation/cubit/splash_cubit.dart';
+import '../../features/reference/data/apis/reference_api_service.dart';
+import '../../features/reference/data/repos/reference_repo_impl.dart';
+import '../../features/reference/domain/repos/reference_repo.dart';
+import '../../features/reference/presentation/cubit/governorates_cubit.dart';
+import '../../features/teams/data/apis/teams_api_service.dart';
+import '../../features/teams/data/repos/tactics_repo_impl.dart';
+import '../../features/teams/data/repos/teams_repo_impl.dart';
+import '../../features/teams/domain/repos/tactics_repo.dart';
+import '../../features/teams/presentation/cubit/tactical_board_cubit.dart';
+import '../../features/teams/domain/repos/teams_repo.dart';
+import '../../features/teams/domain/use_cases/create_team_use_case.dart';
+import '../../features/teams/domain/use_cases/get_leaderboard_use_case.dart';
+import '../../features/teams/domain/use_cases/get_team_dashboard_use_case.dart';
+import '../../features/teams/domain/use_cases/join_team_by_code_use_case.dart';
+import '../../features/teams/presentation/cubit/create_team_cubit.dart';
+import '../../features/teams/presentation/cubit/discover_teams_cubit.dart';
+import '../../features/teams/presentation/cubit/join_team_cubit.dart';
+import '../../features/teams/presentation/cubit/leaderboard_cubit.dart';
+import '../../features/teams/presentation/cubit/my_teams_cubit.dart';
+import '../../features/teams/presentation/cubit/team_action_cubit.dart';
+import '../../features/teams/presentation/cubit/team_dashboard_cubit.dart';
+import '../../features/teams/presentation/cubit/team_invite_cubit.dart';
 import '../config/env_config.dart';
 import '../local_storage/auth_token_storage.dart';
 import '../local_storage/device_id_storage.dart';
@@ -317,5 +339,64 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
     () => ProofUploadCubit(
       submitBookingProofUseCase: sl<SubmitBookingProofUseCase>(),
     ),
+  );
+
+  // Reference Data
+  sl.registerLazySingleton<ReferenceApiService>(
+    () => ReferenceApiService(sl<Dio>()),
+  );
+  sl.registerLazySingleton<ReferenceRepo>(
+    () => ReferenceRepoImpl(referenceApiService: sl<ReferenceApiService>()),
+  );
+  sl.registerFactory<GovernoratesCubit>(
+    () => GovernoratesCubit(referenceRepo: sl<ReferenceRepo>()),
+  );
+
+  // Teams Feature
+  sl.registerLazySingleton<TeamsApiService>(() => TeamsApiService(sl<Dio>()));
+  sl.registerLazySingleton<TeamsRepo>(
+    () => TeamsRepoImpl(teamsApiService: sl<TeamsApiService>()),
+  );
+  sl.registerLazySingleton<GetTeamDashboardUseCase>(
+    () => GetTeamDashboardUseCase(teamsRepo: sl<TeamsRepo>()),
+  );
+  sl.registerLazySingleton<CreateTeamUseCase>(
+    () => CreateTeamUseCase(teamsRepo: sl<TeamsRepo>()),
+  );
+  sl.registerLazySingleton<GetLeaderboardUseCase>(
+    () => GetLeaderboardUseCase(teamsRepo: sl<TeamsRepo>()),
+  );
+  sl.registerLazySingleton<JoinTeamByCodeUseCase>(
+    () => JoinTeamByCodeUseCase(teamsRepo: sl<TeamsRepo>()),
+  );
+  sl.registerFactory<MyTeamsCubit>(
+    () => MyTeamsCubit(teamsRepo: sl<TeamsRepo>()),
+  );
+  sl.registerFactory<DiscoverTeamsCubit>(
+    () => DiscoverTeamsCubit(teamsRepo: sl<TeamsRepo>()),
+  );
+  sl.registerFactory<TeamDashboardCubit>(
+    () => TeamDashboardCubit(
+      getTeamDashboardUseCase: sl<GetTeamDashboardUseCase>(),
+    ),
+  );
+  sl.registerFactory<CreateTeamCubit>(
+    () => CreateTeamCubit(createTeamUseCase: sl<CreateTeamUseCase>()),
+  );
+  sl.registerFactory<JoinTeamCubit>(
+    () => JoinTeamCubit(joinTeamByCodeUseCase: sl<JoinTeamByCodeUseCase>()),
+  );
+  sl.registerFactory<TeamInviteCubit>(
+    () => TeamInviteCubit(teamsRepo: sl<TeamsRepo>()),
+  );
+  sl.registerFactory<LeaderboardCubit>(
+    () => LeaderboardCubit(getLeaderboardUseCase: sl<GetLeaderboardUseCase>()),
+  );
+  sl.registerLazySingleton<TacticsRepo>(() => const TacticsRepoImpl());
+  sl.registerFactory<TacticalBoardCubit>(
+    () => TacticalBoardCubit(tacticsRepo: sl<TacticsRepo>()),
+  );
+  sl.registerFactory<TeamActionCubit>(
+    () => TeamActionCubit(teamsRepo: sl<TeamsRepo>()),
   );
 }

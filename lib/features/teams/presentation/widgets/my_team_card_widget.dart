@@ -3,20 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
+import '../../../../core/extensions/app_display_extensions.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_shadows.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/app_badge_widget.dart';
 import '../../../../core/widgets/initials_avatar_widget.dart';
+import '../../data/models/team_summary_model.dart';
 import 'my_team_card_actions_widget.dart';
 import 'team_stat_widget.dart';
 
 class MyTeamCardWidget extends StatelessWidget {
-  const MyTeamCardWidget({super.key});
+  const MyTeamCardWidget({required this.team, super.key});
+
+  final TeamSummaryModel team;
 
   @override
   Widget build(BuildContext context) {
+    final lang = context.locale.languageCode;
+
     return Container(
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
@@ -33,7 +39,7 @@ class MyTeamCardWidget extends StatelessWidget {
             child: Row(
               children: [
                 InitialsAvatarWidget(
-                  initials: 'teams.sample.nogoum_i'.tr(context: context),
+                  initials: team.name.initials,
                   color: AppColors.brandRed,
                   size: 48,
                 ),
@@ -42,23 +48,30 @@ class MyTeamCardWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'teams.list.sample_team'.tr(context: context),
-                        style: AppTextStyles.font16Bold,
-                      ),
+                      Text(team.name, style: AppTextStyles.font16Bold),
                       hSpace(4),
                       Text(
-                        'teams.list.sample_meta'.tr(context: context),
+                        'teams.common.meta_members'.tr(
+                          context: context,
+                          args: [
+                            team.city,
+                            team.memberCount.toLocalizedDigits(lang),
+                          ],
+                        ),
                         style: AppTextStyles.font12Regular,
                       ),
                     ],
                   ),
                 ),
-                AppBadgeWidget(
-                  text: 'teams.list.captain'.tr(context: context),
-                  type: AppBadgeType.warning,
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
-                ),
+                if (team.isCaptain)
+                  AppBadgeWidget(
+                    text: 'teams.list.captain'.tr(context: context),
+                    type: AppBadgeType.warning,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 8.w,
+                      vertical: 2.h,
+                    ),
+                  ),
               ],
             ),
           ),
@@ -71,49 +84,34 @@ class MyTeamCardWidget extends StatelessWidget {
               children: [
                 Expanded(
                   child: TeamStatWidget(
-                    value: '١٤',
-                    label: 'teams.wins'.tr(context: context),
+                    value: team.matchesPlayed.toLocalizedDigits(lang),
+                    label: 'teams.played_matches'.tr(context: context),
                   ),
                 ),
                 Expanded(
                   child: TeamStatWidget(
-                    value: '٣',
-                    label: 'teams.draws'.tr(context: context),
-                  ),
-                ),
-                Expanded(
-                  child: TeamStatWidget(
-                    value: '٥',
-                    label: 'teams.losses'.tr(context: context),
-                  ),
-                ),
-                Expanded(
-                  child: TeamStatWidget(
-                    value: '#٤',
-                    label: 'teams.rank'.tr(context: context),
+                    value: team.rating.round().toLocalizedDigits(lang),
+                    label: 'teams.common.rating'.tr(context: context),
                     isRank: true,
+                  ),
+                ),
+                Expanded(
+                  child: TeamStatWidget(
+                    value: team.memberCount.toLocalizedDigits(lang),
+                    label: 'teams.members'.tr(context: context),
                   ),
                 ),
               ],
             ),
           ),
-          Container(
-            height: 39.h,
-            color: AppColors.goldLight,
-            padding: EdgeInsets.symmetric(horizontal: 14.w),
-            alignment: AlignmentDirectional.centerStart,
-            child: Text(
-              'teams.list.sample_alert'.tr(context: context),
-              style: AppTextStyles.font13SemiBold.copyWith(
-                color: AppColors.goldText,
-              ),
-            ),
-          ),
           MyTeamCardActionsWidget(
-            onTeamPage: () =>
-                Navigator.of(context).pushNamed(AppRoutes.teamProfile),
-            onManage: () =>
-                Navigator.of(context).pushNamed(AppRoutes.manageMembers),
+            showManage: team.isCaptain,
+            onTeamPage: () => Navigator.of(
+              context,
+            ).pushNamed(AppRoutes.teamProfile, arguments: team.id),
+            onManage: () => Navigator.of(
+              context,
+            ).pushNamed(AppRoutes.manageMembers, arguments: team.id),
           ),
         ],
       ),

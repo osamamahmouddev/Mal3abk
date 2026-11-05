@@ -32,7 +32,7 @@ class AppRoutes {
   static const String joinTeamByCode = '/join-team-by-code';
   static const String manageMembers = '/manage-members';
   static const String rankings = '/rankings';
-  static const String captaincyOffer = '/captaincy-offer';
+  static const String tacticalBoard = '/tactical-board';
   static const String leaveTeam = '/leave-team';
 
   static const String challengeTeam = '/challenge-team';

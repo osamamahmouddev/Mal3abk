@@ -52,7 +52,18 @@ import '../../features/settings/presentation/screens/help_and_support_screen.dar
 import '../../features/settings/presentation/screens/settings_screen.dart';
 import '../../features/splash/presentation/cubit/splash_cubit.dart';
 import '../../features/splash/presentation/screens/splash_screen.dart';
-import '../../features/teams/presentation/screens/captaincy_offer_screen.dart';
+import '../../features/reference/presentation/cubit/governorates_cubit.dart';
+import '../../features/teams/data/models/team_profile_model.dart';
+import '../../features/teams/presentation/cubit/create_team_cubit.dart';
+import '../../features/teams/presentation/cubit/discover_teams_cubit.dart';
+import '../../features/teams/presentation/cubit/join_team_cubit.dart';
+import '../../features/teams/presentation/cubit/leaderboard_cubit.dart';
+import '../../features/teams/presentation/cubit/my_teams_cubit.dart';
+import '../../features/teams/presentation/cubit/tactical_board_cubit.dart';
+import '../../features/teams/presentation/cubit/team_action_cubit.dart';
+import '../../features/teams/presentation/cubit/team_dashboard_cubit.dart';
+import '../../features/teams/presentation/cubit/team_invite_cubit.dart';
+import '../../features/teams/presentation/screens/tactical_board_screen.dart';
 import '../../features/teams/presentation/screens/create_team_screen.dart';
 import '../../features/teams/presentation/screens/invite_players_screen.dart';
 import '../../features/teams/presentation/screens/join_team_by_code_screen.dart';
@@ -256,55 +267,131 @@ class AppRouter {
       case AppRoutes.myTeams:
         return MaterialPageRoute(
           settings: const RouteSettings(name: AppRoutes.myTeams),
-          builder: (_) => const MyTeamsScreen(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<MyTeamsCubit>(
+                create: (_) => sl<MyTeamsCubit>()..load(),
+              ),
+              BlocProvider<DiscoverTeamsCubit>(
+                create: (_) => sl<DiscoverTeamsCubit>()..load(),
+              ),
+            ],
+            child: const MyTeamsScreen(),
+          ),
         );
 
       case AppRoutes.teamProfile:
+        final teamId = settings.arguments;
+        if (teamId is! String) return _errorRoute('Missing team id');
         return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.teamProfile),
-          builder: (_) => const TeamProfileScreen(),
+          settings: settings,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<TeamDashboardCubit>(
+                create: (_) => sl<TeamDashboardCubit>()..load(teamId),
+              ),
+              BlocProvider<TeamActionCubit>(
+                create: (_) => sl<TeamActionCubit>(),
+              ),
+            ],
+            child: TeamProfileScreen(teamId: teamId),
+          ),
         );
 
       case AppRoutes.createTeam:
         return MaterialPageRoute(
           settings: const RouteSettings(name: AppRoutes.createTeam),
-          builder: (_) => const CreateTeamScreen(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<CreateTeamCubit>(
+                create: (_) => sl<CreateTeamCubit>(),
+              ),
+              BlocProvider<GovernoratesCubit>(
+                create: (_) => sl<GovernoratesCubit>()..load(),
+              ),
+            ],
+            child: const CreateTeamScreen(),
+          ),
         );
 
       case AppRoutes.invitePlayers:
+        final teamId = settings.arguments;
+        if (teamId is! String) return _errorRoute('Missing team id');
         return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.invitePlayers),
-          builder: (_) => const InvitePlayersScreen(),
+          settings: settings,
+          builder: (_) => BlocProvider<TeamInviteCubit>(
+            create: (_) => sl<TeamInviteCubit>()..createCode(teamId),
+            child: InvitePlayersScreen(teamId: teamId),
+          ),
         );
 
       case AppRoutes.joinTeamByCode:
+        final code = settings.arguments;
         return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.joinTeamByCode),
-          builder: (_) => const JoinTeamByCodeScreen(),
+          settings: settings,
+          builder: (_) => BlocProvider<JoinTeamCubit>(
+            create: (_) => sl<JoinTeamCubit>(),
+            child: JoinTeamByCodeScreen(
+              initialCode: code is String ? code : null,
+            ),
+          ),
         );
 
       case AppRoutes.manageMembers:
+        final teamId = settings.arguments;
+        if (teamId is! String) return _errorRoute('Missing team id');
         return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.manageMembers),
-          builder: (_) => const ManageMembersScreen(),
+          settings: settings,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<TeamDashboardCubit>(
+                create: (_) => sl<TeamDashboardCubit>()..load(teamId),
+              ),
+              BlocProvider<TeamActionCubit>(
+                create: (_) => sl<TeamActionCubit>(),
+              ),
+            ],
+            child: ManageMembersScreen(teamId: teamId),
+          ),
         );
 
       case AppRoutes.rankings:
         return MaterialPageRoute(
           settings: const RouteSettings(name: AppRoutes.rankings),
-          builder: (_) => const RankingsScreen(),
-        );
-
-      case AppRoutes.captaincyOffer:
-        return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.captaincyOffer),
-          builder: (_) => const CaptaincyOfferScreen(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<LeaderboardCubit>(
+                create: (_) => sl<LeaderboardCubit>()..load(),
+              ),
+              BlocProvider<GovernoratesCubit>(
+                create: (_) => sl<GovernoratesCubit>()..load(),
+              ),
+            ],
+            child: const RankingsScreen(),
+          ),
         );
 
       case AppRoutes.leaveTeam:
+        final profile = settings.arguments;
+        if (profile is! TeamProfileModel) return _errorRoute('Missing team');
         return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.leaveTeam),
-          builder: (_) => const LeaveTeamScreen(),
+          settings: settings,
+          builder: (_) => BlocProvider<TeamActionCubit>(
+            create: (_) => sl<TeamActionCubit>(),
+            child: LeaveTeamScreen(profile: profile),
+          ),
+        );
+
+      case AppRoutes.tacticalBoard:
+        final profile = settings.arguments;
+        if (profile is! TeamProfileModel) return _errorRoute('Missing team');
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => BlocProvider<TacticalBoardCubit>(
+            create: (_) => sl<TacticalBoardCubit>()
+              ..load(profile.id, [for (final m in profile.roster) m.playerId]),
+            child: TacticalBoardScreen(profile: profile),
+          ),
         );
 
       case AppRoutes.challengeTeam:

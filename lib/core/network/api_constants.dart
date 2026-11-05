@@ -50,6 +50,8 @@ class ApiConstants {
   static const String proofUploadUrl = '/api/v1/bookings/{id}/proof/upload-url';
   static const String submitBookingProof = '/api/v1/bookings/{id}/proof/submit';
 
+  static const String governorates = '/api/v1/reference/governorates';
+
   static const String myTeams = '/api/v1/me/teams';
   static const String teams = '/api/v1/teams';
   static const String teamProfile = '/api/v1/teams/{id}/profile';

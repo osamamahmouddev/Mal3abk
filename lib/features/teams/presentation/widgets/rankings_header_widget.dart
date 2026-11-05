@@ -1,26 +1,39 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/app/app_spaces.dart';
-import '../../../../core/widgets/app_on_dark_back_button_widget.dart';
+import '../../../../core/extensions/app_display_extensions.dart';
 import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
+import '../../../../core/widgets/app_on_dark_back_button_widget.dart';
+import '../../data/models/team_leaderboard_entry_model.dart';
+import 'leaderboard_filter_bloc_builder.dart';
 import 'rankings_podium_column_widget.dart';
-import 'rankings_segment_widget.dart';
 
-class RankingsHeaderWidget extends HookWidget {
-  const RankingsHeaderWidget({super.key});
+class RankingsHeaderWidget extends StatelessWidget {
+  const RankingsHeaderWidget({
+    required this.podium,
+    required this.governorate,
+    super.key,
+  });
+
+  final List<TeamLeaderboardEntryModel> podium;
+  final String? governorate;
 
   @override
   Widget build(BuildContext context) {
-    final scope = useState(0);
-    String t(String key) => 'teams.$key'.tr(context: context);
-    String pts(String value) =>
-        'teams.rankings.points'.tr(context: context, args: [value]);
+    final lang = context.locale.languageCode;
+    TeamLeaderboardEntryModel? at(int index) =>
+        podium.length > index ? podium[index] : null;
+    String pts(TeamLeaderboardEntryModel entry) => 'teams.rankings.points'.tr(
+      context: context,
+      args: [entry.points.toLocalizedDigits(lang)],
+    );
+    const heights = [78.0, 60.0, 48.0];
+    const order = [1, 0, 2];
 
     return Container(
       color: AppColors.brandNavy,
@@ -43,7 +56,7 @@ class RankingsHeaderWidget extends HookWidget {
                       const AppOnDarkBackButtonWidget(),
                       Expanded(
                         child: Text(
-                          t('rankings.title'),
+                          'teams.rankings.title'.tr(context: context),
                           textAlign: TextAlign.center,
                           style: AppTextStyles.font18Bold.copyWith(
                             color: AppColors.white,
@@ -54,45 +67,27 @@ class RankingsHeaderWidget extends HookWidget {
                     ],
                   ),
                   hSpace(14),
-                  RankingsSegmentWidget(
-                    labels: [t('rankings.area'), t('rankings.all_cairo')],
-                    selectedIndex: scope.value,
-                    onSelect: (index) => scope.value = index,
-                  ),
+                  LeaderboardFilterBlocBuilder(selected: governorate),
                   hSpace(14),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Expanded(
-                        child: RankingsPodiumColumnWidget(
-                          initials: t('sample.soqour_i'),
-                          name: t('sample.soqour'),
-                          rank: '٢',
-                          points: pts('٣٦'),
-                          blockHeight: 60,
+                      for (final (i, index) in order.indexed) ...[
+                        if (i > 0) vSpace(8),
+                        Expanded(
+                          child: switch (at(index)) {
+                            final entry? => RankingsPodiumColumnWidget(
+                              initials: entry.name.initials,
+                              name: entry.name,
+                              rank: entry.rank.toLocalizedDigits(lang),
+                              points: pts(entry),
+                              blockHeight: heights[index],
+                              isWinner: index == 0,
+                            ),
+                            null => const SizedBox.shrink(),
+                          },
                         ),
-                      ),
-                      vSpace(8),
-                      Expanded(
-                        child: RankingsPodiumColumnWidget(
-                          initials: t('sample.shabab_i'),
-                          name: t('sample.shabab'),
-                          rank: '١',
-                          points: pts('٣٨'),
-                          blockHeight: 78,
-                          isWinner: true,
-                        ),
-                      ),
-                      vSpace(8),
-                      Expanded(
-                        child: RankingsPodiumColumnWidget(
-                          initials: t('sample.osoud_i'),
-                          name: t('sample.osoud'),
-                          rank: '٣',
-                          points: pts('٣٤'),
-                          blockHeight: 48,
-                        ),
-                      ),
+                      ],
                     ],
                   ),
                   hSpace(18),

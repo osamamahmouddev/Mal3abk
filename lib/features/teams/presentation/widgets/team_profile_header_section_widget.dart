@@ -2,79 +2,64 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/extensions/app_display_extensions.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../data/models/team_profile_model.dart';
 import 'team_profile_hero_widget.dart';
-import 'team_profile_variant.dart';
 import 'team_stats_grid_widget.dart';
 
 class TeamProfileHeaderSectionWidget extends StatelessWidget {
-  const TeamProfileHeaderSectionWidget({required this.variant, super.key});
+  const TeamProfileHeaderSectionWidget({required this.profile, super.key});
 
-  final TeamProfileVariant variant;
+  final TeamProfileModel profile;
 
   @override
   Widget build(BuildContext context) {
-    String t(String key) => 'teams.$key'.tr(context: context);
-
-    final hero = switch (variant) {
-      TeamProfileVariant.mine => TeamProfileHeroWidget(
-        initials: t('sample.nogoum_i'),
-        avatarColor: AppColors.brandRed,
-        name: t('profile.mine_name'),
-        meta: t('profile.mine_meta'),
-        badgeText: t('profile.mine_rank'),
-      ),
-      TeamProfileVariant.other => TeamProfileHeroWidget(
-        initials: t('sample.soqour_i'),
-        avatarColor: AppColors.white,
-        avatarTextColor: AppColors.brandNavy,
-        name: t('profile.other_name'),
-        meta: t('profile.other_meta'),
-        badgeText: t('profile.other_rank'),
-      ),
-      TeamProfileVariant.fresh => TeamProfileHeroWidget(
-        initials: t('sample.raad_i'),
-        avatarColor: AppColors.mapUserDot,
-        name: t('profile.new_name'),
-        meta: t('profile.new_meta'),
-        badgeText: t('profile.new_rank'),
-        rankedBadge: false,
-      ),
-    };
-
-    final stats = switch (variant) {
-      TeamProfileVariant.mine => const TeamStatsGridWidget(
-        wins: '١٤',
-        draws: '٣',
-        losses: '٥',
-        goalsFor: '٦٨',
-        goalsAgainst: '٤١',
-        winRate: '٦٤٪',
-      ),
-      TeamProfileVariant.other => const TeamStatsGridWidget(
-        wins: '١٨',
-        draws: '٣',
-        losses: '٤',
-        goalsFor: '٧٩',
-        goalsAgainst: '٤٤',
-        winRate: '٧٢٪',
-      ),
-      TeamProfileVariant.fresh => const TeamStatsGridWidget(
-        wins: '٠',
-        draws: '٠',
-        losses: '٠',
-        goalsFor: '٠',
-        goalsAgainst: '٠',
-        winRate: '—',
-      ),
-    };
+    final lang = context.locale.languageCode;
+    final stats = profile.stats;
+    final captain = profile.roster.where((m) => m.isCaptain).firstOrNull;
+    final ranked = stats.rank > 0;
 
     return Column(
       children: [
-        hero,
+        TeamProfileHeroWidget(
+          initials: profile.name.initials,
+          avatarColor: profile.isCallerMember
+              ? AppColors.brandRed
+              : AppColors.white,
+          avatarTextColor: profile.isCallerMember
+              ? AppColors.white
+              : AppColors.brandNavy,
+          name: profile.name,
+          meta: 'teams.profile.meta'.tr(
+            context: context,
+            args: [
+              profile.district ?? profile.city,
+              captain?.playerName ?? '—',
+              profile.roster.length.toLocalizedDigits(lang),
+            ],
+          ),
+          badgeText: ranked
+              ? 'teams.profile.rank_badge'.tr(
+                  context: context,
+                  args: [
+                    stats.rank.toLocalizedDigits(lang),
+                    profile.governorate,
+                  ],
+                )
+              : 'teams.profile.unranked'.tr(context: context),
+          rankedBadge: ranked,
+        ),
         Padding(
-          padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 0),
-          child: stats,
+          padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 0),
+          child: TeamStatsGridWidget(
+            wins: stats.wins.toLocalizedDigits(lang),
+            draws: stats.draws.toLocalizedDigits(lang),
+            losses: stats.losses.toLocalizedDigits(lang),
+            goalsFor: stats.goalsFor.toLocalizedDigits(lang),
+            goalsAgainst: stats.goalsAgainst.toLocalizedDigits(lang),
+            winRate: '${stats.winPercentage.round().toLocalizedDigits(lang)}٪',
+          ),
         ),
       ],
     );
