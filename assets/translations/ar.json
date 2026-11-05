@@ -880,19 +880,7 @@
   "settings": {
     "title": "الإعدادات",
     "notifications_section": "الإشعارات",
-    "booking_alerts_title": "حالة الحجوزات والعربون",
-    "booking_alerts_sub": "إشعار بالقبول أو الرفض أو التذكير",
-    "team_invites_title": "الدعوات والتحديات",
-    "team_invites_sub": "دعوات الفرق وردود التحديات",
-    "match_results_title": "النتايج والترتيب",
-    "match_results_sub": "تأكيد النتايج وتغيّر الترتيب",
-    "promotions_title": "عروض الملاعب",
-    "promotions_sub": "محتوى إعلاني وعروض خاصة",
     "privacy_section": "الخصوصية",
-    "appear_in_search_title": "اظهر في البحث عن لاعبين",
-    "appear_in_search_sub": "الكباتن يقدروا يلاقوك ويدعوك",
-    "show_phone_title": "اظهر رقمي لأعضاء فرقي",
-    "show_phone_sub": "الملعب بيشوف رقمك دايماً للتواصل",
     "help_and_support": {
       "title": "المساعدة والدعم",
       "need_help_prompt": "محتاج مساعدة في إيه؟",
@@ -919,7 +907,59 @@
     "logout_all": "تسجيل الخروج من كل الأجهزة",
     "logout_all_confirm_title": "تخرج من كل الأجهزة؟",
     "logout_all_confirm_body": "هيتم تسجيل خروجك من كل الأجهزة، ومنها الجهاز ده.",
-    "logout_all_confirm_action": "اخرج من الكل"
+    "logout_all_confirm_action": "اخرج من الكل",
+    "language_section": "اللغة",
+    "categories": {
+      "always_on": "إشعارات الأمان مش ممكن تتقفل",
+      "Bookings": {
+        "title": "الحجوزات",
+        "sub": "تأكيد ورفض وتذكير قبل الماتش"
+      },
+      "Payments": {
+        "title": "العربون",
+        "sub": "مراجعة إيصالات التحويل"
+      },
+      "Teams": {
+        "title": "الفرق والماتشات",
+        "sub": "الدعوات والتحديات والنتايج"
+      },
+      "Security": {
+        "title": "الأمان",
+        "sub": "تسجيل دخول من جهاز جديد"
+      }
+    },
+    "consents": {
+      "location": {
+        "title": "استخدام موقعي",
+        "sub": "عشان نوريك الملاعب القريبة منك"
+      },
+      "marketing": {
+        "title": "عروض الملاعب",
+        "sub": "محتوى إعلاني وعروض خاصة"
+      },
+      "notifications": {
+        "title": "الإشعارات",
+        "sub": "نبعتلك تحديثات حجوزاتك"
+      }
+    },
+    "sessions": {
+      "title": "الأجهزة المسجّلة",
+      "description": "دي الأجهزة اللي حسابك مفتوح عليها. اخرج من أي جهاز مش بتاعك.",
+      "last_active": "آخر نشاط {}",
+      "this_device": "الجهاز ده",
+      "revoke": "اخرج منه",
+      "revoke_others": "اخرج من كل الأجهزة التانية"
+    },
+    "export": {
+      "title": "تنزيل بياناتي"
+    },
+    "delete": {
+      "title": "حذف الحساب",
+      "confirm_title": "تحذف حسابك؟",
+      "confirm_body": "هنقفل حسابك ونمسح بياناتك الشخصية. الحجوزات الجاية هتتلغي والخطوة دي مش ممكن ترجع فيها.",
+      "confirm_action": "احذف الحساب",
+      "done": "حسابك اتحذف."
+    }
   },
   "phone_change": {
     "title": "تغيير رقم الموبايل",

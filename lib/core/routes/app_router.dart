@@ -29,6 +29,11 @@ import '../../features/main_shell/presentation/screens/main_shell_screen.dart';
 import '../../features/home/presentation/cubit/home_team_activity_cubit.dart';
 import '../../features/matches/data/models/match_details_model.dart';
 import '../../features/notifications/data/models/notification_model.dart';
+import '../../features/settings/presentation/cubit/account_action_cubit.dart';
+import '../../features/settings/presentation/cubit/consents_cubit.dart';
+import '../../features/settings/presentation/cubit/notification_preferences_cubit.dart';
+import '../../features/settings/presentation/cubit/sessions_cubit.dart';
+import '../../features/settings/presentation/screens/active_sessions_screen.dart';
 import '../../features/notifications/presentation/cubit/notifications_cubit.dart';
 import '../../features/notifications/presentation/cubit/unread_notifications_cubit.dart';
 import '../../features/matches/presentation/cubit/challenge_details_cubit.dart';
@@ -511,9 +516,29 @@ class AppRouter {
       case AppRoutes.settings:
         return MaterialPageRoute(
           settings: const RouteSettings(name: AppRoutes.settings),
-          builder: (_) => BlocProvider<LogoutCubit>(
-            create: (_) => sl<LogoutCubit>(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<LogoutCubit>(create: (_) => sl<LogoutCubit>()),
+              BlocProvider<NotificationPreferencesCubit>(
+                create: (_) => sl<NotificationPreferencesCubit>()..load(),
+              ),
+              BlocProvider<ConsentsCubit>(
+                create: (_) => sl<ConsentsCubit>()..load(),
+              ),
+              BlocProvider<AccountActionCubit>(
+                create: (_) => sl<AccountActionCubit>(),
+              ),
+            ],
             child: const SettingsScreen(),
+          ),
+        );
+
+      case AppRoutes.activeSessions:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => BlocProvider<SessionsCubit>(
+            create: (_) => sl<SessionsCubit>()..load(),
+            child: const ActiveSessionsScreen(),
           ),
         );
 

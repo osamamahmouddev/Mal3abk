@@ -28,7 +28,7 @@ class ChallengeResponseActionsBlocBuilder extends StatelessWidget {
     String t(String key) => 'matches.challenge.$key'.tr(context: context);
 
     void confirmDecline() {
-      final navigator = Navigator.of(context);
+      final navigator = Navigator.of(context, rootNavigator: true);
       CustomDialogWidget.show<void>(
         context: context,
         title: t('decline_confirm_title'),

@@ -5,6 +5,14 @@ import '../../features/home/domain/use_cases/get_home_team_activity_use_case.dar
 import '../../features/home/presentation/cubit/home_team_activity_cubit.dart';
 import '../../features/matches/data/apis/matches_api_service.dart';
 import '../../features/notifications/data/apis/notifications_api_service.dart';
+import '../../features/settings/data/apis/account_api_service.dart';
+import '../../features/settings/data/repos/account_repo_impl.dart';
+import '../../features/settings/domain/repos/account_repo.dart';
+import '../../features/settings/domain/use_cases/delete_account_use_case.dart';
+import '../../features/settings/presentation/cubit/account_action_cubit.dart';
+import '../../features/settings/presentation/cubit/consents_cubit.dart';
+import '../../features/settings/presentation/cubit/notification_preferences_cubit.dart';
+import '../../features/settings/presentation/cubit/sessions_cubit.dart';
 import '../../features/step_up/data/apis/step_up_api_service.dart';
 import '../../features/step_up/data/repos/step_up_repo_impl.dart';
 import '../../features/step_up/domain/repos/step_up_repo.dart';
@@ -438,6 +446,35 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
   );
   sl.registerFactory<UnreadNotificationsCubit>(
     () => UnreadNotificationsCubit(notificationsRepo: sl<NotificationsRepo>()),
+  );
+  sl.registerLazySingleton<AccountApiService>(
+    () => AccountApiService(sl<Dio>()),
+  );
+  sl.registerLazySingleton<AccountRepo>(
+    () => AccountRepoImpl(accountApiService: sl<AccountApiService>()),
+  );
+  sl.registerLazySingleton<DeleteAccountUseCase>(
+    () => DeleteAccountUseCase(
+      accountRepo: sl<AccountRepo>(),
+      authRepo: sl<AuthRepo>(),
+    ),
+  );
+  sl.registerFactory<NotificationPreferencesCubit>(
+    () => NotificationPreferencesCubit(
+      notificationsRepo: sl<NotificationsRepo>(),
+    ),
+  );
+  sl.registerFactory<ConsentsCubit>(
+    () => ConsentsCubit(accountRepo: sl<AccountRepo>()),
+  );
+  sl.registerFactory<SessionsCubit>(
+    () => SessionsCubit(accountRepo: sl<AccountRepo>()),
+  );
+  sl.registerFactory<AccountActionCubit>(
+    () => AccountActionCubit(
+      accountRepo: sl<AccountRepo>(),
+      deleteAccountUseCase: sl<DeleteAccountUseCase>(),
+    ),
   );
   sl.registerLazySingleton<GetHomeTeamActivityUseCase>(
     () => GetHomeTeamActivityUseCase(

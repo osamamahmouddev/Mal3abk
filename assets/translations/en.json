@@ -880,19 +880,7 @@
   "settings": {
     "title": "Settings",
     "notifications_section": "Notifications",
-    "booking_alerts_title": "Bookings & Deposit Status",
-    "booking_alerts_sub": "Confirmation, rejection, and reminder alerts",
-    "team_invites_title": "Invites & Challenges",
-    "team_invites_sub": "Team invitations and challenge responses",
-    "match_results_title": "Results & Standings",
-    "match_results_sub": "Result verification and rank updates",
-    "promotions_title": "Pitch Offers",
-    "promotions_sub": "Promotions and special deals",
     "privacy_section": "Privacy",
-    "appear_in_search_title": "Appear in Player Search",
-    "appear_in_search_sub": "Allow captains to find and invite you",
-    "show_phone_title": "Show Phone to Teammates",
-    "show_phone_sub": "Venues always have your phone for contact",
     "help_and_support": {
       "title": "Help & Support",
       "need_help_prompt": "What do you need help with?",
@@ -919,7 +907,59 @@
     "logout_all": "Log out of all devices",
     "logout_all_confirm_title": "Log out everywhere?",
     "logout_all_confirm_body": "You will be logged out on every device, including this one.",
-    "logout_all_confirm_action": "Log out all"
+    "logout_all_confirm_action": "Log out all",
+    "language_section": "Language",
+    "categories": {
+      "always_on": "Security alerts can't be turned off",
+      "Bookings": {
+        "title": "Bookings",
+        "sub": "Confirmations, rejections and match reminders"
+      },
+      "Payments": {
+        "title": "Deposits",
+        "sub": "Transfer receipt reviews"
+      },
+      "Teams": {
+        "title": "Teams & matches",
+        "sub": "Invites, challenges and results"
+      },
+      "Security": {
+        "title": "Security",
+        "sub": "Sign-ins from new devices"
+      }
+    },
+    "consents": {
+      "location": {
+        "title": "Use my location",
+        "sub": "To show pitches near you"
+      },
+      "marketing": {
+        "title": "Pitch offers",
+        "sub": "Promotions and special deals"
+      },
+      "notifications": {
+        "title": "Notifications",
+        "sub": "Updates on your bookings"
+      }
+    },
+    "sessions": {
+      "title": "Signed-in devices",
+      "description": "Devices where your account is signed in. Sign out of any you don't recognise.",
+      "last_active": "Last active {}",
+      "this_device": "This device",
+      "revoke": "Sign out",
+      "revoke_others": "Sign out of all other devices"
+    },
+    "export": {
+      "title": "Download my data"
+    },
+    "delete": {
+      "title": "Delete account",
+      "confirm_title": "Delete your account?",
+      "confirm_body": "We'll close your account and erase your personal data. Upcoming bookings will be cancelled. This can't be undone.",
+      "confirm_action": "Delete account",
+      "done": "Your account was deleted."
+    }
   },
   "phone_change": {
     "title": "Change Phone Number",

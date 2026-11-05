@@ -71,6 +71,15 @@ class ApiConstants {
   static const String leaderboard = '/api/v1/teams/leaderboard';
   static const String teamChallenges = '/api/v1/teams/{id}/challenges';
 
+  static const String me = '/api/v1/me';
+  static const String sessions = '/api/v1/me/sessions';
+  static const String session = '/api/v1/me/sessions/{id}';
+  static const String revokeOtherSessions = '/api/v1/me/sessions/revoke-others';
+  static const String consents = '/api/v1/me/consents';
+  static const String language = '/api/v1/me/language';
+  static const String dataExport = '/api/v1/me/data-export';
+  static const String stepUpTokenHeader = 'X-Step-Up-Token';
+
   static const String notifications = '/api/v1/me/notifications';
   static const String notificationsUnreadCount =
       '/api/v1/me/notifications/unread-count';

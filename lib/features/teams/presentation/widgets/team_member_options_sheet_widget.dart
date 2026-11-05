@@ -29,10 +29,11 @@ class TeamMemberOptionsSheetWidget extends StatelessWidget {
         'teams.manage.$key'.tr(context: context, args: [name]);
 
     void confirm(String title, String description, VoidCallback action) {
-      final navigator = Navigator.of(context);
-      navigator.pop();
+      final sheetNavigator = Navigator.of(context);
+      final navigator = Navigator.of(context, rootNavigator: true);
+      sheetNavigator.pop();
       CustomDialogWidget.show<void>(
-        context: navigator.context,
+        context: sheetNavigator.context,
         title: title,
         description: description,
         primaryActionText: 'common.confirm'.tr(context: context),
