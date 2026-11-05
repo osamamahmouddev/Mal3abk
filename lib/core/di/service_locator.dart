@@ -5,6 +5,10 @@ import '../../features/home/domain/use_cases/get_home_team_activity_use_case.dar
 import '../../features/home/presentation/cubit/home_team_activity_cubit.dart';
 import '../../features/matches/data/apis/matches_api_service.dart';
 import '../../features/notifications/data/apis/notifications_api_service.dart';
+import '../../features/step_up/data/apis/step_up_api_service.dart';
+import '../../features/step_up/data/repos/step_up_repo_impl.dart';
+import '../../features/step_up/domain/repos/step_up_repo.dart';
+import '../../features/step_up/presentation/cubit/step_up_cubit.dart';
 import '../../features/notifications/data/repos/notifications_repo_impl.dart';
 import '../../features/notifications/domain/repos/notifications_repo.dart';
 import '../../features/notifications/presentation/cubit/notifications_cubit.dart';
@@ -413,6 +417,13 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
   sl.registerFactory<MatchDetailsCubit>(
     () =>
         MatchDetailsCubit(getMatchDetailsUseCase: sl<GetMatchDetailsUseCase>()),
+  );
+  sl.registerLazySingleton<StepUpApiService>(() => StepUpApiService(sl<Dio>()));
+  sl.registerLazySingleton<StepUpRepo>(
+    () => StepUpRepoImpl(stepUpApiService: sl<StepUpApiService>()),
+  );
+  sl.registerFactory<StepUpCubit>(
+    () => StepUpCubit(stepUpRepo: sl<StepUpRepo>()),
   );
   sl.registerLazySingleton<NotificationsApiService>(
     () => NotificationsApiService(sl<Dio>()),

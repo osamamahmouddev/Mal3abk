@@ -2,13 +2,26 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'step_up_request_body.g.dart';
 
+enum StepUpMethod {
+  @JsonValue(0)
+  password,
+  @JsonValue(1)
+  totp,
+  @JsonValue(2)
+  otp,
+}
+
 @JsonSerializable()
 class StepUpRequestBody {
-  const StepUpRequestBody({required this.scope});
+  const StepUpRequestBody({
+    required this.scope,
+    required this.secret,
+    this.method = StepUpMethod.otp,
+  });
 
-  /// The step-up token is bound to this scope; phone change uses
-  /// `change_phone`.
   final String scope;
+  final StepUpMethod method;
+  final String secret;
 
   factory StepUpRequestBody.fromJson(Map<String, dynamic> json) =>
       _$StepUpRequestBodyFromJson(json);

@@ -28,7 +28,7 @@ void main() {
 
     test('emits [loading, success] with the request', () async {
       when(
-        () => useCase(any()),
+        () => useCase(any(), stepUpToken: stepUpToken),
       ).thenAnswer((_) async => ApiResult.success(startResponse));
 
       final expectation = expectLater(
@@ -38,13 +38,25 @@ void main() {
           StartPhoneChangeState.success(startResponse),
         ]),
       );
-      await cubit.start('01112345678');
+      await cubit.start('01112345678', stepUpToken: stepUpToken);
       await expectation;
+    });
+
+    test('reports an invalid number without starting', () async {
+      when(
+        () => useCase.validate('0100'),
+      ).thenReturn(const ApiResult.failure(phoneInUseFailure));
+
+      expect(cubit.validate('0100'), isFalse);
+      expect(
+        cubit.state,
+        StartPhoneChangeState.error(phoneInUseFailure.message),
+      );
     });
 
     test('emits [loading, error] on failure', () async {
       when(
-        () => useCase(any()),
+        () => useCase(any(), stepUpToken: stepUpToken),
       ).thenAnswer((_) async => const ApiResult.failure(phoneInUseFailure));
 
       final expectation = expectLater(
@@ -54,7 +66,7 @@ void main() {
           StartPhoneChangeState.error(phoneInUseFailure.message),
         ]),
       );
-      await cubit.start('01112345678');
+      await cubit.start('01112345678', stepUpToken: stepUpToken);
       await expectation;
     });
   });

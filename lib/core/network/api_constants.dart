@@ -7,7 +7,8 @@ class ApiConstants {
   static const String logout = '/api/v1/auth/logout';
   static const String logoutAll = '/api/v1/auth/logout-all';
 
-  static const String stepUp = '/api/v1/me/step-up';
+  static const String stepUp = '/api/v1/auth/step-up';
+  static const String stepUpOtp = '/api/v1/auth/step-up/otp';
   static const String startPhoneChange = '/api/v1/me/phone-change/start';
   static const String verifyOldPhone = '/api/v1/me/phone-change/verify-old';
   static const String verifyNewPhone = '/api/v1/me/phone-change/verify-new';

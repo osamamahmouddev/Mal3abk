@@ -12,10 +12,26 @@ class StartPhoneChangeCubit extends Cubit<StartPhoneChangeState>
 
   final StartPhoneChangeUseCase startPhoneChangeUseCase;
 
-  Future<void> start(String newPhoneNumber) async {
+  /// True when the number is valid; otherwise emits the error.
+  bool validate(String newPhoneNumber) {
+    final result = startPhoneChangeUseCase.validate(newPhoneNumber);
+    if (result case ApiFailure(:final failure)) {
+      emitIfOpen(StartPhoneChangeState.error(failure.message));
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> start(
+    String newPhoneNumber, {
+    required String stepUpToken,
+  }) async {
     if (state is StartPhoneChangeLoading) return;
     emitIfOpen(const StartPhoneChangeState.loading());
-    final result = await startPhoneChangeUseCase(newPhoneNumber);
+    final result = await startPhoneChangeUseCase(
+      newPhoneNumber,
+      stepUpToken: stepUpToken,
+    );
     result.when(
       success: (data) => emitIfOpen(StartPhoneChangeState.success(data)),
       failure: (failure) =>

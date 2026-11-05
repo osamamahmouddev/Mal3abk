@@ -37,6 +37,11 @@ class ApiFailureMapper {
     'AUTH_TOKEN_REVOKED': 'errors.identity.session_expired',
     'AUTH_REFRESH_TOKEN_REUSE': 'errors.identity.session_expired',
     'Identity.InvalidStepUpToken': 'errors.identity.step_up_expired',
+    'Identity.StepUpFailed': 'errors.identity.invalid_otp',
+    'Identity.StepUpMethodNotAvailable': 'errors.identity.step_up_unavailable',
+    'Identity.UnknownStepUpScope': 'errors.identity.step_up_unavailable',
+    'Identity.OtpRateLimitExceeded': 'common.too_many_requests',
+    'Identity.LoginThrottled': 'common.too_many_requests',
     'Identity.PhoneChangeCooldownActive':
         'errors.identity.phone_change_cooldown',
     'Identity.PhoneNumberAlreadyInUse': 'errors.identity.phone_in_use',

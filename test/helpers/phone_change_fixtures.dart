@@ -1,14 +1,10 @@
 import 'package:mal3abk/core/network/app_api_failure.dart';
 import 'package:mal3abk/features/phone_change/data/models/start_phone_change_response_model.dart';
-import 'package:mal3abk/features/phone_change/data/models/step_up_response_model.dart';
 import 'package:mal3abk/features/phone_change/data/models/verify_new_phone_response_model.dart';
 
 const testRequestId = '0192d4f8-1111-7000-8000-000000000001';
 
-const stepUpResponse = StepUpResponseModel(
-  stepUpToken: 'step-up-1',
-  expiresInSeconds: 300,
-);
+const stepUpToken = 'step-up-1';
 
 final startResponse = StartPhoneChangeResponseModel(
   requestId: testRequestId,
