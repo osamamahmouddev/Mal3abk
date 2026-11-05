@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
-import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 
 class SlotChipWidget extends StatelessWidget {
@@ -12,22 +11,20 @@ class SlotChipWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final radius = BorderRadius.circular(8.r);
+    final radius = BorderRadius.circular(10.r);
 
     return Material(
-      color: AppColors.successLight,
+      color: const Color(0xFFEAF5EE),
       borderRadius: radius,
       child: InkWell(
         onTap: onTap,
         borderRadius: radius,
-        child: Container(
-          height: 34.h,
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
-          alignment: Alignment.center,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 7.h),
           child: Text(
             label,
             style: AppTextStyles.font12Bold.copyWith(
-              color: AppColors.successGreen,
+              color: const Color(0xFF1B6E3E),
             ),
           ),
         ),

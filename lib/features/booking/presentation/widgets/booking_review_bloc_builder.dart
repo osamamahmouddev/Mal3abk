@@ -222,7 +222,7 @@ class BookingReviewBlocBuilder extends StatelessWidget {
               hSpace(14),
               IconNoteWidget(
                 iconAsset: AppAssets.icClockGold,
-                text: 'booking.review_hold_notice'.tr(context: context),
+                text: 'booking.hold_notice'.tr(context: context),
               ),
               hSpace(14),
               BookingPolicyCardWidget(

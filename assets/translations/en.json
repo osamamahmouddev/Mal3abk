@@ -398,6 +398,7 @@
     "one_hour_rate": "1 Hour × 150 EGP",
     "service_fee": "Service Fee",
     "deposit_required_now": "Deposit Required Now",
+    "review_hold_notice": "When submitting the request, the slot is reserved temporarily until you upload the receipt. Booking is not confirmed until verified by the venue.",
     "hold_notice": "When submitting the request, the slot is reserved temporarily for 30 minutes until you upload the receipt. Booking is not confirmed until verified by the venue.",
     "policy_title": "Booking Policy",
     "policy_rule_1": "• Free cancellation with deposit refund up to 6 hours before slot.",

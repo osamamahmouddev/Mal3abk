@@ -42,7 +42,7 @@ class ExploreListFallbackWidget extends StatelessWidget {
             onSlotTap: onSlotTap,
           ),
         ),
-        hSpace(12),
+        vSpace(12),
         FadeSlideInWidget(
           index: 1,
           child: PitchCardWidget(

@@ -120,13 +120,71 @@ class PitchBookingCubit extends Cubit<PitchBookingState> {
   Future<void> selectDay(int dayIndex) async {
     if (_currentVenueId == null) return;
     final current = state;
-    final pitchIdx = current is PitchBookingLoaded
-        ? current.selectedPitchIndex
-        : 0;
-    await loadAvailability(
+    if (current is! PitchBookingLoaded) {
+      await loadAvailability(
+        _currentVenueId!,
+        dayIndex: dayIndex,
+      );
+      return;
+    }
+
+    emit(
+      current.copyWith(
+        selectedDayIndex: dayIndex,
+        isSlotsLoading: true,
+        clearSelectedSlot: true,
+        clearQuote: true,
+        clearQuoteError: true,
+      ),
+    );
+
+    final targetDate = DateTime.now().add(Duration(days: dayIndex));
+    final dateStr = _formatDate(targetDate);
+    final availResult = await getVenueAvailabilityUseCase(
       _currentVenueId!,
-      dayIndex: dayIndex,
-      pitchIndex: pitchIdx,
+      dateStr,
+    );
+
+    await availResult.when(
+      success: (availability) async {
+        final validPitchIndex =
+            current.selectedPitchIndex < availability.pitches.length
+                ? current.selectedPitchIndex
+                : 0;
+
+        SlotModel? initialSlot;
+        if (availability.pitches.isNotEmpty) {
+          final slots = availability.pitches[validPitchIndex].slots;
+          for (final s in slots) {
+            if (s.isAvailable) {
+              initialSlot = s;
+              break;
+            }
+          }
+        }
+
+        emit(
+          current.copyWith(
+            availability: availability,
+            selectedPitchIndex: validPitchIndex,
+            selectedDayIndex: dayIndex,
+            selectedSlot: initialSlot,
+            isSlotsLoading: false,
+          ),
+        );
+
+        if (initialSlot != null) {
+          await fetchQuoteForSlot(initialSlot);
+        }
+      },
+      failure: (failure) {
+        emit(
+          current.copyWith(
+            isSlotsLoading: false,
+            bookingError: failure.message,
+          ),
+        );
+      },
     );
   }
 

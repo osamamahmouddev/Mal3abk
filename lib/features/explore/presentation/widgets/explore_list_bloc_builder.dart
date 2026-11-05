@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
+import '../../../../core/extensions/app_display_extensions.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/widgets/fade_slide_in_widget.dart';
 import '../../../../core/widgets/pitch_card_widget.dart';
@@ -39,19 +40,43 @@ class ExploreListBlocBuilder extends StatelessWidget {
                     separatorBuilder: (_, _) => vSpace(12),
                     itemBuilder: (context, index) {
                       final item = result.items[index];
-                      final specs = item.pitchTypes.isNotEmpty
-                          ? item.pitchTypes.join(' · ')
+
+                      final typeLabels = item.pitchTypes.map((t) {
+                        final lower = t.toLowerCase();
+                        if (lower.contains('5')) return '٥ لاعب';
+                        if (lower.contains('7')) return '٧ لاعب';
+                        if (lower.contains('10')) return '١٠ لاعب';
+                        if (lower.contains('11')) return '١١ لاعب';
+                        return t;
+                      }).toList();
+
+                      final specsParts = <String>[];
+                      if (typeLabels.isNotEmpty) {
+                        specsParts.add(typeLabels.join(' · '));
+                      } else if (item.area.isNotEmpty) {
+                        specsParts.add(item.area);
+                      }
+
+                      if (item.distanceKm != null) {
+                        specsParts.add(
+                          '${item.distanceKm!.toStringAsFixed(1).toArabicDigits()} كم',
+                        );
+                      }
+
+                      final specs = specsParts.isNotEmpty
+                          ? specsParts.join(' · ')
                           : '${item.city} · ${item.area}';
+
                       final price = item.fromHourlyPrice != null
-                          ? '${item.fromHourlyPrice!.toInt()} ${item.currency} / ساعة'
-                          : '';
-                      const rating = '4.8';
-                      final slots = item.nextAvailableStartUtc != null
-                          ? [item.nextAvailableStartUtc!]
-                          : [
-                              'explore.slot_8pm'.tr(context: context),
-                              'explore.slot_11pm'.tr(context: context),
-                            ];
+                          ? '${item.fromHourlyPrice!.toInt().toString().toArabicDigits()} ج.م'
+                          : '١٥٠ ج.م';
+
+                      const rating = '٤٫٨';
+                      final slots = [
+                        'explore.slot_8pm'.tr(context: context),
+                        'explore.slot_11pm'.tr(context: context),
+                        'explore.slot_12am'.tr(context: context),
+                      ];
 
                       return FadeSlideInWidget(
                         index: index,
@@ -60,6 +85,7 @@ class ExploreListBlocBuilder extends StatelessWidget {
                           specs: specs,
                           pricePerHour: price,
                           rating: rating,
+                          imageUrl: item.coverPhotoUrl,
                           isFavorite: favorites.contains(item.venueId),
                           onFavoriteTap: () => onFavoriteTap(item.venueId),
                           availableSlots: slots,

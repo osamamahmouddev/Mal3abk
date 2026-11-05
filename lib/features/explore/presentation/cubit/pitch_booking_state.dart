@@ -28,6 +28,7 @@ class PitchBookingLoaded extends PitchBookingState {
     this.createdBooking,
     this.paymentMethods = const [],
     this.bookingError,
+    this.isSlotsLoading = false,
   });
 
   final VenueAvailabilityModel availability;
@@ -41,6 +42,7 @@ class PitchBookingLoaded extends PitchBookingState {
   final CreateBookingResponseModel? createdBooking;
   final List<VenuePaymentMethodModel> paymentMethods;
   final String? bookingError;
+  final bool isSlotsLoading;
 
   PitchSlotsModel? get currentPitch {
     if (availability.pitches.isEmpty) return null;
@@ -66,6 +68,7 @@ class PitchBookingLoaded extends PitchBookingState {
     List<VenuePaymentMethodModel>? paymentMethods,
     String? bookingError,
     bool clearBookingError = false,
+    bool? isSlotsLoading,
   }) {
     return PitchBookingLoaded(
       availability: availability ?? this.availability,
@@ -83,6 +86,7 @@ class PitchBookingLoaded extends PitchBookingState {
       bookingError: clearBookingError
           ? null
           : (bookingError ?? this.bookingError),
+      isSlotsLoading: isSlotsLoading ?? this.isSlotsLoading,
     );
   }
 }

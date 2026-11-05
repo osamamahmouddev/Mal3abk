@@ -8,6 +8,20 @@ extension ListNullOrEmpty<T> on List<T>? {
   bool get isNotNullOrEmpty => !isNullOrEmpty;
 }
 
+extension LocalizedArabicString on String {
+  static const _latinChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
+  static const _arabicChars = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩', '٫'];
+
+  /// Converts Latin digits and decimal points to Arabic-Indic digits.
+  String toArabicDigits() {
+    var result = this;
+    for (var i = 0; i < _latinChars.length; i++) {
+      result = result.replaceAll(_latinChars[i], _arabicChars[i]);
+    }
+    return result;
+  }
+}
+
 extension LocalizedDigits on int {
   static const _arabicDigits = [
     '٠',
