@@ -36,7 +36,6 @@ class AppRoutes {
   static const String leaveTeam = '/leave-team';
 
   static const String challengeTeam = '/challenge-team';
-  static const String challengeReceived = '/challenge-received';
   static const String challengeDetails = '/challenge-details';
   static const String matchDetails = '/match-details';
   static const String submitResult = '/submit-result';

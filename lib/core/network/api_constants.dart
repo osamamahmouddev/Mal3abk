@@ -68,6 +68,17 @@ class ApiConstants {
   static const String transferCaptaincy =
       '/api/v1/teams/{id}/transfer-captaincy';
   static const String leaderboard = '/api/v1/teams/leaderboard';
+  static const String teamChallenges = '/api/v1/teams/{id}/challenges';
+
+  static const String challenges = '/api/v1/matches/challenges';
+  static const String challengeDetails = '/api/v1/matches/challenges/{id}';
+  static const String respondToChallenge =
+      '/api/v1/matches/challenges/{id}/respond';
+  static const String upcomingMatches = '/api/v1/matches/upcoming';
+  static const String matchHistory = '/api/v1/matches/history';
+  static const String matchDetails = '/api/v1/matches/{id}';
+  static const String matchResults = '/api/v1/matches/{id}/results';
+  static const String verifyMatchResult = '/api/v1/matches/{id}/results/verify';
 
   static const String fields = '/fields';
   static const String fieldDetails = '/fields/{id}';

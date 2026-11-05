@@ -19,6 +19,22 @@ class CairoTime {
 
   static tz.TZDateTime now() => tz.TZDateTime.now(_cairo);
 
+  /// Midnight today in Cairo, as a plain calendar date.
+  static DateTime today() {
+    final local = now();
+    return DateTime(local.year, local.month, local.day);
+  }
+
+  /// The UTC instant of [hour]:00 Cairo time on the calendar [day].
+  static DateTime toUtc(DateTime day, int hour) =>
+      tz.TZDateTime(_cairo, day.year, day.month, day.day, hour).toUtc();
+
+  static String weekday(DateTime day, String languageCode) =>
+      DateFormat('EEE', languageCode).format(day);
+
+  static String hourLabel(int hour, String languageCode) =>
+      DateFormat('h a', languageCode).format(DateTime(2000, 1, 1, hour));
+
   /// "السبت ٢ أغسطس · ٩:٠٠ م"
   static String dayAndTime(DateTime utc, String languageCode) {
     final local = fromUtc(utc);

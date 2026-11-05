@@ -1,6 +1,20 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../features/home/domain/use_cases/get_home_team_activity_use_case.dart';
+import '../../features/home/presentation/cubit/home_team_activity_cubit.dart';
+import '../../features/matches/data/apis/matches_api_service.dart';
+import '../../features/matches/data/repos/matches_repo_impl.dart';
+import '../../features/matches/domain/repos/matches_repo.dart';
+import '../../features/matches/domain/use_cases/get_challenge_details_use_case.dart';
+import '../../features/matches/domain/use_cases/get_match_details_use_case.dart';
+import '../../features/matches/domain/use_cases/respond_to_challenge_use_case.dart';
+import '../../features/matches/domain/use_cases/send_challenge_use_case.dart';
+import '../../features/matches/presentation/cubit/challenge_details_cubit.dart';
+import '../../features/matches/presentation/cubit/challenge_response_cubit.dart';
+import '../../features/matches/presentation/cubit/match_details_cubit.dart';
+import '../../features/matches/presentation/cubit/match_result_cubit.dart';
+import '../../features/matches/presentation/cubit/send_challenge_cubit.dart';
 import '../../features/auth/data/apis/auth_api_service.dart';
 import '../../features/auth/data/repos/auth_repo_impl.dart';
 import '../../features/auth/domain/repos/auth_repo.dart';
@@ -354,11 +368,69 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
 
   // Teams Feature
   sl.registerLazySingleton<TeamsApiService>(() => TeamsApiService(sl<Dio>()));
+  sl.registerLazySingleton<MatchesApiService>(
+    () => MatchesApiService(sl<Dio>()),
+  );
+  sl.registerLazySingleton<MatchesRepo>(
+    () => MatchesRepoImpl(matchesApiService: sl<MatchesApiService>()),
+  );
+  sl.registerLazySingleton<SendChallengeUseCase>(
+    () => SendChallengeUseCase(matchesRepo: sl<MatchesRepo>()),
+  );
+  sl.registerLazySingleton<RespondToChallengeUseCase>(
+    () => RespondToChallengeUseCase(matchesRepo: sl<MatchesRepo>()),
+  );
+  sl.registerLazySingleton<GetChallengeDetailsUseCase>(
+    () => GetChallengeDetailsUseCase(
+      matchesRepo: sl<MatchesRepo>(),
+      teamsRepo: sl<TeamsRepo>(),
+    ),
+  );
+  sl.registerLazySingleton<GetMatchDetailsUseCase>(
+    () => GetMatchDetailsUseCase(
+      matchesRepo: sl<MatchesRepo>(),
+      teamsRepo: sl<TeamsRepo>(),
+    ),
+  );
+  sl.registerFactory<SendChallengeCubit>(
+    () => SendChallengeCubit(sendChallengeUseCase: sl<SendChallengeUseCase>()),
+  );
+  sl.registerFactory<ChallengeDetailsCubit>(
+    () => ChallengeDetailsCubit(
+      getChallengeDetailsUseCase: sl<GetChallengeDetailsUseCase>(),
+    ),
+  );
+  sl.registerFactory<ChallengeResponseCubit>(
+    () => ChallengeResponseCubit(
+      respondToChallengeUseCase: sl<RespondToChallengeUseCase>(),
+    ),
+  );
+  sl.registerFactory<MatchDetailsCubit>(
+    () =>
+        MatchDetailsCubit(getMatchDetailsUseCase: sl<GetMatchDetailsUseCase>()),
+  );
+  sl.registerLazySingleton<GetHomeTeamActivityUseCase>(
+    () => GetHomeTeamActivityUseCase(
+      teamsRepo: sl<TeamsRepo>(),
+      matchesRepo: sl<MatchesRepo>(),
+    ),
+  );
+  sl.registerFactory<HomeTeamActivityCubit>(
+    () => HomeTeamActivityCubit(
+      getHomeTeamActivityUseCase: sl<GetHomeTeamActivityUseCase>(),
+    ),
+  );
+  sl.registerFactory<MatchResultCubit>(
+    () => MatchResultCubit(matchesRepo: sl<MatchesRepo>()),
+  );
   sl.registerLazySingleton<TeamsRepo>(
     () => TeamsRepoImpl(teamsApiService: sl<TeamsApiService>()),
   );
   sl.registerLazySingleton<GetTeamDashboardUseCase>(
-    () => GetTeamDashboardUseCase(teamsRepo: sl<TeamsRepo>()),
+    () => GetTeamDashboardUseCase(
+      teamsRepo: sl<TeamsRepo>(),
+      matchesRepo: sl<MatchesRepo>(),
+    ),
   );
   sl.registerLazySingleton<CreateTeamUseCase>(
     () => CreateTeamUseCase(teamsRepo: sl<TeamsRepo>()),

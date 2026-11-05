@@ -26,8 +26,14 @@ import '../../features/explore/presentation/screens/venue_profile_screen.dart';
 import '../../features/home/presentation/cubit/home_feed_cubit.dart';
 import '../../features/home/presentation/screens/home_screen.dart';
 import '../../features/main_shell/presentation/screens/main_shell_screen.dart';
+import '../../features/home/presentation/cubit/home_team_activity_cubit.dart';
+import '../../features/matches/data/models/match_details_model.dart';
+import '../../features/matches/presentation/cubit/challenge_details_cubit.dart';
+import '../../features/matches/presentation/cubit/challenge_response_cubit.dart';
+import '../../features/matches/presentation/cubit/match_details_cubit.dart';
+import '../../features/matches/presentation/cubit/match_result_cubit.dart';
+import '../../features/matches/presentation/cubit/send_challenge_cubit.dart';
 import '../../features/matches/presentation/screens/challenge_details_screen.dart';
-import '../../features/matches/presentation/screens/challenge_received_screen.dart';
 import '../../features/matches/presentation/screens/challenge_team_screen.dart';
 import '../../features/matches/presentation/screens/match_details_screen.dart';
 import '../../features/matches/presentation/screens/submit_result_screen.dart';
@@ -152,8 +158,15 @@ class AppRouter {
       case AppRoutes.home:
         return MaterialPageRoute(
           settings: const RouteSettings(name: AppRoutes.home),
-          builder: (_) => BlocProvider<HomeFeedCubit>(
-            create: (_) => sl<HomeFeedCubit>()..fetchFeed(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<HomeFeedCubit>(
+                create: (_) => sl<HomeFeedCubit>()..fetchFeed(),
+              ),
+              BlocProvider<HomeTeamActivityCubit>(
+                create: (_) => sl<HomeTeamActivityCubit>()..load(),
+              ),
+            ],
             child: const HomeScreen(),
           ),
         );
@@ -395,33 +408,70 @@ class AppRouter {
         );
 
       case AppRoutes.challengeTeam:
+        final opponent = settings.arguments;
+        if (opponent is! TeamProfileModel) return _errorRoute('Missing team');
         return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.challengeTeam),
-          builder: (_) => const ChallengeTeamScreen(),
-        );
-
-      case AppRoutes.challengeReceived:
-        return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.challengeReceived),
-          builder: (_) => const ChallengeReceivedScreen(),
+          settings: settings,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<MyTeamsCubit>(
+                create: (_) => sl<MyTeamsCubit>()..load(),
+              ),
+              BlocProvider<SendChallengeCubit>(
+                create: (_) => sl<SendChallengeCubit>(),
+              ),
+            ],
+            child: ChallengeTeamScreen(opponent: opponent),
+          ),
         );
 
       case AppRoutes.challengeDetails:
+        final challengeId = settings.arguments;
+        if (challengeId is! String) return _errorRoute('Missing challenge id');
         return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.challengeDetails),
-          builder: (_) => const ChallengeDetailsScreen(),
+          settings: settings,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<ChallengeDetailsCubit>(
+                create: (_) => sl<ChallengeDetailsCubit>()..load(challengeId),
+              ),
+              BlocProvider<ChallengeResponseCubit>(
+                create: (_) => sl<ChallengeResponseCubit>(),
+              ),
+            ],
+            child: ChallengeDetailsScreen(challengeId: challengeId),
+          ),
         );
 
       case AppRoutes.matchDetails:
+        final matchId = settings.arguments;
+        if (matchId is! String) return _errorRoute('Missing match id');
         return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.matchDetails),
-          builder: (_) => const MatchDetailsScreen(),
+          settings: settings,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<MatchDetailsCubit>(
+                create: (_) => sl<MatchDetailsCubit>()..load(matchId),
+              ),
+              BlocProvider<MatchResultCubit>(
+                create: (_) => sl<MatchResultCubit>(),
+              ),
+            ],
+            child: MatchDetailsScreen(matchId: matchId),
+          ),
         );
 
       case AppRoutes.submitResult:
-        return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.submitResult),
-          builder: (_) => const SubmitResultScreen(),
+        final details = settings.arguments;
+        if (details is! MatchDetailsModel || details.myTeam == null) {
+          return _errorRoute('Missing match');
+        }
+        return MaterialPageRoute<bool>(
+          settings: settings,
+          builder: (_) => BlocProvider<MatchResultCubit>(
+            create: (_) => sl<MatchResultCubit>(),
+            child: SubmitResultScreen(details: details),
+          ),
         );
 
       case AppRoutes.myProfile:

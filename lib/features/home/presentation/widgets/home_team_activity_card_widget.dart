@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
@@ -8,9 +7,18 @@ import '../../../../core/styles/app_shadows.dart';
 import '../../../../core/styles/app_text_styles.dart';
 
 class HomeTeamActivityCardWidget extends StatelessWidget {
-  const HomeTeamActivityCardWidget({super.key, this.onTap});
+  const HomeTeamActivityCardWidget({
+    required this.initials,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+    super.key,
+  });
 
-  final VoidCallback? onTap;
+  final String initials;
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +44,7 @@ class HomeTeamActivityCardWidget extends StatelessWidget {
                   boxShadow: AppShadows.redGlow,
                 ),
                 child: Text(
-                  'teams.sample.nogoum_i'.tr(context: context),
+                  initials,
                   style: AppTextStyles.font13Bold.copyWith(
                     color: AppColors.white,
                   ),
@@ -48,7 +56,7 @@ class HomeTeamActivityCardWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'home.sample_challenge_text'.tr(context: context),
+                      title,
                       style: AppTextStyles.font14Bold.copyWith(
                         color: AppColors.goldText,
                       ),
@@ -57,7 +65,7 @@ class HomeTeamActivityCardWidget extends StatelessWidget {
                     ),
                     hSpace(2),
                     Text(
-                      'home.sample_challenge_time'.tr(context: context),
+                      subtitle,
                       style: AppTextStyles.font12Regular.copyWith(
                         color: AppColors.goldText,
                       ),

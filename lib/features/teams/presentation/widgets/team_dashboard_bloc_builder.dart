@@ -8,6 +8,7 @@ import '../../../../core/widgets/custom_state_widget.dart';
 import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
 import '../cubit/team_dashboard_cubit.dart';
 import '../cubit/team_dashboard_state.dart';
+import 'team_challenges_section_widget.dart';
 import 'team_join_requests_section_widget.dart';
 import 'team_profile_header_section_widget.dart';
 import 'team_profile_matches_section_widget.dart';
@@ -43,9 +44,16 @@ class TeamDashboardBlocBuilder extends StatelessWidget {
                         ),
                         hSpace(10),
                       ],
-                      TeamProfileMatchesSectionWidget(
-                        profile: dashboard.profile,
-                      ),
+                      if (dashboard.openChallenges.isNotEmpty) ...[
+                        TeamChallengesSectionWidget(
+                          teamId: teamId,
+                          challenges: dashboard.openChallenges,
+                          onReturn: () =>
+                              context.read<TeamDashboardCubit>().load(teamId),
+                        ),
+                        hSpace(10),
+                      ],
+                      TeamProfileMatchesSectionWidget(dashboard: dashboard),
                       hSpace(10),
                       TeamProfilePlayersSectionWidget(
                         profile: dashboard.profile,

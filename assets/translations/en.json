@@ -210,10 +210,6 @@
     "sample_pitch_name": "Stars Pitch — Field 1",
     "sample_booking_time": "Sat Jul 26 · 8:00 PM",
     "in_review": "Under Review",
-    "sample_challenge_text": "Falcons challenge accepted — Pitch not booked yet",
-    "sample_challenge_time": "Sat Aug 2 · 9:00 PM",
-    "pending_result_title": "Result awaiting your confirmation",
-    "pending_result_sub": "Stars 4 – 3 Falcons · Jul 19",
     "review": "Review",
     "my_teams": "My teams",
     "sample_venue1_name": "Al Nogoum Pitch",
@@ -230,7 +226,14 @@
     "create_team": "Create team",
     "have_code": "I have a code",
     "offline_message": "No internet. Showing data last loaded at {} — times may have changed.",
-    "retry": "Retry"
+    "retry": "Retry",
+    "activity": {
+      "quiet": "Nothing new across your teams right now.",
+      "challenge": "{} challenged you — awaiting your reply",
+      "next_match": "{} vs {}",
+      "verify_result": "A result needs your confirmation",
+      "submit_result": "Report the match score"
+    }
   },
   "explore": {
     "list_title": "Explore Pitches",
@@ -649,9 +652,6 @@
       "mid": "MID",
       "fwd": "FWD"
     },
-    "sample": {
-      "nogoum_i": "NG"
-    },
     "create": {
       "title": "New team",
       "name": "Team name",
@@ -756,18 +756,94 @@
       "leaveTeam": "You left the team.",
       "updateSettings": "Settings saved.",
       "requestToJoin": "Your request was sent to the captain."
+    },
+    "challenges": {
+      "title": "Open challenges ({})",
+      "your_turn": "Your turn",
+      "waiting": "Waiting for them"
     }
   },
   "matches": {
     "challenge_team_title": "Challenge Team",
     "challenge_details_title": "Challenge Details",
-    "challenge_received_title": "Received Challenge",
     "match_details_title": "Match Details",
     "submit_result_title": "Submit Result",
-    "attendance": "Team Attendance",
     "accept_challenge": "Accept Challenge",
     "decline_challenge": "Decline Challenge",
-    "submit_result_btn": "Confirm & Submit Result"
+    "submit_result_btn": "Confirm & Submit Result",
+    "minutes": "{} min",
+    "schedule": {
+      "day": "Day",
+      "hour": "Kick-off (Cairo time)",
+      "duration": "Match length",
+      "today": "Today"
+    },
+    "challenge": {
+      "my_team": "Your team",
+      "your_team": "Your team",
+      "pick_team": "Challenge with which team?",
+      "no_leading_team": "You need to be a captain or vice-captain to send a challenge.",
+      "notes": "Message to the other captain (optional)",
+      "notes_hint": "e.g. We prefer a pitch in Nasr City",
+      "send": "Send challenge",
+      "sent": "Challenge sent to {}'s captain",
+      "terms": "Challenge details",
+      "when": "When",
+      "duration": "Length",
+      "venue": "Pitch",
+      "venue_tbd": "To be agreed",
+      "notes_label": "Message",
+      "declined_reason": "Decline reason",
+      "your_turn": "Your turn to reply — accept, decline or suggest another time.",
+      "waiting": "Waiting for {} to reply.",
+      "accepted_note": "Challenge accepted — the match is on both teams' schedules.",
+      "counter": "Suggest another time",
+      "counter_send": "Send suggestion",
+      "view_match": "Match details",
+      "decline_confirm_title": "Decline this challenge?",
+      "decline_confirm_desc": "The other team will be notified.",
+      "status": {
+        "pending": "Awaiting reply",
+        "counterProposed": "New time proposed",
+        "accepted": "Accepted",
+        "declined": "Declined",
+        "cancelled": "Cancelled",
+        "expired": "Expired"
+      },
+      "responses": {
+        "accept": "Challenge accepted — match scheduled",
+        "decline": "Challenge declined",
+        "counterPropose": "Your suggestion was sent"
+      }
+    },
+    "match": {
+      "venue_tbd": "Pitch not set yet",
+      "status": {
+        "scheduled": "Scheduled",
+        "pending_verification": "Awaiting confirmation",
+        "disputed": "Disputed",
+        "completed": "Finished",
+        "cancelled": "Cancelled"
+      },
+      "verify_note": "{} reported {}. Confirm it if it's right, or dispute it.",
+      "awaiting_verification_note": "The {} result is waiting for the other team to confirm.",
+      "disputed_note": "The result is disputed and under admin review. Reason: {}",
+      "submit_note": "Match over? Report the score so it counts in the rankings.",
+      "not_started_note": "You can report the score once the match starts.",
+      "confirm": "Confirm result",
+      "dispute": "Dispute",
+      "dispute_title": "Dispute the result",
+      "dispute_desc": "An admin will review it and set the official score.",
+      "dispute_hint": "Tell us what happened…",
+      "dispute_send": "Send dispute",
+      "submit_info_title": "Before you send",
+      "submit_info": "{}'s captain will be asked to confirm. Rankings and stats only change after confirmation.",
+      "results": {
+        "submitted": "Score sent to the other team to confirm",
+        "confirmed": "Result confirmed",
+        "disputed": "Dispute sent to admins"
+      }
+    }
   },
   "profile": {
     "title": "My Profile",

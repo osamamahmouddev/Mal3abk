@@ -58,7 +58,7 @@ class TeamProfileFooterWidget extends StatelessWidget {
                   textStyle: primaryStyle,
                   onTap: () => navigator.pushNamed(
                     AppRoutes.challengeTeam,
-                    arguments: profile.id,
+                    arguments: profile,
                   ),
                 ),
               ),

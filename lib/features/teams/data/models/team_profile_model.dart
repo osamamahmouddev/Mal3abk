@@ -51,6 +51,7 @@ class TeamProfileModel {
   final List<MatchSummaryModel> upcomingMatches;
 
   bool get isCaptain => callerRole == 1;
+  bool get isLeader => callerRole == 1 || callerRole == 2;
 
   factory TeamProfileModel.fromJson(Map<String, dynamic> json) =>
       _$TeamProfileModelFromJson(json);

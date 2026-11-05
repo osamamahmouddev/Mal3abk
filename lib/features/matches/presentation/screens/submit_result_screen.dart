@@ -1,177 +1,109 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
+import '../../../../core/utils/cairo_time.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
-import '../../../../core/widgets/custom_button.dart';
+import '../../../../core/widgets/info_note_card_widget.dart';
+import '../../data/models/match_details_model.dart';
+import '../cubit/match_result_cubit.dart';
+import '../widgets/match_result_bloc_listener.dart';
+import '../widgets/score_stepper_widget.dart';
+import '../widgets/submit_result_bloc_builder.dart';
 
 class SubmitResultScreen extends HookWidget {
-  const SubmitResultScreen({super.key});
+  const SubmitResultScreen({required this.details, super.key});
+
+  final MatchDetailsModel details;
 
   @override
   Widget build(BuildContext context) {
-    final score1 = useState(4);
-    final score2 = useState(3);
+    final match = details.match;
+    final myTeamId = details.myTeam!.id;
+    final homeScore = useState(0);
+    final awayScore = useState(0);
+    final opponent = myTeamId == match.homeTeamId
+        ? match.awayTeamName
+        : match.homeTeamName;
+    final lang = context.locale.languageCode;
 
-    return Scaffold(
-      backgroundColor: AppColors.pageBackground,
-      appBar: CustomAppBarWidget(
-        title: 'matches.submit_result_title'.tr(context: context),
-      ),
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-          child: CustomButton(
-            text: 'matches.submit_result_btn'.tr(context: context),
-            type: CustomButtonType.primary,
-            height: 52.h,
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('تم إرسال النتيجة لكابتن الفريق المنافس'),
-                ),
-              );
-              Navigator.of(context).pop();
-            },
-          ),
+    return MatchResultBlocListener(
+      onSuccess: () => Navigator.of(context).pop(true),
+      child: Scaffold(
+        backgroundColor: AppColors.pageBackground,
+        appBar: CustomAppBarWidget(
+          title: 'matches.submit_result_title'.tr(context: context),
         ),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-          child: Column(
+        bottomNavigationBar: SubmitResultBlocBuilder(
+          onSubmit: () {
+            HapticFeedback.mediumImpact();
+            context.read<MatchResultCubit>().submit(
+              match.id,
+              teamId: myTeamId,
+              homeScore: homeScore.value,
+              awayScore: awayScore.value,
+            );
+          },
+        ),
+        body: SafeArea(
+          child: ListView(
+            physics: const BouncingScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
             children: [
               Text(
-                'السبت ١٩ يوليو · ملعب الأهلي الصغير — ملعب ٣',
+                [
+                  CairoTime.dayAndTime(match.scheduledStartUtc, lang),
+                  ?match.venueName,
+                ].join(' · '),
+                textAlign: TextAlign.center,
                 style: AppTextStyles.font13Regular,
               ),
               hSpace(20),
               Container(
-                padding: EdgeInsets.all(20.w),
+                padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 8.w),
                 decoration: BoxDecoration(
                   color: AppColors.brandNavy,
                   borderRadius: BorderRadius.circular(22.r),
                 ),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      children: [
-                        CircleAvatar(
-                          radius: 26.r,
-                          backgroundColor: AppColors.white,
-                          child: Text(
-                            'نج',
-                            style: AppTextStyles.font16Bold.copyWith(
-                              color: AppColors.brandNavy,
-                            ),
-                          ),
-                        ),
-                        hSpace(6),
-                        Text(
-                          'النجوم',
-                          style: AppTextStyles.font15Bold.copyWith(
-                            color: AppColors.white,
-                          ),
-                        ),
-                        hSpace(10),
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () => score1.value = (score1.value - 1)
-                                  .clamp(0, 99),
-                              icon: const Icon(
-                                Icons.remove_circle_outline,
-                                color: AppColors.white,
-                              ),
-                            ),
-                            Text(
-                              '${score1.value}',
-                              style: AppTextStyles.font24Bold.copyWith(
-                                color: AppColors.white,
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () => score1.value++,
-                              icon: const Icon(
-                                Icons.add_circle_outline,
-                                color: AppColors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                    ScoreStepperWidget(
+                      teamName: match.homeTeamName,
+                      score: homeScore.value,
+                      color: AppColors.brandPrimaryLight,
+                      onChanged: (value) => homeScore.value = value,
                     ),
-                    Text(
-                      '–',
-                      style: AppTextStyles.font24Bold.copyWith(
-                        color: AppColors.accentGold,
+                    Padding(
+                      padding: EdgeInsets.only(top: 16.h),
+                      child: Text(
+                        '–',
+                        style: AppTextStyles.font24Bold.copyWith(
+                          color: AppColors.accentGold,
+                        ),
                       ),
                     ),
-                    Column(
-                      children: [
-                        CircleAvatar(
-                          radius: 26.r,
-                          backgroundColor: AppColors.brandRed,
-                          child: Text(
-                            'صق',
-                            style: AppTextStyles.font16Bold.copyWith(
-                              color: AppColors.white,
-                            ),
-                          ),
-                        ),
-                        hSpace(6),
-                        Text(
-                          'الصقور',
-                          style: AppTextStyles.font15Bold.copyWith(
-                            color: AppColors.white,
-                          ),
-                        ),
-                        hSpace(10),
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () => score2.value = (score2.value - 1)
-                                  .clamp(0, 99),
-                              icon: const Icon(
-                                Icons.remove_circle_outline,
-                                color: AppColors.white,
-                              ),
-                            ),
-                            Text(
-                              '${score2.value}',
-                              style: AppTextStyles.font24Bold.copyWith(
-                                color: AppColors.white,
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () => score2.value++,
-                              icon: const Icon(
-                                Icons.add_circle_outline,
-                                color: AppColors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                    ScoreStepperWidget(
+                      teamName: match.awayTeamName,
+                      score: awayScore.value,
+                      color: AppColors.brandRed,
+                      onChanged: (value) => awayScore.value = value,
                     ),
                   ],
                 ),
               ),
               hSpace(20),
-              Container(
-                padding: EdgeInsets.all(12.w),
-                decoration: BoxDecoration(
-                  color: AppColors.lightSurface,
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                child: Text(
-                  'النتيجة هتتبعت لكابتن الصقور يأكدها. مش هتأثر على الترتيب ولا الإحصائيات غير بعد التأكيد.',
-                  style: AppTextStyles.font12Regular,
+              InfoNoteCardWidget(
+                title: 'matches.match.submit_info_title'.tr(context: context),
+                body: 'matches.match.submit_info'.tr(
+                  context: context,
+                  args: [opponent],
                 ),
               ),
             ],

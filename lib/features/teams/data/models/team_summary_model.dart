@@ -33,6 +33,7 @@ class TeamSummaryModel {
   final int? myRole;
 
   bool get isCaptain => myRole == 1;
+  bool get isLeader => myRole == 1 || myRole == 2;
 
   factory TeamSummaryModel.fromJson(Map<String, dynamic> json) =>
       _$TeamSummaryModelFromJson(json);

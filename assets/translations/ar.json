@@ -210,10 +210,6 @@
     "sample_pitch_name": "ملعب النجوم — ملعب ١",
     "sample_booking_time": "السبت ٢٦ يوليو · ٨:٠٠ م",
     "in_review": "قيد المراجعة",
-    "sample_challenge_text": "تحدي الصقور اتقبل — الملعب لسه مش محجوز",
-    "sample_challenge_time": "السبت ٢ أغسطس · ٩:٠٠ م",
-    "pending_result_title": "نتيجة مستنية تأكيدك",
-    "pending_result_sub": "النجوم ٤ – ٣ الصقور · ١٩ يوليو",
     "review": "راجع",
     "my_teams": "فرقي",
     "sample_venue1_name": "ملعب النجوم",
@@ -230,7 +226,14 @@
     "create_team": "اعمل فريق",
     "have_code": "عندي كود",
     "offline_message": "مفيش إنترنت. بنعرض آخر بيانات اتحمّلت {} — المواعيد ممكن تكون اتغيرت.",
-    "retry": "إعادة"
+    "retry": "إعادة",
+    "activity": {
+      "quiet": "مفيش جديد في فرقك دلوقتي.",
+      "challenge": "{} بيتحداكم — مستني ردك",
+      "next_match": "{} ضد {}",
+      "verify_result": "نتيجة مستنية تأكيدك",
+      "submit_result": "سجّل نتيجة الماتش"
+    }
   },
   "explore": {
     "list_title": "استكشف الملاعب",
@@ -649,9 +652,6 @@
       "mid": "وسط",
       "fwd": "هجوم"
     },
-    "sample": {
-      "nogoum_i": "نج"
-    },
     "create": {
       "title": "فريق جديد",
       "name": "اسم الفريق",
@@ -756,18 +756,94 @@
       "leaveTeam": "خرجت من الفريق.",
       "updateSettings": "الإعدادات اتحفظت.",
       "requestToJoin": "طلبك اتبعت للكابتن."
+    },
+    "challenges": {
+      "title": "تحديات مفتوحة ({})",
+      "your_turn": "دورك ترد",
+      "waiting": "مستنيين ردهم"
     }
   },
   "matches": {
     "challenge_team_title": "تحدي فريق",
     "challenge_details_title": "تفاصيل التحدي",
-    "challenge_received_title": "تحدي وارد",
     "match_details_title": "تفاصيل المباراة",
     "submit_result_title": "تسجيل النتيجة",
-    "attendance": "حضور الفريق",
     "accept_challenge": "قبول التحدي",
     "decline_challenge": "رفض التحدي",
-    "submit_result_btn": "تأكيد وإرسال النتيجة"
+    "submit_result_btn": "تأكيد وإرسال النتيجة",
+    "minutes": "{} دقيقة",
+    "schedule": {
+      "day": "اليوم",
+      "hour": "الساعة (بتوقيت القاهرة)",
+      "duration": "مدة الماتش",
+      "today": "النهارده"
+    },
+    "challenge": {
+      "my_team": "فريقك",
+      "your_team": "فريقك",
+      "pick_team": "هتتحدى بأنهي فريق؟",
+      "no_leading_team": "لازم تكون كابتن أو نائب كابتن فريق عشان تبعت تحدي.",
+      "notes": "رسالة للكابتن التاني (اختياري)",
+      "notes_hint": "مثلاً: نفضّل ملعب في مدينة نصر",
+      "send": "ابعت التحدي",
+      "sent": "التحدي اتبعت لكابتن {}",
+      "terms": "تفاصيل التحدي",
+      "when": "الميعاد",
+      "duration": "المدة",
+      "venue": "الملعب",
+      "venue_tbd": "نتفق عليه بعدين",
+      "notes_label": "رسالة",
+      "declined_reason": "سبب الرفض",
+      "your_turn": "دورك ترد على التحدي — اقبل أو ارفض أو اقترح ميعاد تاني.",
+      "waiting": "مستنيين رد {}.",
+      "accepted_note": "التحدي اتقبل والماتش اتسجّل في جدول الفريقين.",
+      "counter": "اقترح ميعاد تاني",
+      "counter_send": "ابعت الاقتراح",
+      "view_match": "تفاصيل الماتش",
+      "decline_confirm_title": "ترفض التحدي؟",
+      "decline_confirm_desc": "الفريق التاني هيوصله إشعار إنك رفضت.",
+      "status": {
+        "pending": "مستني رد",
+        "counterProposed": "ميعاد مقترح",
+        "accepted": "اتقبل",
+        "declined": "اترفض",
+        "cancelled": "اتلغى",
+        "expired": "انتهى"
+      },
+      "responses": {
+        "accept": "قبلت التحدي — الماتش اتسجّل",
+        "decline": "رفضت التحدي",
+        "counterPropose": "اتبعت اقتراحك للفريق التاني"
+      }
+    },
+    "match": {
+      "venue_tbd": "الملعب لسه متحددش",
+      "status": {
+        "scheduled": "مجدول",
+        "pending_verification": "مستني تأكيد",
+        "disputed": "عليه اعتراض",
+        "completed": "انتهى",
+        "cancelled": "اتلغى"
+      },
+      "verify_note": "{} سجّل النتيجة {}. أكّدها لو صح، أو اعترض لو فيه غلط.",
+      "awaiting_verification_note": "النتيجة {} اتسجلت ومستنية تأكيد الفريق التاني.",
+      "disputed_note": "النتيجة عليها اعتراض والإدارة بتراجعها. السبب: {}",
+      "submit_note": "الماتش خلص؟ سجّل النتيجة عشان تتحسب في الترتيب.",
+      "not_started_note": "تقدر تسجّل النتيجة بعد ما الماتش يبدأ.",
+      "confirm": "تأكيد النتيجة",
+      "dispute": "اعتراض",
+      "dispute_title": "اعتراض على النتيجة",
+      "dispute_desc": "الإدارة هتراجع الاعتراض وتحدد النتيجة الرسمية.",
+      "dispute_hint": "اكتب إيه اللي حصل…",
+      "dispute_send": "ابعت الاعتراض",
+      "submit_info_title": "قبل ما تبعت",
+      "submit_info": "النتيجة هتتبعت لكابتن {} يأكدها. مش هتأثر على الترتيب ولا الإحصائيات غير بعد التأكيد.",
+      "results": {
+        "submitted": "النتيجة اتبعتت للفريق التاني يأكدها",
+        "confirmed": "النتيجة اتأكدت",
+        "disputed": "الاعتراض اتبعت للإدارة"
+      }
+    }
   },
   "profile": {
     "title": "حسابي",
