@@ -26,6 +26,6 @@ Map<String, dynamic> _$CreateBookingRequestBodyToJson(
   'endUtc': instance.endUtc,
   'quoteToken': instance.quoteToken,
   'expectedPrice': instance.expectedPrice,
-  if (instance.customerName != null) 'customerName': instance.customerName,
-  if (instance.customerPhone != null) 'customerPhone': instance.customerPhone,
+  'customerName': instance.customerName,
+  'customerPhone': instance.customerPhone,
 };

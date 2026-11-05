@@ -30,5 +30,5 @@ Map<String, dynamic> _$OpeningHoursDayModelToJson(
 ) => <String, dynamic>{
   'day': instance.day,
   'closed': instance.closed,
-  'windows': instance.windows.map((e) => e.toJson()).toList(),
+  'windows': instance.windows,
 };

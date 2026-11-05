@@ -32,12 +32,11 @@ Map<String, dynamic> _$PitchDetailsModelToJson(PitchDetailsModel instance) =>
       'name': instance.name,
       'pitchType': instance.pitchType,
       'playersPerTeam': instance.playersPerTeam,
-      'surface': instance.surface.toJson(),
+      'surface': instance.surface,
       'lengthMeters': instance.lengthMeters,
       'widthMeters': instance.widthMeters,
       'photos': instance.photos,
       'baseHourlyPrice': instance.baseHourlyPrice,
       'currency': instance.currency,
-      if (instance.customHours != null)
-        'customHours': instance.customHours?.map((e) => e.toJson()).toList(),
+      'customHours': instance.customHours,
     };

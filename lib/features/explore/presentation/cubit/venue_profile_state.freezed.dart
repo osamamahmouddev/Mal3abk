@@ -14,10 +14,15 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$VenueProfileState {
 
+
+
+
+
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is VenueProfileState);
 }
+
 
 @override
 int get hashCode => runtimeType.hashCode;
@@ -27,6 +32,7 @@ String toString() {
   return 'VenueProfileState()';
 }
 
+
 }
 
 /// @nodoc
@@ -35,6 +41,148 @@ $VenueProfileStateCopyWith(VenueProfileState _, $Res Function(VenueProfileState)
 }
 
 
+/// Adds pattern-matching-related methods to [VenueProfileState].
+extension VenueProfileStatePatterns on VenueProfileState {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( VenueProfileInitial value)?  initial,TResult Function( VenueProfileLoading value)?  loading,TResult Function( VenueProfileSuccess value)?  success,TResult Function( VenueProfileError value)?  error,required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case VenueProfileInitial() when initial != null:
+return initial(_that);case VenueProfileLoading() when loading != null:
+return loading(_that);case VenueProfileSuccess() when success != null:
+return success(_that);case VenueProfileError() when error != null:
+return error(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( VenueProfileInitial value)  initial,required TResult Function( VenueProfileLoading value)  loading,required TResult Function( VenueProfileSuccess value)  success,required TResult Function( VenueProfileError value)  error,}){
+final _that = this;
+switch (_that) {
+case VenueProfileInitial():
+return initial(_that);case VenueProfileLoading():
+return loading(_that);case VenueProfileSuccess():
+return success(_that);case VenueProfileError():
+return error(_that);}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( VenueProfileInitial value)?  initial,TResult? Function( VenueProfileLoading value)?  loading,TResult? Function( VenueProfileSuccess value)?  success,TResult? Function( VenueProfileError value)?  error,}){
+final _that = this;
+switch (_that) {
+case VenueProfileInitial() when initial != null:
+return initial(_that);case VenueProfileLoading() when loading != null:
+return loading(_that);case VenueProfileSuccess() when success != null:
+return success(_that);case VenueProfileError() when error != null:
+return error(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( VenueDetailsModel venue,  List<PitchDetailsModel> pitches)?  success,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case VenueProfileInitial() when initial != null:
+return initial();case VenueProfileLoading() when loading != null:
+return loading();case VenueProfileSuccess() when success != null:
+return success(_that.venue,_that.pitches);case VenueProfileError() when error != null:
+return error(_that.message);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( VenueDetailsModel venue,  List<PitchDetailsModel> pitches)  success,required TResult Function( String message)  error,}) {final _that = this;
+switch (_that) {
+case VenueProfileInitial():
+return initial();case VenueProfileLoading():
+return loading();case VenueProfileSuccess():
+return success(_that.venue,_that.pitches);case VenueProfileError():
+return error(_that.message);}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( VenueDetailsModel venue,  List<PitchDetailsModel> pitches)?  success,TResult? Function( String message)?  error,}) {final _that = this;
+switch (_that) {
+case VenueProfileInitial() when initial != null:
+return initial();case VenueProfileLoading() when loading != null:
+return loading();case VenueProfileSuccess() when success != null:
+return success(_that.venue,_that.pitches);case VenueProfileError() when error != null:
+return error(_that.message);case _:
+  return null;
+
+}
+}
+
+}
+
 /// @nodoc
 
 
@@ -42,18 +190,25 @@ class VenueProfileInitial implements VenueProfileState {
   const VenueProfileInitial();
   
 
-@override
-String toString() {
-  return 'VenueProfileState.initial()';
-}
+
+
+
+
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is VenueProfileInitial);
 }
 
+
 @override
 int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'VenueProfileState.initial()';
+}
+
 
 }
 
@@ -67,18 +222,25 @@ class VenueProfileLoading implements VenueProfileState {
   const VenueProfileLoading();
   
 
-@override
-String toString() {
-  return 'VenueProfileState.loading()';
-}
+
+
+
+
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is VenueProfileLoading);
 }
 
+
 @override
 int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'VenueProfileState.loading()';
+}
+
 
 }
 
@@ -110,22 +272,24 @@ $VenueProfileSuccessCopyWith<VenueProfileSuccess> get copyWith => _$VenueProfile
 
 
 @override
-String toString() {
-  return 'VenueProfileState.success(venue: $venue, pitches: $pitches)';
-}
-
-@override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is VenueProfileSuccess&&(identical(other.venue, venue) || other.venue == venue)&&const DeepCollectionEquality().equals(other._pitches, _pitches));
 }
 
+
 @override
 int get hashCode => Object.hash(runtimeType,venue,const DeepCollectionEquality().hash(_pitches));
+
+@override
+String toString() {
+  return 'VenueProfileState.success(venue: $venue, pitches: $pitches)';
+}
+
 
 }
 
 /// @nodoc
-abstract class $VenueProfileSuccessCopyWith<$Res> implements $VenueProfileStateCopyWith<$Res> {
+abstract mixin class $VenueProfileSuccessCopyWith<$Res> implements $VenueProfileStateCopyWith<$Res> {
   factory $VenueProfileSuccessCopyWith(VenueProfileSuccess value, $Res Function(VenueProfileSuccess) _then) = _$VenueProfileSuccessCopyWithImpl;
 @useResult
 $Res call({
@@ -175,22 +339,24 @@ $VenueProfileErrorCopyWith<VenueProfileError> get copyWith => _$VenueProfileErro
 
 
 @override
-String toString() {
-  return 'VenueProfileState.error(message: $message)';
-}
-
-@override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is VenueProfileError&&(identical(other.message, message) || other.message == message));
 }
 
+
 @override
 int get hashCode => Object.hash(runtimeType,message);
+
+@override
+String toString() {
+  return 'VenueProfileState.error(message: $message)';
+}
+
 
 }
 
 /// @nodoc
-abstract class $VenueProfileErrorCopyWith<$Res> implements $VenueProfileStateCopyWith<$Res> {
+abstract mixin class $VenueProfileErrorCopyWith<$Res> implements $VenueProfileStateCopyWith<$Res> {
   factory $VenueProfileErrorCopyWith(VenueProfileError value, $Res Function(VenueProfileError) _then) = _$VenueProfileErrorCopyWithImpl;
 @useResult
 $Res call({

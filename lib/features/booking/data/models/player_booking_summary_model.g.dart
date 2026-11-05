@@ -58,7 +58,7 @@ Map<String, dynamic> _$PlayerBookingSummaryModelToJson(
   'currency': instance.currency,
   'status': instance.status,
   'holdExpiresAtUtc': instance.holdExpiresAtUtc,
-  'allowedActions': instance.allowedActions.toJson(),
+  'allowedActions': instance.allowedActions,
   'createdAtUtc': instance.createdAtUtc,
 };
 
@@ -76,7 +76,7 @@ PlayerBookingsPagedListModel _$PlayerBookingsPagedListModelFromJson(
 Map<String, dynamic> _$PlayerBookingsPagedListModelToJson(
   PlayerBookingsPagedListModel instance,
 ) => <String, dynamic>{
-  'items': instance.items.map((e) => e.toJson()).toList(),
+  'items': instance.items,
   'totalCount': instance.totalCount,
   'page': instance.page,
   'pageSize': instance.pageSize,

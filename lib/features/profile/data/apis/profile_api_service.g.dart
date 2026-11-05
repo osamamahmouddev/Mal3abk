@@ -2,6 +2,8 @@
 
 part of 'profile_api_service.dart';
 
+// dart format off
+
 // **************************************************************************
 // RetrofitGenerator
 // **************************************************************************
@@ -23,7 +25,7 @@ class _ProfileApiService implements ProfileApiService {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<MyProfileModel>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
@@ -102,3 +104,5 @@ class _ProfileApiService implements ProfileApiService {
     return Uri.parse(dioBaseUrl).resolveUri(url).toString();
   }
 }
+
+// dart format on

@@ -2,6 +2,8 @@
 
 part of 'booking_api_service.dart';
 
+// dart format off
+
 // **************************************************************************
 // RetrofitGenerator
 // **************************************************************************
@@ -88,12 +90,13 @@ class _BookingApiService implements BookingApiService {
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      if (tab != null) r'tab': tab,
-      if (page != null) r'page': page,
-      if (pageSize != null) r'pageSize': pageSize,
+      r'tab': tab,
+      r'page': page,
+      r'pageSize': pageSize,
     };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<PlayerBookingsPagedListModel>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
@@ -120,7 +123,7 @@ class _BookingApiService implements BookingApiService {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<PlayerBookingDetailModel>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
@@ -147,7 +150,7 @@ class _BookingApiService implements BookingApiService {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<UploadTicketModel>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
@@ -187,7 +190,8 @@ class _BookingApiService implements BookingApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch(_options);
-    return _result.data;
+    final _value = _result.data;
+    return _value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
@@ -217,3 +221,5 @@ class _BookingApiService implements BookingApiService {
     return Uri.parse(dioBaseUrl).resolveUri(url).toString();
   }
 }
+
+// dart format on

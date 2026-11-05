@@ -50,6 +50,23 @@ class ApiConstants {
   static const String proofUploadUrl = '/api/v1/bookings/{id}/proof/upload-url';
   static const String submitBookingProof = '/api/v1/bookings/{id}/proof/submit';
 
+  static const String myTeams = '/api/v1/me/teams';
+  static const String teams = '/api/v1/teams';
+  static const String teamProfile = '/api/v1/teams/{id}/profile';
+  static const String acceptTeamInvitation = '/api/v1/teams/invitations/accept';
+  static const String teamInvitations = '/api/v1/teams/{id}/invitations';
+  static const String teamJoinRequests = '/api/v1/teams/{id}/join-requests';
+  static const String approveJoinRequest =
+      '/api/v1/teams/{id}/join-requests/{requestId}/approve';
+  static const String declineJoinRequest =
+      '/api/v1/teams/{id}/join-requests/{requestId}/decline';
+  static const String leaveTeam = '/api/v1/teams/{id}/leave';
+  static const String teamMember = '/api/v1/teams/{id}/members/{playerId}';
+  static const String teamSettings = '/api/v1/teams/{id}/settings';
+  static const String transferCaptaincy =
+      '/api/v1/teams/{id}/transfer-captaincy';
+  static const String leaderboard = '/api/v1/teams/leaderboard';
+
   static const String fields = '/fields';
   static const String fieldDetails = '/fields/{id}';
   static const String bookings = '/bookings';

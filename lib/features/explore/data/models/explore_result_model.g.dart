@@ -19,7 +19,7 @@ ExploreResultModel _$ExploreResultModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$ExploreResultModelToJson(ExploreResultModel instance) =>
     <String, dynamic>{
-      'items': instance.items.map((e) => e.toJson()).toList(),
+      'items': instance.items,
       'page': instance.page,
       'pageSize': instance.pageSize,
       'totalCount': instance.totalCount,

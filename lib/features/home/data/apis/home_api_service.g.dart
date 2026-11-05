@@ -2,6 +2,8 @@
 
 part of 'home_api_service.dart';
 
+// dart format off
+
 // **************************************************************************
 // RetrofitGenerator
 // **************************************************************************
@@ -21,12 +23,10 @@ class _HomeApiService implements HomeApiService {
   @override
   Future<HomeFeedModel> getHomeFeed({String? city, String? area}) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      if (city != null) r'city': city,
-      if (area != null) r'area': area,
-    };
+    final queryParameters = <String, dynamic>{r'city': city, r'area': area};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<HomeFeedModel>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
@@ -75,3 +75,5 @@ class _HomeApiService implements HomeApiService {
     return Uri.parse(dioBaseUrl).resolveUri(url).toString();
   }
 }
+
+// dart format on

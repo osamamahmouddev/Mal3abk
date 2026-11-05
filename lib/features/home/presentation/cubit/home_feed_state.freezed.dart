@@ -14,10 +14,15 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$HomeFeedState {
 
+
+
+
+
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeFeedState);
 }
+
 
 @override
 int get hashCode => runtimeType.hashCode;
@@ -27,6 +32,7 @@ String toString() {
   return 'HomeFeedState()';
 }
 
+
 }
 
 /// @nodoc
@@ -35,6 +41,148 @@ $HomeFeedStateCopyWith(HomeFeedState _, $Res Function(HomeFeedState) __);
 }
 
 
+/// Adds pattern-matching-related methods to [HomeFeedState].
+extension HomeFeedStatePatterns on HomeFeedState {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( HomeFeedInitial value)?  initial,TResult Function( HomeFeedLoading value)?  loading,TResult Function( HomeFeedSuccess value)?  success,TResult Function( HomeFeedError value)?  error,required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case HomeFeedInitial() when initial != null:
+return initial(_that);case HomeFeedLoading() when loading != null:
+return loading(_that);case HomeFeedSuccess() when success != null:
+return success(_that);case HomeFeedError() when error != null:
+return error(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( HomeFeedInitial value)  initial,required TResult Function( HomeFeedLoading value)  loading,required TResult Function( HomeFeedSuccess value)  success,required TResult Function( HomeFeedError value)  error,}){
+final _that = this;
+switch (_that) {
+case HomeFeedInitial():
+return initial(_that);case HomeFeedLoading():
+return loading(_that);case HomeFeedSuccess():
+return success(_that);case HomeFeedError():
+return error(_that);}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( HomeFeedInitial value)?  initial,TResult? Function( HomeFeedLoading value)?  loading,TResult? Function( HomeFeedSuccess value)?  success,TResult? Function( HomeFeedError value)?  error,}){
+final _that = this;
+switch (_that) {
+case HomeFeedInitial() when initial != null:
+return initial(_that);case HomeFeedLoading() when loading != null:
+return loading(_that);case HomeFeedSuccess() when success != null:
+return success(_that);case HomeFeedError() when error != null:
+return error(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( HomeFeedModel feed)?  success,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case HomeFeedInitial() when initial != null:
+return initial();case HomeFeedLoading() when loading != null:
+return loading();case HomeFeedSuccess() when success != null:
+return success(_that.feed);case HomeFeedError() when error != null:
+return error(_that.message);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( HomeFeedModel feed)  success,required TResult Function( String message)  error,}) {final _that = this;
+switch (_that) {
+case HomeFeedInitial():
+return initial();case HomeFeedLoading():
+return loading();case HomeFeedSuccess():
+return success(_that.feed);case HomeFeedError():
+return error(_that.message);}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( HomeFeedModel feed)?  success,TResult? Function( String message)?  error,}) {final _that = this;
+switch (_that) {
+case HomeFeedInitial() when initial != null:
+return initial();case HomeFeedLoading() when loading != null:
+return loading();case HomeFeedSuccess() when success != null:
+return success(_that.feed);case HomeFeedError() when error != null:
+return error(_that.message);case _:
+  return null;
+
+}
+}
+
+}
+
 /// @nodoc
 
 
@@ -42,18 +190,25 @@ class HomeFeedInitial implements HomeFeedState {
   const HomeFeedInitial();
   
 
-@override
-String toString() {
-  return 'HomeFeedState.initial()';
-}
+
+
+
+
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeFeedInitial);
 }
 
+
 @override
 int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'HomeFeedState.initial()';
+}
+
 
 }
 
@@ -67,18 +222,25 @@ class HomeFeedLoading implements HomeFeedState {
   const HomeFeedLoading();
   
 
-@override
-String toString() {
-  return 'HomeFeedState.loading()';
-}
+
+
+
+
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeFeedLoading);
 }
 
+
 @override
 int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'HomeFeedState.loading()';
+}
+
 
 }
 
@@ -103,22 +265,24 @@ $HomeFeedSuccessCopyWith<HomeFeedSuccess> get copyWith => _$HomeFeedSuccessCopyW
 
 
 @override
-String toString() {
-  return 'HomeFeedState.success(feed: $feed)';
-}
-
-@override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeFeedSuccess&&(identical(other.feed, feed) || other.feed == feed));
 }
 
+
 @override
 int get hashCode => Object.hash(runtimeType,feed);
+
+@override
+String toString() {
+  return 'HomeFeedState.success(feed: $feed)';
+}
+
 
 }
 
 /// @nodoc
-abstract class $HomeFeedSuccessCopyWith<$Res> implements $HomeFeedStateCopyWith<$Res> {
+abstract mixin class $HomeFeedSuccessCopyWith<$Res> implements $HomeFeedStateCopyWith<$Res> {
   factory $HomeFeedSuccessCopyWith(HomeFeedSuccess value, $Res Function(HomeFeedSuccess) _then) = _$HomeFeedSuccessCopyWithImpl;
 @useResult
 $Res call({
@@ -167,22 +331,24 @@ $HomeFeedErrorCopyWith<HomeFeedError> get copyWith => _$HomeFeedErrorCopyWithImp
 
 
 @override
-String toString() {
-  return 'HomeFeedState.error(message: $message)';
-}
-
-@override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeFeedError&&(identical(other.message, message) || other.message == message));
 }
 
+
 @override
 int get hashCode => Object.hash(runtimeType,message);
+
+@override
+String toString() {
+  return 'HomeFeedState.error(message: $message)';
+}
+
 
 }
 
 /// @nodoc
-abstract class $HomeFeedErrorCopyWith<$Res> implements $HomeFeedStateCopyWith<$Res> {
+abstract mixin class $HomeFeedErrorCopyWith<$Res> implements $HomeFeedStateCopyWith<$Res> {
   factory $HomeFeedErrorCopyWith(HomeFeedError value, $Res Function(HomeFeedError) _then) = _$HomeFeedErrorCopyWithImpl;
 @useResult
 $Res call({

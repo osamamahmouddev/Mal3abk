@@ -2,6 +2,8 @@
 
 part of 'explore_api_service.dart';
 
+// dart format off
+
 // **************************************************************************
 // RetrofitGenerator
 // **************************************************************************
@@ -27,13 +29,14 @@ class _ExploreApiService implements ExploreApiService {
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      if (city != null) r'city': city,
-      if (area != null) r'area': area,
-      if (page != null) r'page': page,
-      if (pageSize != null) r'pageSize': pageSize,
+      r'city': city,
+      r'area': area,
+      r'page': page,
+      r'pageSize': pageSize,
     };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<ExploreResultModel>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
@@ -60,7 +63,7 @@ class _ExploreApiService implements ExploreApiService {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<VenueDetailsModel>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
@@ -87,7 +90,7 @@ class _ExploreApiService implements ExploreApiService {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<List<PitchDetailsModel>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
@@ -122,7 +125,7 @@ class _ExploreApiService implements ExploreApiService {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'date': date};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<VenueAvailabilityModel>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
@@ -151,7 +154,7 @@ class _ExploreApiService implements ExploreApiService {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<List<VenuePaymentMethodModel>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
@@ -205,3 +208,5 @@ class _ExploreApiService implements ExploreApiService {
     return Uri.parse(dioBaseUrl).resolveUri(url).toString();
   }
 }
+
+// dart format on

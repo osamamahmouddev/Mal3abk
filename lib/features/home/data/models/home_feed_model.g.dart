@@ -20,10 +20,7 @@ HomeSectionModel _$HomeSectionModelFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$HomeSectionModelToJson(HomeSectionModel instance) =>
-    <String, dynamic>{
-      'status': instance.status,
-      'items': instance.items.map((e) => e.toJson()).toList(),
-    };
+    <String, dynamic>{'status': instance.status, 'items': instance.items};
 
 HomeFeedModel _$HomeFeedModelFromJson(Map<String, dynamic> json) =>
     HomeFeedModel(
@@ -39,8 +36,8 @@ HomeFeedModel _$HomeFeedModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$HomeFeedModelToJson(HomeFeedModel instance) =>
     <String, dynamic>{
-      'nearby': instance.nearby.toJson(),
-      'popularNearYou': instance.popularNearYou.toJson(),
-      'recentlyViewed': instance.recentlyViewed.toJson(),
+      'nearby': instance.nearby,
+      'popularNearYou': instance.popularNearYou,
+      'recentlyViewed': instance.recentlyViewed,
       'generatedAtUtc': instance.generatedAtUtc,
     };

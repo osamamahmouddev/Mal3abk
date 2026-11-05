@@ -8,9 +8,9 @@ part of 'upload_ticket_model.dart';
 
 UploadTicketModel _$UploadTicketModelFromJson(Map<String, dynamic> json) =>
     UploadTicketModel(
-      mediaId: (json['mediaId'] ?? json['id'] ?? '') as String,
-      uploadUrl: (json['uploadUrl'] ?? '') as String,
-      expiresAtUtc: (json['expiresAtUtc'] ?? '') as String,
+      mediaId: json['mediaId'] as String,
+      uploadUrl: json['uploadUrl'] as String,
+      expiresAtUtc: json['expiresAtUtc'] as String,
       maxBytes: (json['maxBytes'] as num?)?.toInt(),
     );
 

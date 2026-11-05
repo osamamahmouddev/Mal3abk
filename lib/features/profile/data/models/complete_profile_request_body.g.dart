@@ -25,7 +25,7 @@ Map<String, dynamic> _$CompleteProfileRequestBodyToJson(
   'fullName': instance.fullName,
   'city': instance.city,
   'area': instance.area,
-  if (instance.positions != null) 'positions': instance.positions,
-  if (instance.skillLevel != null) 'skillLevel': instance.skillLevel,
-  if (instance.language != null) 'language': instance.language,
+  'positions': instance.positions,
+  'skillLevel': instance.skillLevel,
+  'language': instance.language,
 };
