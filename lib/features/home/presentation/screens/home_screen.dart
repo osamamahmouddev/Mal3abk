@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
-import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/widgets/fade_slide_in_widget.dart';
 import '../../../../core/widgets/section_header_widget.dart';
@@ -108,11 +107,12 @@ class HomeScreen extends StatelessWidget {
                             padding: padding,
                             child: SectionHeaderWidget(
                               title: 'home.nearby_pitches'.tr(context: context),
-                              actionText: 'home.on_map'.tr(context: context),
+                              actionText: 'home.see_all'.tr(context: context),
                               actionColor: AppColors.brandRed,
-                              onAction: () => Navigator.of(
+                              onAction: () => MainShellScopeWidget.switchTab(
                                 context,
-                              ).pushNamed(AppRoutes.exploreMap),
+                                MainShellScopeWidget.exploreTab,
+                              ),
                             ),
                           ),
                           hSpace(12),

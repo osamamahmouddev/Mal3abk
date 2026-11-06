@@ -25,7 +25,9 @@ import '../../features/explore/presentation/screens/venue_profile_screen.dart';
 import '../../features/home/presentation/cubit/home_feed_cubit.dart';
 import '../../features/home/presentation/screens/home_screen.dart';
 import '../../features/main_shell/presentation/screens/main_shell_screen.dart';
+import '../../features/explore/data/models/explore_filter_model.dart';
 import '../../features/explore/presentation/cubit/favorite_toggle_cubit.dart';
+import '../../features/reference/presentation/cubit/filter_options_cubit.dart';
 import '../../features/explore/presentation/cubit/favorites_cubit.dart';
 import '../../features/home/presentation/cubit/home_team_activity_cubit.dart';
 import '../../features/booking/presentation/cubit/booking_details_cubit.dart';
@@ -243,26 +245,49 @@ class AppRouter {
         );
 
       case AppRoutes.filtersAndSort:
-        return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.filtersAndSort),
-          builder: (_) => const FiltersAndSortScreen(),
+        final initial = settings.arguments;
+        return MaterialPageRoute<ExploreFilterModel>(
+          settings: settings,
+          fullscreenDialog: true,
+          builder: (_) => BlocProvider<FilterOptionsCubit>(
+            create: (_) => sl<FilterOptionsCubit>()..load(),
+            child: FiltersAndSortScreen(
+              initial: initial is ExploreFilterModel
+                  ? initial
+                  : const ExploreFilterModel(),
+            ),
+          ),
         );
 
       case AppRoutes.venueProfile:
-        final venueId = settings.arguments as String?;
+        final venueId = settings.arguments;
+        if (venueId is! String) return _errorRoute('Missing venue id');
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => BlocProvider<VenueProfileCubit>(
-            create: (_) => sl<VenueProfileCubit>(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<VenueProfileCubit>(
+                create: (_) => sl<VenueProfileCubit>()..loadVenue(venueId),
+              ),
+              BlocProvider<FavoriteToggleCubit>(
+                create: (_) => sl<FavoriteToggleCubit>(),
+              ),
+            ],
             child: VenueProfileScreen(venueId: venueId),
           ),
         );
 
       case AppRoutes.pitchAndTime:
-        final venueId = settings.arguments as String?;
+        final args = settings.arguments;
+        if (args is! PitchAndTimeArgs) return _errorRoute('Missing venue');
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => PitchAndTimeScreen(venueId: venueId),
+          builder: (_) => BlocProvider<PitchBookingCubit>(
+            create: (_) =>
+                sl<PitchBookingCubit>()
+                  ..loadAvailability(args.venueId, pitchIndex: args.pitchIndex),
+            child: PitchAndTimeScreen(args: args),
+          ),
         );
 
       case AppRoutes.favorites:

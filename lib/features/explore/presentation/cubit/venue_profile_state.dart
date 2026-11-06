@@ -12,6 +12,7 @@ sealed class VenueProfileState with _$VenueProfileState {
   const factory VenueProfileState.success({
     required VenueDetailsModel venue,
     required List<PitchDetailsModel> pitches,
+    @Default(false) bool isFavorite,
   }) = VenueProfileSuccess;
   const factory VenueProfileState.error(String message) = VenueProfileError;
 }

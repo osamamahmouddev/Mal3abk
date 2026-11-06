@@ -10,13 +10,11 @@ import '../../../../core/widgets/primary_cta_button_widget.dart';
 
 class FiltersFooterWidget extends StatelessWidget {
   const FiltersFooterWidget({
-    required this.resultCount,
     required this.onClear,
     required this.onApply,
     super.key,
   });
 
-  final String resultCount;
   final VoidCallback onClear;
   final VoidCallback onApply;
 
@@ -49,10 +47,7 @@ class FiltersFooterWidget extends StatelessWidget {
               vSpace(8),
               Expanded(
                 child: PrimaryCtaButtonWidget(
-                  text: 'explore.filters.show_results'.tr(
-                    context: context,
-                    args: [resultCount],
-                  ),
+                  text: 'explore.filters.apply'.tr(context: context),
                   onTap: onApply,
                 ),
               ),

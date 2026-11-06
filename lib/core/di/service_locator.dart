@@ -5,6 +5,7 @@ import '../../features/booking/presentation/cubit/booking_details_cubit.dart';
 import '../../features/booking/presentation/cubit/cancel_booking_cubit.dart';
 import '../../features/booking/presentation/cubit/deposit_methods_cubit.dart';
 import '../../features/explore/presentation/cubit/favorite_toggle_cubit.dart';
+import '../../features/reference/presentation/cubit/filter_options_cubit.dart';
 import '../../features/explore/presentation/cubit/favorites_cubit.dart';
 import '../../features/home/domain/use_cases/get_home_team_activity_use_case.dart';
 import '../../features/home/presentation/cubit/home_team_activity_cubit.dart';
@@ -348,6 +349,7 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
     () => VenueProfileCubit(
       getVenueDetailsUseCase: sl<GetVenueDetailsUseCase>(),
       getVenuePitchesUseCase: sl<GetVenuePitchesUseCase>(),
+      exploreRepo: sl<ExploreRepo>(),
     ),
   );
   sl.registerFactory<PitchBookingCubit>(
@@ -509,6 +511,9 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
     () => NotificationPreferencesCubit(
       notificationsRepo: sl<NotificationsRepo>(),
     ),
+  );
+  sl.registerFactory<FilterOptionsCubit>(
+    () => FilterOptionsCubit(referenceRepo: sl<ReferenceRepo>()),
   );
   sl.registerFactory<FavoriteToggleCubit>(
     () => FavoriteToggleCubit(exploreRepo: sl<ExploreRepo>()),

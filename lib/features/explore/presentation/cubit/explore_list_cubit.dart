@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/network/api_result.dart';
 import '../../../../core/utils/safe_emit_cubit_mixin.dart';
+import '../../data/models/explore_filter_model.dart';
 import '../../domain/use_cases/explore_venues_use_case.dart';
 import 'explore_list_state.dart';
 
@@ -11,6 +12,14 @@ class ExploreListCubit extends Cubit<ExploreListState>
     : super(const ExploreListState.initial());
 
   final ExploreVenuesUseCase exploreVenuesUseCase;
+
+  ExploreFilterModel filter = const ExploreFilterModel();
+
+  Future<void> applyFilter(ExploreFilterModel next) {
+    filter = next;
+    emitIfOpen(const ExploreListState.loading());
+    return fetchVenues();
+  }
 
   Future<void> fetchVenues({
     String? city,
@@ -24,6 +33,7 @@ class ExploreListCubit extends Cubit<ExploreListState>
     final result = await exploreVenuesUseCase(
       city: city,
       area: area,
+      filter: filter,
       page: page,
       pageSize: pageSize,
     );

@@ -3,6 +3,7 @@ import 'package:retrofit/retrofit.dart';
 
 import '../../../../core/network/api_constants.dart';
 import '../models/governorate_model.dart';
+import '../models/localized_item_model.dart';
 
 part 'reference_api_service.g.dart';
 
@@ -13,4 +14,13 @@ abstract class ReferenceApiService {
 
   @GET(ApiConstants.governorates)
   Future<List<GovernorateModel>> getGovernorates();
+
+  @GET(ApiConstants.pitchTypes)
+  Future<List<LocalizedItemModel>> getPitchTypes();
+
+  @GET(ApiConstants.surfaces)
+  Future<List<LocalizedItemModel>> getSurfaces();
+
+  @GET(ApiConstants.facilities)
+  Future<List<LocalizedItemModel>> getFacilities();
 }

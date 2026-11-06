@@ -18,6 +18,14 @@ abstract class ExploreApiService {
   Future<ExploreResultModel> exploreVenues({
     @Query('city') String? city,
     @Query('area') String? area,
+    @Query('date') String? date,
+    @Query('from') String? from,
+    @Query('to') String? to,
+    @Query('maxPrice') int? maxPrice,
+    @Query('pitchType') String? pitchType,
+    @Query('surface') String? surface,
+    @Query('facilities') String? facilities,
+    @Query('sort') String? sort,
     @Query('page') int? page,
     @Query('pageSize') int? pageSize,
   });

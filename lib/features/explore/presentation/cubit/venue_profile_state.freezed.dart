@@ -125,12 +125,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( VenueDetailsModel venue,  List<PitchDetailsModel> pitches)?  success,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( VenueDetailsModel venue,  List<PitchDetailsModel> pitches,  bool isFavorite)?  success,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case VenueProfileInitial() when initial != null:
 return initial();case VenueProfileLoading() when loading != null:
 return loading();case VenueProfileSuccess() when success != null:
-return success(_that.venue,_that.pitches);case VenueProfileError() when error != null:
+return success(_that.venue,_that.pitches,_that.isFavorite);case VenueProfileError() when error != null:
 return error(_that.message);case _:
   return orElse();
 
@@ -149,12 +149,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( VenueDetailsModel venue,  List<PitchDetailsModel> pitches)  success,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( VenueDetailsModel venue,  List<PitchDetailsModel> pitches,  bool isFavorite)  success,required TResult Function( String message)  error,}) {final _that = this;
 switch (_that) {
 case VenueProfileInitial():
 return initial();case VenueProfileLoading():
 return loading();case VenueProfileSuccess():
-return success(_that.venue,_that.pitches);case VenueProfileError():
+return success(_that.venue,_that.pitches,_that.isFavorite);case VenueProfileError():
 return error(_that.message);}
 }
 /// A variant of `when` that fallback to returning `null`
@@ -169,12 +169,12 @@ return error(_that.message);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( VenueDetailsModel venue,  List<PitchDetailsModel> pitches)?  success,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( VenueDetailsModel venue,  List<PitchDetailsModel> pitches,  bool isFavorite)?  success,TResult? Function( String message)?  error,}) {final _that = this;
 switch (_that) {
 case VenueProfileInitial() when initial != null:
 return initial();case VenueProfileLoading() when loading != null:
 return loading();case VenueProfileSuccess() when success != null:
-return success(_that.venue,_that.pitches);case VenueProfileError() when error != null:
+return success(_that.venue,_that.pitches,_that.isFavorite);case VenueProfileError() when error != null:
 return error(_that.message);case _:
   return null;
 
@@ -251,7 +251,7 @@ String toString() {
 
 
 class VenueProfileSuccess implements VenueProfileState {
-  const VenueProfileSuccess({required this.venue, required final  List<PitchDetailsModel> pitches}): _pitches = pitches;
+  const VenueProfileSuccess({required this.venue, required final  List<PitchDetailsModel> pitches, this.isFavorite = false}): _pitches = pitches;
   
 
  final  VenueDetailsModel venue;
@@ -262,6 +262,7 @@ class VenueProfileSuccess implements VenueProfileState {
   return EqualUnmodifiableListView(_pitches);
 }
 
+@JsonKey() final  bool isFavorite;
 
 /// Create a copy of VenueProfileState
 /// with the given fields replaced by the non-null parameter values.
@@ -273,16 +274,16 @@ $VenueProfileSuccessCopyWith<VenueProfileSuccess> get copyWith => _$VenueProfile
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is VenueProfileSuccess&&(identical(other.venue, venue) || other.venue == venue)&&const DeepCollectionEquality().equals(other._pitches, _pitches));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is VenueProfileSuccess&&(identical(other.venue, venue) || other.venue == venue)&&const DeepCollectionEquality().equals(other._pitches, _pitches)&&(identical(other.isFavorite, isFavorite) || other.isFavorite == isFavorite));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,venue,const DeepCollectionEquality().hash(_pitches));
+int get hashCode => Object.hash(runtimeType,venue,const DeepCollectionEquality().hash(_pitches),isFavorite);
 
 @override
 String toString() {
-  return 'VenueProfileState.success(venue: $venue, pitches: $pitches)';
+  return 'VenueProfileState.success(venue: $venue, pitches: $pitches, isFavorite: $isFavorite)';
 }
 
 
@@ -293,7 +294,7 @@ abstract mixin class $VenueProfileSuccessCopyWith<$Res> implements $VenueProfile
   factory $VenueProfileSuccessCopyWith(VenueProfileSuccess value, $Res Function(VenueProfileSuccess) _then) = _$VenueProfileSuccessCopyWithImpl;
 @useResult
 $Res call({
- VenueDetailsModel venue, List<PitchDetailsModel> pitches
+ VenueDetailsModel venue, List<PitchDetailsModel> pitches, bool isFavorite
 });
 
 
@@ -310,11 +311,12 @@ class _$VenueProfileSuccessCopyWithImpl<$Res>
 
 /// Create a copy of VenueProfileState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? venue = null,Object? pitches = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? venue = null,Object? pitches = null,Object? isFavorite = null,}) {
   return _then(VenueProfileSuccess(
 venue: null == venue ? _self.venue : venue // ignore: cast_nullable_to_non_nullable
 as VenueDetailsModel,pitches: null == pitches ? _self._pitches : pitches // ignore: cast_nullable_to_non_nullable
-as List<PitchDetailsModel>,
+as List<PitchDetailsModel>,isFavorite: null == isFavorite ? _self.isFavorite : isFavorite // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

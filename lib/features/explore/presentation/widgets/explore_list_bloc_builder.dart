@@ -22,7 +22,7 @@ import '../cubit/favorite_toggle_state.dart';
 class ExploreListBlocBuilder extends StatelessWidget {
   const ExploreListBlocBuilder({required this.onSlotTap, super.key});
 
-  final ValueChanged<String> onSlotTap;
+  final ValueChanged<ExploreVenueCardModel> onSlotTap;
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +109,7 @@ class ExploreListBlocBuilder extends StatelessWidget {
                             AppRoutes.venueProfile,
                             arguments: item.venueId,
                           ),
-                          onSlotTap: (_) => onSlotTap(item.venueId),
+                          onSlotTap: (_) => onSlotTap(item),
                         ),
                       );
                     },

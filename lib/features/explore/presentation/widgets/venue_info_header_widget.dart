@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,15 +9,13 @@ import '../../../../core/styles/app_text_styles.dart';
 
 class VenueInfoHeaderWidget extends StatelessWidget {
   const VenueInfoHeaderWidget({
-    this.name,
-    this.address,
-    this.rating,
+    required this.name,
+    required this.address,
     super.key,
   });
 
-  final String? name;
-  final String? address;
-  final String? rating;
+  final String name;
+  final String address;
 
   @override
   Widget build(BuildContext context) {
@@ -30,18 +27,7 @@ class VenueInfoHeaderWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-              Expanded(
-                child: Text(
-                  name ?? 'explore.venue.name'.tr(context: context),
-                  style: AppTextStyles.font21Bold,
-                ),
-              ),
-              Text(
-                '★ ${rating ?? 'explore.sample1_rating'.tr(context: context)}',
-                style: AppTextStyles.font14Bold.copyWith(
-                  color: AppColors.goldDark,
-                ),
-              ),
+              Expanded(child: Text(name, style: AppTextStyles.font21Bold)),
             ],
           ),
           hSpace(12),
@@ -51,7 +37,7 @@ class VenueInfoHeaderWidget extends StatelessWidget {
               vSpace(4),
               Expanded(
                 child: Text(
-                  address ?? 'explore.venue.address'.tr(context: context),
+                  address,
                   style: AppTextStyles.font13Regular,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

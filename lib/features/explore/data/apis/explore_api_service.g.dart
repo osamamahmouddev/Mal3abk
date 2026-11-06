@@ -24,6 +24,14 @@ class _ExploreApiService implements ExploreApiService {
   Future<ExploreResultModel> exploreVenues({
     String? city,
     String? area,
+    String? date,
+    String? from,
+    String? to,
+    int? maxPrice,
+    String? pitchType,
+    String? surface,
+    String? facilities,
+    String? sort,
     int? page,
     int? pageSize,
   }) async {
@@ -31,6 +39,14 @@ class _ExploreApiService implements ExploreApiService {
     final queryParameters = <String, dynamic>{
       r'city': city,
       r'area': area,
+      r'date': date,
+      r'from': from,
+      r'to': to,
+      r'maxPrice': maxPrice,
+      r'pitchType': pitchType,
+      r'surface': surface,
+      r'facilities': facilities,
+      r'sort': sort,
       r'page': page,
       r'pageSize': pageSize,
     };

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
@@ -10,10 +9,13 @@ import '../../../../core/styles/app_text_styles.dart';
 class ExploreFilterButtonWidget extends StatelessWidget {
   const ExploreFilterButtonWidget({
     required this.background,
+    required this.onTap,
     super.key,
     this.shadow,
     this.activeFilters = 0,
   });
+
+  final VoidCallback onTap;
 
   final Color background;
   final List<BoxShadow>? shadow;
@@ -32,8 +34,7 @@ class ExploreFilterButtonWidget extends StatelessWidget {
             color: background,
             borderRadius: radius,
             child: InkWell(
-              onTap: () =>
-                  Navigator.of(context).pushNamed(AppRoutes.filtersAndSort),
+              onTap: onTap,
               borderRadius: radius,
               child: Padding(
                 padding: EdgeInsets.all(15.r),

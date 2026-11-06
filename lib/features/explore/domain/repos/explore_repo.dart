@@ -1,4 +1,5 @@
 import '../../../../core/network/api_result.dart';
+import '../../data/models/explore_filter_model.dart';
 import '../../data/models/explore_result_model.dart';
 import '../../data/models/explore_venue_card_model.dart';
 import '../../data/models/pitch_details_model.dart';
@@ -9,6 +10,7 @@ abstract class ExploreRepo {
   Future<ApiResult<ExploreResultModel>> exploreVenues({
     String? city,
     String? area,
+    ExploreFilterModel filter = const ExploreFilterModel(),
     int? page,
     int? pageSize,
   });
