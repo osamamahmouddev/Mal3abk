@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
@@ -8,32 +9,34 @@ import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_shadows.dart';
 import '../../../../core/styles/app_text_styles.dart';
+import '../../../../core/utils/cairo_time.dart';
 import '../../../../core/widgets/custom_button.dart';
+import '../../data/models/explore_venue_card_model.dart';
 import 'favorite_remove_button_widget.dart';
-import 'favorite_today_slots_widget.dart';
 
 class FavoriteVenueCardWidget extends StatelessWidget {
   const FavoriteVenueCardWidget({
-    required this.name,
-    required this.rating,
-    required this.meta,
-    required this.priceFrom,
-    required this.todaySlots,
+    required this.venue,
     required this.onView,
     required this.onRemove,
     super.key,
   });
 
-  final String name;
-  final String rating;
-  final String meta;
-  final String priceFrom;
-  final List<String> todaySlots;
+  final ExploreVenueCardModel venue;
   final VoidCallback onView;
   final VoidCallback onRemove;
 
   @override
   Widget build(BuildContext context) {
+    final lang = context.locale.languageCode;
+    final banner = SvgPicture.asset(
+      AppAssets.pitchBanner,
+      height: 120.h,
+      width: double.infinity,
+      fit: BoxFit.cover,
+    );
+    final next = venue.nextAvailableStartUtc;
+
     return Container(
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
@@ -47,11 +50,17 @@ class FavoriteVenueCardWidget extends StatelessWidget {
         children: [
           Stack(
             children: [
-              SvgPicture.asset(
-                AppAssets.pitchBanner,
-                height: 120.h,
-                width: double.infinity,
-                fit: BoxFit.cover,
+              Hero(
+                tag: 'venue-${venue.venueId}',
+                child: venue.coverPhotoUrl == null
+                    ? banner
+                    : CachedNetworkImage(
+                        imageUrl: venue.coverPhotoUrl!,
+                        height: 120.h,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                        errorWidget: (_, _, _) => banner,
+                      ),
               ),
               PositionedDirectional(
                 end: 10.w,
@@ -61,33 +70,31 @@ class FavoriteVenueCardWidget extends StatelessWidget {
             ],
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(14.w, 7.h, 14.w, 14.h),
+            padding: EdgeInsets.fromLTRB(14.w, 10.h, 14.w, 14.h),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(name, style: AppTextStyles.font16Bold),
-                    ),
-                    Text(
-                      '★ $rating',
-                      style: AppTextStyles.font13Bold.copyWith(
-                        color: AppColors.goldDark,
-                      ),
-                    ),
-                  ],
+                Text(venue.name, style: AppTextStyles.font16Bold),
+                hSpace(6),
+                Text(
+                  [venue.area, venue.city].join(' · '),
+                  style: AppTextStyles.font12Regular,
                 ),
-                hSpace(8),
-                Text(meta, style: AppTextStyles.font12Regular),
-                hSpace(8),
-                FavoriteTodaySlotsWidget(slots: todaySlots),
-                hSpace(8),
-                CustomButton(
-                  text: 'explore.view_venue_from'.tr(
-                    context: context,
-                    args: [priceFrom],
+                if (next != null) ...[
+                  hSpace(6),
+                  Text(
+                    'explore.next_available'.tr(
+                      context: context,
+                      args: [CairoTime.dayAndTime(DateTime.parse(next), lang)],
+                    ),
+                    style: AppTextStyles.font12Medium.copyWith(
+                      color: AppColors.successGreen,
+                    ),
                   ),
+                ],
+                hSpace(10),
+                CustomButton(
+                  text: 'explore.view_venue'.tr(context: context),
                   type: CustomButtonType.outline,
                   height: 46.h,
                   borderRadius: 10,

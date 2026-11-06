@@ -25,6 +25,8 @@ import '../../features/explore/presentation/screens/venue_profile_screen.dart';
 import '../../features/home/presentation/cubit/home_feed_cubit.dart';
 import '../../features/home/presentation/screens/home_screen.dart';
 import '../../features/main_shell/presentation/screens/main_shell_screen.dart';
+import '../../features/explore/presentation/cubit/favorite_toggle_cubit.dart';
+import '../../features/explore/presentation/cubit/favorites_cubit.dart';
 import '../../features/home/presentation/cubit/home_team_activity_cubit.dart';
 import '../../features/booking/presentation/cubit/booking_details_cubit.dart';
 import '../../features/booking/presentation/cubit/cancel_booking_cubit.dart';
@@ -221,8 +223,15 @@ class AppRouter {
       case AppRoutes.exploreList:
         return MaterialPageRoute(
           settings: const RouteSettings(name: AppRoutes.exploreList),
-          builder: (_) => BlocProvider<ExploreListCubit>(
-            create: (_) => sl<ExploreListCubit>()..fetchVenues(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<ExploreListCubit>(
+                create: (_) => sl<ExploreListCubit>()..fetchVenues(),
+              ),
+              BlocProvider<FavoriteToggleCubit>(
+                create: (_) => sl<FavoriteToggleCubit>(),
+              ),
+            ],
             child: const ExploreListScreen(),
           ),
         );
@@ -259,7 +268,10 @@ class AppRouter {
       case AppRoutes.favorites:
         return MaterialPageRoute(
           settings: const RouteSettings(name: AppRoutes.favorites),
-          builder: (_) => const FavoritesScreen(),
+          builder: (_) => BlocProvider<FavoritesCubit>(
+            create: (_) => sl<FavoritesCubit>()..load(),
+            child: const FavoritesScreen(),
+          ),
         );
 
       case AppRoutes.bookingReview:

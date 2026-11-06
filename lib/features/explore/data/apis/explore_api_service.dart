@@ -3,6 +3,7 @@ import 'package:retrofit/retrofit.dart';
 
 import '../../../../core/network/api_constants.dart';
 import '../models/explore_result_model.dart';
+import '../models/explore_venue_card_model.dart';
 import '../models/pitch_details_model.dart';
 import '../models/venue_availability_model.dart';
 import '../models/venue_details_model.dart';
@@ -32,4 +33,13 @@ abstract class ExploreApiService {
     @Path('id') String venueId,
     @Query('date') String date,
   );
+
+  @GET(ApiConstants.favorites)
+  Future<List<ExploreVenueCardModel>> getFavorites();
+
+  @PUT(ApiConstants.favorite)
+  Future<void> addFavorite(@Path('venueId') String venueId);
+
+  @DELETE(ApiConstants.favorite)
+  Future<void> removeFavorite(@Path('venueId') String venueId);
 }

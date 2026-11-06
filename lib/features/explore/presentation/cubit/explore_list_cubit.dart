@@ -18,7 +18,9 @@ class ExploreListCubit extends Cubit<ExploreListState>
     int? page,
     int? pageSize,
   }) async {
-    emitIfOpen(const ExploreListState.loading());
+    if (state is! ExploreListSuccess) {
+      emitIfOpen(const ExploreListState.loading());
+    }
     final result = await exploreVenuesUseCase(
       city: city,
       area: area,

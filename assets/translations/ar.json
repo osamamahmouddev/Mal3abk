@@ -233,7 +233,6 @@
     "sample_venue2_name": "أكاديمية الدلتا",
     "sample_venue2_rating": "٤٫٦",
     "sample_venue2_dist": "٢٫٥ كم · من ٢٠٠ ج.م",
-    "sample_slot": "متاح ٨:٠٠ م",
     "greeting_prompt": "أهلاً يا {}! إمتى عايز تلعب؟",
     "no_bookings": "مفيش حجوزات جاية — اختار يوم وساعة من فوق ودوّر على ملعب قريب.",
     "no_team_title": "لسه مش في فريق",
@@ -249,7 +248,9 @@
       "verify_result": "نتيجة مستنية تأكيدك",
       "submit_result": "سجّل نتيجة الماتش"
     },
-    "all_egypt": "كل مصر"
+    "all_egypt": "كل مصر",
+    "no_nearby": "مفيش ملاعب منشورة في منطقتك لسه.",
+    "no_slots_soon": "مفيش مواعيد قريبة"
   },
   "explore": {
     "list_title": "استكشف الملاعب",
@@ -295,10 +296,7 @@
     "sample2_specs": "ملعب ٢ · ٧ لاعب · ٢٫٥ كم",
     "sample2_price": "٢٠٠ ج.م",
     "sample2_rating": "٤٫٦",
-    "slot_8pm": "٨:٠٠ م",
     "slot_9pm": "٩:٠٠ م",
-    "slot_11pm": "١١:٠٠ م",
-    "slot_12am": "١٢:٠٠ ص",
     "today_label": "النهارده:",
     "no_slots_today": "النهارده: مفيش مواعيد — أقرب ميعاد بكرة",
     "view_venue_from": "عرض الملعب · من {}",
@@ -419,7 +417,12 @@
       "two_hours_unavailable": "الساعتين مش متاحين لأن الساعة اللي بعدها محجوزة.",
       "summary": "ملعب ١ · ٨:٠٠ م · ساعة",
       "continue": "متابعة"
-    }
+    },
+    "favorites_empty_title": "مفيش ملاعب في المفضلة",
+    "favorites_empty_desc": "دوس على القلب في أي ملعب عشان تلاقيه هنا بسرعة.",
+    "next_available": "أقرب ميعاد: {}",
+    "no_results_title": "مفيش ملاعب مطابقة",
+    "no_results_desc": "جرّب منطقة تانية أو شيل بعض الفلاتر."
   },
   "booking": {
     "back_to_home": "العودة للرئيسية",
@@ -473,7 +476,6 @@
     "rejected_note": "السبب: المبلغ في الإيصال ٣٠ ج.م بدل ٦٠ ج.م. أعد الرفع خلال ٤٥ دقيقة.",
     "reupload_btn": "أعد رفع الإيصال",
     "sample_time": "السبت ٢٦ يوليو · ٨:٠٠ – ٩:٠٠ م",
-    "sample_pitch_specs": "٥ لاعب · نجيل صناعي",
     "sample_manager": "أحمد سامي · ٠١٠١٢٣٤٥٦٧٨",
     "amount_0": "٠ ج.م",
     "agree_policy_required": "لازم توافق على سياسة الحجز الأول",

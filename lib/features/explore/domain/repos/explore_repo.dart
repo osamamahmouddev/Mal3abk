@@ -1,5 +1,6 @@
 import '../../../../core/network/api_result.dart';
 import '../../data/models/explore_result_model.dart';
+import '../../data/models/explore_venue_card_model.dart';
 import '../../data/models/pitch_details_model.dart';
 import '../../data/models/venue_availability_model.dart';
 import '../../data/models/venue_details_model.dart';
@@ -20,4 +21,8 @@ abstract class ExploreRepo {
     String venueId,
     String date,
   );
+
+  Future<ApiResult<List<ExploreVenueCardModel>>> getFavorites();
+
+  Future<ApiResult<void>> setFavorite(String venueId, {required bool favorite});
 }

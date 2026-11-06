@@ -4,6 +4,8 @@ import 'package:get_it/get_it.dart';
 import '../../features/booking/presentation/cubit/booking_details_cubit.dart';
 import '../../features/booking/presentation/cubit/cancel_booking_cubit.dart';
 import '../../features/booking/presentation/cubit/deposit_methods_cubit.dart';
+import '../../features/explore/presentation/cubit/favorite_toggle_cubit.dart';
+import '../../features/explore/presentation/cubit/favorites_cubit.dart';
 import '../../features/home/domain/use_cases/get_home_team_activity_use_case.dart';
 import '../../features/home/presentation/cubit/home_team_activity_cubit.dart';
 import '../../features/matches/data/apis/matches_api_service.dart';
@@ -507,6 +509,12 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
     () => NotificationPreferencesCubit(
       notificationsRepo: sl<NotificationsRepo>(),
     ),
+  );
+  sl.registerFactory<FavoriteToggleCubit>(
+    () => FavoriteToggleCubit(exploreRepo: sl<ExploreRepo>()),
+  );
+  sl.registerFactory<FavoritesCubit>(
+    () => FavoritesCubit(exploreRepo: sl<ExploreRepo>()),
   );
   sl.registerFactory<BiometricLockCubit>(
     () => BiometricLockCubit(biometricLock: sl<BiometricLock>()),

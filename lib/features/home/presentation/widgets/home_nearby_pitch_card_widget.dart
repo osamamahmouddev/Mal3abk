@@ -11,7 +11,7 @@ import '../../../../core/styles/app_text_styles.dart';
 class HomeNearbyPitchCardWidget extends StatelessWidget {
   const HomeNearbyPitchCardWidget({
     required this.name,
-    required this.rating,
+    required this.price,
     required this.dist,
     required this.slot,
     required this.onTap,
@@ -19,7 +19,7 @@ class HomeNearbyPitchCardWidget extends StatelessWidget {
   });
 
   final String name;
-  final String rating;
+  final String price;
   final String dist;
   final String slot;
   final VoidCallback onTap;
@@ -66,12 +66,13 @@ class HomeNearbyPitchCardWidget extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        Text(
-                          '★ $rating',
-                          style: AppTextStyles.font12Bold.copyWith(
-                            color: AppColors.goldDark,
+                        if (price.isNotEmpty)
+                          Text(
+                            price,
+                            style: AppTextStyles.font12Bold.copyWith(
+                              color: AppColors.goldDark,
+                            ),
                           ),
-                        ),
                       ],
                     ),
                     hSpace(4),

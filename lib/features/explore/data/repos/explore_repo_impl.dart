@@ -3,6 +3,7 @@ import '../../../../core/network/api_result.dart';
 import '../../domain/repos/explore_repo.dart';
 import '../apis/explore_api_service.dart';
 import '../models/explore_result_model.dart';
+import '../models/explore_venue_card_model.dart';
 import '../models/pitch_details_model.dart';
 import '../models/venue_availability_model.dart';
 import '../models/venue_details_model.dart';
@@ -65,6 +66,30 @@ class ExploreRepoImpl implements ExploreRepo {
         date,
       );
       return ApiResult.success(response);
+    } catch (e, st) {
+      return ApiResult.failure(ApiFailureMapper.map(e, st));
+    }
+  }
+
+  @override
+  Future<ApiResult<List<ExploreVenueCardModel>>> getFavorites() async {
+    try {
+      return ApiResult.success(await exploreApiService.getFavorites());
+    } catch (e, st) {
+      return ApiResult.failure(ApiFailureMapper.map(e, st));
+    }
+  }
+
+  @override
+  Future<ApiResult<void>> setFavorite(
+    String venueId, {
+    required bool favorite,
+  }) async {
+    try {
+      favorite
+          ? await exploreApiService.addFavorite(venueId)
+          : await exploreApiService.removeFavorite(venueId);
+      return const ApiResult.success(null);
     } catch (e, st) {
       return ApiResult.failure(ApiFailureMapper.map(e, st));
     }
