@@ -31,7 +31,11 @@ Map<String, dynamic> _$PlayerProofModelToJson(PlayerProofModel instance) =>
 PlayerStatusHistoryModel _$PlayerStatusHistoryModelFromJson(
   Map<String, dynamic> json,
 ) => PlayerStatusHistoryModel(
-  status: json['status'],
+  status: $enumDecode(
+    _$BookingStatusEnumMap,
+    json['status'],
+    unknownValue: BookingStatus.draft,
+  ),
   changedBy: json['changedBy'] as String,
   reason: json['reason'] as String?,
   changedAtUtc: json['changedAtUtc'] as String,
@@ -40,11 +44,40 @@ PlayerStatusHistoryModel _$PlayerStatusHistoryModelFromJson(
 Map<String, dynamic> _$PlayerStatusHistoryModelToJson(
   PlayerStatusHistoryModel instance,
 ) => <String, dynamic>{
-  'status': instance.status,
+  'status': _$BookingStatusEnumMap[instance.status]!,
   'changedBy': instance.changedBy,
   'reason': instance.reason,
   'changedAtUtc': instance.changedAtUtc,
 };
+
+const _$BookingStatusEnumMap = {
+  BookingStatus.draft: 1,
+  BookingStatus.pendingDeposit: 2,
+  BookingStatus.proofSubmitted: 3,
+  BookingStatus.underReview: 4,
+  BookingStatus.confirmed: 5,
+  BookingStatus.rejected: 6,
+  BookingStatus.expired: 7,
+  BookingStatus.cancelled: 8,
+  BookingStatus.completed: 9,
+  BookingStatus.noShow: 10,
+};
+
+PlayerVenueModel _$PlayerVenueModelFromJson(Map<String, dynamic> json) =>
+    PlayerVenueModel(
+      name: json['name'] as String,
+      address: json['address'] as String,
+      latitude: (json['latitude'] as num?)?.toDouble(),
+      longitude: (json['longitude'] as num?)?.toDouble(),
+    );
+
+Map<String, dynamic> _$PlayerVenueModelToJson(PlayerVenueModel instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'address': instance.address,
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
+    };
 
 PlayerBookingDetailModel _$PlayerBookingDetailModelFromJson(
   Map<String, dynamic> json,
@@ -58,10 +91,18 @@ PlayerBookingDetailModel _$PlayerBookingDetailModelFromJson(
   totalPrice: (json['totalPrice'] as num).toDouble(),
   depositAmount: (json['depositAmount'] as num).toDouble(),
   currency: json['currency'] as String,
-  status: json['status'],
+  status: $enumDecode(
+    _$BookingStatusEnumMap,
+    json['status'],
+    unknownValue: BookingStatus.draft,
+  ),
   holdExpiresAtUtc: json['holdExpiresAtUtc'] as String?,
   notes: json['notes'] as String?,
   cancellationPolicySummary: json['cancellationPolicySummary'] as String?,
+  venue: json['venue'] == null
+      ? null
+      : PlayerVenueModel.fromJson(json['venue'] as Map<String, dynamic>),
+  pitchName: json['pitchName'] as String?,
   allowedActions: PlayerAllowedActionsModel.fromJson(
     json['allowedActions'] as Map<String, dynamic>,
   ),
@@ -92,7 +133,7 @@ Map<String, dynamic> _$PlayerBookingDetailModelToJson(
   'totalPrice': instance.totalPrice,
   'depositAmount': instance.depositAmount,
   'currency': instance.currency,
-  'status': instance.status,
+  'status': _$BookingStatusEnumMap[instance.status]!,
   'holdExpiresAtUtc': instance.holdExpiresAtUtc,
   'notes': instance.notes,
   'cancellationPolicySummary': instance.cancellationPolicySummary,
@@ -100,4 +141,6 @@ Map<String, dynamic> _$PlayerBookingDetailModelToJson(
   'proofs': instance.proofs,
   'statusHistory': instance.statusHistory,
   'createdAtUtc': instance.createdAtUtc,
+  'venue': instance.venue,
+  'pitchName': instance.pitchName,
 };

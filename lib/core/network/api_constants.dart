@@ -40,8 +40,6 @@ class ApiConstants {
   static const String venueDetails = '/api/v1/venues/{id}';
   static const String venuePitches = '/api/v1/venues/{id}/pitches';
   static const String venueAvailability = '/api/v1/venues/{id}/availability';
-  static const String venuePaymentMethods =
-      '/api/v1/venues/{id}/payment-methods';
 
   /// Bookings
   static const String bookingQuote = '/api/v1/bookings/quote';
@@ -49,8 +47,10 @@ class ApiConstants {
   static const String myBookingsList = '/api/v1/me/bookings';
   static const String myBookingDetail = '/api/v1/me/bookings/{id}';
   static const String cancelBooking = '/api/v1/bookings/{id}/cancel';
-  static const String cancelPreview = '/api/v1/bookings/{id}/cancel-preview';
-  static const String submitProof = '/api/v1/bookings/{id}/proof';
+  static const String cancelPreview = '/api/v1/bookings/{id}/cancel/preview';
+  static const String bookingPaymentMethods =
+      '/api/v1/bookings/{id}/payment-methods';
+  static const String idempotencyKeyHeader = 'Idempotency-Key';
   static const String proofUploadUrl = '/api/v1/bookings/{id}/proof/upload-url';
   static const String submitBookingProof = '/api/v1/bookings/{id}/proof/submit';
 

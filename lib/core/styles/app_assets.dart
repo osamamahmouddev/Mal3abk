@@ -43,6 +43,7 @@ class AppAssets {
   static const String icBell = 'assets/images/svgs/ic-bell.svg';
   static const String homeHeroPattern =
       'assets/images/svgs/home-hero-pattern.svg';
+  static const String icCalendar = 'assets/images/svgs/ic-calendar.svg';
   static const String icCalendarWhite =
       'assets/images/svgs/ic-calendar-white.svg';
   static const String icClockWhite = 'assets/images/svgs/ic-clock-white.svg';

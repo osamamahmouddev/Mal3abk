@@ -36,12 +36,18 @@ PlayerBookingSummaryModel _$PlayerBookingSummaryModelFromJson(
   totalPrice: (json['totalPrice'] as num).toDouble(),
   depositAmount: (json['depositAmount'] as num).toDouble(),
   currency: json['currency'] as String,
-  status: json['status'],
+  status: $enumDecode(
+    _$BookingStatusEnumMap,
+    json['status'],
+    unknownValue: BookingStatus.draft,
+  ),
   holdExpiresAtUtc: json['holdExpiresAtUtc'] as String?,
   allowedActions: PlayerAllowedActionsModel.fromJson(
     json['allowedActions'] as Map<String, dynamic>,
   ),
   createdAtUtc: json['createdAtUtc'] as String,
+  venueName: json['venueName'] as String?,
+  pitchName: json['pitchName'] as String?,
 );
 
 Map<String, dynamic> _$PlayerBookingSummaryModelToJson(
@@ -56,10 +62,25 @@ Map<String, dynamic> _$PlayerBookingSummaryModelToJson(
   'totalPrice': instance.totalPrice,
   'depositAmount': instance.depositAmount,
   'currency': instance.currency,
-  'status': instance.status,
+  'status': _$BookingStatusEnumMap[instance.status]!,
   'holdExpiresAtUtc': instance.holdExpiresAtUtc,
   'allowedActions': instance.allowedActions,
   'createdAtUtc': instance.createdAtUtc,
+  'venueName': instance.venueName,
+  'pitchName': instance.pitchName,
+};
+
+const _$BookingStatusEnumMap = {
+  BookingStatus.draft: 1,
+  BookingStatus.pendingDeposit: 2,
+  BookingStatus.proofSubmitted: 3,
+  BookingStatus.underReview: 4,
+  BookingStatus.confirmed: 5,
+  BookingStatus.rejected: 6,
+  BookingStatus.expired: 7,
+  BookingStatus.cancelled: 8,
+  BookingStatus.completed: 9,
+  BookingStatus.noShow: 10,
 };
 
 PlayerBookingsPagedListModel _$PlayerBookingsPagedListModelFromJson(

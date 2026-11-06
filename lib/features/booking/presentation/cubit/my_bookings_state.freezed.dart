@@ -125,13 +125,13 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( PlayerBookingsPagedListModel data)?  success,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function( MyBookingsTab tab)?  loading,TResult Function( MyBookingsTab tab,  List<PlayerBookingSummaryModel> items,  int page,  bool hasMore,  bool isLoadingMore)?  success,TResult Function( MyBookingsTab tab,  String message)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case MyBookingsInitial() when initial != null:
 return initial();case MyBookingsLoading() when loading != null:
-return loading();case MyBookingsSuccess() when success != null:
-return success(_that.data);case MyBookingsError() when error != null:
-return error(_that.message);case _:
+return loading(_that.tab);case MyBookingsSuccess() when success != null:
+return success(_that.tab,_that.items,_that.page,_that.hasMore,_that.isLoadingMore);case MyBookingsError() when error != null:
+return error(_that.tab,_that.message);case _:
   return orElse();
 
 }
@@ -149,13 +149,13 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( PlayerBookingsPagedListModel data)  success,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function( MyBookingsTab tab)  loading,required TResult Function( MyBookingsTab tab,  List<PlayerBookingSummaryModel> items,  int page,  bool hasMore,  bool isLoadingMore)  success,required TResult Function( MyBookingsTab tab,  String message)  error,}) {final _that = this;
 switch (_that) {
 case MyBookingsInitial():
 return initial();case MyBookingsLoading():
-return loading();case MyBookingsSuccess():
-return success(_that.data);case MyBookingsError():
-return error(_that.message);}
+return loading(_that.tab);case MyBookingsSuccess():
+return success(_that.tab,_that.items,_that.page,_that.hasMore,_that.isLoadingMore);case MyBookingsError():
+return error(_that.tab,_that.message);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -169,13 +169,13 @@ return error(_that.message);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( PlayerBookingsPagedListModel data)?  success,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function( MyBookingsTab tab)?  loading,TResult? Function( MyBookingsTab tab,  List<PlayerBookingSummaryModel> items,  int page,  bool hasMore,  bool isLoadingMore)?  success,TResult? Function( MyBookingsTab tab,  String message)?  error,}) {final _that = this;
 switch (_that) {
 case MyBookingsInitial() when initial != null:
 return initial();case MyBookingsLoading() when loading != null:
-return loading();case MyBookingsSuccess() when success != null:
-return success(_that.data);case MyBookingsError() when error != null:
-return error(_that.message);case _:
+return loading(_that.tab);case MyBookingsSuccess() when success != null:
+return success(_that.tab,_that.items,_that.page,_that.hasMore,_that.isLoadingMore);case MyBookingsError() when error != null:
+return error(_that.tab,_that.message);case _:
   return null;
 
 }
@@ -219,42 +219,86 @@ String toString() {
 
 
 class MyBookingsLoading implements MyBookingsState {
-  const MyBookingsLoading();
+  const MyBookingsLoading(this.tab);
   
 
+ final  MyBookingsTab tab;
 
-
+/// Create a copy of MyBookingsState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$MyBookingsLoadingCopyWith<MyBookingsLoading> get copyWith => _$MyBookingsLoadingCopyWithImpl<MyBookingsLoading>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MyBookingsLoading);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MyBookingsLoading&&(identical(other.tab, tab) || other.tab == tab));
 }
 
 
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,tab);
 
 @override
 String toString() {
-  return 'MyBookingsState.loading()';
+  return 'MyBookingsState.loading(tab: $tab)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class $MyBookingsLoadingCopyWith<$Res> implements $MyBookingsStateCopyWith<$Res> {
+  factory $MyBookingsLoadingCopyWith(MyBookingsLoading value, $Res Function(MyBookingsLoading) _then) = _$MyBookingsLoadingCopyWithImpl;
+@useResult
+$Res call({
+ MyBookingsTab tab
+});
 
 
+
+
+}
+/// @nodoc
+class _$MyBookingsLoadingCopyWithImpl<$Res>
+    implements $MyBookingsLoadingCopyWith<$Res> {
+  _$MyBookingsLoadingCopyWithImpl(this._self, this._then);
+
+  final MyBookingsLoading _self;
+  final $Res Function(MyBookingsLoading) _then;
+
+/// Create a copy of MyBookingsState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? tab = null,}) {
+  return _then(MyBookingsLoading(
+null == tab ? _self.tab : tab // ignore: cast_nullable_to_non_nullable
+as MyBookingsTab,
+  ));
+}
+
+
+}
 
 /// @nodoc
 
 
 class MyBookingsSuccess implements MyBookingsState {
-  const MyBookingsSuccess(this.data);
+  const MyBookingsSuccess({required this.tab, required final  List<PlayerBookingSummaryModel> items, required this.page, required this.hasMore, this.isLoadingMore = false}): _items = items;
   
 
- final  PlayerBookingsPagedListModel data;
+ final  MyBookingsTab tab;
+ final  List<PlayerBookingSummaryModel> _items;
+ List<PlayerBookingSummaryModel> get items {
+  if (_items is EqualUnmodifiableListView) return _items;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_items);
+}
+
+ final  int page;
+ final  bool hasMore;
+@JsonKey() final  bool isLoadingMore;
 
 /// Create a copy of MyBookingsState
 /// with the given fields replaced by the non-null parameter values.
@@ -266,16 +310,16 @@ $MyBookingsSuccessCopyWith<MyBookingsSuccess> get copyWith => _$MyBookingsSucces
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MyBookingsSuccess&&(identical(other.data, data) || other.data == data));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MyBookingsSuccess&&(identical(other.tab, tab) || other.tab == tab)&&const DeepCollectionEquality().equals(other._items, _items)&&(identical(other.page, page) || other.page == page)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,data);
+int get hashCode => Object.hash(runtimeType,tab,const DeepCollectionEquality().hash(_items),page,hasMore,isLoadingMore);
 
 @override
 String toString() {
-  return 'MyBookingsState.success(data: $data)';
+  return 'MyBookingsState.success(tab: $tab, items: $items, page: $page, hasMore: $hasMore, isLoadingMore: $isLoadingMore)';
 }
 
 
@@ -286,7 +330,7 @@ abstract mixin class $MyBookingsSuccessCopyWith<$Res> implements $MyBookingsStat
   factory $MyBookingsSuccessCopyWith(MyBookingsSuccess value, $Res Function(MyBookingsSuccess) _then) = _$MyBookingsSuccessCopyWithImpl;
 @useResult
 $Res call({
- PlayerBookingsPagedListModel data
+ MyBookingsTab tab, List<PlayerBookingSummaryModel> items, int page, bool hasMore, bool isLoadingMore
 });
 
 
@@ -303,10 +347,14 @@ class _$MyBookingsSuccessCopyWithImpl<$Res>
 
 /// Create a copy of MyBookingsState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? data = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? tab = null,Object? items = null,Object? page = null,Object? hasMore = null,Object? isLoadingMore = null,}) {
   return _then(MyBookingsSuccess(
-null == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
-as PlayerBookingsPagedListModel,
+tab: null == tab ? _self.tab : tab // ignore: cast_nullable_to_non_nullable
+as MyBookingsTab,items: null == items ? _self._items : items // ignore: cast_nullable_to_non_nullable
+as List<PlayerBookingSummaryModel>,page: null == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
+as int,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
+as bool,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : isLoadingMore // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -317,9 +365,10 @@ as PlayerBookingsPagedListModel,
 
 
 class MyBookingsError implements MyBookingsState {
-  const MyBookingsError(this.message);
+  const MyBookingsError(this.tab, this.message);
   
 
+ final  MyBookingsTab tab;
  final  String message;
 
 /// Create a copy of MyBookingsState
@@ -332,16 +381,16 @@ $MyBookingsErrorCopyWith<MyBookingsError> get copyWith => _$MyBookingsErrorCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MyBookingsError&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MyBookingsError&&(identical(other.tab, tab) || other.tab == tab)&&(identical(other.message, message) || other.message == message));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,message);
+int get hashCode => Object.hash(runtimeType,tab,message);
 
 @override
 String toString() {
-  return 'MyBookingsState.error(message: $message)';
+  return 'MyBookingsState.error(tab: $tab, message: $message)';
 }
 
 
@@ -352,7 +401,7 @@ abstract mixin class $MyBookingsErrorCopyWith<$Res> implements $MyBookingsStateC
   factory $MyBookingsErrorCopyWith(MyBookingsError value, $Res Function(MyBookingsError) _then) = _$MyBookingsErrorCopyWithImpl;
 @useResult
 $Res call({
- String message
+ MyBookingsTab tab, String message
 });
 
 
@@ -369,9 +418,10 @@ class _$MyBookingsErrorCopyWithImpl<$Res>
 
 /// Create a copy of MyBookingsState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? tab = null,Object? message = null,}) {
   return _then(MyBookingsError(
-null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+null == tab ? _self.tab : tab // ignore: cast_nullable_to_non_nullable
+as MyBookingsTab,null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

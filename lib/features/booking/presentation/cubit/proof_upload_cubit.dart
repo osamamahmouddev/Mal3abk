@@ -13,7 +13,6 @@ class ProofUploadCubit extends Cubit<ProofUploadState> {
   Future<bool> uploadProof({
     required String bookingId,
     required List<int> imageBytes,
-    required String contentType,
     String? notes,
   }) async {
     emit(const ProofUploadLoading());
@@ -21,7 +20,6 @@ class ProofUploadCubit extends Cubit<ProofUploadState> {
     final result = await submitBookingProofUseCase(
       bookingId: bookingId,
       imageBytes: imageBytes,
-      contentType: contentType,
       notes: notes,
     );
 
@@ -30,7 +28,7 @@ class ProofUploadCubit extends Cubit<ProofUploadState> {
         emit(
           ProofUploadSuccess(
             bookingId: bookingId,
-            message: 'تم إرسال إيصال الدفع بنجاح وهو قيد المراجعة الآن.',
+            message: 'booking.upload.sent',
           ),
         );
         return true;

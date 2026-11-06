@@ -4,6 +4,9 @@ import '../../../../core/network/api_failure_mapper.dart';
 import '../../../../core/network/api_result.dart';
 import '../../domain/repos/booking_repo.dart';
 import '../apis/booking_api_service.dart';
+import '../models/booking_payment_method_model.dart';
+import '../models/cancel_booking_request_body.dart';
+import '../models/cancel_preview_model.dart';
 import '../models/booking_quote_request_body.dart';
 import '../models/booking_quote_response_model.dart';
 import '../models/create_booking_request_body.dart';
@@ -116,17 +119,56 @@ class BookingRepoImpl implements BookingRepo {
   }
 
   @override
-  Future<ApiResult<dynamic>> submitProof({
+  Future<ApiResult<void>> submitProof({
     required String id,
     required String mediaId,
     String? notes,
   }) async {
     try {
-      final response = await bookingApiService.submitProof(
+      await bookingApiService.submitProof(
         id,
         SubmitProofRequestBody(mediaId: mediaId, notes: notes),
+        mediaId,
       );
-      return ApiResult.success(response);
+      return const ApiResult.success(null);
+    } catch (e, st) {
+      return ApiResult.failure(ApiFailureMapper.map(e, st));
+    }
+  }
+
+  @override
+  Future<ApiResult<List<BookingPaymentMethodModel>>> getPaymentMethods(
+    String id,
+  ) async {
+    try {
+      return ApiResult.success(await bookingApiService.getPaymentMethods(id));
+    } catch (e, st) {
+      return ApiResult.failure(ApiFailureMapper.map(e, st));
+    }
+  }
+
+  @override
+  Future<ApiResult<CancelPreviewModel>> getCancelPreview(String id) async {
+    try {
+      return ApiResult.success(await bookingApiService.getCancelPreview(id));
+    } catch (e, st) {
+      return ApiResult.failure(ApiFailureMapper.map(e, st));
+    }
+  }
+
+  @override
+  Future<ApiResult<void>> cancelBooking(
+    String id, {
+    required String idempotencyKey,
+    String? reason,
+  }) async {
+    try {
+      await bookingApiService.cancelBooking(
+        id,
+        CancelBookingRequestBody(reason: reason),
+        idempotencyKey,
+      );
+      return const ApiResult.success(null);
     } catch (e, st) {
       return ApiResult.failure(ApiFailureMapper.map(e, st));
     }

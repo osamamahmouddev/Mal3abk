@@ -18,7 +18,11 @@ CreateBookingResponseModel _$CreateBookingResponseModelFromJson(
   totalPrice: (json['totalPrice'] as num).toDouble(),
   depositAmount: (json['depositAmount'] as num).toDouble(),
   currency: json['currency'] as String,
-  status: json['status'],
+  status: $enumDecode(
+    _$BookingStatusEnumMap,
+    json['status'],
+    unknownValue: BookingStatus.draft,
+  ),
   holdExpiresAtUtc: json['holdExpiresAtUtc'] as String,
   paymentInstructions: json['paymentInstructions'] as String?,
 );
@@ -35,7 +39,20 @@ Map<String, dynamic> _$CreateBookingResponseModelToJson(
   'totalPrice': instance.totalPrice,
   'depositAmount': instance.depositAmount,
   'currency': instance.currency,
-  'status': instance.status,
+  'status': _$BookingStatusEnumMap[instance.status]!,
   'holdExpiresAtUtc': instance.holdExpiresAtUtc,
   'paymentInstructions': instance.paymentInstructions,
+};
+
+const _$BookingStatusEnumMap = {
+  BookingStatus.draft: 1,
+  BookingStatus.pendingDeposit: 2,
+  BookingStatus.proofSubmitted: 3,
+  BookingStatus.underReview: 4,
+  BookingStatus.confirmed: 5,
+  BookingStatus.rejected: 6,
+  BookingStatus.expired: 7,
+  BookingStatus.cancelled: 8,
+  BookingStatus.completed: 9,
+  BookingStatus.noShow: 10,
 };

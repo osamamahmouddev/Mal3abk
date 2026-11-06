@@ -4,27 +4,26 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/app/app_spaces.dart';
+import '../../../../core/extensions/app_display_extensions.dart';
 import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_text_styles.dart';
+import '../../../../core/utils/cairo_time.dart';
 import '../../../../core/widgets/app_badge_widget.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
+import '../../../../core/widgets/hold_countdown_builder.dart';
+import '../../data/models/player_booking_detail_model.dart';
 
 class UploadProofBookingCardWidget extends StatelessWidget {
-  const UploadProofBookingCardWidget({
-    required this.remaining,
-    this.pitchName,
-    this.meta,
-    super.key,
-  });
+  const UploadProofBookingCardWidget({required this.booking, super.key});
 
-  final String remaining;
-  final String? pitchName;
-  final String? meta;
+  final PlayerBookingDetailModel booking;
 
   @override
   Widget build(BuildContext context) {
-    final title = pitchName ?? 'booking.sample_pitch'.tr(context: context);
-    final subtitle = meta ?? 'booking.upload.sample_meta'.tr(context: context);
+    final lang = context.locale.languageCode;
+    final hold = booking.holdExpiresAtUtc == null
+        ? null
+        : DateTime.parse(booking.holdExpiresAtUtc!);
 
     return CustomCardWidget(
       borderRadius: 18,
@@ -44,18 +43,38 @@ class UploadProofBookingCardWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: AppTextStyles.font14Bold),
+                Text(
+                  [?booking.venue?.name, ?booking.pitchName].join(' · '),
+                  style: AppTextStyles.font14Bold,
+                ),
                 hSpace(4),
-                Text(subtitle, style: AppTextStyles.font12Regular),
+                Text(
+                  CairoTime.dayAndTime(booking.startAt, lang),
+                  style: AppTextStyles.font12Regular,
+                ),
+                hSpace(2),
+                Text(
+                  'booking.upload.amount_due'.tr(
+                    context: context,
+                    args: [
+                      booking.depositAmount.round().toLocalizedDigits(lang),
+                    ],
+                  ),
+                  style: AppTextStyles.font13SemiBold,
+                ),
               ],
             ),
           ),
-          AppBadgeWidget(
-            text: remaining,
-            type: AppBadgeType.warning,
-            borderRadius: 13,
-            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
-          ),
+          if (hold != null)
+            HoldCountdownBuilder(
+              expiresAtUtc: hold,
+              builder: (context, remaining) => AppBadgeWidget(
+                text: HoldCountdownBuilder.format(remaining, lang),
+                type: AppBadgeType.warning,
+                borderRadius: 13,
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
+              ),
+            ),
         ],
       ),
     );

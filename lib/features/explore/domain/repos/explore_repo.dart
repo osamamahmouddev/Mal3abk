@@ -3,7 +3,6 @@ import '../../data/models/explore_result_model.dart';
 import '../../data/models/pitch_details_model.dart';
 import '../../data/models/venue_availability_model.dart';
 import '../../data/models/venue_details_model.dart';
-import '../../data/models/venue_payment_method_model.dart';
 
 abstract class ExploreRepo {
   Future<ApiResult<ExploreResultModel>> exploreVenues({
@@ -20,9 +19,5 @@ abstract class ExploreRepo {
   Future<ApiResult<VenueAvailabilityModel>> getVenueAvailability(
     String venueId,
     String date,
-  );
-
-  Future<ApiResult<List<VenuePaymentMethodModel>>> getVenuePaymentMethods(
-    String venueId,
   );
 }

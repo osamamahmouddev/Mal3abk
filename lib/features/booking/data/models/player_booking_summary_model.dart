@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'booking_status.dart';
+
 part 'player_booking_summary_model.g.dart';
 
 @JsonSerializable()
@@ -38,6 +40,8 @@ class PlayerBookingSummaryModel {
     this.holdExpiresAtUtc,
     required this.allowedActions,
     required this.createdAtUtc,
+    this.venueName,
+    this.pitchName,
   });
 
   final String id;
@@ -49,10 +53,17 @@ class PlayerBookingSummaryModel {
   final double totalPrice;
   final double depositAmount;
   final String currency;
-  final dynamic status;
+  @JsonKey(unknownEnumValue: BookingStatus.draft)
+  final BookingStatus status;
   final String? holdExpiresAtUtc;
   final PlayerAllowedActionsModel allowedActions;
   final String createdAtUtc;
+
+  final String? venueName;
+  final String? pitchName;
+
+  DateTime get startAt => DateTime.parse(startUtc);
+  DateTime get endAt => DateTime.parse(endUtc);
 
   factory PlayerBookingSummaryModel.fromJson(Map<String, dynamic> json) =>
       _$PlayerBookingSummaryModelFromJson(json);

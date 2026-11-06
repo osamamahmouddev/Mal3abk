@@ -58,10 +58,7 @@ class BookingReviewBlocBuilder extends StatelessWidget {
           } else if (state.createdBooking != null) {
             Navigator.of(context).pushReplacementNamed(
               AppRoutes.depositInstructions,
-              arguments: {
-                'booking': state.createdBooking,
-                'paymentMethods': state.paymentMethods,
-              },
+              arguments: state.createdBooking,
             );
           }
         }

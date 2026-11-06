@@ -20,7 +20,6 @@ class AppRoutes {
   static const String bookingReview = '/booking-review';
   static const String depositInstructions = '/deposit-instructions';
   static const String uploadProof = '/upload-proof';
-  static const String proofRejected = '/proof-rejected';
   static const String myBookings = '/my-bookings';
   static const String bookingDetails = '/booking-details';
   static const String cancelBooking = '/cancel-booking';

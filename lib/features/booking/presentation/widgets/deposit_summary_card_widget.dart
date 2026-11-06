@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
+import '../../../../core/extensions/app_display_extensions.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
@@ -10,41 +11,33 @@ import 'booking_detail_row_widget.dart';
 
 class DepositSummaryCardWidget extends StatelessWidget {
   const DepositSummaryCardWidget({
-    this.bookingReference,
+    required this.bookingReference,
+    required this.slotLabel,
+    required this.totalPrice,
+    required this.depositAmount,
     this.pitchName,
-    this.slotLabel,
-    this.totalPrice,
-    this.depositAmount,
-    this.remainingPrice,
-    this.currency = 'ج.م',
     super.key,
   });
 
-  final String? bookingReference;
+  final String bookingReference;
   final String? pitchName;
-  final String? slotLabel;
-  final double? totalPrice;
-  final double? depositAmount;
-  final double? remainingPrice;
-  final String currency;
+  final String slotLabel;
+  final double totalPrice;
+  final double depositAmount;
 
   @override
   Widget build(BuildContext context) {
-    final ref =
-        bookingReference ??
-        'booking.deposit.sample_booking_no'.tr(context: context);
-    final pitch = pitchName ?? 'booking.sample_pitch'.tr(context: context);
-    final slot =
-        slotLabel ?? 'booking.deposit.sample_slot'.tr(context: context);
-    final total = totalPrice != null
-        ? '${totalPrice!.toInt()} $currency'
-        : 'booking.amount_150'.tr(context: context);
-    final remaining = remainingPrice != null
-        ? '${remainingPrice!.toInt()} $currency'
-        : 'booking.amount_100'.tr(context: context);
-    final deposit = depositAmount != null
-        ? '${depositAmount!.toInt()} $currency'
-        : 'booking.amount_50'.tr(context: context);
+    final lang = context.locale.languageCode;
+    String egp(double value) => 'common.price_egp'.tr(
+      context: context,
+      args: [value.round().toLocalizedDigits(lang)],
+    );
+    final ref = bookingReference;
+    final pitch = pitchName ?? '';
+    final slot = slotLabel;
+    final total = egp(totalPrice);
+    final remaining = egp(totalPrice - depositAmount);
+    final deposit = egp(depositAmount);
 
     return CustomCardWidget(
       padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 16.h),

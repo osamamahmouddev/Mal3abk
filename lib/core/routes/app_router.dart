@@ -12,7 +12,6 @@ import '../../features/booking/presentation/screens/booking_review_screen.dart';
 import '../../features/booking/presentation/screens/cancel_booking_screen.dart';
 import '../../features/booking/presentation/screens/deposit_instructions_screen.dart';
 import '../../features/booking/presentation/screens/my_bookings_screen.dart';
-import '../../features/booking/presentation/screens/proof_rejected_screen.dart';
 import '../../features/booking/presentation/screens/upload_proof_screen.dart';
 import '../../features/explore/presentation/cubit/explore_list_cubit.dart';
 import '../../features/explore/presentation/cubit/pitch_booking_cubit.dart';
@@ -27,6 +26,11 @@ import '../../features/home/presentation/cubit/home_feed_cubit.dart';
 import '../../features/home/presentation/screens/home_screen.dart';
 import '../../features/main_shell/presentation/screens/main_shell_screen.dart';
 import '../../features/home/presentation/cubit/home_team_activity_cubit.dart';
+import '../../features/booking/presentation/cubit/booking_details_cubit.dart';
+import '../../features/booking/presentation/cubit/cancel_booking_cubit.dart';
+import '../../features/booking/presentation/cubit/deposit_methods_cubit.dart';
+import '../../features/booking/presentation/cubit/my_bookings_tab.dart';
+import '../../features/booking/presentation/cubit/proof_upload_cubit.dart';
 import '../../features/matches/data/models/match_details_model.dart';
 import '../../features/onboarding/presentation/cubit/avatar_cubit.dart';
 import '../../features/onboarding/presentation/cubit/onboarding_consent_cubit.dart';
@@ -199,6 +203,10 @@ class AppRouter {
               BlocProvider<UnreadNotificationsCubit>(
                 create: (_) => sl<UnreadNotificationsCubit>()..refresh(),
               ),
+              BlocProvider<MyBookingsCubit>(
+                create: (_) =>
+                    sl<MyBookingsCubit>()..load(MyBookingsTab.upcoming),
+              ),
             ],
             child: const HomeScreen(),
           ),
@@ -256,58 +264,65 @@ class AppRouter {
         );
 
       case AppRoutes.depositInstructions:
-        final args = settings.arguments as Map<String, dynamic>?;
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => DepositInstructionsScreen(arguments: args),
-        );
-
-      case AppRoutes.uploadProof:
-        final args = settings.arguments;
-        String? bookingId;
-        CreateBookingResponseModel? booking;
-        double? depositAmount;
-        if (args is String) {
-          bookingId = args;
-        } else if (args is Map<String, dynamic>) {
-          bookingId = args['bookingId'] as String?;
-          booking = args['booking'] as CreateBookingResponseModel?;
-          depositAmount = args['depositAmount'] as double?;
+        final booking = settings.arguments;
+        if (booking is! CreateBookingResponseModel) {
+          return _errorRoute('Missing booking');
         }
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => UploadProofScreen(
-            bookingId: bookingId,
-            booking: booking,
-            depositAmount: depositAmount,
+          builder: (_) => BlocProvider<DepositMethodsCubit>(
+            create: (_) => sl<DepositMethodsCubit>()..load(booking.bookingId),
+            child: DepositInstructionsScreen(booking: booking),
           ),
         );
 
-      case AppRoutes.proofRejected:
+      case AppRoutes.uploadProof:
+        final bookingId = settings.arguments;
+        if (bookingId is! String) return _errorRoute('Missing booking id');
         return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.proofRejected),
-          builder: (_) => const ProofRejectedScreen(),
+          settings: settings,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<BookingDetailsCubit>(
+                create: (_) => sl<BookingDetailsCubit>()..load(bookingId),
+              ),
+              BlocProvider<ProofUploadCubit>(
+                create: (_) => sl<ProofUploadCubit>(),
+              ),
+            ],
+            child: UploadProofScreen(bookingId: bookingId),
+          ),
         );
 
       case AppRoutes.myBookings:
         return MaterialPageRoute(
           settings: const RouteSettings(name: AppRoutes.myBookings),
           builder: (_) => BlocProvider<MyBookingsCubit>(
-            create: (_) => sl<MyBookingsCubit>()..fetchBookings(),
+            create: (_) => sl<MyBookingsCubit>()..load(MyBookingsTab.upcoming),
             child: const MyBookingsScreen(),
           ),
         );
 
       case AppRoutes.bookingDetails:
+        final bookingId = settings.arguments;
+        if (bookingId is! String) return _errorRoute('Missing booking id');
         return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.bookingDetails),
-          builder: (_) => const BookingDetailsScreen(),
+          settings: settings,
+          builder: (_) => BlocProvider<BookingDetailsCubit>(
+            create: (_) => sl<BookingDetailsCubit>()..load(bookingId),
+            child: BookingDetailsScreen(bookingId: bookingId),
+          ),
         );
 
       case AppRoutes.cancelBooking:
-        return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.cancelBooking),
-          builder: (_) => const CancelBookingScreen(),
+        final bookingId = settings.arguments;
+        if (bookingId is! String) return _errorRoute('Missing booking id');
+        return MaterialPageRoute<bool>(
+          settings: settings,
+          builder: (_) => BlocProvider<CancelBookingCubit>(
+            create: (_) => sl<CancelBookingCubit>()..loadPreview(bookingId),
+            child: CancelBookingScreen(bookingId: bookingId),
+          ),
         );
 
       case AppRoutes.myTeams:

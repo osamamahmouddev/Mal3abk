@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
@@ -14,31 +14,26 @@ import '../../../../core/widgets/custom_card_widget.dart';
 
 class DepositWalletCardWidget extends StatelessWidget {
   const DepositWalletCardWidget({
-    this.accountNumber,
-    this.recipientName,
-    this.bookingNo,
+    required this.accountNumber,
+    required this.recipientName,
+    required this.bookingNo,
+    required this.label,
     this.instructions,
-    this.label,
     super.key,
   });
 
-  final String? accountNumber;
-  final String? recipientName;
-  final String? bookingNo;
+  final String accountNumber;
+  final String recipientName;
+  final String bookingNo;
   final String? instructions;
-  final String? label;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
-    final wallet =
-        accountNumber ?? 'booking.deposit.sample_wallet'.tr(context: context);
-    final bookingReference =
-        bookingNo ?? 'booking.deposit.sample_booking_no'.tr(context: context);
-    final recipient =
-        recipientName ??
-        'booking.deposit.sample_recipient'.tr(context: context);
-    final displayLabel =
-        label ?? 'booking.deposit.wallet_number'.tr(context: context);
+    final wallet = accountNumber;
+    final bookingReference = bookingNo;
+    final recipient = recipientName;
+    final displayLabel = label;
 
     return CustomCardWidget(
       padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 16.h),
@@ -49,7 +44,14 @@ class DepositWalletCardWidget extends StatelessWidget {
           hSpace(10),
           Row(
             children: [
-              Expanded(child: Text(wallet, style: AppTextStyles.font18Bold)),
+              Expanded(
+                child: Text(
+                  wallet,
+                  textDirection: TextDirection.ltr,
+                  textAlign: TextAlign.start,
+                  style: AppTextStyles.font18Bold,
+                ),
+              ),
               CustomButton(
                 text: 'booking.deposit.copy'.tr(context: context),
                 type: CustomButtonType.outline,
@@ -66,6 +68,7 @@ class DepositWalletCardWidget extends StatelessWidget {
                   color: AppColors.brandNavy,
                 ),
                 onTap: () {
+                  HapticFeedback.lightImpact();
                   Clipboard.setData(ClipboardData(text: wallet));
                   AppTopSnackBar.showSuccess(
                     context,

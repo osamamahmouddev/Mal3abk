@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'booking_status.dart';
 import 'player_booking_summary_model.dart';
 
 part 'player_booking_detail_model.g.dart';
@@ -39,7 +40,8 @@ class PlayerStatusHistoryModel {
     required this.changedAtUtc,
   });
 
-  final dynamic status;
+  @JsonKey(unknownEnumValue: BookingStatus.draft)
+  final BookingStatus status;
   final String changedBy;
   final String? reason;
   final String changedAtUtc;
@@ -48,6 +50,28 @@ class PlayerStatusHistoryModel {
       _$PlayerStatusHistoryModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$PlayerStatusHistoryModelToJson(this);
+}
+
+@JsonSerializable()
+class PlayerVenueModel {
+  const PlayerVenueModel({
+    required this.name,
+    required this.address,
+    this.latitude,
+    this.longitude,
+  });
+
+  final String name;
+  final String address;
+  final double? latitude;
+  final double? longitude;
+
+  bool get hasLocation => latitude != null && longitude != null;
+
+  factory PlayerVenueModel.fromJson(Map<String, dynamic> json) =>
+      _$PlayerVenueModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PlayerVenueModelToJson(this);
 }
 
 @JsonSerializable()
@@ -66,6 +90,8 @@ class PlayerBookingDetailModel {
     this.holdExpiresAtUtc,
     this.notes,
     this.cancellationPolicySummary,
+    this.venue,
+    this.pitchName,
     required this.allowedActions,
     this.proofs = const [],
     this.statusHistory = const [],
@@ -81,7 +107,8 @@ class PlayerBookingDetailModel {
   final double totalPrice;
   final double depositAmount;
   final String currency;
-  final dynamic status;
+  @JsonKey(unknownEnumValue: BookingStatus.draft)
+  final BookingStatus status;
   final String? holdExpiresAtUtc;
   final String? notes;
   final String? cancellationPolicySummary;
@@ -89,6 +116,12 @@ class PlayerBookingDetailModel {
   final List<PlayerProofModel> proofs;
   final List<PlayerStatusHistoryModel> statusHistory;
   final String createdAtUtc;
+
+  final PlayerVenueModel? venue;
+  final String? pitchName;
+
+  DateTime get startAt => DateTime.parse(startUtc);
+  DateTime get endAt => DateTime.parse(endUtc);
 
   factory PlayerBookingDetailModel.fromJson(Map<String, dynamic> json) =>
       _$PlayerBookingDetailModelFromJson(json);

@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'booking_status.dart';
+
 part 'create_booking_response_model.g.dart';
 
 @JsonSerializable()
@@ -28,7 +30,8 @@ class CreateBookingResponseModel {
   final double totalPrice;
   final double depositAmount;
   final String currency;
-  final dynamic status;
+  @JsonKey(unknownEnumValue: BookingStatus.draft)
+  final BookingStatus status;
   final String holdExpiresAtUtc;
   final String? paymentInstructions;
 

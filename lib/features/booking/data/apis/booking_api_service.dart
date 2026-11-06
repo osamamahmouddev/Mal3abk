@@ -2,8 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../../../../core/network/api_constants.dart';
+import '../models/booking_payment_method_model.dart';
 import '../models/booking_quote_request_body.dart';
 import '../models/booking_quote_response_model.dart';
+import '../models/cancel_booking_request_body.dart';
+import '../models/cancel_preview_model.dart';
 import '../models/create_booking_request_body.dart';
 import '../models/create_booking_response_model.dart';
 import '../models/player_booking_detail_model.dart';
@@ -25,7 +28,7 @@ abstract class BookingApiService {
   @POST(ApiConstants.createBooking)
   Future<CreateBookingResponseModel> createBooking(
     @Body() CreateBookingRequestBody body,
-    @Header('Idempotency-Key') String idempotencyKey,
+    @Header(ApiConstants.idempotencyKeyHeader) String idempotencyKey,
   );
 
   @GET(ApiConstants.myBookingsList)
@@ -42,8 +45,24 @@ abstract class BookingApiService {
   Future<UploadTicketModel> getProofUploadUrl(@Path('id') String id);
 
   @POST(ApiConstants.submitBookingProof)
-  Future<dynamic> submitProof(
+  Future<void> submitProof(
     @Path('id') String id,
     @Body() SubmitProofRequestBody body,
+    @Header(ApiConstants.idempotencyKeyHeader) String idempotencyKey,
+  );
+
+  @GET(ApiConstants.bookingPaymentMethods)
+  Future<List<BookingPaymentMethodModel>> getPaymentMethods(
+    @Path('id') String id,
+  );
+
+  @GET(ApiConstants.cancelPreview)
+  Future<CancelPreviewModel> getCancelPreview(@Path('id') String id);
+
+  @POST(ApiConstants.cancelBooking)
+  Future<void> cancelBooking(
+    @Path('id') String id,
+    @Body() CancelBookingRequestBody body,
+    @Header(ApiConstants.idempotencyKeyHeader) String idempotencyKey,
   );
 }

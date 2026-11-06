@@ -1,5 +1,4 @@
 import '../../data/models/venue_availability_model.dart';
-import '../../data/models/venue_payment_method_model.dart';
 import '../../../booking/data/models/booking_quote_response_model.dart';
 import '../../../booking/data/models/create_booking_response_model.dart';
 
@@ -26,7 +25,6 @@ class PitchBookingLoaded extends PitchBookingState {
     this.quoteError,
     this.isBooking = false,
     this.createdBooking,
-    this.paymentMethods = const [],
     this.bookingError,
     this.isSlotsLoading = false,
   });
@@ -40,7 +38,6 @@ class PitchBookingLoaded extends PitchBookingState {
   final String? quoteError;
   final bool isBooking;
   final CreateBookingResponseModel? createdBooking;
-  final List<VenuePaymentMethodModel> paymentMethods;
   final String? bookingError;
   final bool isSlotsLoading;
 
@@ -65,7 +62,6 @@ class PitchBookingLoaded extends PitchBookingState {
     bool clearQuoteError = false,
     bool? isBooking,
     CreateBookingResponseModel? createdBooking,
-    List<VenuePaymentMethodModel>? paymentMethods,
     String? bookingError,
     bool clearBookingError = false,
     bool? isSlotsLoading,
@@ -82,7 +78,6 @@ class PitchBookingLoaded extends PitchBookingState {
       quoteError: clearQuoteError ? null : (quoteError ?? this.quoteError),
       isBooking: isBooking ?? this.isBooking,
       createdBooking: createdBooking ?? this.createdBooking,
-      paymentMethods: paymentMethods ?? this.paymentMethods,
       bookingError: clearBookingError
           ? null
           : (bookingError ?? this.bookingError),

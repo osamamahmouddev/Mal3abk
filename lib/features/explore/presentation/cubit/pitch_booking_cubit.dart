@@ -1,30 +1,28 @@
-import 'dart:math';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/network/api_result.dart';
+import '../../../../core/utils/cairo_time.dart';
+import '../../../../core/utils/idempotency_keys.dart';
 import '../../../booking/data/models/booking_quote_request_body.dart';
 import '../../../booking/data/models/create_booking_request_body.dart';
 import '../../../booking/domain/use_cases/create_booking_use_case.dart';
 import '../../../booking/domain/use_cases/get_booking_quote_use_case.dart';
 import '../../data/models/venue_availability_model.dart';
-import '../../data/models/venue_payment_method_model.dart';
 import '../../domain/use_cases/get_venue_availability_use_case.dart';
-import '../../domain/use_cases/get_venue_payment_methods_use_case.dart';
 import 'pitch_booking_state.dart';
 
 class PitchBookingCubit extends Cubit<PitchBookingState> {
   PitchBookingCubit({
     required this.getVenueAvailabilityUseCase,
-    required this.getVenuePaymentMethodsUseCase,
     required this.getBookingQuoteUseCase,
     required this.createBookingUseCase,
   }) : super(const PitchBookingInitial());
 
   final GetVenueAvailabilityUseCase getVenueAvailabilityUseCase;
-  final GetVenuePaymentMethodsUseCase getVenuePaymentMethodsUseCase;
   final GetBookingQuoteUseCase getBookingQuoteUseCase;
   final CreateBookingUseCase createBookingUseCase;
 
+  final IdempotencyKeys _idempotencyKeys = IdempotencyKeys();
   String? _currentVenueId;
 
   String _formatDate(DateTime dt) {
@@ -32,35 +30,6 @@ class PitchBookingCubit extends Cubit<PitchBookingState> {
     final m = dt.month.toString().padLeft(2, '0');
     final d = dt.day.toString().padLeft(2, '0');
     return '$y-$m-$d';
-  }
-
-  String _generateUuidV4() {
-    final rng = Random.secure();
-    final bytes = List<int>.generate(16, (_) => rng.nextInt(256));
-    bytes[6] = (bytes[6] & 0x0f) | 0x40;
-    bytes[8] = (bytes[8] & 0x3f) | 0x80;
-    return [
-      bytes
-          .sublist(0, 4)
-          .map((b) => b.toRadixString(16).padLeft(2, '0'))
-          .join(),
-      bytes
-          .sublist(4, 6)
-          .map((b) => b.toRadixString(16).padLeft(2, '0'))
-          .join(),
-      bytes
-          .sublist(6, 8)
-          .map((b) => b.toRadixString(16).padLeft(2, '0'))
-          .join(),
-      bytes
-          .sublist(8, 10)
-          .map((b) => b.toRadixString(16).padLeft(2, '0'))
-          .join(),
-      bytes
-          .sublist(10, 16)
-          .map((b) => b.toRadixString(16).padLeft(2, '0'))
-          .join(),
-    ].join('-');
   }
 
   Future<void> loadAvailability(
@@ -71,19 +40,13 @@ class PitchBookingCubit extends Cubit<PitchBookingState> {
     _currentVenueId = venueId;
     emit(const PitchBookingLoading());
 
-    final targetDate = DateTime.now().add(Duration(days: dayIndex));
+    final targetDate = CairoTime.today().add(Duration(days: dayIndex));
     final dateStr = _formatDate(targetDate);
 
     final availResult = await getVenueAvailabilityUseCase(venueId, dateStr);
-    final paymentResult = await getVenuePaymentMethodsUseCase(venueId);
 
     await availResult.when(
       success: (availability) async {
-        final paymentMethods = paymentResult.when(
-          success: (methods) => methods,
-          failure: (_) => const <VenuePaymentMethodModel>[],
-        );
-
         SlotModel? initialSlot;
         if (availability.pitches.isNotEmpty) {
           final validPitchIndex = pitchIndex < availability.pitches.length
@@ -103,7 +66,6 @@ class PitchBookingCubit extends Cubit<PitchBookingState> {
           selectedPitchIndex: pitchIndex,
           selectedDayIndex: dayIndex,
           selectedSlot: initialSlot,
-          paymentMethods: paymentMethods,
         );
         emit(loadedState);
 
@@ -121,10 +83,7 @@ class PitchBookingCubit extends Cubit<PitchBookingState> {
     if (_currentVenueId == null) return;
     final current = state;
     if (current is! PitchBookingLoaded) {
-      await loadAvailability(
-        _currentVenueId!,
-        dayIndex: dayIndex,
-      );
+      await loadAvailability(_currentVenueId!, dayIndex: dayIndex);
       return;
     }
 
@@ -138,7 +97,7 @@ class PitchBookingCubit extends Cubit<PitchBookingState> {
       ),
     );
 
-    final targetDate = DateTime.now().add(Duration(days: dayIndex));
+    final targetDate = CairoTime.today().add(Duration(days: dayIndex));
     final dateStr = _formatDate(targetDate);
     final availResult = await getVenueAvailabilityUseCase(
       _currentVenueId!,
@@ -149,8 +108,8 @@ class PitchBookingCubit extends Cubit<PitchBookingState> {
       success: (availability) async {
         final validPitchIndex =
             current.selectedPitchIndex < availability.pitches.length
-                ? current.selectedPitchIndex
-                : 0;
+            ? current.selectedPitchIndex
+            : 0;
 
         SlotModel? initialSlot;
         if (availability.pitches.isNotEmpty) {
@@ -274,7 +233,9 @@ class PitchBookingCubit extends Cubit<PitchBookingState> {
 
     emit(current.copyWith(isBooking: true, clearBookingError: true));
 
-    final idempotencyKey = _generateUuidV4();
+    final operation =
+        'create:${pitch.pitchId}:${slot.startUtc}:${quote.quoteToken}';
+    final idempotencyKey = _idempotencyKeys.keyFor(operation);
     final result = await createBookingUseCase(
       body: CreateBookingRequestBody(
         pitchId: pitch.pitchId,
@@ -293,6 +254,7 @@ class PitchBookingCubit extends Cubit<PitchBookingState> {
 
     return result.when(
       success: (booking) {
+        _idempotencyKeys.complete(operation);
         emit(updated.copyWith(isBooking: false, createdBooking: booking));
         return true;
       },

@@ -6,7 +6,6 @@ import '../models/explore_result_model.dart';
 import '../models/pitch_details_model.dart';
 import '../models/venue_availability_model.dart';
 import '../models/venue_details_model.dart';
-import '../models/venue_payment_method_model.dart';
 
 class ExploreRepoImpl implements ExploreRepo {
   ExploreRepoImpl({required this.exploreApiService});
@@ -65,18 +64,6 @@ class ExploreRepoImpl implements ExploreRepo {
         venueId,
         date,
       );
-      return ApiResult.success(response);
-    } catch (e, st) {
-      return ApiResult.failure(ApiFailureMapper.map(e, st));
-    }
-  }
-
-  @override
-  Future<ApiResult<List<VenuePaymentMethodModel>>> getVenuePaymentMethods(
-    String venueId,
-  ) async {
-    try {
-      final response = await exploreApiService.getVenuePaymentMethods(venueId);
       return ApiResult.success(response);
     } catch (e, st) {
       return ApiResult.failure(ApiFailureMapper.map(e, st));

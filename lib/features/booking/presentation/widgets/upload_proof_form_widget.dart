@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
@@ -11,79 +10,38 @@ import '../../../../core/widgets/app_checkbox_widget.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../core/widgets/form_field_label_widget.dart';
 import '../../../../core/widgets/icon_note_widget.dart';
+import '../../data/models/player_booking_detail_model.dart';
 import 'upload_proof_booking_card_widget.dart';
 import 'upload_proof_dropzone_widget.dart';
 
-class UploadProofFormWidget extends HookWidget {
+class UploadProofFormWidget extends StatelessWidget {
   const UploadProofFormWidget({
+    required this.booking,
     required this.hasFile,
     required this.confirmed,
+    required this.senderController,
     required this.onPickFile,
     required this.onConfirmChanged,
-    this.remaining = '١٤:٥٩',
-    this.pitchName,
-    this.meta,
-    this.depositAmount,
-    this.onSenderChanged,
     super.key,
   });
 
+  final PlayerBookingDetailModel booking;
   final bool hasFile;
   final bool confirmed;
+  final TextEditingController senderController;
   final VoidCallback onPickFile;
   final ValueChanged<bool> onConfirmChanged;
-  final String remaining;
-  final String? pitchName;
-  final String? meta;
-  final double? depositAmount;
-  final ValueChanged<String>? onSenderChanged;
 
   @override
   Widget build(BuildContext context) {
-    final defaultAmount = depositAmount != null
-        ? depositAmount!.toInt().toString()
-        : '٥٠';
-    final amountController = useTextEditingController(text: defaultAmount);
-    final senderController = useTextEditingController();
-
-    useEffect(() {
-      void listener() {
-        onSenderChanged?.call(senderController.text);
-      }
-
-      senderController.addListener(listener);
-      return () => senderController.removeListener(listener);
-    }, [senderController]);
-
     return ListView(
-      padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
+      physics: const BouncingScrollPhysics(),
+      padding: EdgeInsets.all(16.r),
       children: [
-        UploadProofBookingCardWidget(
-          remaining: remaining,
-          pitchName: pitchName,
-          meta: meta,
-        ),
+        UploadProofBookingCardWidget(booking: booking),
         hSpace(14),
         UploadProofDropzoneWidget(hasFile: hasFile, onTap: onPickFile),
-        hSpace(10),
-        FormFieldLabelWidget(
-          label: 'booking.upload.amount_label'.tr(context: context),
-        ),
-        hSpace(12),
-        CustomTextFormField(
-          controller: amountController,
-          hintText: '',
-          keyboardType: TextInputType.number,
-          style: AppTextStyles.font16Regular,
-          suffixIcon: Padding(
-            padding: EdgeInsetsDirectional.only(end: 14.w, top: 14.h),
-            child: Text(
-              'booking.upload.currency'.tr(context: context),
-              style: AppTextStyles.font14Regular,
-            ),
-          ),
-        ),
-        hSpace(10),
+        hSpace(14),
         FormFieldLabelWidget(
           label: 'booking.upload.sender_label'.tr(context: context),
         ),
@@ -91,7 +49,7 @@ class UploadProofFormWidget extends HookWidget {
         CustomTextFormField(
           controller: senderController,
           hintText: 'booking.upload.sender_hint'.tr(context: context),
-          keyboardType: TextInputType.number,
+          keyboardType: TextInputType.phone,
           style: AppTextStyles.font15Regular,
           hintStyle: AppTextStyles.font15Regular.copyWith(
             color: AppColors.hintText,

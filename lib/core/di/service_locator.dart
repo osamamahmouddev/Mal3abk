@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../features/booking/presentation/cubit/booking_details_cubit.dart';
+import '../../features/booking/presentation/cubit/cancel_booking_cubit.dart';
+import '../../features/booking/presentation/cubit/deposit_methods_cubit.dart';
 import '../../features/home/domain/use_cases/get_home_team_activity_use_case.dart';
 import '../../features/home/presentation/cubit/home_team_activity_cubit.dart';
 import '../../features/matches/data/apis/matches_api_service.dart';
@@ -63,7 +66,6 @@ import '../../features/booking/domain/use_cases/get_booking_detail_use_case.dart
 import '../../features/booking/domain/use_cases/submit_booking_proof_use_case.dart';
 import '../../features/booking/presentation/cubit/proof_upload_cubit.dart';
 import '../../features/explore/domain/use_cases/get_venue_availability_use_case.dart';
-import '../../features/explore/domain/use_cases/get_venue_payment_methods_use_case.dart';
 import '../../features/explore/presentation/cubit/pitch_booking_cubit.dart';
 import '../../features/home/data/apis/home_api_service.dart';
 import '../../features/home/data/repos/home_repo_impl.dart';
@@ -331,9 +333,6 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
   sl.registerLazySingleton<GetVenueAvailabilityUseCase>(
     () => GetVenueAvailabilityUseCase(exploreRepo: sl<ExploreRepo>()),
   );
-  sl.registerLazySingleton<GetVenuePaymentMethodsUseCase>(
-    () => GetVenuePaymentMethodsUseCase(exploreRepo: sl<ExploreRepo>()),
-  );
   sl.registerFactory<ExploreListCubit>(
     () => ExploreListCubit(exploreVenuesUseCase: sl<ExploreVenuesUseCase>()),
   );
@@ -346,7 +345,6 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
   sl.registerFactory<PitchBookingCubit>(
     () => PitchBookingCubit(
       getVenueAvailabilityUseCase: sl<GetVenueAvailabilityUseCase>(),
-      getVenuePaymentMethodsUseCase: sl<GetVenuePaymentMethodsUseCase>(),
       getBookingQuoteUseCase: sl<GetBookingQuoteUseCase>(),
       createBookingUseCase: sl<CreateBookingUseCase>(),
     ),
@@ -391,6 +389,17 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
   );
   sl.registerLazySingleton<SubmitBookingProofUseCase>(
     () => SubmitBookingProofUseCase(bookingRepo: sl<BookingRepo>()),
+  );
+  sl.registerFactory<BookingDetailsCubit>(
+    () => BookingDetailsCubit(
+      getBookingDetailUseCase: sl<GetBookingDetailUseCase>(),
+    ),
+  );
+  sl.registerFactory<DepositMethodsCubit>(
+    () => DepositMethodsCubit(bookingRepo: sl<BookingRepo>()),
+  );
+  sl.registerFactory<CancelBookingCubit>(
+    () => CancelBookingCubit(bookingRepo: sl<BookingRepo>()),
   );
   sl.registerFactory<MyBookingsCubit>(
     () => MyBookingsCubit(getMyBookingsUseCase: sl<GetMyBookingsUseCase>()),

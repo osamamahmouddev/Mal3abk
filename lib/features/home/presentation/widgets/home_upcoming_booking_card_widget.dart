@@ -4,19 +4,28 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/app/app_spaces.dart';
-import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/app_badge_widget.dart';
+import '../../../../core/utils/cairo_time.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
+import '../../../booking/data/models/player_booking_summary_model.dart';
+import '../../../booking/presentation/widgets/booking_status_style.dart';
 
 class HomeUpcomingBookingCardWidget extends StatelessWidget {
-  const HomeUpcomingBookingCardWidget({super.key});
+  const HomeUpcomingBookingCardWidget({
+    required this.booking,
+    required this.onTap,
+    super.key,
+  });
+
+  final PlayerBookingSummaryModel booking;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return CustomCardWidget(
-      onTap: () => Navigator.of(context).pushNamed(AppRoutes.bookingDetails),
+      onTap: onTap,
       padding: EdgeInsets.all(12.r),
       child: Row(
         children: [
@@ -34,20 +43,27 @@ class HomeUpcomingBookingCardWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'home.sample_pitch_name'.tr(context: context),
+                  [?booking.venueName, ?booking.pitchName].join(' · '),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: AppTextStyles.font15Bold,
                 ),
                 hSpace(4),
                 Text(
-                  'home.sample_booking_time'.tr(context: context),
+                  CairoTime.dayAndTime(
+                    booking.startAt,
+                    context.locale.languageCode,
+                  ),
                   style: AppTextStyles.font12Regular,
                 ),
               ],
             ),
           ),
           AppBadgeWidget(
-            text: 'home.in_review'.tr(context: context),
-            type: AppBadgeType.warning,
+            text: BookingStatusStyle.labelKey(
+              booking.status,
+            ).tr(context: context),
+            type: BookingStatusStyle.badge(booking.status),
             borderRadius: 13,
             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
           ),

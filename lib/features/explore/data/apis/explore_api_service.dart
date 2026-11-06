@@ -6,7 +6,6 @@ import '../models/explore_result_model.dart';
 import '../models/pitch_details_model.dart';
 import '../models/venue_availability_model.dart';
 import '../models/venue_details_model.dart';
-import '../models/venue_payment_method_model.dart';
 
 part 'explore_api_service.g.dart';
 
@@ -32,10 +31,5 @@ abstract class ExploreApiService {
   Future<VenueAvailabilityModel> getVenueAvailability(
     @Path('id') String venueId,
     @Query('date') String date,
-  );
-
-  @GET(ApiConstants.venuePaymentMethods)
-  Future<List<VenuePaymentMethodModel>> getVenuePaymentMethods(
-    @Path('id') String venueId,
   );
 }

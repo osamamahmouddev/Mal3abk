@@ -29,7 +29,8 @@
       "days": "{}d ago"
     },
     "resend_in": "You can request a new code in {}",
-    "resend_code": "Send a new code"
+    "resend_code": "Send a new code",
+    "price_egp": "EGP {}"
   },
   "errors": {
     "network": "Unable to connect to the server. Please check your internet connection.",
@@ -219,9 +220,6 @@
     "teams_activity": "Teams Activity",
     "nearby_pitches": "Nearby Pitches",
     "on_map": "On Map",
-    "sample_pitch_name": "Stars Pitch — Field 1",
-    "sample_booking_time": "Sat Jul 26 · 8:00 PM",
-    "in_review": "Under Review",
     "review": "Review",
     "my_teams": "My teams",
     "sample_venue1_name": "Al Nogoum Pitch",
@@ -469,43 +467,34 @@
     "pending_note": "Venue is reviewing transfer — reply expected soon",
     "rejected_note": "Reason: Receipt amount is 30 EGP instead of 60 EGP. Please re-upload within 45 minutes.",
     "reupload_btn": "Re-upload Receipt",
-    "sample_pitch": "Al Nogoum — Pitch 1",
     "sample_time": "Sat, Jul 26 · 8:00 – 9:00 PM",
     "sample_pitch_specs": "5-a-side · Artificial turf",
     "sample_manager": "Ahmed Samy · 01012345678",
-    "amount_150": "150 EGP",
     "amount_0": "0 EGP",
-    "amount_50": "50 EGP",
-    "amount_100": "100 EGP",
     "agree_policy_required": "Please agree to the booking policy first",
     "deposit": {
       "title": "Pay deposit",
       "timer_title": "Slot held temporarily — {} left",
       "timer_body": "Upload the transfer receipt before time runs out. The booking isn't confirmed until the venue reviews the transfer.",
       "booking_no": "Booking no.",
-      "sample_booking_no": "KH-2607-0142",
-      "sample_slot": "Sat, Jul 26 · 8:00 – 9:00 PM · 5-a-side",
       "choose_method": "Choose transfer method",
-      "vodafone": "Vodafone Cash",
-      "vodafone_sub": "Transfer from any wallet",
       "instapay": "InstaPay",
-      "instapay_sub": "Instant transfer from your bank account",
       "wallet_number": "Wallet number",
-      "sample_wallet": "01012345678",
       "copy": "Copy",
       "copied": "Number copied",
       "recipient": "Recipient name",
-      "sample_recipient": "Al Nogoum Sports Pitches",
       "tip": "Write booking no. {} in the transfer note so the venue can match the amount quickly.",
       "steps": "Steps",
       "step1": "Transfer exactly 50 EGP to the number or account",
       "step2": "Take a clear photo of the transfer receipt",
       "step3": "Upload the receipt — the venue reviews within 2 hours",
       "cta": "I've transferred — upload receipt",
-      "cancel_request": "Cancel booking request"
+      "cancel_request": "Cancel booking request",
+      "no_methods": "The venue hasn't added a payment method yet. Contact the venue before sending any money.",
+      "wallet": "Mobile wallet",
+      "instapay_address": "InstaPay address"
     },
     "upload": {
-      "sample_meta": "Sat, Jul 26 · 8:00 PM · Deposit 50 EGP",
       "title": "Upload receipt photo",
       "formats": "JPG, PNG or PDF · up to 5 MB",
       "pick": "Take a photo or choose from gallery",
@@ -519,7 +508,11 @@
       "submit": "Submit receipt for review",
       "missing": "Upload the receipt and confirm the transfer first",
       "success_title": "Receipt uploaded",
-      "success_body": "The venue is reviewing your request. We'll notify you once the booking is confirmed."
+      "success_body": "The venue is reviewing your request. We'll notify you once the booking is confirmed.",
+      "cta": "Upload receipt",
+      "amount_due": "Deposit due: EGP {}",
+      "closed": "You can't upload a receipt for this booking now.",
+      "sent": "Receipt sent — the venue is reviewing it."
     },
     "rejected": {
       "title": "The venue rejected the transfer receipt",
@@ -551,8 +544,6 @@
     "details": {
       "confirmed": "✓ Confirmed",
       "in_days": "In 5 days",
-      "sample_pitch": "Delta Academy — Pitch 2",
-      "sample_slot": "Thu, Jul 31 · 9:00 – 10:00 PM · 7-a-side",
       "show_venue": "Show this to the venue on arrival",
       "sample_code": "KH-3107-0098",
       "directions": "Directions",
@@ -584,14 +575,17 @@
     "amount_70": "70 EGP",
     "amount_130": "130 EGP",
     "list": {
-      "sample1_time": "Sat, Jul 26 · 8:00 – 9:00 PM",
-      "sample1_deposit": "50 EGP · uploaded 7:09 PM",
       "sample2_venue": "Al Madina Pitch",
       "sample2_time": "Mon, Jul 28 · 10:00 – 11:00 PM",
-      "sample2_note": "Reason: the receipt shows 30 EGP. Re-upload within 45 minutes."
+      "sample2_note": "Reason: the receipt shows 30 EGP. Re-upload within 45 minutes.",
+      "details": "Details",
+      "empty_desc": "Book a pitch from Explore and it will show up here.",
+      "empty_upcoming": "No upcoming bookings",
+      "empty_pending": "Nothing pending",
+      "empty_completed": "No past matches",
+      "empty_cancelled": "No cancelled bookings"
     },
     "cancel": {
-      "sample_meta": "Thu, Jul 31 · 9:00 PM · KH-3107-0098",
       "free_header": "Free cancellation — 4 h 20 min left before the deadline",
       "late_header": "Free cancellation deadline passed (Thu 3:00 PM)",
       "paid_deposit": "Deposit paid",
@@ -607,7 +601,41 @@
       "keep": "Keep booking",
       "confirm": "Confirm cancellation",
       "choose_reason": "Choose a cancellation reason first",
-      "done": "Booking cancelled"
+      "done": "Booking cancelled",
+      "not_allowed": "This booking can't be cancelled now.",
+      "refund_amount": "You'll get back EGP {} ({}% of the deposit)",
+      "no_refund": "The deposit isn't refundable under the venue's policy.",
+      "deadline": "Free cancellation until {}"
+    },
+    "status": {
+      "draft": "New",
+      "pendingDeposit": "Awaiting deposit",
+      "proofSubmitted": "Receipt sent",
+      "underReview": "Under review",
+      "confirmed": "Confirmed",
+      "rejected": "Receipt rejected",
+      "expired": "Expired",
+      "cancelled": "Cancelled",
+      "completed": "Played",
+      "noShow": "No-show"
+    },
+    "pass": {
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "in_days": "In {} days",
+      "qr_hint": "Show this code to the venue when you arrive.",
+      "awaiting_venue": "The venue is reviewing your transfer receipt. We'll let you know once it's confirmed.",
+      "proof_rejected": "The venue rejected the receipt. Upload a valid one before the hold ends.",
+      "directions": "Directions",
+      "calendar": "Calendar",
+      "share": "Share",
+      "maps_unavailable": "Couldn't open maps right now.",
+      "calendar_note": "Pitch booking — reference {}",
+      "share_text": "⚽ Match at {}\n🕗 {}\n📍 {}\nBooking: {}",
+      "payment": "Payment",
+      "total": "Booking total",
+      "deposit": "Deposit",
+      "at_venue": "Due at the venue"
     }
   },
   "teams": {
