@@ -10,6 +10,7 @@ import '../../../step_up/presentation/widgets/step_up_sheet_widget.dart';
 import '../cubit/account_action.dart';
 import '../cubit/account_action_cubit.dart';
 import '../cubit/account_action_state.dart';
+import 'biometric_lock_bloc_builder.dart';
 import 'logout_bloc_listener.dart';
 import 'logout_tiles_bloc_builder.dart';
 import 'settings_action_tile_widget.dart';
@@ -66,6 +67,7 @@ class SettingsAccountSectionWidget extends StatelessWidget {
                 title: 'settings.change_phone'.tr(context: context),
                 onTap: () => context.pushNamed(AppRoutes.changePhone),
               ),
+              const BiometricLockBlocBuilder(),
               SettingsActionTileWidget(
                 icon: Icons.devices_rounded,
                 title: 'settings.sessions.title'.tr(context: context),

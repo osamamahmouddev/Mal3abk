@@ -67,5 +67,23 @@ void main() {
 
       expect(cubit.state, const SendOtpState.initial());
     });
+
+    test('resends on the code step and restarts the countdown', () async {
+      when(
+        () => useCase(any()),
+      ).thenAnswer((_) async => const ApiResult.success(sendOtpResponse));
+      await cubit.sendOtp('01012345678');
+
+      final expectation = expectLater(
+        cubit.stream,
+        emitsInOrder([
+          const SendOtpState.success(sendOtpResponse, resending: true),
+          const SendOtpState.success(sendOtpResponse, sendCount: 2),
+        ]),
+      );
+      await cubit.resend();
+      await expectation;
+      verify(() => useCase(testPhoneNumber)).called(1);
+    });
   });
 }

@@ -13,6 +13,7 @@ import '../../features/settings/data/repos/account_repo_impl.dart';
 import '../../features/settings/domain/repos/account_repo.dart';
 import '../../features/settings/domain/use_cases/delete_account_use_case.dart';
 import '../../features/settings/presentation/cubit/account_action_cubit.dart';
+import '../../features/settings/presentation/cubit/biometric_lock_cubit.dart';
 import '../../features/settings/presentation/cubit/consents_cubit.dart';
 import '../../features/settings/presentation/cubit/notification_preferences_cubit.dart';
 import '../../features/settings/presentation/cubit/sessions_cubit.dart';
@@ -35,6 +36,7 @@ import '../../features/matches/presentation/cubit/challenge_response_cubit.dart'
 import '../../features/matches/presentation/cubit/match_details_cubit.dart';
 import '../../features/matches/presentation/cubit/match_result_cubit.dart';
 import '../../features/matches/presentation/cubit/send_challenge_cubit.dart';
+import '../security/biometric_lock.dart';
 import '../../features/auth/data/apis/auth_api_service.dart';
 import '../../features/auth/data/repos/auth_repo_impl.dart';
 import '../../features/auth/domain/repos/auth_repo.dart';
@@ -136,6 +138,7 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
 
   // Environment & External
   sl.registerSingleton<EnvConfig>(envConfig);
+  sl.registerLazySingleton<BiometricLock>(BiometricLock.new);
   sl.registerLazySingleton<AuthTokenStorage>(AuthTokenStorage.new);
   sl.registerLazySingleton<DeviceIdStorage>(DeviceIdStorage.new);
   sl.registerLazySingleton<TurnstileTokenProvider>(
@@ -174,7 +177,10 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
     () => CheckAuthStatusUseCase(splashRepo: sl<SplashRepo>()),
   );
   sl.registerFactory<SplashCubit>(
-    () => SplashCubit(checkAuthStatusUseCase: sl<CheckAuthStatusUseCase>()),
+    () => SplashCubit(
+      checkAuthStatusUseCase: sl<CheckAuthStatusUseCase>(),
+      biometricLock: sl<BiometricLock>(),
+    ),
   );
 
   // Auth Feature
@@ -501,6 +507,9 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
     () => NotificationPreferencesCubit(
       notificationsRepo: sl<NotificationsRepo>(),
     ),
+  );
+  sl.registerFactory<BiometricLockCubit>(
+    () => BiometricLockCubit(biometricLock: sl<BiometricLock>()),
   );
   sl.registerFactory<OnboardingConsentCubit>(
     () => OnboardingConsentCubit(accountRepo: sl<AccountRepo>()),

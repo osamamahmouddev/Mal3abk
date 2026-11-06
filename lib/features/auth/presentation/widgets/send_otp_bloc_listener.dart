@@ -18,6 +18,8 @@ class SendOtpBlocListener extends StatelessWidget {
         switch (state) {
           case SendOtpError(:final message):
             AppTopSnackBar.showError(context, message.tr(context: context));
+          case SendOtpSuccess(:final resendError?):
+            AppTopSnackBar.showError(context, resendError.tr(context: context));
           default:
             break;
         }

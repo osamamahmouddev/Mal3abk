@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mal3abk/core/security/biometric_lock.dart';
 import 'package:mal3abk/features/splash/domain/use_cases/check_auth_status_use_case.dart';
 import 'package:mal3abk/features/splash/presentation/cubit/splash_cubit.dart';
 import 'package:mal3abk/features/splash/presentation/cubit/splash_state.dart';
@@ -7,64 +8,85 @@ import 'package:mocktail/mocktail.dart';
 class MockCheckAuthStatusUseCase extends Mock
     implements CheckAuthStatusUseCase {}
 
+class MockBiometricLock extends Mock implements BiometricLock {}
+
 void main() {
-  late MockCheckAuthStatusUseCase mockUseCase;
+  late MockCheckAuthStatusUseCase checkAuth;
+  late MockBiometricLock lock;
+  late SplashCubit cubit;
 
   setUp(() {
-    mockUseCase = MockCheckAuthStatusUseCase();
+    checkAuth = MockCheckAuthStatusUseCase();
+    lock = MockBiometricLock();
+    when(() => lock.isEnabled()).thenAnswer((_) async => false);
+    when(() => lock.isAvailable()).thenAnswer((_) async => true);
+    cubit = SplashCubit(
+      checkAuthStatusUseCase: checkAuth,
+      biometricLock: lock,
+      delay: Duration.zero,
+    );
   });
 
-  group('SplashCubit', () {
-    test('initial state is SplashState.initial()', () {
-      final cubit = SplashCubit(
-        checkAuthStatusUseCase: mockUseCase,
-        delay: Duration.zero,
-      );
-      expect(cubit.state, const SplashState.initial());
-      cubit.close();
-    });
+  tearDown(() => cubit.close());
 
-    test('emits [loading, authenticated] when user is logged in', () async {
-      when(() => mockUseCase()).thenAnswer((_) async => true);
-      final cubit = SplashCubit(
-        checkAuthStatusUseCase: mockUseCase,
-        delay: Duration.zero,
-      );
+  test('initial state is SplashState.initial()', () {
+    expect(cubit.state, const SplashState.initial());
+  });
 
-      final expectation = expectLater(
-        cubit.stream,
-        emitsInOrder([
-          const SplashState.loading(),
-          const SplashState.authenticated(),
-        ]),
-      );
+  test('opens the app for a signed-in player without the lock', () async {
+    when(() => checkAuth()).thenAnswer((_) async => true);
 
-      await cubit.checkAuth();
-      await expectation;
-      await cubit.close();
-    });
-
-    test(
-      'emits [loading, unauthenticated] when user is not logged in',
-      () async {
-        when(() => mockUseCase()).thenAnswer((_) async => false);
-        final cubit = SplashCubit(
-          checkAuthStatusUseCase: mockUseCase,
-          delay: Duration.zero,
-        );
-
-        final expectation = expectLater(
-          cubit.stream,
-          emitsInOrder([
-            const SplashState.loading(),
-            const SplashState.unauthenticated(),
-          ]),
-        );
-
-        await cubit.checkAuth();
-        await expectation;
-        await cubit.close();
-      },
+    final expectation = expectLater(
+      cubit.stream,
+      emitsInOrder([
+        const SplashState.loading(),
+        const SplashState.authenticated(),
+      ]),
     );
+    await cubit.checkAuth();
+    await expectation;
+  });
+
+  test('goes to login when nobody is signed in', () async {
+    when(() => checkAuth()).thenAnswer((_) async => false);
+
+    final expectation = expectLater(
+      cubit.stream,
+      emitsInOrder([
+        const SplashState.loading(),
+        const SplashState.unauthenticated(),
+      ]),
+    );
+    await cubit.checkAuth();
+    await expectation;
+    verifyNever(() => lock.isEnabled());
+  });
+
+  test('stays locked until the biometric check passes', () async {
+    when(() => checkAuth()).thenAnswer((_) async => true);
+    when(() => lock.isEnabled()).thenAnswer((_) async => true);
+    var attempts = 0;
+    when(
+      () => lock.authenticate(any()),
+    ).thenAnswer((_) async => attempts++ > 0);
+
+    await cubit.checkAuth();
+    expect(cubit.state, const SplashState.locked());
+
+    await cubit.unlock('reason');
+    expect(cubit.state, const SplashState.locked());
+
+    await cubit.unlock('reason');
+    expect(cubit.state, const SplashState.authenticated());
+  });
+
+  test('ignores the lock when the device lost its biometrics', () async {
+    when(() => checkAuth()).thenAnswer((_) async => true);
+    when(() => lock.isEnabled()).thenAnswer((_) async => true);
+    when(() => lock.isAvailable()).thenAnswer((_) async => false);
+
+    await cubit.checkAuth();
+
+    expect(cubit.state, const SplashState.authenticated());
   });
 }

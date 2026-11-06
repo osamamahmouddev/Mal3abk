@@ -132,7 +132,12 @@
     "password_hint": "Enter your password",
     "welcome_back": "Welcome back!",
     "login_prompt": "Sign in to manage your sports field bookings",
-    "logout": "Logout"
+    "logout": "Logout",
+    "lock": {
+      "unlock": "Unlock with biometrics",
+      "reason": "Confirm it's you to open Malabak",
+      "use_phone": "Sign in with your phone number instead"
+    }
   },
   "validation": {
     "email_required": "Email is required.",
@@ -995,6 +1000,10 @@
       "confirm_body": "We'll close your account and erase your personal data. Upcoming bookings will be cancelled. This can't be undone.",
       "confirm_action": "Delete account",
       "done": "Your account was deleted."
+    },
+    "biometric": {
+      "title": "Lock the app with biometrics",
+      "sub": "Malabak asks for your fingerprint or face each time it opens"
     }
   },
   "phone_change": {

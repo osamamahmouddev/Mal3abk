@@ -37,6 +37,7 @@ import '../../features/onboarding/presentation/cubit/onboarding_consent_cubit.da
 import '../../features/profile/data/models/my_profile_model.dart';
 import '../../features/notifications/data/models/notification_model.dart';
 import '../../features/settings/presentation/cubit/account_action_cubit.dart';
+import '../../features/settings/presentation/cubit/biometric_lock_cubit.dart';
 import '../../features/settings/presentation/cubit/consents_cubit.dart';
 import '../../features/settings/presentation/cubit/notification_preferences_cubit.dart';
 import '../../features/settings/presentation/cubit/sessions_cubit.dart';
@@ -117,8 +118,13 @@ class AppRouter {
       case AppRoutes.splash:
         return MaterialPageRoute(
           settings: const RouteSettings(name: AppRoutes.splash),
-          builder: (_) => BlocProvider<SplashCubit>(
-            create: (_) => sl<SplashCubit>()..checkAuth(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<SplashCubit>(
+                create: (_) => sl<SplashCubit>()..checkAuth(),
+              ),
+              BlocProvider<LogoutCubit>(create: (_) => sl<LogoutCubit>()),
+            ],
             child: const SplashScreen(),
           ),
         );
@@ -564,6 +570,9 @@ class AppRouter {
               ),
               BlocProvider<AccountActionCubit>(
                 create: (_) => sl<AccountActionCubit>(),
+              ),
+              BlocProvider<BiometricLockCubit>(
+                create: (_) => sl<BiometricLockCubit>()..load(),
               ),
             ],
             child: const SettingsScreen(),

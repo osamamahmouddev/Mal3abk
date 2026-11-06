@@ -22,5 +22,21 @@ class SendOtpCubit extends Cubit<SendOtpState>
     );
   }
 
+  /// Sends a new code to the number already shown, staying on the code step.
+  Future<void> resend() async {
+    final current = state;
+    if (current is! SendOtpSuccess || current.resending) return;
+    emitIfOpen(current.copyWith(resending: true, resendError: null));
+    final result = await sendOtpUseCase(current.data.normalizedPhoneNumber);
+    result.when(
+      success: (data) => emitIfOpen(
+        SendOtpState.success(data, sendCount: current.sendCount + 1),
+      ),
+      failure: (failure) => emitIfOpen(
+        current.copyWith(resending: false, resendError: failure.message),
+      ),
+    );
+  }
+
   void reset() => emitIfOpen(const SendOtpState.initial());
 }
