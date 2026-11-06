@@ -19,9 +19,10 @@ class ExploreSearchSummaryBlocBuilder extends StatelessWidget {
         return ExploreSearchSummaryWidget(
           activeFilters: cubit.filter.activeCount,
           onOpenFilters: () async {
-            final next = await Navigator.of(
-              context,
-            ).pushNamed(AppRoutes.filtersAndSort, arguments: cubit.filter);
+            final next = await Navigator.of(context).pushNamed(
+              AppRoutes.filtersAndSort,
+              arguments: (cubit.filter, cubit.near != null),
+            );
             if (next is ExploreFilterModel) await cubit.applyFilter(next);
           },
         );

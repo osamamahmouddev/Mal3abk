@@ -19,12 +19,15 @@ class LocationPermissionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void next({required bool granted}) {
-      context.read<OnboardingConsentCubit>().record(
-        ConsentType.location,
-        granted: granted,
-      );
-      Navigator.of(context).pushNamed(AppRoutes.notificationsPermission);
+    Future<void> next({required bool granted}) async {
+      final cubit = context.read<OnboardingConsentCubit>();
+      final navigator = Navigator.of(context);
+      if (granted) {
+        await cubit.allowLocation();
+      } else {
+        cubit.record(ConsentType.location, granted: false);
+      }
+      await navigator.pushNamed(AppRoutes.notificationsPermission);
     }
 
     return Scaffold(

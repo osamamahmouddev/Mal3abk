@@ -20,6 +20,15 @@ Plain HTTP is allowed only in the Android **debug** manifest. Release builds sta
 
 The web build cannot call the local API, because the API's CORS policy only allows the web dashboard origins. Mobile builds are not affected.
 
+## Google Maps key
+
+The key is never committed. Each developer adds it locally:
+
+- Android: `MAPS_API_KEY=…` in `android/local.properties` (git-ignored); `android/app/build.gradle.kts` passes it to the manifest.
+- iOS: `MAPS_API_KEY = …` in `ios/Flutter/Secrets.xcconfig` (git-ignored, included optionally by `Debug.xcconfig` and `Release.xcconfig`); `AppDelegate` reads it from `GMSApiKey` in `Info.plist`.
+
+Restrict the key in Google Cloud to the Maps SDKs and to the app's package name with signing SHA-1 (Android) and bundle id (iOS). CI and release builds need the same two files created from a secret.
+
 ## Client foundation (`lib/core/network`, `lib/core/local_storage`)
 
 - **`DioFactory`**: JSON, 30 s connect/send/receive timeouts, and `RequestHeadersInterceptor`, which sends `X-Locale`, `Accept-Language` (`ar` / `en`) and `X-Device-Id`.
@@ -72,7 +81,7 @@ Every screen below reads and writes the API; none keeps sample data. Times are s
 |---|---|---|
 | Profile and onboarding | `GET /me`, `PUT /me/onboarding/profile`, `PATCH /me`, `POST /media/uploads`, `PUT /me/avatar`, `DELETE /me/avatar`, `GET /players/{id}`, `GET /reference/governorates` | Positions and skill level go as the contract's numbers. Avatars pass a magic-byte check and are re-encoded as JPEG without EXIF on the device (`ImageSanitizer`) before upload. |
 | Home | `GET /home`, `GET /me/bookings?tab=upcoming`, teams and matches below | The feed uses the player's own city and area. |
-| Explore and filters | `GET /venues/explore`, `GET /reference/pitch-types`, `/surfaces`, `/facilities`, `GET/PUT/DELETE /me/favorites`, `GET/DELETE /me/recently-viewed`, `POST /me/recently-viewed/{venueId}` | Sort, kick-off window, price cap, pitch type, surface and facilities. Distance and rating are not offered: the app reads no location and venues have no ratings. |
+| Explore, map and filters | `GET /venues/explore`, `GET /venues/map`, `GET /reference/pitch-types`, `/surfaces`, `/facilities`, `GET/PUT/DELETE /me/favorites`, `GET/DELETE /me/recently-viewed`, `POST /me/recently-viewed/{venueId}` | Sort, kick-off window, price cap, pitch type, surface and facilities. With the player's permission (`LocationService`, `geolocator`), results sort nearest first; the map searches the visible area (at most 2° wide) on Google Maps. Rating isn't offered: venues have no ratings yet. |
 | Venue page and slots | `GET /venues/{id}`, `/pitches`, `/availability`, `POST /bookings/quote` | Prices come only from the server quote. |
 | Booking | `POST /bookings`, `GET /bookings/{id}/payment-methods`, `POST /bookings/{id}/proof/upload-url`, `POST /bookings/{id}/proof/submit`, `GET /bookings/{id}/cancel/preview`, `POST /bookings/{id}/cancel`, `GET /me/bookings`, `GET /me/bookings/{id}` | Create, cancel and proof submit send an `Idempotency-Key` kept per operation, so a retry after a timeout reuses it (`IdempotencyKeys`). The proof key is the uploaded media id. Receipts are sanitized like avatars. The booking pass shows the reference as a QR code, with directions, add to calendar and share. |
 | Teams | `/me/teams`, `/teams`, `/teams/{id}/profile`, invitations, join requests, members, settings, captaincy, leaderboard | Line-ups on the tactical board are stored on the device. |
@@ -82,7 +91,5 @@ Every screen below reads and writes the API; none keeps sample data. Times are s
 
 ## Still open
 
-- **Map**: `ExploreMapScreen` is a static drawing and is not linked from the app. It needs a map provider (Google Maps with an API key, or OpenStreetMap tiles) before it can use `GET /venues/map`.
 - **Push notifications**: there is no Firebase project yet, so the notifications step records the consent but cannot register a push token.
-- **Location**: no location package is used, so explore has no "near me" and the location step records the consent only.
 - **Support**: the backend has no support endpoints yet, so Help shows the FAQ only.

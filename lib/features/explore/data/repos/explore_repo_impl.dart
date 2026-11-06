@@ -1,10 +1,13 @@
 import '../../../../core/network/api_failure_mapper.dart';
+import '../../../../core/location/location_service.dart';
 import '../../../../core/network/api_result.dart';
 import '../../../../core/utils/cairo_time.dart';
 import '../../domain/repos/explore_repo.dart';
 import '../apis/explore_api_service.dart';
 import '../models/explore_filter_model.dart';
 import '../models/explore_result_model.dart';
+import '../models/map_bounds_model.dart';
+import '../models/map_venue_pin_model.dart';
 import '../models/explore_venue_card_model.dart';
 import '../models/pitch_details_model.dart';
 import '../models/venue_availability_model.dart';
@@ -15,40 +18,64 @@ class ExploreRepoImpl implements ExploreRepo {
 
   final ExploreApiService exploreApiService;
 
+  /// Today's Cairo date for a kick-off window, as the API expects it.
+  static String? _dateFor(ExploreFilterModel filter) {
+    if (filter.timeWindow == null) return null;
+    final today = CairoTime.today();
+    return '${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}';
+  }
+
+  static String? _facilities(ExploreFilterModel filter) =>
+      filter.facilities.isEmpty ? null : filter.facilities.join(',');
+
   @override
   Future<ApiResult<ExploreResultModel>> exploreVenues({
+    GeoPoint? near,
     String? city,
     String? area,
     ExploreFilterModel filter = const ExploreFilterModel(),
     int? page,
     int? pageSize,
-  }) async {
-    try {
-      final window = filter.timeWindow;
-      final today = CairoTime.today();
-      final response = await exploreApiService.exploreVenues(
-        city: city,
-        area: area,
-        date: window == null
-            ? null
-            : '${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}',
-        from: window?.from,
-        to: window?.to,
-        maxPrice: filter.maxPrice,
-        pitchType: filter.pitchType,
-        surface: filter.surface,
-        facilities: filter.facilities.isEmpty
-            ? null
-            : filter.facilities.join(','),
-        sort: filter.sort.serverName,
-        page: page,
-        pageSize: pageSize,
-      );
-      return ApiResult.success(response);
-    } catch (e, st) {
-      return ApiResult.failure(ApiFailureMapper.map(e, st));
-    }
-  }
+  }) => _guard(
+    () => exploreApiService.exploreVenues(
+      lat: near?.latitude,
+      lng: near?.longitude,
+      city: city,
+      area: area,
+      date: _dateFor(filter),
+      from: filter.timeWindow?.from,
+      to: filter.timeWindow?.to,
+      maxPrice: filter.maxPrice,
+      pitchType: filter.pitchType,
+      surface: filter.surface,
+      facilities: _facilities(filter),
+      sort: filter.sort == ExploreSortOption.distance && near == null
+          ? ExploreSortOption.popularity.serverName
+          : filter.sort.serverName,
+      page: page,
+      pageSize: pageSize,
+    ),
+  );
+
+  @override
+  Future<ApiResult<MapSearchResultModel>> mapVenues({
+    required MapBoundsModel bounds,
+    ExploreFilterModel filter = const ExploreFilterModel(),
+  }) => _guard(
+    () => exploreApiService.mapVenues(
+      south: bounds.south,
+      west: bounds.west,
+      north: bounds.north,
+      east: bounds.east,
+      date: _dateFor(filter),
+      from: filter.timeWindow?.from,
+      to: filter.timeWindow?.to,
+      maxPrice: filter.maxPrice,
+      pitchType: filter.pitchType,
+      surface: filter.surface,
+      facilities: _facilities(filter),
+    ),
+  );
 
   @override
   Future<ApiResult<VenueDetailsModel>> getVenueDetails(String venueId) async {

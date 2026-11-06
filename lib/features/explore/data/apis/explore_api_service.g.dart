@@ -22,6 +22,8 @@ class _ExploreApiService implements ExploreApiService {
 
   @override
   Future<ExploreResultModel> exploreVenues({
+    double? lat,
+    double? lng,
     String? city,
     String? area,
     String? date,
@@ -37,6 +39,8 @@ class _ExploreApiService implements ExploreApiService {
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
+      r'lat': lat,
+      r'lng': lng,
       r'city': city,
       r'area': area,
       r'date': date,
@@ -301,6 +305,58 @@ class _ExploreApiService implements ExploreApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     await _dio.fetch<void>(_options);
+  }
+
+  @override
+  Future<MapSearchResultModel> mapVenues({
+    required double south,
+    required double west,
+    required double north,
+    required double east,
+    String? date,
+    String? from,
+    String? to,
+    int? maxPrice,
+    String? pitchType,
+    String? surface,
+    String? facilities,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'south': south,
+      r'west': west,
+      r'north': north,
+      r'east': east,
+      r'date': date,
+      r'from': from,
+      r'to': to,
+      r'maxPrice': maxPrice,
+      r'pitchType': pitchType,
+      r'surface': surface,
+      r'facilities': facilities,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<MapSearchResultModel>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/v1/venues/map',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late MapSearchResultModel _value;
+    try {
+      _value = MapSearchResultModel.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

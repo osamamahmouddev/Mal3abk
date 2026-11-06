@@ -8,6 +8,7 @@ import '../../../../core/app/app_spaces.dart';
 import '../../../../core/extensions/app_display_extensions.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
+import '../../../../core/widgets/app_top_snack_bar.dart';
 import '../../../../core/widgets/selectable_tile_widget.dart';
 import '../../data/models/explore_filter_model.dart';
 import '../cubit/explore_list_cubit.dart';
@@ -27,6 +28,11 @@ class ExploreQuickFiltersBlocBuilder extends StatelessWidget {
         final cubit = context.read<ExploreListCubit>();
         final f = cubit.filter;
         final chips = [
+          (
+            'explore.quick.near_me'.tr(context: context),
+            cubit.near != null && f.sort == ExploreSortOption.distance,
+            null,
+          ),
           (
             'explore.quick.tonight'.tr(context: context),
             f.timeWindow == ExploreTimeWindow.evening,
@@ -51,7 +57,9 @@ class ExploreQuickFiltersBlocBuilder extends StatelessWidget {
             f.sort == ExploreSortOption.price,
             () => f.copyWith(
               sort: f.sort == ExploreSortOption.price
-                  ? ExploreSortOption.popularity
+                  ? (cubit.near == null
+                        ? ExploreSortOption.popularity
+                        : ExploreSortOption.distance)
                   : ExploreSortOption.price,
             ),
           ),
@@ -70,9 +78,16 @@ class ExploreQuickFiltersBlocBuilder extends StatelessWidget {
               return SelectableTileWidget(
                 title: label,
                 isSelected: active,
-                onTap: () {
+                onTap: () async {
                   HapticFeedback.selectionClick();
-                  cubit.applyFilter(next());
+                  if (next != null) {
+                    await cubit.applyFilter(next());
+                  } else if (!await cubit.useMyLocation() && context.mounted) {
+                    AppTopSnackBar.showError(
+                      context,
+                      'explore.quick.location_off'.tr(context: context),
+                    );
+                  }
                 },
                 height: 36,
                 borderRadius: 18,

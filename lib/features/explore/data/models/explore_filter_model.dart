@@ -1,6 +1,6 @@
-/// Server `ExploreSort`. Distance needs the player's location, which the app
-/// doesn't read, so it isn't offered.
+/// Server `ExploreSort`. Distance is only offered with the player's location.
 enum ExploreSortOption {
+  distance('Distance'),
   popularity('Popularity'),
   price('Price'),
   name('Name');
@@ -59,7 +59,10 @@ class ExploreFilterModel {
   );
 
   int get activeCount =>
-      (sort == ExploreSortOption.popularity ? 0 : 1) +
+      (sort == ExploreSortOption.popularity ||
+              sort == ExploreSortOption.distance
+          ? 0
+          : 1) +
       (timeWindow == null ? 0 : 1) +
       (maxPrice == null ? 0 : 1) +
       (pitchType == null ? 0 : 1) +

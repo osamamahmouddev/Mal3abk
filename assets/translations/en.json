@@ -294,9 +294,6 @@
     "fav1_meta": "Nasr City · 1.2 km · 3 pitches",
     "fav2_meta": "Nasr City · 2.5 km · 2 pitches",
     "fav3_meta": "Nasr City · 2.0 km · 2 pitches",
-    "map_summary_when": "Sat, Jul 26 · 8:00 PM",
-    "map_available_count": "{} pitches available 8:00 PM",
-    "search_this_area": "Search this area",
     "street_abbas": "Abbas El Akkad St",
     "street_makram": "Makram Ebeid St",
     "pin_booked": "Booked",
@@ -324,7 +321,8 @@
       "sort_name": "By name",
       "time_afternoon": "4 – 7 PM",
       "time_evening": "7 – 10 PM",
-      "time_night": "10 PM – 12 AM"
+      "time_night": "10 PM – 12 AM",
+      "sort_distance": "Nearest"
     },
     "venue": {
       "tab_pitches": "Pitches & prices",
@@ -374,7 +372,16 @@
     "quick": {
       "tonight": "Tonight 7–10",
       "under": "Under EGP {}",
-      "cheapest": "Cheapest first"
+      "cheapest": "Cheapest first",
+      "near_me": "Near me",
+      "location_off": "Turn on location and allow Malabak to use it to see what's nearest."
+    },
+    "map": {
+      "subtitle": "Move the map to search",
+      "count": "{} pitches here",
+      "searching": "Searching…",
+      "zoom_in": "Zoom in a little to see pitches",
+      "truncated": "More pitches match — zoom in to see them all"
     }
   },
   "booking": {

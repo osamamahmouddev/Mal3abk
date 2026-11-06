@@ -14,16 +14,27 @@ import '../widgets/filters_footer_widget.dart';
 
 /// Edits a copy of the explore filters and returns it when applied.
 class FiltersAndSortScreen extends HookWidget {
-  const FiltersAndSortScreen({required this.initial, super.key});
+  const FiltersAndSortScreen({
+    required this.initial,
+    required this.hasLocation,
+    super.key,
+  });
 
   final ExploreFilterModel initial;
+
+  /// Nearest-first only makes sense when the list knows where the player is.
+  final bool hasLocation;
 
   @override
   Widget build(BuildContext context) {
     final filter = useState(initial);
     final lang = context.locale.languageCode;
     String t(String key) => 'explore.filters.$key'.tr(context: context);
-    void clear() => filter.value = const ExploreFilterModel();
+    void clear() => filter.value = ExploreFilterModel(
+      sort: hasLocation
+          ? ExploreSortOption.distance
+          : ExploreSortOption.popularity,
+    );
     final current = filter.value;
 
     return Scaffold(
@@ -55,7 +66,8 @@ class FiltersAndSortScreen extends HookWidget {
             title: t('sort'),
             options: [
               for (final option in ExploreSortOption.values)
-                (option.name, t('sort_${option.name}')),
+                if (hasLocation || option != ExploreSortOption.distance)
+                  (option.name, t('sort_${option.name}')),
             ],
             selected: {current.sort.name},
             onToggle: (name) => filter.value = current.copyWith(

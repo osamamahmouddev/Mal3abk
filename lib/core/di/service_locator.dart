@@ -40,7 +40,9 @@ import '../../features/matches/presentation/cubit/challenge_response_cubit.dart'
 import '../../features/matches/presentation/cubit/match_details_cubit.dart';
 import '../../features/matches/presentation/cubit/match_result_cubit.dart';
 import '../../features/matches/presentation/cubit/send_challenge_cubit.dart';
+import '../location/location_service.dart';
 import '../security/biometric_lock.dart';
+import '../../features/explore/presentation/cubit/explore_map_cubit.dart';
 import '../../features/auth/data/apis/auth_api_service.dart';
 import '../../features/auth/data/repos/auth_repo_impl.dart';
 import '../../features/auth/domain/repos/auth_repo.dart';
@@ -143,6 +145,7 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
   // Environment & External
   sl.registerSingleton<EnvConfig>(envConfig);
   sl.registerLazySingleton<BiometricLock>(BiometricLock.new);
+  sl.registerLazySingleton<LocationService>(LocationService.new);
   sl.registerLazySingleton<AuthTokenStorage>(AuthTokenStorage.new);
   sl.registerLazySingleton<DeviceIdStorage>(DeviceIdStorage.new);
   sl.registerLazySingleton<TurnstileTokenProvider>(
@@ -344,7 +347,10 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
     () => GetVenueAvailabilityUseCase(exploreRepo: sl<ExploreRepo>()),
   );
   sl.registerFactory<ExploreListCubit>(
-    () => ExploreListCubit(exploreVenuesUseCase: sl<ExploreVenuesUseCase>()),
+    () => ExploreListCubit(
+      exploreVenuesUseCase: sl<ExploreVenuesUseCase>(),
+      locationService: sl<LocationService>(),
+    ),
   );
   sl.registerFactory<VenueProfileCubit>(
     () => VenueProfileCubit(
@@ -513,6 +519,12 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
       notificationsRepo: sl<NotificationsRepo>(),
     ),
   );
+  sl.registerFactory<ExploreMapCubit>(
+    () => ExploreMapCubit(
+      exploreRepo: sl<ExploreRepo>(),
+      locationService: sl<LocationService>(),
+    ),
+  );
   sl.registerFactory<RecentlyViewedCubit>(
     () => RecentlyViewedCubit(exploreRepo: sl<ExploreRepo>()),
   );
@@ -529,7 +541,10 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
     () => BiometricLockCubit(biometricLock: sl<BiometricLock>()),
   );
   sl.registerFactory<OnboardingConsentCubit>(
-    () => OnboardingConsentCubit(accountRepo: sl<AccountRepo>()),
+    () => OnboardingConsentCubit(
+      accountRepo: sl<AccountRepo>(),
+      locationService: sl<LocationService>(),
+    ),
   );
   sl.registerFactory<ConsentsCubit>(
     () => ConsentsCubit(accountRepo: sl<AccountRepo>()),

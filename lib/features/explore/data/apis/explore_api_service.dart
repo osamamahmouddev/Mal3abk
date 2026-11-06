@@ -4,6 +4,7 @@ import 'package:retrofit/retrofit.dart';
 import '../../../../core/network/api_constants.dart';
 import '../models/explore_result_model.dart';
 import '../models/explore_venue_card_model.dart';
+import '../models/map_venue_pin_model.dart';
 import '../models/pitch_details_model.dart';
 import '../models/venue_availability_model.dart';
 import '../models/venue_details_model.dart';
@@ -16,6 +17,8 @@ abstract class ExploreApiService {
 
   @GET(ApiConstants.exploreVenues)
   Future<ExploreResultModel> exploreVenues({
+    @Query('lat') double? lat,
+    @Query('lng') double? lng,
     @Query('city') String? city,
     @Query('area') String? area,
     @Query('date') String? date,
@@ -59,4 +62,20 @@ abstract class ExploreApiService {
 
   @DELETE(ApiConstants.recentlyViewed)
   Future<void> clearRecentlyViewed();
+
+  /// Bounds may span at most 2 degrees; the server rejects wider boxes.
+  @GET(ApiConstants.mapVenues)
+  Future<MapSearchResultModel> mapVenues({
+    @Query('south') required double south,
+    @Query('west') required double west,
+    @Query('north') required double north,
+    @Query('east') required double east,
+    @Query('date') String? date,
+    @Query('from') String? from,
+    @Query('to') String? to,
+    @Query('maxPrice') int? maxPrice,
+    @Query('pitchType') String? pitchType,
+    @Query('surface') String? surface,
+    @Query('facilities') String? facilities,
+  });
 }

@@ -44,6 +44,8 @@ dependencies:
   url_launcher: ^6.3.2
   add_2_calendar: ^3.0.1
   timezone: ^0.11.2
+  google_maps_flutter: ^2.18.1
+  geolocator: ^14.1.2
 
 dev_dependencies:
   flutter_test:

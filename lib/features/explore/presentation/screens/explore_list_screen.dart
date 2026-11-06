@@ -9,6 +9,7 @@ import 'pitch_and_time_screen.dart';
 import '../widgets/explore_results_count_bloc_builder.dart';
 import '../widgets/explore_quick_filters_bloc_builder.dart';
 import '../widgets/explore_search_summary_bloc_builder.dart';
+import '../widgets/explore_view_toggle_widget.dart';
 
 class ExploreListScreen extends StatelessWidget {
   const ExploreListScreen({super.key});
@@ -41,6 +42,7 @@ class ExploreListScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ExploreResultsCountBlocBuilder(),
+                  ExploreViewToggleWidget(isMap: false),
                 ],
               ),
             ),

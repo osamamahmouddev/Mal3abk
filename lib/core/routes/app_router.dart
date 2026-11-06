@@ -26,6 +26,7 @@ import '../../features/home/presentation/cubit/home_feed_cubit.dart';
 import '../../features/home/presentation/screens/home_screen.dart';
 import '../../features/main_shell/presentation/screens/main_shell_screen.dart';
 import '../../features/explore/data/models/explore_filter_model.dart';
+import '../../features/explore/presentation/cubit/explore_map_cubit.dart';
 import '../../features/explore/presentation/cubit/favorite_toggle_cubit.dart';
 import '../../features/reference/presentation/cubit/filter_options_cubit.dart';
 import '../../features/explore/presentation/cubit/favorites_cubit.dart';
@@ -232,7 +233,7 @@ class AppRouter {
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider<ExploreListCubit>(
-                create: (_) => sl<ExploreListCubit>()..fetchVenues(),
+                create: (_) => sl<ExploreListCubit>()..start(),
               ),
               BlocProvider<FavoriteToggleCubit>(
                 create: (_) => sl<FavoriteToggleCubit>(),
@@ -244,21 +245,26 @@ class AppRouter {
 
       case AppRoutes.exploreMap:
         return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.exploreMap),
-          builder: (_) => const ExploreMapScreen(),
+          settings: settings,
+          builder: (_) => BlocProvider<ExploreMapCubit>(
+            create: (_) => sl<ExploreMapCubit>()..start(),
+            child: const ExploreMapScreen(),
+          ),
         );
 
       case AppRoutes.filtersAndSort:
-        final initial = settings.arguments;
+        final args = settings.arguments;
+        final (initial, hasLocation) = args is (ExploreFilterModel, bool)
+            ? args
+            : (const ExploreFilterModel(), false);
         return MaterialPageRoute<ExploreFilterModel>(
           settings: settings,
           fullscreenDialog: true,
           builder: (_) => BlocProvider<FilterOptionsCubit>(
             create: (_) => sl<FilterOptionsCubit>()..load(),
             child: FiltersAndSortScreen(
-              initial: initial is ExploreFilterModel
-                  ? initial
-                  : const ExploreFilterModel(),
+              initial: initial,
+              hasLocation: hasLocation,
             ),
           ),
         );
