@@ -20,6 +20,7 @@ import '../../features/explore/presentation/screens/explore_list_screen.dart';
 import '../../features/explore/presentation/screens/explore_map_screen.dart';
 import '../../features/explore/presentation/screens/favorites_screen.dart';
 import '../../features/explore/presentation/screens/filters_and_sort_screen.dart';
+import '../../features/explore/presentation/screens/photo_gallery_screen.dart';
 import '../../features/explore/presentation/screens/pitch_and_time_screen.dart';
 import '../../features/explore/presentation/screens/venue_profile_screen.dart';
 import '../../features/home/presentation/cubit/home_feed_cubit.dart';
@@ -285,6 +286,19 @@ class AppRouter {
             ],
             child: VenueProfileScreen(venueId: venueId),
           ),
+        );
+
+      case AppRoutes.photoGallery:
+        final args = settings.arguments;
+        if (args is! PhotoGalleryArgs || args.photos.isEmpty) {
+          return _errorRoute('Missing photos');
+        }
+        return PageRouteBuilder<int>(
+          settings: settings,
+          opaque: false,
+          pageBuilder: (_, _, _) => PhotoGalleryScreen(args: args),
+          transitionsBuilder: (_, animation, _, child) =>
+              FadeTransition(opacity: animation, child: child),
         );
 
       case AppRoutes.pitchAndTime:
