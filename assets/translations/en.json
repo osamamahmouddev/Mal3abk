@@ -350,7 +350,8 @@
         "no_show_full": "A no-show pays the full booking",
         "no_show_none": "No penalty for a no-show",
         "reschedule": "You can reschedule up to {} hours ahead"
-      }
+      },
+      "per_hour_short": "/hr"
     },
     "slots": {
       "title": "Choose pitch & time",

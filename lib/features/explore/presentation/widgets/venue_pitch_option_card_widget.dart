@@ -38,18 +38,19 @@ class VenuePitchOptionCardWidget extends StatelessWidget {
               ],
             ),
           ),
-          Text.rich(
-            TextSpan(
-              text: price,
-              style: AppTextStyles.font15Bold,
-              children: [
-                TextSpan(
-                  text: 'explore.venue.per_hour_short'.tr(context: context),
-                  style: AppTextStyles.font12Medium,
-                ),
-              ],
+          if (price.isNotEmpty)
+            Text.rich(
+              TextSpan(
+                text: price,
+                style: AppTextStyles.font15Bold,
+                children: [
+                  TextSpan(
+                    text: 'explore.venue.per_hour_short'.tr(context: context),
+                    style: AppTextStyles.font12Medium,
+                  ),
+                ],
+              ),
             ),
-          ),
         ],
       ),
     );

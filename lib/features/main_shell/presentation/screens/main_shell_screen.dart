@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../../../core/routes/navigation_logger_observer.dart';
+import '../../../../core/routes/tab_root_observer.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_motion.dart';
 import '../../../../core/widgets/main_nav_bar_widget.dart';
@@ -20,29 +21,26 @@ class MainShellScreen extends HookWidget {
     const tabs = MainNavBarWidget.tabRoutes;
     final currentIndex = useState(MainShellScopeWidget.homeTab);
     final visitedTabs = useRef(<int>{MainShellScopeWidget.homeTab});
-    final canPopTabs = useState(List<bool>.filled(tabs.length, false));
     final navigatorKeys = useMemoized(
       () => List.generate(tabs.length, (_) => GlobalKey<NavigatorState>()),
     );
-
-    void updateTabCanPop(int index) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        final canPop = navigatorKeys[index].currentState?.canPop() ?? false;
-        if (canPopTabs.value[index] != canPop) {
-          final updated = List<bool>.from(canPopTabs.value);
-          updated[index] = canPop;
-          canPopTabs.value = updated;
-        }
-      });
-    }
-
     final observers = useMemoized(
-      () => List.generate(
-        tabs.length,
-        (i) => NavigationLoggerObserver(
-          onNavigationChanged: () => updateTabCanPop(i),
-        ),
-      ),
+      () => List.generate(tabs.length, (_) => NavigationLoggerObserver()),
+    );
+    final rootObservers = useMemoized(
+      () => List.generate(tabs.length, (_) => TabRootObserver()),
+    );
+    useEffect(
+      () => () {
+        for (final observer in rootObservers) {
+          observer.dispose();
+        }
+      },
+      const [],
+    );
+    // Figma shows the nav bar only on tab roots; pushed screens go full height.
+    final isAtTabRoot = useValueListenable(
+      rootObservers[currentIndex.value].isAtRoot,
     );
     final tabFade = useAnimationController(
       duration: AppMotion.medium,
@@ -58,8 +56,6 @@ class MainShellScreen extends HookWidget {
       currentIndex.value = index;
       tabFade.forward(from: 0);
     }
-
-    final isInnerScreen = canPopTabs.value[currentIndex.value];
 
     return PopScope(
       canPop: false,
@@ -78,12 +74,12 @@ class MainShellScreen extends HookWidget {
         onSwitchTab: switchTab,
         child: Scaffold(
           backgroundColor: AppColors.pageBackground,
-          bottomNavigationBar: isInnerScreen
-              ? null
-              : MainNavBarWidget(
+          bottomNavigationBar: isAtTabRoot
+              ? MainNavBarWidget(
                   currentIndex: currentIndex.value,
                   onTap: switchTab,
-                ),
+                )
+              : null,
           body: FadeTransition(
             opacity: tabFade,
             child: IndexedStack(
@@ -95,6 +91,7 @@ class MainShellScreen extends HookWidget {
                       navigatorKey: navigatorKeys[i],
                       initialRoute: tabs[i],
                       observer: observers[i],
+                      rootObserver: rootObservers[i],
                       isActive: i == currentIndex.value,
                     )
                   else

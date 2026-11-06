@@ -64,8 +64,10 @@ class SelectableTileWidget extends StatelessWidget {
             child: Container(
               height: height.h,
               padding: EdgeInsets.symmetric(horizontal: horizontalPadding.w),
+              // widthFactor keeps chips hugging their label inside a Wrap
+              // instead of stretching to the full row.
               child: Center(
-                widthFactor: 1.0,
+                widthFactor: 1,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [

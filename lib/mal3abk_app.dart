@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import 'core/app/app_locale.dart';
@@ -7,6 +8,7 @@ import 'core/routes/app_navigator.dart';
 import 'core/routes/app_router.dart';
 import 'core/routes/navigation_logger_observer.dart';
 import 'core/routes/routes.dart';
+import 'core/theme/app_system_ui.dart';
 import 'core/theme/app_theme.dart';
 
 class Mal3abkApp extends StatelessWidget {
@@ -35,6 +37,11 @@ class Mal3abkApp extends StatelessWidget {
         locale: context.locale,
         supportedLocales: context.supportedLocales,
         localizationsDelegates: context.localizationDelegates,
+        // Navy heroes override this with AppSystemUi.onDark.
+        builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
+          value: AppSystemUi.onLight,
+          child: child!,
+        ),
       ),
     );
   }

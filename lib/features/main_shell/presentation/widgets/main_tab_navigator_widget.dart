@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/routes/app_router.dart';
 import '../../../../core/routes/navigation_logger_observer.dart';
+import '../../../../core/routes/tab_root_observer.dart';
 
 /// Independent navigation stack for one bottom-nav tab.
 class MainTabNavigatorWidget extends StatelessWidget {
@@ -9,6 +10,7 @@ class MainTabNavigatorWidget extends StatelessWidget {
     required this.navigatorKey,
     required this.initialRoute,
     required this.observer,
+    required this.rootObserver,
     required this.isActive,
     super.key,
   });
@@ -16,6 +18,7 @@ class MainTabNavigatorWidget extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey;
   final String initialRoute;
   final NavigationLoggerObserver observer;
+  final TabRootObserver rootObserver;
   final bool isActive;
 
   @override
@@ -32,7 +35,7 @@ class MainTabNavigatorWidget extends StatelessWidget {
             AppRouter.onGenerateRoute(RouteSettings(name: route)),
           ],
           onGenerateRoute: AppRouter.onGenerateRoute,
-          observers: [observer],
+          observers: [observer, rootObserver],
         ),
       ),
     );

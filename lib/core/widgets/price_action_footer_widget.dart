@@ -42,7 +42,7 @@ class PriceActionFooterWidget extends StatelessWidget {
                     children: [
                       if (priceSuffix != null)
                         TextSpan(
-                          text: ' $priceSuffix',
+                          text: priceSuffix,
                           style: AppTextStyles.font12Medium,
                         ),
                     ],
