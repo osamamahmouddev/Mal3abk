@@ -34,7 +34,7 @@ class LoginScreen extends HookWidget {
                     child: AppBackButtonWidget(),
                   ),
                   hSpace(18),
-                  BrandWordmarkWidget(height: 60.h),
+                  BrandWordmarkWidget(height: 42.h),
                   hSpace(28),
                   Text(
                     'auth.login.title'.tr(context: context),
