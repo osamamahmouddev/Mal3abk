@@ -24,6 +24,11 @@ class AppAssets {
   static const String logoHorizontal = 'assets/images/pngs/logo-horizontal.png';
   static const String logoHorizontalDarkBg =
       'assets/images/pngs/logo-horizontal-darkbg.png';
+  // Horizontal logo on a transparent background.
+  static const String logoHorizontalWhite =
+      'assets/images/pngs/logo-horizontal-white.png';
+  static const String logoHorizontalNavy =
+      'assets/images/pngs/logo-horizontal-navy.png';
 
   // Wordmarks
   static const String wordmarkDark = 'assets/images/pngs/wordmark-dark.png';
