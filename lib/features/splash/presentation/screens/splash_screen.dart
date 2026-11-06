@@ -42,7 +42,7 @@ class SplashScreen extends StatelessWidget {
         ),
       ],
       child: const Scaffold(
-        backgroundColor: AppColors.brandNavy,
+        backgroundColor: AppColors.brandPrimaryDark,
         body: SafeArea(
           child: Column(
             children: [

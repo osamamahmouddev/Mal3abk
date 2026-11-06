@@ -124,9 +124,10 @@ flutter_launcher_icons:
 
 flutter_native_splash:
   color: "#071832"
-  image: assets/images/pngs/logo-stacked-darkbg.png
+  image: assets/images/pngs/splash-logo.png
+  # Android 12+ crops the splash image to a circle, so it keeps the pin alone.
   android_12:
-    image: assets/images/pngs/logo-stacked-darkbg.png
+    image: assets/images/pngs/splash-mark.png
     color: "#071832"
   android: true
   ios: true

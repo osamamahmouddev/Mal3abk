@@ -25,8 +25,8 @@ class BrandWordmarkWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Image.asset(
       isDarkBackground
-          ? AppAssets.logoHorizontalDarkBg
-          : AppAssets.logoHorizontal,
+          ? AppAssets.logoHorizontalWhite
+          : AppAssets.logoHorizontalNavy,
       height: height ?? 52.h,
       fit: BoxFit.contain,
     );
