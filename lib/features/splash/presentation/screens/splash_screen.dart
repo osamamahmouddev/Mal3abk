@@ -25,7 +25,7 @@ class SplashScreen extends StatelessWidget {
               case SplashAuthenticated():
                 context.openMainShell();
               case SplashUnauthenticated():
-                context.pushReplacementNamed(AppRoutes.login);
+                context.pushReplacementNamed(AppRoutes.welcome);
               case SplashLocked():
                 context.read<SplashCubit>().unlock(
                   'auth.lock.reason'.tr(context: context),

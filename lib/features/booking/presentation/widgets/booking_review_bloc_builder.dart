@@ -31,6 +31,9 @@ class BookingReviewBlocBuilder extends StatelessWidget {
     super.key,
   });
 
+  /// A guest who browsed without signing in gets this when booking.
+  static const String unauthorizedKey = 'errors.unauthorized';
+
   final bool agreedToPolicy;
   final ValueChanged<bool> onAgreedChanged;
 
@@ -46,7 +49,13 @@ class BookingReviewBlocBuilder extends StatelessWidget {
     return BlocConsumer<PitchBookingCubit, PitchBookingState>(
       listener: (context, state) {
         if (state is! PitchBookingLoaded) return;
-        if (state.bookingError case final error?) {
+        if (state.bookingError == unauthorizedKey) {
+          AppTopSnackBar.showError(
+            context,
+            'booking.sign_in_to_book'.tr(context: context),
+          );
+          Navigator.of(context).pushNamed(AppRoutes.login);
+        } else if (state.bookingError case final error?) {
           HapticFeedback.heavyImpact();
           AppTopSnackBar.showError(context, error.tr(context: context));
         } else if (state.createdBooking case final booking?) {
@@ -63,7 +72,10 @@ class BookingReviewBlocBuilder extends StatelessWidget {
           return Scaffold(
             backgroundColor: AppColors.pageBackground,
             appBar: CustomAppBarWidget(title: title),
-            body: const ShimmerListSkeletonWidget(itemHeight: 140, itemCount: 3),
+            body: const ShimmerListSkeletonWidget(
+              itemHeight: 140,
+              itemCount: 3,
+            ),
           );
         }
         final pitch = state.currentPitch;

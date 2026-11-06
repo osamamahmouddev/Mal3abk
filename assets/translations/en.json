@@ -614,7 +614,8 @@
       "total": "Total",
       "deposit_now": "Deposit due now",
       "at_venue": "Balance — paid at the venue"
-    }
+    },
+    "sign_in_to_book": "Sign in with your phone number to book."
   },
   "teams": {
     "my_teams_title": "My Teams",

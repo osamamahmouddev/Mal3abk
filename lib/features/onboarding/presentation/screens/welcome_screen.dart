@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
-import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
@@ -11,6 +10,7 @@ import '../../../../core/widgets/brand_wordmark_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../widgets/onboarding_feature_item_widget.dart';
 import '../widgets/welcome_backdrop_widget.dart';
+import '../widgets/welcome_language_toggle_widget.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -25,12 +25,17 @@ class WelcomeScreen extends StatelessWidget {
           const WelcomeBackdropWidget(),
           SafeArea(
             child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(24.w, 100.h, 24.w, 24.h),
+              padding: EdgeInsetsDirectional.fromSTEB(24.w, 16.h, 24.w, 24.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  const Align(
+                    alignment: AlignmentDirectional.centerStart,
+                    child: WelcomeLanguageToggleWidget(),
+                  ),
+                  hSpace(48),
                   BrandWordmarkWidget(isDarkBackground: true, height: 56.h),
-                  vSpace(36),
+                  hSpace(36),
                   Text(
                     'onboarding.welcome.headline'.tr(context: context),
                     style: AppTextStyles.font28Bold.copyWith(
@@ -38,7 +43,7 @@ class WelcomeScreen extends StatelessWidget {
                       height: 40 / 28,
                     ),
                   ),
-                  vSpace(24),
+                  hSpace(24),
                   OnboardingFeatureItemWidget(
                     number: '١',
                     title: 'onboarding.welcome.feat1_title'.tr(
@@ -99,7 +104,8 @@ class WelcomeScreen extends StatelessWidget {
                     textStyle: AppTextStyles.font15SemiBold.copyWith(
                       color: AppColors.white,
                     ),
-                    onTap: context.openMainShell,
+                    onTap: () =>
+                        Navigator.of(context).pushNamed(AppRoutes.exploreList),
                   ),
                   hSpace(10),
                   Text(
