@@ -8,6 +8,7 @@ import '../../features/explore/presentation/cubit/favorite_toggle_cubit.dart';
 import '../../features/reference/presentation/cubit/filter_options_cubit.dart';
 import '../../features/explore/presentation/cubit/favorites_cubit.dart';
 import '../../features/home/domain/use_cases/get_home_team_activity_use_case.dart';
+import '../../features/home/presentation/cubit/recently_viewed_cubit.dart';
 import '../../features/home/presentation/cubit/home_team_activity_cubit.dart';
 import '../../features/matches/data/apis/matches_api_service.dart';
 import '../../features/notifications/data/apis/notifications_api_service.dart';
@@ -511,6 +512,9 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
     () => NotificationPreferencesCubit(
       notificationsRepo: sl<NotificationsRepo>(),
     ),
+  );
+  sl.registerFactory<RecentlyViewedCubit>(
+    () => RecentlyViewedCubit(exploreRepo: sl<ExploreRepo>()),
   );
   sl.registerFactory<FilterOptionsCubit>(
     () => FilterOptionsCubit(referenceRepo: sl<ReferenceRepo>()),

@@ -27,4 +27,10 @@ abstract class ExploreRepo {
   Future<ApiResult<List<ExploreVenueCardModel>>> getFavorites();
 
   Future<ApiResult<void>> setFavorite(String venueId, {required bool favorite});
+
+  Future<ApiResult<List<ExploreVenueCardModel>>> getRecentlyViewed();
+
+  Future<ApiResult<void>> recordView(String venueId);
+
+  Future<ApiResult<void>> clearRecentlyViewed();
 }

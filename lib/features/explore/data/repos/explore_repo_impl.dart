@@ -111,4 +111,24 @@ class ExploreRepoImpl implements ExploreRepo {
       return ApiResult.failure(ApiFailureMapper.map(e, st));
     }
   }
+
+  Future<ApiResult<T>> _guard<T>(Future<T> Function() call) async {
+    try {
+      return ApiResult.success(await call());
+    } catch (e, st) {
+      return ApiResult.failure(ApiFailureMapper.map(e, st));
+    }
+  }
+
+  @override
+  Future<ApiResult<List<ExploreVenueCardModel>>> getRecentlyViewed() =>
+      _guard(exploreApiService.getRecentlyViewed);
+
+  @override
+  Future<ApiResult<void>> recordView(String venueId) =>
+      _guard(() => exploreApiService.recordView(venueId));
+
+  @override
+  Future<ApiResult<void>> clearRecentlyViewed() =>
+      _guard(exploreApiService.clearRecentlyViewed);
 }

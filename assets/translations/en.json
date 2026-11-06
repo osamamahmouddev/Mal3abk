@@ -250,7 +250,9 @@
     "all_egypt": "All Egypt",
     "no_nearby": "No pitches are listed in your area yet.",
     "no_slots_soon": "No free slots soon",
-    "see_all": "See all"
+    "see_all": "See all",
+    "recently_viewed": "Recently viewed",
+    "clear": "Clear"
   },
   "explore": {
     "list_title": "Explore Pitches",

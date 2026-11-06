@@ -33,19 +33,23 @@ class VenueProfileCubit extends Cubit<VenueProfileState>
     ).wait;
 
     venueResult.when(
-      success: (venue) => emitIfOpen(
-        VenueProfileState.success(
-          venue: venue,
-          pitches: pitchesResult.maybeWhen(
-            success: (pitches) => pitches,
-            orElse: () => const <PitchDetailsModel>[],
+      success: (venue) {
+        exploreRepo.recordView(venueId);
+        emitIfOpen(
+          VenueProfileState.success(
+            venue: venue,
+            pitches: pitchesResult.maybeWhen(
+              success: (pitches) => pitches,
+              orElse: () => const <PitchDetailsModel>[],
+            ),
+            isFavorite: favoritesResult.maybeWhen(
+              success: (favorites) =>
+                  favorites.any((v) => v.venueId == venueId),
+              orElse: () => false,
+            ),
           ),
-          isFavorite: favoritesResult.maybeWhen(
-            success: (favorites) => favorites.any((v) => v.venueId == venueId),
-            orElse: () => false,
-          ),
-        ),
-      ),
+        );
+      },
       failure: (failure) =>
           emitIfOpen(VenueProfileState.error(failure.message)),
     );

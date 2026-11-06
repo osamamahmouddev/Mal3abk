@@ -50,4 +50,13 @@ abstract class ExploreApiService {
 
   @DELETE(ApiConstants.favorite)
   Future<void> removeFavorite(@Path('venueId') String venueId);
+
+  @GET(ApiConstants.recentlyViewed)
+  Future<List<ExploreVenueCardModel>> getRecentlyViewed();
+
+  @POST(ApiConstants.recentlyViewedVenue)
+  Future<void> recordView(@Path('venueId') String venueId);
+
+  @DELETE(ApiConstants.recentlyViewed)
+  Future<void> clearRecentlyViewed();
 }

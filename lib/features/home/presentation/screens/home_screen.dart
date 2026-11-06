@@ -11,9 +11,11 @@ import '../../../booking/presentation/cubit/my_bookings_cubit.dart';
 import '../../../booking/presentation/cubit/my_bookings_tab.dart';
 import '../cubit/home_feed_cubit.dart';
 import '../cubit/home_team_activity_cubit.dart';
+import '../cubit/recently_viewed_cubit.dart';
 import '../widgets/home_hero_search_card_widget.dart';
 import '../widgets/home_location_header_widget.dart';
 import '../widgets/home_nearby_pitches_bloc_builder.dart';
+import '../widgets/home_recently_viewed_bloc_builder.dart';
 import '../widgets/home_team_activity_bloc_builder.dart';
 import '../widgets/home_upcoming_booking_bloc_builder.dart';
 import '../../../main_shell/presentation/widgets/main_shell_scope_widget.dart';
@@ -38,6 +40,7 @@ class HomeScreen extends StatelessWidget {
                   context.read<HomeFeedCubit>().fetchFeed(),
                   context.read<HomeTeamActivityCubit>().load(),
                   context.read<MyBookingsCubit>().load(MyBookingsTab.upcoming),
+                  context.read<RecentlyViewedCubit>().load(),
                 ]),
                 child: ListView(
                   physics: const AlwaysScrollableScrollPhysics(
@@ -117,6 +120,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                           hSpace(12),
                           const HomeNearbyPitchesBlocBuilder(),
+                          const HomeRecentlyViewedBlocBuilder(),
                         ],
                       ),
                     ),

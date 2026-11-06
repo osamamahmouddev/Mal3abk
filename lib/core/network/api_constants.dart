@@ -80,6 +80,9 @@ class ApiConstants {
   static const String me = '/api/v1/me';
   static const String favorites = '/api/v1/me/favorites';
   static const String favorite = '/api/v1/me/favorites/{venueId}';
+  static const String recentlyViewed = '/api/v1/me/recently-viewed';
+  static const String recentlyViewedVenue =
+      '/api/v1/me/recently-viewed/{venueId}';
   static const String sessions = '/api/v1/me/sessions';
   static const String session = '/api/v1/me/sessions/{id}';
   static const String revokeOtherSessions = '/api/v1/me/sessions/revoke-others';

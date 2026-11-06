@@ -30,6 +30,7 @@ import '../../features/explore/presentation/cubit/favorite_toggle_cubit.dart';
 import '../../features/reference/presentation/cubit/filter_options_cubit.dart';
 import '../../features/explore/presentation/cubit/favorites_cubit.dart';
 import '../../features/home/presentation/cubit/home_team_activity_cubit.dart';
+import '../../features/home/presentation/cubit/recently_viewed_cubit.dart';
 import '../../features/booking/presentation/cubit/booking_details_cubit.dart';
 import '../../features/booking/presentation/cubit/cancel_booking_cubit.dart';
 import '../../features/booking/presentation/cubit/deposit_methods_cubit.dart';
@@ -216,6 +217,9 @@ class AppRouter {
               BlocProvider<MyBookingsCubit>(
                 create: (_) =>
                     sl<MyBookingsCubit>()..load(MyBookingsTab.upcoming),
+              ),
+              BlocProvider<RecentlyViewedCubit>(
+                create: (_) => sl<RecentlyViewedCubit>()..load(),
               ),
             ],
             child: const HomeScreen(),

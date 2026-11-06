@@ -250,7 +250,9 @@
     "all_egypt": "كل مصر",
     "no_nearby": "مفيش ملاعب منشورة في منطقتك لسه.",
     "no_slots_soon": "مفيش مواعيد قريبة",
-    "see_all": "عرض الكل"
+    "see_all": "عرض الكل",
+    "recently_viewed": "شفتها مؤخراً",
+    "clear": "مسح"
   },
   "explore": {
     "list_title": "استكشف الملاعب",
