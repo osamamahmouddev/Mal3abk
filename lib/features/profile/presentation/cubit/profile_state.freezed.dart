@@ -125,12 +125,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( MyProfileModel profile)?  success,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( ProfileOverviewModel overview)?  success,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case ProfileInitial() when initial != null:
 return initial();case ProfileLoading() when loading != null:
 return loading();case ProfileSuccess() when success != null:
-return success(_that.profile);case ProfileError() when error != null:
+return success(_that.overview);case ProfileError() when error != null:
 return error(_that.message);case _:
   return orElse();
 
@@ -149,12 +149,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( MyProfileModel profile)  success,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( ProfileOverviewModel overview)  success,required TResult Function( String message)  error,}) {final _that = this;
 switch (_that) {
 case ProfileInitial():
 return initial();case ProfileLoading():
 return loading();case ProfileSuccess():
-return success(_that.profile);case ProfileError():
+return success(_that.overview);case ProfileError():
 return error(_that.message);}
 }
 /// A variant of `when` that fallback to returning `null`
@@ -169,12 +169,12 @@ return error(_that.message);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( MyProfileModel profile)?  success,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( ProfileOverviewModel overview)?  success,TResult? Function( String message)?  error,}) {final _that = this;
 switch (_that) {
 case ProfileInitial() when initial != null:
 return initial();case ProfileLoading() when loading != null:
 return loading();case ProfileSuccess() when success != null:
-return success(_that.profile);case ProfileError() when error != null:
+return success(_that.overview);case ProfileError() when error != null:
 return error(_that.message);case _:
   return null;
 
@@ -251,10 +251,10 @@ String toString() {
 
 
 class ProfileSuccess implements ProfileState {
-  const ProfileSuccess(this.profile);
+  const ProfileSuccess(this.overview);
   
 
- final  MyProfileModel profile;
+ final  ProfileOverviewModel overview;
 
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
@@ -266,16 +266,16 @@ $ProfileSuccessCopyWith<ProfileSuccess> get copyWith => _$ProfileSuccessCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileSuccess&&(identical(other.profile, profile) || other.profile == profile));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileSuccess&&(identical(other.overview, overview) || other.overview == overview));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,profile);
+int get hashCode => Object.hash(runtimeType,overview);
 
 @override
 String toString() {
-  return 'ProfileState.success(profile: $profile)';
+  return 'ProfileState.success(overview: $overview)';
 }
 
 
@@ -286,7 +286,7 @@ abstract mixin class $ProfileSuccessCopyWith<$Res> implements $ProfileStateCopyW
   factory $ProfileSuccessCopyWith(ProfileSuccess value, $Res Function(ProfileSuccess) _then) = _$ProfileSuccessCopyWithImpl;
 @useResult
 $Res call({
- MyProfileModel profile
+ ProfileOverviewModel overview
 });
 
 
@@ -303,10 +303,10 @@ class _$ProfileSuccessCopyWithImpl<$Res>
 
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? profile = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? overview = null,}) {
   return _then(ProfileSuccess(
-null == profile ? _self.profile : profile // ignore: cast_nullable_to_non_nullable
-as MyProfileModel,
+null == overview ? _self.overview : overview // ignore: cast_nullable_to_non_nullable
+as ProfileOverviewModel,
   ));
 }
 

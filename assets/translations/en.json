@@ -100,6 +100,17 @@
       "result_not_pending_verification": "The result isn't waiting for confirmation.",
       "schedule_conflict": "There's another match at that time.",
       "invalid_scheduled_time": "Choose a future time."
+    },
+    "profile": {
+      "invalid_name": "Enter your name (at least 2 letters).",
+      "invalid_place": "Choose your governorate and area.",
+      "invalid_positions": "Pick up to 4 positions.",
+      "invalid_language": "That language isn't supported."
+    },
+    "media": {
+      "invalid_image": "That file isn't a photo. Choose a JPG, PNG or WebP image.",
+      "too_large": "The photo is too large (8 MB max).",
+      "upload_expired": "The upload expired. Please try again."
     }
   },
   "auth": {
@@ -186,14 +197,7 @@
       "pos_hint": "(pick more than one)",
       "optional": "(optional)",
       "avatar_title": "Profile photo",
-      "avatar_sub": "Optional · shown to your teammates",
-      "area_nasr_city": "Nasr City",
-      "area_heliopolis": "Heliopolis",
-      "area_tagamoa": "New Cairo",
-      "area_maadi": "Maadi",
-      "area_dokki": "Dokki",
-      "area_october": "6th of October",
-      "sample_initials": "AS"
+      "avatar_sub": "Optional · shown to your teammates"
     }
   },
   "home": {
@@ -207,7 +211,6 @@
     "nav_teams": "Teams",
     "nav_profile": "Profile",
     "current_location": "Current Location",
-    "default_city": "Nasr City, Cairo",
     "play_prompt": "When do you want to play?",
     "today": "Today",
     "default_time": "8:00 PM",
@@ -242,7 +245,8 @@
       "next_match": "{} vs {}",
       "verify_result": "A result needs your confirmation",
       "submit_result": "Report the match score"
-    }
+    },
+    "all_egypt": "All Egypt"
   },
   "explore": {
     "list_title": "Explore Pitches",
@@ -674,8 +678,7 @@
       "private": "Private",
       "private_sub": "Invite only — hidden from discovery",
       "captain_note": "You'll be the team captain. You can transfer captaincy to another member later.",
-      "submit": "Create team",
-      "governorate_hint": "Choose the governorate"
+      "submit": "Create team"
     },
     "invite": {
       "title": "Invite players",
@@ -858,7 +861,6 @@
     "title": "My Profile",
     "edit": "Edit",
     "matches": "Matches",
-    "wins": "Wins",
     "bookings": "Bookings",
     "teams": "Teams",
     "my_teams": "My Teams",
@@ -868,7 +870,13 @@
     "settings": "Settings",
     "help_and_support": "Help & Support",
     "venue_owner_title": "Own a Pitch?",
-    "venue_owner_sub": "Register your venue and manage bookings from your Mal3abk dashboard"
+    "venue_owner_sub": "Register your venue and manage bookings from your Mal3abk dashboard",
+    "avatar": {
+      "gallery": "Choose from photos",
+      "camera": "Take a photo",
+      "remove": "Remove photo"
+    },
+    "saved": "Profile saved"
   },
   "notifications": {
     "title": "Notifications",
@@ -995,5 +1003,9 @@
     "title": "Confirm it's you",
     "description": "We texted a 6-digit code to your current number. Enter it to continue.",
     "confirm": "Confirm"
+  },
+  "reference": {
+    "governorate_hint": "Choose a governorate",
+    "area_hint": "Type your area"
   }
 }

@@ -28,6 +28,9 @@ import '../../features/home/presentation/screens/home_screen.dart';
 import '../../features/main_shell/presentation/screens/main_shell_screen.dart';
 import '../../features/home/presentation/cubit/home_team_activity_cubit.dart';
 import '../../features/matches/data/models/match_details_model.dart';
+import '../../features/onboarding/presentation/cubit/avatar_cubit.dart';
+import '../../features/onboarding/presentation/cubit/onboarding_consent_cubit.dart';
+import '../../features/profile/data/models/my_profile_model.dart';
 import '../../features/notifications/data/models/notification_model.dart';
 import '../../features/settings/presentation/cubit/account_action_cubit.dart';
 import '../../features/settings/presentation/cubit/consents_cubit.dart';
@@ -135,26 +138,45 @@ class AppRouter {
         );
 
       case AppRoutes.profileSetup:
-        return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.profileSetup),
-          builder: (_) => BlocProvider<ProfileSetupCubit>(
-            create: (_) => sl<ProfileSetupCubit>(),
-            child: const ProfileSetupScreen(),
+        final arguments = settings.arguments;
+        if (arguments != null && arguments is! MyProfileModel) {
+          return _errorRoute('Invalid profile');
+        }
+        final profile = arguments as MyProfileModel?;
+        return MaterialPageRoute<MyProfileModel>(
+          settings: settings,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<ProfileSetupCubit>(
+                create: (_) => sl<ProfileSetupCubit>(),
+              ),
+              BlocProvider<AvatarCubit>(
+                create: (_) => sl<AvatarCubit>()..seed(profile?.avatarUrl),
+              ),
+              BlocProvider<GovernoratesCubit>(
+                create: (_) => sl<GovernoratesCubit>()..load(),
+              ),
+            ],
+            child: ProfileSetupScreen(profile: profile),
           ),
         );
 
       case AppRoutes.locationPermission:
         return MaterialPageRoute(
-          settings: const RouteSettings(name: AppRoutes.locationPermission),
-          builder: (_) => const LocationPermissionScreen(),
+          settings: settings,
+          builder: (_) => BlocProvider<OnboardingConsentCubit>(
+            create: (_) => sl<OnboardingConsentCubit>(),
+            child: const LocationPermissionScreen(),
+          ),
         );
 
       case AppRoutes.notificationsPermission:
         return MaterialPageRoute(
-          settings: const RouteSettings(
-            name: AppRoutes.notificationsPermission,
+          settings: settings,
+          builder: (_) => BlocProvider<OnboardingConsentCubit>(
+            create: (_) => sl<OnboardingConsentCubit>(),
+            child: const NotificationsPermissionScreen(),
           ),
-          builder: (_) => const NotificationsPermissionScreen(),
         );
 
       case AppRoutes.main:

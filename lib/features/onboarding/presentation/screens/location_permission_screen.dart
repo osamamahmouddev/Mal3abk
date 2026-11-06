@@ -1,9 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/routes/routes.dart';
+import '../../../settings/data/models/record_consent_request_body.dart';
+import '../cubit/onboarding_consent_cubit.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_button.dart';
@@ -16,6 +19,14 @@ class LocationPermissionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void next({required bool granted}) {
+      context.read<OnboardingConsentCubit>().record(
+        ConsentType.location,
+        granted: granted,
+      );
+      Navigator.of(context).pushNamed(AppRoutes.notificationsPermission);
+    }
+
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
       body: SafeArea(
@@ -48,9 +59,7 @@ class LocationPermissionScreen extends StatelessWidget {
               const Spacer(),
               PrimaryCtaButtonWidget(
                 text: 'onboarding.location.allow'.tr(context: context),
-                onTap: () => Navigator.of(
-                  context,
-                ).pushNamed(AppRoutes.notificationsPermission),
+                onTap: () => next(granted: true),
               ),
               hSpace(8),
               CustomButton(
@@ -62,9 +71,7 @@ class LocationPermissionScreen extends StatelessWidget {
                 textStyle: AppTextStyles.font15SemiBold.copyWith(
                   color: AppColors.brandNavy,
                 ),
-                onTap: () => Navigator.of(
-                  context,
-                ).pushNamed(AppRoutes.notificationsPermission),
+                onTap: () => next(granted: false),
               ),
             ],
           ),

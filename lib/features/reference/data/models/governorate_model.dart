@@ -20,6 +20,15 @@ class GovernorateModel {
 
   String nameFor(String languageCode) => languageCode == 'ar' ? nameAr : nameEn;
 
+  /// Same rule the server uses: code or English name ignoring case, or the
+  /// exact Arabic name.
+  bool matches(String value) {
+    final key = value.trim();
+    return code.toLowerCase() == key.toLowerCase() ||
+        nameEn.toLowerCase() == key.toLowerCase() ||
+        nameAr == key;
+  }
+
   factory GovernorateModel.fromJson(Map<String, dynamic> json) =>
       _$GovernorateModelFromJson(json);
 

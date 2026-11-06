@@ -13,10 +13,10 @@ class HomeFeedCubit extends Cubit<HomeFeedState>
   final GetHomeFeedUseCase getHomeFeedUseCase;
 
   Future<void> fetchFeed({String? city, String? area}) async {
-    emitIfOpen(const HomeFeedState.loading());
+    if (state is! HomeFeedSuccess) emitIfOpen(const HomeFeedState.loading());
     final result = await getHomeFeedUseCase(city: city, area: area);
     result.when(
-      success: (feed) => emitIfOpen(HomeFeedState.success(feed)),
+      success: (located) => emitIfOpen(HomeFeedState.success(located)),
       failure: (failure) => emitIfOpen(HomeFeedState.error(failure.message)),
     );
   }

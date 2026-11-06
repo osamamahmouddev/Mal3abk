@@ -47,5 +47,11 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
-	</dict>
+		<key>NSCameraUsageDescription</key>
+	<string>Malabak uses the camera to take your profile photo and payment receipts.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Malabak lets you choose a profile photo or payment receipt from your photos.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Malabak uses Face ID to unlock the app.</string>
+</dict>
 </plist>

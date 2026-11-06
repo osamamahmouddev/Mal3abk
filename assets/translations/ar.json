@@ -100,6 +100,17 @@
       "result_not_pending_verification": "النتيجة مش مستنية تأكيد.",
       "schedule_conflict": "فيه ماتش تاني في نفس الوقت.",
       "invalid_scheduled_time": "اختار ميعاد جاي."
+    },
+    "profile": {
+      "invalid_name": "اكتب اسمك (حرفين على الأقل).",
+      "invalid_place": "اختار محافظتك ومنطقتك.",
+      "invalid_positions": "اختار ٤ مراكز بالكتير.",
+      "invalid_language": "اللغة دي مش مدعومة."
+    },
+    "media": {
+      "invalid_image": "الملف ده مش صورة. اختار صورة JPG أو PNG أو WebP.",
+      "too_large": "الصورة كبيرة أوي (أقصى حجم ٨ ميجا).",
+      "upload_expired": "انتهت مهلة الرفع. جرّب تاني."
     }
   },
   "auth": {
@@ -186,14 +197,7 @@
       "pos_hint": "(اختار أكتر من واحد)",
       "optional": "(اختياري)",
       "avatar_title": "صورة البروفايل",
-      "avatar_sub": "اختياري · بتظهر لأعضاء فرقك",
-      "area_nasr_city": "مدينة نصر",
-      "area_heliopolis": "مصر الجديدة",
-      "area_tagamoa": "التجمع",
-      "area_maadi": "المعادي",
-      "area_dokki": "الدقي",
-      "area_october": "٦ أكتوبر",
-      "sample_initials": "أس"
+      "avatar_sub": "اختياري · بتظهر لأعضاء فرقك"
     }
   },
   "home": {
@@ -207,7 +211,6 @@
     "nav_teams": "فرقي",
     "nav_profile": "حسابي",
     "current_location": "موقعك الحالي",
-    "default_city": "مدينة نصر، القاهرة",
     "play_prompt": "إمتى عايز تلعب؟",
     "today": "النهارده",
     "default_time": "٨:٠٠ م",
@@ -242,7 +245,8 @@
       "next_match": "{} ضد {}",
       "verify_result": "نتيجة مستنية تأكيدك",
       "submit_result": "سجّل نتيجة الماتش"
-    }
+    },
+    "all_egypt": "كل مصر"
   },
   "explore": {
     "list_title": "استكشف الملاعب",
@@ -674,8 +678,7 @@
       "private": "خاص",
       "private_sub": "بالدعوة بس — مش بيظهر في الاكتشاف",
       "captain_note": "إنت هتبقى كابتن الفريق. تقدر تنقل الكابتنية لعضو تاني بعدين.",
-      "submit": "إنشاء الفريق",
-      "governorate_hint": "اختار المحافظة"
+      "submit": "إنشاء الفريق"
     },
     "invite": {
       "title": "دعوة لاعبين",
@@ -858,7 +861,6 @@
     "title": "حسابي",
     "edit": "تعديل",
     "matches": "ماتش",
-    "wins": "فوز",
     "bookings": "حجز",
     "teams": "فريق",
     "my_teams": "فرقي",
@@ -868,7 +870,13 @@
     "settings": "الإعدادات",
     "help_and_support": "المساعدة والدعم",
     "venue_owner_title": "عندك ملعب؟",
-    "venue_owner_sub": "سجّل ملعبك وأدر حجوزاتك من لوحة ملعبك"
+    "venue_owner_sub": "سجّل ملعبك وأدر حجوزاتك من لوحة ملعبك",
+    "avatar": {
+      "gallery": "اختار من الصور",
+      "camera": "صوّر دلوقتي",
+      "remove": "شيل الصورة"
+    },
+    "saved": "البروفايل اتحفظ"
   },
   "notifications": {
     "title": "الإشعارات",
@@ -995,5 +1003,9 @@
     "title": "تأكيد إنك صاحب الحساب",
     "description": "بعتنالك كود من ٦ أرقام على رقمك الحالي. اكتبه عشان نكمل.",
     "confirm": "تأكيد"
+  },
+  "reference": {
+    "governorate_hint": "اختار المحافظة",
+    "area_hint": "اكتب اسم منطقتك"
   }
 }

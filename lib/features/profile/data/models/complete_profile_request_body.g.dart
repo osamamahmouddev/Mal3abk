@@ -12,10 +12,12 @@ CompleteProfileRequestBody _$CompleteProfileRequestBodyFromJson(
   fullName: json['fullName'] as String,
   city: json['city'] as String,
   area: json['area'] as String,
-  positions: (json['positions'] as List<dynamic>?)
-      ?.map((e) => e as String)
-      .toList(),
-  skillLevel: json['skillLevel'] as String?,
+  positions:
+      (json['positions'] as List<dynamic>?)
+          ?.map((e) => $enumDecode(_$PlayerPositionEnumMap, e))
+          .toList() ??
+      const [],
+  skillLevel: $enumDecodeNullable(_$SkillLevelEnumMap, json['skillLevel']),
   language: json['language'] as String?,
 );
 
@@ -25,7 +27,22 @@ Map<String, dynamic> _$CompleteProfileRequestBodyToJson(
   'fullName': instance.fullName,
   'city': instance.city,
   'area': instance.area,
-  'positions': instance.positions,
-  'skillLevel': instance.skillLevel,
-  'language': instance.language,
+  'positions': instance.positions
+      .map((e) => _$PlayerPositionEnumMap[e]!)
+      .toList(),
+  'skillLevel': ?_$SkillLevelEnumMap[instance.skillLevel],
+  'language': ?instance.language,
+};
+
+const _$PlayerPositionEnumMap = {
+  PlayerPosition.goalkeeper: 0,
+  PlayerPosition.defender: 1,
+  PlayerPosition.midfielder: 2,
+  PlayerPosition.forward: 3,
+};
+
+const _$SkillLevelEnumMap = {
+  SkillLevel.beginner: 0,
+  SkillLevel.intermediate: 1,
+  SkillLevel.advanced: 2,
 };

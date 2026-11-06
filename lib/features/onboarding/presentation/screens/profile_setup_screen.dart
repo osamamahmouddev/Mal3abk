@@ -1,121 +1,129 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
-import '../../../../core/routes/routes.dart';
+import '../../../../core/extensions/app_display_extensions.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
-import '../../../../core/widgets/bottom_action_bar_widget.dart';
+import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../core/widgets/form_field_label_widget.dart';
-import '../../../../core/widgets/primary_cta_button_widget.dart';
+import '../../../profile/data/models/complete_profile_request_body.dart';
+import '../../../profile/data/models/my_profile_model.dart';
+import '../../../profile/data/models/player_attributes.dart';
+import '../../../reference/data/models/governorate_model.dart';
+import '../../../reference/presentation/widgets/governorate_area_picker_bloc_builder.dart';
+import '../cubit/profile_setup_cubit.dart';
 import '../widgets/onboarding_step_header_widget.dart';
-import '../widgets/profile_avatar_picker_widget.dart';
-import '../widgets/profile_setup_area_selector_widget.dart';
+import '../widgets/profile_avatar_bloc_builder.dart';
+import '../widgets/profile_setup_bloc_listener.dart';
 import '../widgets/profile_setup_level_selector_widget.dart';
 import '../widgets/profile_setup_position_selector_widget.dart';
+import '../widgets/profile_setup_submit_bloc_builder.dart';
 
+/// First-run profile step, also reused to edit the profile later.
 class ProfileSetupScreen extends HookWidget {
-  const ProfileSetupScreen({super.key});
+  const ProfileSetupScreen({super.key, this.profile});
+
+  final MyProfileModel? profile;
 
   @override
   Widget build(BuildContext context) {
-    final nameController = useTextEditingController();
-    final selectedArea = useState('nasr_city');
-    final selectedPositions = useState(<String>{'pos_mid', 'pos_fwd'});
-    final selectedLevel = useState('mid');
+    final isOnboarding = !(profile?.onboardingComplete ?? false);
+    final nameController = useTextEditingController(text: profile?.fullName);
+    final name = useValueListenable(nameController).text;
+    final governorate = useValueNotifier<GovernorateModel?>(null);
+    final area = useValueNotifier<String?>(profile?.area);
+    final positions = useState<Set<PlayerPosition>>({
+      ...?profile?.playerPositions,
+    });
+    final level = useState<SkillLevel?>(profile?.playerSkillLevel);
+    String t(String key) =>
+        'onboarding.profile_setup.$key'.tr(context: context);
 
-    return Scaffold(
-      backgroundColor: AppColors.pageBackground,
-      bottomNavigationBar: BottomActionBarWidget(
-        child: PrimaryCtaButtonWidget(
-          text: 'onboarding.profile_setup.next'.tr(context: context),
-          onTap: () =>
-              Navigator.of(context).pushNamed(AppRoutes.locationPermission),
+    void submit() {
+      FocusScope.of(context).unfocus();
+      context.read<ProfileSetupCubit>().save(
+        CompleteProfileRequestBody(
+          fullName: nameController.text,
+          city: governorate.value?.nameAr ?? '',
+          area: area.value ?? '',
+          positions: positions.value.toList(growable: false),
+          skillLevel: level.value,
+          language: context.locale.languageCode,
         ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(16.w, 14.h, 16.w, 24.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+        isOnboarding: isOnboarding,
+      );
+    }
+
+    return ProfileSetupBlocListener(
+      isOnboarding: isOnboarding,
+      child: Scaffold(
+        backgroundColor: AppColors.pageBackground,
+        appBar: isOnboarding
+            ? null
+            : CustomAppBarWidget(title: 'profile.edit'.tr(context: context)),
+        bottomNavigationBar: ProfileSetupSubmitBlocBuilder(
+          isOnboarding: isOnboarding,
+          onSubmit: submit,
+        ),
+        body: SafeArea(
+          child: ListView(
+            physics: const BouncingScrollPhysics(),
+            padding: EdgeInsets.fromLTRB(16.w, 14.h, 16.w, 24.h),
             children: [
-              OnboardingStepHeaderWidget(
-                stepLabel: 'onboarding.profile_setup.step'.tr(context: context),
-                completedSteps: 1,
-              ),
-              vSpace(6),
-              Text(
-                'onboarding.profile_setup.title'.tr(context: context),
-                style: AppTextStyles.font22Bold,
-              ),
-              vSpace(8),
-              Text(
-                'onboarding.profile_setup.desc'.tr(context: context),
-                style: AppTextStyles.font13Regular,
-              ),
-              vSpace(38),
-              ProfileAvatarPickerWidget(
-                initials: 'onboarding.profile_setup.sample_initials'.tr(
-                  context: context,
+              if (isOnboarding) ...[
+                OnboardingStepHeaderWidget(
+                  stepLabel: t('step'),
+                  completedSteps: 1,
                 ),
+                hSpace(6),
+                Text(t('title'), style: AppTextStyles.font22Bold),
+                hSpace(8),
+                Text(t('desc'), style: AppTextStyles.font13Regular),
+                hSpace(28),
+              ],
+              ProfileAvatarBlocBuilder(
+                initials: name.trim().isEmpty ? '?' : name.initials,
               ),
-              hSpace(14),
-              FormFieldLabelWidget(
-                label: 'onboarding.profile_setup.name_label'.tr(
-                  context: context,
-                ),
-                isRequired: true,
-              ),
+              hSpace(18),
+              FormFieldLabelWidget(label: t('name_label'), isRequired: true),
               hSpace(12),
               CustomTextFormField(
                 controller: nameController,
-                hintText: 'onboarding.profile_setup.name_hint'.tr(
-                  context: context,
-                ),
+                hintText: t('name_hint'),
                 style: AppTextStyles.font16Regular,
               ),
-              hSpace(14),
-              FormFieldLabelWidget(
-                label: 'onboarding.profile_setup.area_label'.tr(
-                  context: context,
-                ),
-                isRequired: true,
+              hSpace(18),
+              GovernorateAreaPickerBlocBuilder(
+                label: t('area_label'),
+                governorate: governorate,
+                area: area,
+                initialCity: profile?.city,
               ),
-              hSpace(14),
-              ProfileSetupAreaSelectorWidget(
-                selectedArea: selectedArea.value,
-                onSelect: (value) => selectedArea.value = value,
-              ),
-              hSpace(14),
-              FormFieldLabelWidget(
-                label: 'onboarding.profile_setup.pos_label'.tr(
-                  context: context,
-                ),
-                hint: 'onboarding.profile_setup.pos_hint'.tr(context: context),
-              ),
+              hSpace(18),
+              FormFieldLabelWidget(label: t('pos_label'), hint: t('pos_hint')),
               hSpace(14),
               ProfileSetupPositionSelectorWidget(
-                selectedPositions: selectedPositions.value,
-                onToggle: (key) {
-                  final next = {...selectedPositions.value};
-                  if (!next.remove(key)) next.add(key);
-                  selectedPositions.value = next;
+                selectedPositions: positions.value,
+                onToggle: (position) {
+                  final next = {...positions.value};
+                  if (!next.remove(position)) next.add(position);
+                  positions.value = next;
                 },
               ),
-              hSpace(14),
+              hSpace(18),
               FormFieldLabelWidget(
-                label: 'onboarding.profile_setup.level_label'.tr(
-                  context: context,
-                ),
-                hint: 'onboarding.profile_setup.optional'.tr(context: context),
+                label: t('level_label'),
+                hint: t('optional'),
               ),
               hSpace(14),
               ProfileSetupLevelSelectorWidget(
-                selectedLevel: selectedLevel.value,
-                onSelect: (value) => selectedLevel.value = value,
+                selectedLevel: level.value,
+                onSelect: (value) => level.value = value,
               ),
             ],
           ),

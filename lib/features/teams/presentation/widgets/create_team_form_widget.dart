@@ -15,9 +15,9 @@ import '../../../../core/widgets/initials_avatar_widget.dart';
 import '../../../../core/widgets/plain_note_box_widget.dart';
 import '../../../../core/widgets/radio_option_card_widget.dart';
 import '../../../reference/data/models/governorate_model.dart';
+import '../../../reference/presentation/widgets/governorate_area_picker_bloc_builder.dart';
 import '../../data/models/create_team_request_body.dart';
 import '../cubit/create_team_cubit.dart';
-import 'create_team_location_bloc_builder.dart';
 import 'create_team_submit_bloc_builder.dart';
 
 class CreateTeamFormWidget extends HookWidget {
@@ -81,7 +81,8 @@ class CreateTeamFormWidget extends HookWidget {
                 maxLines: 3,
               ),
               hSpace(14),
-              CreateTeamLocationBlocBuilder(
+              GovernorateAreaPickerBlocBuilder(
+                label: t('area'),
                 governorate: governorate,
                 area: area,
               ),

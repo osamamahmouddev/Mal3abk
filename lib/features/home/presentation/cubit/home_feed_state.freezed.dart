@@ -125,12 +125,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( HomeFeedModel feed)?  success,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( LocatedHomeFeedModel located)?  success,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case HomeFeedInitial() when initial != null:
 return initial();case HomeFeedLoading() when loading != null:
 return loading();case HomeFeedSuccess() when success != null:
-return success(_that.feed);case HomeFeedError() when error != null:
+return success(_that.located);case HomeFeedError() when error != null:
 return error(_that.message);case _:
   return orElse();
 
@@ -149,12 +149,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( HomeFeedModel feed)  success,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( LocatedHomeFeedModel located)  success,required TResult Function( String message)  error,}) {final _that = this;
 switch (_that) {
 case HomeFeedInitial():
 return initial();case HomeFeedLoading():
 return loading();case HomeFeedSuccess():
-return success(_that.feed);case HomeFeedError():
+return success(_that.located);case HomeFeedError():
 return error(_that.message);}
 }
 /// A variant of `when` that fallback to returning `null`
@@ -169,12 +169,12 @@ return error(_that.message);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( HomeFeedModel feed)?  success,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( LocatedHomeFeedModel located)?  success,TResult? Function( String message)?  error,}) {final _that = this;
 switch (_that) {
 case HomeFeedInitial() when initial != null:
 return initial();case HomeFeedLoading() when loading != null:
 return loading();case HomeFeedSuccess() when success != null:
-return success(_that.feed);case HomeFeedError() when error != null:
+return success(_that.located);case HomeFeedError() when error != null:
 return error(_that.message);case _:
   return null;
 
@@ -251,10 +251,10 @@ String toString() {
 
 
 class HomeFeedSuccess implements HomeFeedState {
-  const HomeFeedSuccess(this.feed);
+  const HomeFeedSuccess(this.located);
   
 
- final  HomeFeedModel feed;
+ final  LocatedHomeFeedModel located;
 
 /// Create a copy of HomeFeedState
 /// with the given fields replaced by the non-null parameter values.
@@ -266,16 +266,16 @@ $HomeFeedSuccessCopyWith<HomeFeedSuccess> get copyWith => _$HomeFeedSuccessCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeFeedSuccess&&(identical(other.feed, feed) || other.feed == feed));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeFeedSuccess&&(identical(other.located, located) || other.located == located));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,feed);
+int get hashCode => Object.hash(runtimeType,located);
 
 @override
 String toString() {
-  return 'HomeFeedState.success(feed: $feed)';
+  return 'HomeFeedState.success(located: $located)';
 }
 
 
@@ -286,7 +286,7 @@ abstract mixin class $HomeFeedSuccessCopyWith<$Res> implements $HomeFeedStateCop
   factory $HomeFeedSuccessCopyWith(HomeFeedSuccess value, $Res Function(HomeFeedSuccess) _then) = _$HomeFeedSuccessCopyWithImpl;
 @useResult
 $Res call({
- HomeFeedModel feed
+ LocatedHomeFeedModel located
 });
 
 
@@ -303,10 +303,10 @@ class _$HomeFeedSuccessCopyWithImpl<$Res>
 
 /// Create a copy of HomeFeedState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? feed = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? located = null,}) {
   return _then(HomeFeedSuccess(
-null == feed ? _self.feed : feed // ignore: cast_nullable_to_non_nullable
-as HomeFeedModel,
+null == located ? _self.located : located // ignore: cast_nullable_to_non_nullable
+as LocatedHomeFeedModel,
   ));
 }
 

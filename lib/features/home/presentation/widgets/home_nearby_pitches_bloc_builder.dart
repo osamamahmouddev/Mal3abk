@@ -5,6 +5,7 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/routes/routes.dart';
+import '../../data/models/located_home_feed_model.dart';
 import '../cubit/home_feed_cubit.dart';
 import '../cubit/home_feed_state.dart';
 import 'home_nearby_pitch_card_widget.dart';
@@ -23,7 +24,7 @@ class HomeNearbyPitchesBlocBuilder extends StatelessWidget {
             alignment: Alignment.center,
             child: const CircularProgressIndicator.adaptive(),
           ),
-          HomeFeedSuccess(:final feed) =>
+          HomeFeedSuccess(located: LocatedHomeFeedModel(:final feed)) =>
             feed.nearby.items.isNotEmpty
                 ? Container(
                     height: 187.h,

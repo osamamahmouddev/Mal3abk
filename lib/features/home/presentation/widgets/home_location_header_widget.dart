@@ -7,6 +7,7 @@ import '../../../../core/app/app_spaces.dart';
 import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
+import 'home_location_label_bloc_builder.dart';
 import 'home_notifications_button_bloc_builder.dart';
 
 class HomeLocationHeaderWidget extends StatelessWidget {
@@ -36,16 +37,7 @@ class HomeLocationHeaderWidget extends StatelessWidget {
                       height: 16.r,
                     ),
                     vSpace(6),
-                    Text(
-                      'home.default_city'.tr(context: context),
-                      style: AppTextStyles.font16Bold,
-                    ),
-                    vSpace(6),
-                    SvgPicture.asset(
-                      AppAssets.icChevronDown,
-                      width: 14.r,
-                      height: 14.r,
-                    ),
+                    const Flexible(child: HomeLocationLabelBlocBuilder()),
                   ],
                 ),
               ],

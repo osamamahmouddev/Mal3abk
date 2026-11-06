@@ -85,7 +85,11 @@ import '../../features/phone_change/presentation/cubit/verify_old_phone_cubit.da
 import '../../features/profile/data/apis/profile_api_service.dart';
 import '../../features/profile/data/repos/profile_repo_impl.dart';
 import '../../features/profile/domain/repos/profile_repo.dart';
-import '../../features/profile/domain/use_cases/complete_profile_use_case.dart';
+import '../../features/onboarding/presentation/cubit/avatar_cubit.dart';
+import '../../features/onboarding/presentation/cubit/onboarding_consent_cubit.dart';
+import '../../features/profile/domain/use_cases/get_profile_overview_use_case.dart';
+import '../../features/profile/domain/use_cases/save_profile_use_case.dart';
+import '../../features/profile/domain/use_cases/upload_avatar_use_case.dart';
 import '../../features/profile/domain/use_cases/get_my_profile_use_case.dart';
 import '../../features/profile/presentation/cubit/profile_cubit.dart';
 import '../../features/splash/data/repos/splash_repo_impl.dart';
@@ -270,20 +274,42 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
     () => ProfileApiService(sl<Dio>()),
   );
   sl.registerLazySingleton<ProfileRepo>(
-    () => ProfileRepoImpl(profileApiService: sl<ProfileApiService>()),
+    () => ProfileRepoImpl(
+      profileApiService: sl<ProfileApiService>(),
+      dio: sl<Dio>(),
+    ),
   );
   sl.registerLazySingleton<GetMyProfileUseCase>(
     () => GetMyProfileUseCase(profileRepo: sl<ProfileRepo>()),
   );
-  sl.registerLazySingleton<CompleteProfileUseCase>(
-    () => CompleteProfileUseCase(profileRepo: sl<ProfileRepo>()),
+  sl.registerLazySingleton<SaveProfileUseCase>(
+    () => SaveProfileUseCase(profileRepo: sl<ProfileRepo>()),
+  );
+  sl.registerLazySingleton<UploadAvatarUseCase>(
+    () => UploadAvatarUseCase(profileRepo: sl<ProfileRepo>()),
+  );
+  sl.registerLazySingleton<GetProfileOverviewUseCase>(
+    () => GetProfileOverviewUseCase(
+      profileRepo: sl<ProfileRepo>(),
+      teamsRepo: sl<TeamsRepo>(),
+      bookingRepo: sl<BookingRepo>(),
+      mediaBaseUrl: sl<EnvConfig>().baseUrl,
+    ),
+  );
+  sl.registerFactory<AvatarCubit>(
+    () => AvatarCubit(
+      uploadAvatarUseCase: sl<UploadAvatarUseCase>(),
+      profileRepo: sl<ProfileRepo>(),
+      mediaBaseUrl: sl<EnvConfig>().baseUrl,
+    ),
   );
   sl.registerFactory<ProfileCubit>(
-    () => ProfileCubit(getMyProfileUseCase: sl<GetMyProfileUseCase>()),
+    () => ProfileCubit(
+      getProfileOverviewUseCase: sl<GetProfileOverviewUseCase>(),
+    ),
   );
   sl.registerFactory<ProfileSetupCubit>(
-    () =>
-        ProfileSetupCubit(completeProfileUseCase: sl<CompleteProfileUseCase>()),
+    () => ProfileSetupCubit(saveProfileUseCase: sl<SaveProfileUseCase>()),
   );
 
   // Explore Feature
@@ -332,7 +358,10 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
     () => HomeRepoImpl(homeApiService: sl<HomeApiService>()),
   );
   sl.registerLazySingleton<GetHomeFeedUseCase>(
-    () => GetHomeFeedUseCase(homeRepo: sl<HomeRepo>()),
+    () => GetHomeFeedUseCase(
+      homeRepo: sl<HomeRepo>(),
+      profileRepo: sl<ProfileRepo>(),
+    ),
   );
   sl.registerFactory<HomeFeedCubit>(
     () => HomeFeedCubit(getHomeFeedUseCase: sl<GetHomeFeedUseCase>()),
@@ -463,6 +492,9 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
     () => NotificationPreferencesCubit(
       notificationsRepo: sl<NotificationsRepo>(),
     ),
+  );
+  sl.registerFactory<OnboardingConsentCubit>(
+    () => OnboardingConsentCubit(accountRepo: sl<AccountRepo>()),
   );
   sl.registerFactory<ConsentsCubit>(
     () => ConsentsCubit(accountRepo: sl<AccountRepo>()),

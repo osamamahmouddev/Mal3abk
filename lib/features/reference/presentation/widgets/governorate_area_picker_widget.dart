@@ -5,17 +5,22 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
+import '../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../core/widgets/pill_choice_wrap_widget.dart';
-import '../../../reference/data/models/governorate_model.dart';
+import '../../data/models/governorate_model.dart';
 
-class CreateTeamLocationWidget extends StatelessWidget {
-  const CreateTeamLocationWidget({
+/// Governorate dropdown plus its areas; governorates without a curated list
+/// take a typed area name, as the server accepts.
+class GovernorateAreaPickerWidget extends StatelessWidget {
+  const GovernorateAreaPickerWidget({
+    required this.label,
     required this.governorates,
     required this.governorate,
     required this.area,
     super.key,
   });
 
+  final String label;
   final List<GovernorateModel> governorates;
   final ValueNotifier<GovernorateModel?> governorate;
   final ValueNotifier<String?> area;
@@ -31,15 +36,12 @@ class CreateTeamLocationWidget extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              '${'teams.create.area'.tr(context: context)} *',
-              style: AppTextStyles.font14SemiBold,
-            ),
+            Text('$label *', style: AppTextStyles.font14SemiBold),
             hSpace(10),
             DropdownButtonFormField<GovernorateModel>(
               initialValue: selected,
               isExpanded: true,
-              hint: Text('teams.create.governorate_hint'.tr(context: context)),
+              hint: Text('reference.governorate_hint'.tr(context: context)),
               borderRadius: BorderRadius.circular(14.r),
               decoration: InputDecoration(
                 filled: true,
@@ -62,18 +64,29 @@ class CreateTeamLocationWidget extends StatelessWidget {
                 area.value = null;
               },
             ),
-            if (areas.isNotEmpty) ...[
+            if (selected != null) ...[
               hSpace(12),
-              ValueListenableBuilder<String?>(
-                valueListenable: area,
-                builder: (context, selectedArea, _) => PillChoiceWrapWidget(
-                  labels: [for (final a in areas) a.nameFor(lang)],
-                  selectedIndex: areas.indexWhere(
-                    (a) => a.nameAr == selectedArea,
+              if (areas.isNotEmpty)
+                ValueListenableBuilder<String?>(
+                  valueListenable: area,
+                  builder: (context, selectedArea, _) => PillChoiceWrapWidget(
+                    labels: [for (final a in areas) a.nameFor(lang)],
+                    selectedIndex: areas.indexWhere(
+                      (a) => a.nameAr == selectedArea,
+                    ),
+                    onSelect: (index) => area.value = areas[index].nameAr,
                   ),
-                  onSelect: (index) => area.value = areas[index].nameAr,
+                )
+              else
+                CustomTextFormField(
+                  key: ValueKey(selected.code),
+                  initialValue: area.value,
+                  hintText: 'reference.area_hint'.tr(context: context),
+                  onChanged: (value) {
+                    final trimmed = value.trim();
+                    area.value = trimmed.isEmpty ? null : trimmed;
+                  },
                 ),
-              ),
             ],
           ],
         );

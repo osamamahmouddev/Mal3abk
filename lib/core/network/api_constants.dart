@@ -27,6 +27,9 @@ class ApiConstants {
   /// Profile and onboarding
   static const String myProfile = '/api/v1/me';
   static const String onboardingProfile = '/api/v1/me/onboarding/profile';
+  static const String myAvatar = '/api/v1/me/avatar';
+  static const String playerProfile = '/api/v1/players/{userId}';
+  static const String mediaUploads = '/api/v1/media/uploads';
   static const String onboardingStatus = '/api/v1/me/onboarding';
 
   /// Home and Venues
