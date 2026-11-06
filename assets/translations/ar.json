@@ -457,7 +457,6 @@
     "pending_tab": "معلّقة",
     "submit_request": "إرسال طلب الحجز",
     "individual_booking": "حجز فردي",
-    "team_booking": "حجز باسم فريق",
     "price_summary": "ملخص السعر",
     "one_hour_rate": "ساعة واحدة × ١٥٠ ج.م",
     "service_fee": "رسوم الخدمة",
@@ -643,6 +642,17 @@
       "total": "إجمالي الحجز",
       "deposit": "العربون",
       "at_venue": "الباقي في الملعب"
+    },
+    "review": {
+      "when": "الميعاد",
+      "duration": "مدة الحجز",
+      "price_summary": "ملخص السعر",
+      "subtotal": "سعر الحجز",
+      "discount": "خصم",
+      "fees": "رسوم الخدمة",
+      "total": "الإجمالي",
+      "deposit_now": "العربون المطلوب دلوقتي",
+      "at_venue": "الباقي — بيتدفع في الملعب"
     }
   },
   "teams": {

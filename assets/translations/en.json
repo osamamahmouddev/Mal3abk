@@ -457,7 +457,6 @@
     "pending_tab": "Pending",
     "submit_request": "Send Booking Request",
     "individual_booking": "Individual Booking",
-    "team_booking": "Team Booking",
     "price_summary": "Price Summary",
     "one_hour_rate": "1 Hour × 150 EGP",
     "service_fee": "Service Fee",
@@ -643,6 +642,17 @@
       "total": "Booking total",
       "deposit": "Deposit",
       "at_venue": "Due at the venue"
+    },
+    "review": {
+      "when": "When",
+      "duration": "Length",
+      "price_summary": "Price summary",
+      "subtotal": "Booking price",
+      "discount": "Discount",
+      "fees": "Service fee",
+      "total": "Total",
+      "deposit_now": "Deposit due now",
+      "at_venue": "Balance — paid at the venue"
     }
   },
   "teams": {

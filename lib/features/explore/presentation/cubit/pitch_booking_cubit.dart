@@ -219,10 +219,9 @@ class PitchBookingCubit extends Cubit<PitchBookingState> {
     );
   }
 
-  Future<bool> createBookingHold({
-    required String customerName,
-    required String customerPhone,
-  }) async {
+  /// Holds the slot for the signed-in player; the server books it under
+  /// their own account.
+  Future<bool> createBookingHold() async {
     final current = state;
     if (current is! PitchBookingLoaded) return false;
     final pitch = current.currentPitch;
@@ -243,8 +242,6 @@ class PitchBookingCubit extends Cubit<PitchBookingState> {
         endUtc: slot.endUtc,
         quoteToken: quote.quoteToken,
         expectedPrice: quote.total,
-        customerName: customerName,
-        customerPhone: customerPhone,
       ),
       idempotencyKey: idempotencyKey,
     );

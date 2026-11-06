@@ -275,7 +275,8 @@ class AppRouter {
         );
 
       case AppRoutes.bookingReview:
-        final cubit = settings.arguments as PitchBookingCubit?;
+        final cubit = settings.arguments;
+        if (cubit is! PitchBookingCubit) return _errorRoute('Missing booking');
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => BookingReviewScreen(cubit: cubit),
