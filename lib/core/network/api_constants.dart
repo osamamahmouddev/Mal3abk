@@ -108,9 +108,4 @@ class ApiConstants {
   static const String matchDetails = '/api/v1/matches/{id}';
   static const String matchResults = '/api/v1/matches/{id}/results';
   static const String verifyMatchResult = '/api/v1/matches/{id}/results/verify';
-
-  static const String fields = '/fields';
-  static const String fieldDetails = '/fields/{id}';
-  static const String bookings = '/bookings';
-  static const String bookingDetails = '/bookings/{id}';
 }
