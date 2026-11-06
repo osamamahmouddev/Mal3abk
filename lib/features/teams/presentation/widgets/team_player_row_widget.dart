@@ -41,7 +41,9 @@ class TeamPlayerRowWidget extends StatelessWidget {
             ),
             child: Text(
               initials,
-              style: AppTextStyles.font12Bold.copyWith(color: AppColors.brandNavy),
+              style: AppTextStyles.font12Bold.copyWith(
+                color: AppColors.brandNavy,
+              ),
             ),
           ),
           vSpace(10),

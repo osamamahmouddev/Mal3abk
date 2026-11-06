@@ -20,7 +20,6 @@ class AppRoutes {
   static const String bookingReview = '/booking-review';
   static const String depositInstructions = '/deposit-instructions';
   static const String uploadProof = '/upload-proof';
-  static const String proofRejected = '/proof-rejected';
   static const String myBookings = '/my-bookings';
   static const String bookingDetails = '/booking-details';
   static const String cancelBooking = '/cancel-booking';
@@ -32,11 +31,10 @@ class AppRoutes {
   static const String joinTeamByCode = '/join-team-by-code';
   static const String manageMembers = '/manage-members';
   static const String rankings = '/rankings';
-  static const String captaincyOffer = '/captaincy-offer';
+  static const String tacticalBoard = '/tactical-board';
   static const String leaveTeam = '/leave-team';
 
   static const String challengeTeam = '/challenge-team';
-  static const String challengeReceived = '/challenge-received';
   static const String challengeDetails = '/challenge-details';
   static const String matchDetails = '/match-details';
   static const String submitResult = '/submit-result';
@@ -45,6 +43,7 @@ class AppRoutes {
   static const String notifications = '/notifications';
   static const String notificationDetail = '/notification-detail';
   static const String settings = '/settings';
+  static const String activeSessions = '/settings/sessions';
   static const String helpAndSupport = '/help-and-support';
 
   static const String changePhone = '/change-phone';

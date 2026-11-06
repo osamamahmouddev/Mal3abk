@@ -16,6 +16,7 @@ class TeamResultRowWidget extends StatelessWidget {
     required this.score,
     super.key,
     this.showDivider = true,
+    this.onTap,
   });
 
   final TeamResultType type;
@@ -24,6 +25,7 @@ class TeamResultRowWidget extends StatelessWidget {
   final String meta;
   final String score;
   final bool showDivider;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -33,37 +35,46 @@ class TeamResultRowWidget extends StatelessWidget {
       _ => (AppColors.lightSurface, AppColors.offlineBanner),
     };
 
-    return Container(
-      height: 69.h,
-      padding: EdgeInsets.symmetric(horizontal: 14.w),
-      decoration: BoxDecoration(
-        border: showDivider
-            ? const Border(bottom: BorderSide(color: AppColors.lightSurface))
-            : null,
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 28.r,
-            height: 28.r,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(8.r)),
-            child: Text(letter, style: AppTextStyles.font12Bold.copyWith(color: fg)),
-          ),
-          vSpace(10),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: AppTextStyles.font14SemiBold),
-                hSpace(2),
-                Text(meta, style: AppTextStyles.font11Regular),
-              ],
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        height: 69.h,
+        padding: EdgeInsets.symmetric(horizontal: 14.w),
+        decoration: BoxDecoration(
+          border: showDivider
+              ? const Border(bottom: BorderSide(color: AppColors.lightSurface))
+              : null,
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 28.r,
+              height: 28.r,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: bg,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Text(
+                letter,
+                style: AppTextStyles.font12Bold.copyWith(color: fg),
+              ),
             ),
-          ),
-          Text(score, style: AppTextStyles.font15Bold),
-        ],
+            vSpace(10),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: AppTextStyles.font14SemiBold),
+                  hSpace(2),
+                  Text(meta, style: AppTextStyles.font11Regular),
+                ],
+              ),
+            ),
+            Text(score, style: AppTextStyles.font15Bold),
+          ],
+        ),
       ),
     );
   }

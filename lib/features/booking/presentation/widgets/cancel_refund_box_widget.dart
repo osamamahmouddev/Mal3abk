@@ -3,67 +3,62 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
+import '../../../../core/extensions/app_display_extensions.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
+import '../../../../core/utils/cairo_time.dart';
+import '../../data/models/cancel_preview_model.dart';
 
 class CancelRefundBoxWidget extends StatelessWidget {
-  const CancelRefundBoxWidget({required this.isAfterDeadline, super.key});
+  const CancelRefundBoxWidget({required this.preview, super.key});
 
-  final bool isAfterDeadline;
+  final CancelPreviewModel preview;
 
   @override
   Widget build(BuildContext context) {
-    final fg = isAfterDeadline ? AppColors.redDark : AppColors.successText;
+    final lang = context.locale.languageCode;
+    final refunds = preview.estimatedRefundAmount > 0;
+    final (bg, fg) = refunds
+        ? (AppColors.successLight, AppColors.successText)
+        : (AppColors.redLight, AppColors.redDark);
+    String t(String key, [List<String>? args]) =>
+        'booking.cancel.$key'.tr(context: context, args: args);
 
     return Container(
-      padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 14.h),
+      padding: EdgeInsets.all(14.r),
       decoration: BoxDecoration(
-        color: isAfterDeadline ? AppColors.redLight : AppColors.successLight,
-        borderRadius: BorderRadius.circular(16.r),
+        color: bg,
+        borderRadius: BorderRadius.circular(14.r),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            (isAfterDeadline ? 'booking.cancel.late_header' : 'booking.cancel.free_header')
-                .tr(context: context),
-            style: AppTextStyles.font13SemiBold.copyWith(color: fg),
+            refunds
+                ? t('refund_amount', [
+                    preview.estimatedRefundAmount.round().toLocalizedDigits(
+                      lang,
+                    ),
+                    preview.refundPercentage.round().toLocalizedDigits(lang),
+                  ])
+                : t('no_refund'),
+            style: AppTextStyles.font15Bold.copyWith(color: fg),
           ),
-          hSpace(6),
-          Row(
-            children: [
-              Text(
-                'booking.cancel.paid_deposit'.tr(context: context),
-                style: AppTextStyles.font14Regular.copyWith(color: fg),
-              ),
-              const Spacer(),
-              Text(
-                'booking.amount_70'.tr(context: context),
-                style: AppTextStyles.font14Regular.copyWith(color: fg),
-              ),
-            ],
-          ),
-          hSpace(8),
-          Row(
-            children: [
-              Text(
-                'booking.cancel.refund'.tr(context: context),
-                style: AppTextStyles.font16Bold.copyWith(color: fg),
-              ),
-              const Spacer(),
-              Text(
-                (isAfterDeadline ? 'booking.amount_0' : 'booking.amount_70')
-                    .tr(context: context),
-                style: AppTextStyles.font24Bold.copyWith(color: fg),
-              ),
-            ],
-          ),
-          hSpace(6),
-          Text(
-            (isAfterDeadline ? 'booking.cancel.late_note' : 'booking.cancel.free_note')
-                .tr(context: context),
-            style: AppTextStyles.font12Regular.copyWith(color: fg, height: 19 / 12),
-          ),
+          if (preview.cancellationDeadlineUtc case final deadline?) ...[
+            hSpace(4),
+            Text(
+              t('deadline', [CairoTime.dayAndTime(deadline, lang)]),
+              style: AppTextStyles.font12Regular.copyWith(color: fg),
+            ),
+          ],
+          if (preview.policySummary case final policy?
+              when policy.isNotEmpty) ...[
+            hSpace(6),
+            Text(
+              policy,
+              style: AppTextStyles.font12Regular.copyWith(color: fg),
+            ),
+          ],
         ],
       ),
     );

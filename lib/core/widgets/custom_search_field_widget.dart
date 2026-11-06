@@ -44,10 +44,16 @@ class CustomSearchFieldWidget extends StatelessWidget {
         decoration: InputDecoration(
           isDense: true,
           hintText: hintText,
-          hintStyle: AppTextStyles.font15Regular.copyWith(color: AppColors.hintText),
+          hintStyle: AppTextStyles.font15Regular.copyWith(
+            color: AppColors.hintText,
+          ),
           prefixIcon: Padding(
             padding: EdgeInsetsDirectional.only(start: 14.w, end: 9.w),
-            child: SvgPicture.asset(AppAssets.icSearch17, width: 17.r, height: 18.r),
+            child: SvgPicture.asset(
+              AppAssets.icSearch17,
+              width: 17.r,
+              height: 18.r,
+            ),
           ),
           prefixIconConstraints: const BoxConstraints(),
           border: InputBorder.none,

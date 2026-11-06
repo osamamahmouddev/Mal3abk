@@ -6,8 +6,6 @@ import '../models/phone_change_code_request_body.dart';
 import '../models/recover_phone_request_body.dart';
 import '../models/start_phone_change_request_body.dart';
 import '../models/start_phone_change_response_model.dart';
-import '../models/step_up_request_body.dart';
-import '../models/step_up_response_model.dart';
 import '../models/verify_new_phone_response_model.dart';
 
 part 'phone_change_api_service.g.dart';
@@ -16,9 +14,6 @@ part 'phone_change_api_service.g.dart';
 abstract class PhoneChangeApiService {
   factory PhoneChangeApiService(Dio dio, {String? baseUrl}) =
       _PhoneChangeApiService;
-
-  @POST(ApiConstants.stepUp)
-  Future<StepUpResponseModel> stepUp(@Body() StepUpRequestBody body);
 
   @POST(ApiConstants.startPhoneChange)
   Future<StartPhoneChangeResponseModel> startPhoneChange(

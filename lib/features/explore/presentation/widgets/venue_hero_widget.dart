@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -7,25 +10,49 @@ import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_colors.dart';
 import 'venue_hero_button_widget.dart';
 
-class VenueHeroWidget extends StatelessWidget {
+/// Swipeable venue photos with back and favourite buttons.
+class VenueHeroWidget extends HookWidget {
   const VenueHeroWidget({
+    required this.venueId,
+    required this.photos,
+    required this.isFavorite,
+    required this.onFavoriteTap,
     super.key,
-    this.photoCount = 3,
-    this.activePhoto = 0,
   });
 
-  final int photoCount;
-  final int activePhoto;
+  final String venueId;
+  final List<String> photos;
+  final bool isFavorite;
+  final VoidCallback onFavoriteTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final page = useState(0);
+    final placeholder = SvgPicture.asset(
+      AppAssets.pitchHero,
+      fit: BoxFit.cover,
+    );
+
+    return SizedBox(
       height: 230.h,
-      color: AppColors.pitchGreenLight,
       child: Stack(
         children: [
           Positioned.fill(
-            child: SvgPicture.asset(AppAssets.pitchHero, fit: BoxFit.cover),
+            child: Hero(
+              tag: 'venue-$venueId',
+              child: photos.isEmpty
+                  ? placeholder
+                  : PageView.builder(
+                      itemCount: photos.length,
+                      onPageChanged: (index) => page.value = index,
+                      itemBuilder: (_, index) => CachedNetworkImage(
+                        imageUrl: photos[index],
+                        fit: BoxFit.cover,
+                        placeholder: (_, _) => placeholder,
+                        errorWidget: (_, _, _) => placeholder,
+                      ),
+                    ),
+            ),
           ),
           SafeArea(
             child: Padding(
@@ -39,36 +66,43 @@ class VenueHeroWidget extends StatelessWidget {
                     onTap: () => Navigator.of(context).maybePop(),
                   ),
                   VenueHeroButtonWidget(
-                    iconAsset: AppAssets.icHeartFilled,
-                    onTap: () {},
+                    iconAsset: isFavorite
+                        ? AppAssets.icHeartFilled
+                        : AppAssets.icHeartOutline,
+                    onTap: () {
+                      HapticFeedback.lightImpact();
+                      onFavoriteTap();
+                    },
                   ),
                 ],
               ),
             ),
           ),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 12.h,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                for (var i = 0; i < photoCount; i++) ...[
-                  if (i > 0) vSpace(5),
-                  Container(
-                    width: (i == activePhoto ? 18 : 6).w,
-                    height: 6.r,
-                    decoration: BoxDecoration(
-                      color: i == activePhoto
-                          ? AppColors.white
-                          : AppColors.white60,
-                      borderRadius: BorderRadius.circular(3.r),
+          if (photos.length > 1)
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 12.h,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  for (var i = 0; i < photos.length; i++) ...[
+                    if (i > 0) vSpace(5),
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      width: (i == page.value ? 18 : 6).w,
+                      height: 6.r,
+                      decoration: BoxDecoration(
+                        color: i == page.value
+                            ? AppColors.white
+                            : AppColors.white60,
+                        borderRadius: BorderRadius.circular(3.r),
+                      ),
                     ),
-                  ),
+                  ],
                 ],
-              ],
+              ),
             ),
-          ),
         ],
       ),
     );

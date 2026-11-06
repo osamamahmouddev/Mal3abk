@@ -1,7 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../settings/data/models/record_consent_request_body.dart';
+import '../cubit/onboarding_consent_cubit.dart';
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/styles/app_colors.dart';
@@ -15,6 +18,14 @@ class NotificationsPermissionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void finish({required bool granted}) {
+      context.read<OnboardingConsentCubit>().record(
+        ConsentType.notifications,
+        granted: granted,
+      );
+      context.openMainShell();
+    }
+
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
       body: SafeArea(
@@ -28,8 +39,12 @@ class NotificationsPermissionScreen extends StatelessWidget {
                 glyph: '✓',
                 glyphColor: AppColors.successGreen,
                 glyphBackground: AppColors.successLight,
-                title: 'onboarding.notifications.preview1_title'.tr(context: context),
-                time: 'onboarding.notifications.preview1_time'.tr(context: context),
+                title: 'onboarding.notifications.preview1_title'.tr(
+                  context: context,
+                ),
+                time: 'onboarding.notifications.preview1_time'.tr(
+                  context: context,
+                ),
               ),
               hSpace(4),
               Transform.translate(
@@ -38,8 +53,12 @@ class NotificationsPermissionScreen extends StatelessWidget {
                   glyph: '⇄',
                   glyphColor: AppColors.goldDark,
                   glyphBackground: AppColors.goldLight,
-                  title: 'onboarding.notifications.preview2_title'.tr(context: context),
-                  time: 'onboarding.notifications.preview2_time'.tr(context: context),
+                  title: 'onboarding.notifications.preview2_title'.tr(
+                    context: context,
+                  ),
+                  time: 'onboarding.notifications.preview2_time'.tr(
+                    context: context,
+                  ),
                 ),
               ),
               hSpace(6),
@@ -50,8 +69,12 @@ class NotificationsPermissionScreen extends StatelessWidget {
                   glyph: '!',
                   glyphColor: AppColors.redText,
                   glyphBackground: AppColors.redLight,
-                  title: 'onboarding.notifications.preview3_title'.tr(context: context),
-                  time: 'onboarding.notifications.preview3_time'.tr(context: context),
+                  title: 'onboarding.notifications.preview3_title'.tr(
+                    context: context,
+                  ),
+                  time: 'onboarding.notifications.preview3_time'.tr(
+                    context: context,
+                  ),
                 ),
               ),
               hSpace(14),
@@ -73,7 +96,7 @@ class NotificationsPermissionScreen extends StatelessWidget {
               PrimaryCtaButtonWidget(
                 text: 'onboarding.notifications.enable'.tr(context: context),
                 height: 54,
-                onTap: context.openMainShell,
+                onTap: () => finish(granted: true),
               ),
               hSpace(8),
               CustomButton(
@@ -83,7 +106,7 @@ class NotificationsPermissionScreen extends StatelessWidget {
                 textStyle: AppTextStyles.font15SemiBold.copyWith(
                   color: AppColors.brandNavy,
                 ),
-                onTap: context.openMainShell,
+                onTap: () => finish(granted: false),
               ),
             ],
           ),

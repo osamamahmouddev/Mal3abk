@@ -29,16 +29,8 @@ class WelcomeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  BrandWordmarkWidget(
-                    titleStyle: AppTextStyles.font56Bold.copyWith(
-                      color: AppColors.white,
-                    ),
-                    latinStyle: AppTextStyles.font20SemiBold.copyWith(
-                      color: AppColors.onNavyMuted,
-                    ),
-                    accentColor: AppColors.redSoft,
-                  ),
-                  hSpace(36),
+                  BrandWordmarkWidget(isDarkBackground: true, height: 56.h),
+                  vSpace(36),
                   Text(
                     'onboarding.welcome.headline'.tr(context: context),
                     style: AppTextStyles.font28Bold.copyWith(
@@ -46,23 +38,35 @@ class WelcomeScreen extends StatelessWidget {
                       height: 40 / 28,
                     ),
                   ),
-                  hSpace(24),
+                  vSpace(24),
                   OnboardingFeatureItemWidget(
                     number: '١',
-                    title: 'onboarding.welcome.feat1_title'.tr(context: context),
-                    subtitle: 'onboarding.welcome.feat1_sub'.tr(context: context),
+                    title: 'onboarding.welcome.feat1_title'.tr(
+                      context: context,
+                    ),
+                    subtitle: 'onboarding.welcome.feat1_sub'.tr(
+                      context: context,
+                    ),
                   ),
                   hSpace(15),
                   OnboardingFeatureItemWidget(
                     number: '٢',
-                    title: 'onboarding.welcome.feat2_title'.tr(context: context),
-                    subtitle: 'onboarding.welcome.feat2_sub'.tr(context: context),
+                    title: 'onboarding.welcome.feat2_title'.tr(
+                      context: context,
+                    ),
+                    subtitle: 'onboarding.welcome.feat2_sub'.tr(
+                      context: context,
+                    ),
                   ),
                   hSpace(15),
                   OnboardingFeatureItemWidget(
                     number: '٣',
-                    title: 'onboarding.welcome.feat3_title'.tr(context: context),
-                    subtitle: 'onboarding.welcome.feat3_sub'.tr(context: context),
+                    title: 'onboarding.welcome.feat3_title'.tr(
+                      context: context,
+                    ),
+                    subtitle: 'onboarding.welcome.feat3_sub'.tr(
+                      context: context,
+                    ),
                   ),
                   const Spacer(),
                   CustomButton(
@@ -80,11 +84,14 @@ class WelcomeScreen extends StatelessWidget {
                         spreadRadius: -11.r,
                       ),
                     ],
-                    onTap: () => Navigator.of(context).pushNamed(AppRoutes.login),
+                    onTap: () =>
+                        Navigator.of(context).pushNamed(AppRoutes.login),
                   ),
                   hSpace(10),
                   CustomButton(
-                    text: 'onboarding.welcome.explore_first'.tr(context: context),
+                    text: 'onboarding.welcome.explore_first'.tr(
+                      context: context,
+                    ),
                     type: CustomButtonType.outline,
                     height: 50.h,
                     borderRadius: 12,

@@ -9,15 +9,19 @@ class MyTeamCardActionsWidget extends StatelessWidget {
   const MyTeamCardActionsWidget({
     required this.onTeamPage,
     required this.onManage,
+    this.showManage = true,
     super.key,
   });
 
   final VoidCallback onTeamPage;
   final VoidCallback onManage;
+  final bool showManage;
 
   @override
   Widget build(BuildContext context) {
-    final style = AppTextStyles.font14SemiBold.copyWith(color: AppColors.brandNavy);
+    final style = AppTextStyles.font14SemiBold.copyWith(
+      color: AppColors.brandNavy,
+    );
 
     return Container(
       height: 47.h,
@@ -30,19 +34,26 @@ class MyTeamCardActionsWidget extends StatelessWidget {
             child: InkWell(
               onTap: onTeamPage,
               child: Center(
-                child: Text('teams.list.team_page'.tr(context: context), style: style),
+                child: Text(
+                  'teams.list.team_page'.tr(context: context),
+                  style: style,
+                ),
               ),
             ),
           ),
-          Container(width: 1, color: AppColors.lightSurface),
-          Expanded(
-            child: InkWell(
-              onTap: onManage,
-              child: Center(
-                child: Text('teams.list.manage'.tr(context: context), style: style),
+          if (showManage) Container(width: 1, color: AppColors.lightSurface),
+          if (showManage)
+            Expanded(
+              child: InkWell(
+                onTap: onManage,
+                child: Center(
+                  child: Text(
+                    'teams.list.manage'.tr(context: context),
+                    style: style,
+                  ),
+                ),
               ),
             ),
-          ),
         ],
       ),
     );

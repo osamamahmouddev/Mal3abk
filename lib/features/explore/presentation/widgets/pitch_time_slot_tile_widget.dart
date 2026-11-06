@@ -37,28 +37,37 @@ class PitchTimeSlotTileWidget extends StatelessWidget {
         borderRadius: radius,
         side: isBooked || isSelected
             ? BorderSide.none
-            : const BorderSide(color: AppColors.borderInput),
+            : const BorderSide(color: AppColors.border),
       ),
       child: InkWell(
         onTap: isBooked ? null : onTap,
         borderRadius: radius,
         child: Container(
-          height: 56.h,
+          height: 58.h,
           alignment: Alignment.center,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(time, style: AppTextStyles.font15Bold.copyWith(color: timeColor)),
+              Text(
+                time,
+                style: AppTextStyles.font15Bold.copyWith(
+                  color: timeColor,
+                  decoration: isBooked ? TextDecoration.lineThrough : null,
+                  decorationColor: AppColors.textDisabled,
+                ),
+              ),
               if (isBooked)
                 Text(
                   'explore.slots.booked'.tr(context: context),
-                  style: AppTextStyles.font10Bold,
+                  style: AppTextStyles.font10Regular.copyWith(
+                    color: AppColors.textDisabled,
+                  ),
                 )
               else if (isNextDay)
                 Text(
                   'explore.slots.next_day'.tr(context: context),
                   style: AppTextStyles.font10Bold.copyWith(
-                    color: isSelected ? AppColors.white : AppColors.redText,
+                    color: isSelected ? AppColors.white : AppColors.brandRed,
                   ),
                 ),
             ],

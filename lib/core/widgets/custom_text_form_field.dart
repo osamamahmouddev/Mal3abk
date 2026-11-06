@@ -87,7 +87,7 @@ class CustomTextFormField extends StatelessWidget {
               color: AppColors.textPrimary,
             ),
           ),
-          hSpace(8),
+          vSpace(8),
         ],
         TextFormField(
           controller: controller,
@@ -111,7 +111,8 @@ class CustomTextFormField extends StatelessWidget {
           style: style ?? AppTextStyles.font14Medium,
           decoration: InputDecoration(
             hintText: hintText,
-            hintStyle: hintStyle ??
+            hintStyle:
+                hintStyle ??
                 AppTextStyles.font14Regular.copyWith(
                   color: AppColors.textMuted,
                 ),
@@ -121,11 +122,9 @@ class CustomTextFormField extends StatelessWidget {
             filled: true,
             fillColor: fillColor,
             isDense: isDense,
-            contentPadding: contentPadding ??
-                EdgeInsets.symmetric(
-                  horizontal: 16.w,
-                  vertical: 14.h,
-                ),
+            contentPadding:
+                contentPadding ??
+                EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
             border: OutlineInputBorder(
               borderRadius: effectiveBorderRadius,
               borderSide: BorderSide(
@@ -149,17 +148,11 @@ class CustomTextFormField extends StatelessWidget {
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: effectiveBorderRadius,
-              borderSide: const BorderSide(
-                color: AppColors.error,
-                width: 1,
-              ),
+              borderSide: const BorderSide(color: AppColors.error, width: 1),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: effectiveBorderRadius,
-              borderSide: const BorderSide(
-                color: AppColors.error,
-                width: 1.5,
-              ),
+              borderSide: const BorderSide(color: AppColors.error, width: 1.5),
             ),
           ),
         ),

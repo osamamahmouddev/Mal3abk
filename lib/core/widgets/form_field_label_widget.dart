@@ -28,10 +28,7 @@ class FormFieldLabelWidget extends StatelessWidget {
               style: TextStyle(color: AppColors.redText),
             ),
           if (hint != null)
-            TextSpan(
-              text: ' $hint',
-              style: AppTextStyles.font14Regular,
-            ),
+            TextSpan(text: ' $hint', style: AppTextStyles.font14Regular),
         ],
       ),
     );

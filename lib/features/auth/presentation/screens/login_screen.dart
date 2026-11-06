@@ -34,17 +34,8 @@ class LoginScreen extends HookWidget {
                     child: AppBackButtonWidget(),
                   ),
                   hSpace(18),
-                  BrandWordmarkWidget(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    titleStyle: AppTextStyles.font44Bold.copyWith(
-                      color: AppColors.brandNavy,
-                    ),
-                    latinStyle: AppTextStyles.font15SemiBold.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
-                    accentColor: AppColors.brandRed,
-                  ),
-                  hSpace(35),
+                  BrandWordmarkWidget(height: 60.h),
+                  hSpace(28),
                   Text(
                     'auth.login.title'.tr(context: context),
                     style: AppTextStyles.font24Bold,

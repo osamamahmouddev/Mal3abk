@@ -43,7 +43,8 @@ class AppHeaderIconButtonWidget extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(((44 - iconSize) / 2).r),
             child: Transform.flip(
-              flipX: mirrorInLtr &&
+              flipX:
+                  mirrorInLtr &&
                   Directionality.of(context) == TextDirection.ltr,
               child: SvgPicture.asset(
                 iconAsset,

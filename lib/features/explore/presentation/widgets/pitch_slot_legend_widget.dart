@@ -26,7 +26,10 @@ class PitchSlotLegendWidget extends StatelessWidget {
           ),
         ),
         vSpace(6),
-        Text('explore.slots.legend_selected'.tr(context: context), style: labelStyle),
+        Text(
+          'explore.slots.legend_selected'.tr(context: context),
+          style: labelStyle,
+        ),
         vSpace(16),
         Container(
           width: 14.r,
@@ -38,7 +41,10 @@ class PitchSlotLegendWidget extends StatelessWidget {
           ),
         ),
         vSpace(6),
-        Text('explore.slots.legend_available'.tr(context: context), style: labelStyle),
+        Text(
+          'explore.slots.legend_available'.tr(context: context),
+          style: labelStyle,
+        ),
         vSpace(16),
         Container(
           width: 12.r,

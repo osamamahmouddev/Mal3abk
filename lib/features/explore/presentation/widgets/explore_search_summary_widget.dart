@@ -4,7 +4,6 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/app/app_spaces.dart';
-import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
@@ -16,12 +15,16 @@ class ExploreSearchSummaryWidget extends StatelessWidget {
     this.floating = false,
     this.subtitleKey = 'explore.summary_when',
     this.activeFilters = 0,
+    this.onOpenFilters,
   });
 
   /// White with shadow when floating over the map; gray when inline.
   final bool floating;
   final String subtitleKey;
   final int activeFilters;
+
+  /// Hidden when null.
+  final VoidCallback? onOpenFilters;
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +38,9 @@ class ExploreSearchSummaryWidget extends StatelessWidget {
             ),
           ]
         : null;
-    final background =
-        floating ? AppColors.white : AppColors.lightGrayBackground;
+    final background = floating
+        ? AppColors.white
+        : AppColors.lightGrayBackground;
 
     return Row(
       children: [
@@ -47,15 +51,18 @@ class ExploreSearchSummaryWidget extends StatelessWidget {
               color: background,
               borderRadius: radius,
               child: InkWell(
-                onTap: () =>
-                    Navigator.of(context).pushNamed(AppRoutes.filtersAndSort),
+                onTap: onOpenFilters,
                 borderRadius: radius,
                 child: Container(
                   height: 50.h,
                   padding: EdgeInsets.symmetric(horizontal: 14.w),
                   child: Row(
                     children: [
-                      SvgPicture.asset(AppAssets.icSearch, width: 18.r, height: 18.r),
+                      SvgPicture.asset(
+                        AppAssets.icSearch,
+                        width: 18.r,
+                        height: 18.r,
+                      ),
                       vSpace(10),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -78,12 +85,14 @@ class ExploreSearchSummaryWidget extends StatelessWidget {
             ),
           ),
         ),
-        vSpace(8),
-        ExploreFilterButtonWidget(
-          background: background,
-          shadow: shadow,
-          activeFilters: activeFilters,
-        ),
+        if (onOpenFilters != null) vSpace(8),
+        if (onOpenFilters != null)
+          ExploreFilterButtonWidget(
+            background: background,
+            shadow: shadow,
+            activeFilters: activeFilters,
+            onTap: onOpenFilters!,
+          ),
       ],
     );
   }

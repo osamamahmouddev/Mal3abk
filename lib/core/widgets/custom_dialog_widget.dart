@@ -58,19 +58,14 @@ class CustomDialogWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: AppColors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.r),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
       insetPadding: EdgeInsets.symmetric(horizontal: 24.w),
       child: Padding(
         padding: EdgeInsets.all(20.w),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (icon != null) ...[
-              icon!,
-              hSpace(14),
-            ],
+            if (icon != null) ...[icon!, hSpace(14)],
             Text(
               title,
               style: AppTextStyles.font18Bold,
@@ -90,7 +85,9 @@ class CustomDialogWidget extends StatelessWidget {
                     Expanded(
                       child: CustomButton(
                         text: secondaryActionText!,
-                        onTap: onSecondaryAction ?? () => Navigator.of(context).maybePop(),
+                        onTap:
+                            onSecondaryAction ??
+                            () => Navigator.of(context).maybePop(),
                         type: CustomButtonType.outline,
                         height: 44.h,
                       ),
@@ -117,4 +114,3 @@ class CustomDialogWidget extends StatelessWidget {
     );
   }
 }
-

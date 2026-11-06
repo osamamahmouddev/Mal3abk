@@ -47,5 +47,21 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
-	</dict>
+		<key>NSCameraUsageDescription</key>
+	<string>Malabak uses the camera to take your profile photo and payment receipts.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Malabak lets you choose a profile photo or payment receipt from your photos.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Malabak uses Face ID to unlock the app.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Malabak adds your pitch bookings to your calendar.</string>
+	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
+	<string>Malabak adds your pitch bookings to your calendar.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Malabak opens the calendar event editor, which can suggest invitees from your contacts.</string>
+	<key>GMSApiKey</key>
+	<string>$(MAPS_API_KEY)</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Malabak uses your location to show pitches near you.</string>
+</dict>
 </plist>

@@ -49,15 +49,9 @@ class MatchCardWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                dateTime,
-                style: AppTextStyles.font12Regular,
-              ),
+              Text(dateTime, style: AppTextStyles.font12Regular),
               if (statusText != null)
-                AppBadgeWidget(
-                  text: statusText!,
-                  type: statusType,
-                ),
+                AppBadgeWidget(text: statusText!, type: statusType),
             ],
           ),
           hSpace(12),
@@ -146,10 +140,7 @@ class MatchCardWidget extends StatelessWidget {
                 color: AppColors.textSecondary,
               ),
               vSpace(4),
-              Text(
-                pitchName,
-                style: AppTextStyles.font12Regular,
-              ),
+              Text(pitchName, style: AppTextStyles.font12Regular),
             ],
           ),
         ],
@@ -157,4 +148,3 @@ class MatchCardWidget extends StatelessWidget {
     );
   }
 }
-

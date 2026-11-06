@@ -57,7 +57,9 @@ class TeamRankCardWidget extends StatelessWidget {
             child: Text(
               record,
               textAlign: TextAlign.center,
-              style: AppTextStyles.font12Regular.copyWith(color: AppColors.textBody),
+              style: AppTextStyles.font12Regular.copyWith(
+                color: AppColors.textBody,
+              ),
             ),
           ),
           Container(

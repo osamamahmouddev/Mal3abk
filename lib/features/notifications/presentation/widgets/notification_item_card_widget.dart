@@ -35,7 +35,9 @@ class NotificationItemCardWidget extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 20.r,
-            backgroundColor: isUnread ? AppColors.lightSurface : AppColors.white,
+            backgroundColor: isUnread
+                ? AppColors.lightSurface
+                : AppColors.white,
             child: Icon(icon, color: iconColor, size: 22.sp),
           ),
           vSpace(12),
@@ -45,7 +47,9 @@ class NotificationItemCardWidget extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: isUnread ? AppTextStyles.font14Bold : AppTextStyles.font14Medium,
+                  style: isUnread
+                      ? AppTextStyles.font14Bold
+                      : AppTextStyles.font14Medium,
                 ),
                 hSpace(4),
                 Text(time, style: AppTextStyles.font11Regular),

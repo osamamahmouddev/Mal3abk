@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
+import '../../../../core/utils/egyptian_phone_input_formatter.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_button.dart';
@@ -35,8 +36,9 @@ class LoginPhoneStepWidget extends StatelessWidget {
         CustomTextFormField(
           controller: controller,
           labelText: 'auth.login.phone_label'.tr(context: context),
-          hintText: '01012345678',
+          hintText: '010 1234 5678',
           keyboardType: TextInputType.phone,
+          inputFormatters: const [EgyptianPhoneInputFormatter()],
           style: AppTextStyles.font17Regular,
           contentPadding: EdgeInsetsDirectional.symmetric(
             horizontal: 16.w,

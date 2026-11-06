@@ -5,7 +5,7 @@ class AppColors {
 
   // Official Brand Palette from Figma & Brand Kit
   // Primary Navy (Dark Header / Buttons / Active elements in Figma: #0F1B3D & #0F172A)
-  static const Color brandNavy = Color(0xFF0F1B3D); 
+  static const Color brandNavy = Color(0xFF0F1B3D);
   static const Color brandPrimary = Color(0xFF0F1B3D);
   static const Color brandPrimaryDark = Color(0xFF071832);
   static const Color brandPrimaryLight = Color(0xFF1B2A52);

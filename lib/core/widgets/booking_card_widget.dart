@@ -11,7 +11,7 @@ import 'app_badge_widget.dart';
 import 'custom_button.dart';
 import 'custom_card_widget.dart';
 
-enum BookingStatus {
+enum BookingCardTone {
   confirmed,
   pendingReview,
   rejected,
@@ -42,7 +42,7 @@ class BookingCardWidget extends StatelessWidget {
   final String pitchName;
   final String dateTime;
   final String bookingCode;
-  final BookingStatus status;
+  final BookingCardTone status;
   final String statusText;
   final String? depositRowText;
   final String? depositAmount;
@@ -60,25 +60,25 @@ class BookingCardWidget extends StatelessWidget {
     Color noteFg = AppColors.textPrimary;
 
     switch (status) {
-      case BookingStatus.confirmed:
+      case BookingCardTone.confirmed:
         badgeType = AppBadgeType.success;
         noteBg = AppColors.successLight;
         noteFg = AppColors.successGreen;
         break;
-      case BookingStatus.pendingReview:
+      case BookingCardTone.pendingReview:
         badgeType = AppBadgeType.warning;
         noteBg = AppColors.goldLight;
         noteFg = AppColors.goldDark;
         break;
-      case BookingStatus.rejected:
+      case BookingCardTone.rejected:
         badgeType = AppBadgeType.error;
         noteBg = AppColors.redLight;
         noteFg = AppColors.redText;
         break;
-      case BookingStatus.completed:
+      case BookingCardTone.completed:
         badgeType = AppBadgeType.neutral;
         break;
-      case BookingStatus.cancelled:
+      case BookingCardTone.cancelled:
         badgeType = AppBadgeType.neutral;
         break;
     }
@@ -105,7 +105,10 @@ class BookingCardWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('$venueName — $pitchName', style: AppTextStyles.font15Bold),
+                    Text(
+                      '$venueName — $pitchName',
+                      style: AppTextStyles.font15Bold,
+                    ),
                     hSpace(4),
                     Text(dateTime, style: AppTextStyles.font13Regular),
                     hSpace(2),

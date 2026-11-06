@@ -4,7 +4,6 @@ import 'package:mal3abk/features/phone_change/data/apis/phone_change_api_service
 import 'package:mal3abk/features/phone_change/data/models/phone_change_code_request_body.dart';
 import 'package:mal3abk/features/phone_change/data/models/recover_phone_request_body.dart';
 import 'package:mal3abk/features/phone_change/data/models/start_phone_change_request_body.dart';
-import 'package:mal3abk/features/phone_change/data/models/step_up_request_body.dart';
 import 'package:mal3abk/features/phone_change/data/repos/phone_change_repo_impl.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -24,25 +23,12 @@ void main() {
   );
 
   setUpAll(() {
-    registerFallbackValue(const StepUpRequestBody(scope: ''));
     registerFallbackValue(const RecoverPhoneRequestBody(recoveryToken: ''));
   });
 
   setUp(() {
     api = MockPhoneChangeApiService();
     repo = PhoneChangeRepoImpl(phoneChangeApiService: api);
-  });
-
-  group('PhoneChangeRepoImpl.stepUp', () {
-    test('requests a token for the change_phone scope', () async {
-      when(() => api.stepUp(any())).thenAnswer((_) async => stepUpResponse);
-
-      expect(await repo.stepUp(), isSuccessWith(stepUpResponse));
-      final body =
-          verify(() => api.stepUp(captureAny())).captured.single
-              as StepUpRequestBody;
-      expect(body.scope, 'change_phone');
-    });
   });
 
   group('PhoneChangeRepoImpl.startPhoneChange', () {

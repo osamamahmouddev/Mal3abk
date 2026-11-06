@@ -39,7 +39,8 @@ class MyTeamsHeaderActionsWidget extends StatelessWidget {
           borderRadius: 10,
           padding: EdgeInsets.symmetric(horizontal: 10.w),
           textStyle: labelStyle,
-          onTap: () => Navigator.of(context).pushNamed(AppRoutes.joinTeamByCode),
+          onTap: () =>
+              Navigator.of(context).pushNamed(AppRoutes.joinTeamByCode),
         ),
         vSpace(8),
         CustomButton(
@@ -48,7 +49,11 @@ class MyTeamsHeaderActionsWidget extends StatelessWidget {
           borderRadius: 10,
           padding: EdgeInsets.symmetric(horizontal: 14.w),
           boxShadow: AppShadows.redGlow,
-          icon: SvgPicture.asset(AppAssets.icPlusWhite, width: 16.r, height: 16.r),
+          icon: SvgPicture.asset(
+            AppAssets.icPlusWhite,
+            width: 16.r,
+            height: 16.r,
+          ),
           textStyle: AppTextStyles.font14Bold.copyWith(color: AppColors.white),
           onTap: () => Navigator.of(context).pushNamed(AppRoutes.createTeam),
         ),

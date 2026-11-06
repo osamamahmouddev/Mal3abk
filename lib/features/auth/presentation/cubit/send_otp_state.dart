@@ -8,7 +8,14 @@ part 'send_otp_state.freezed.dart';
 class SendOtpState with _$SendOtpState {
   const factory SendOtpState.initial() = SendOtpInitial;
   const factory SendOtpState.loading() = SendOtpLoading;
-  const factory SendOtpState.success(SendOtpResponseModel data) =
-      SendOtpSuccess;
+
+  /// [sendCount] grows with every resend so the countdown restarts;
+  /// [resendError] is set once when a resend failed.
+  const factory SendOtpState.success(
+    SendOtpResponseModel data, {
+    @Default(1) int sendCount,
+    @Default(false) bool resending,
+    String? resendError,
+  }) = SendOtpSuccess;
   const factory SendOtpState.error(String message) = SendOtpError;
 }

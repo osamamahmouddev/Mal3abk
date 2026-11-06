@@ -5,12 +5,7 @@ import '../app/app_spaces.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 
-enum AlertBannerType {
-  info,
-  warning,
-  error,
-  offline,
-}
+enum AlertBannerType { info, warning, error, offline }
 
 class AlertBannerWidget extends StatelessWidget {
   const AlertBannerWidget({
@@ -72,11 +67,7 @@ class AlertBannerWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(
-            icon ?? defaultIcon,
-            size: 20.sp,
-            color: fg,
-          ),
+          Icon(icon ?? defaultIcon, size: 20.sp, color: fg),
           vSpace(10),
           Expanded(
             child: Text(
@@ -102,4 +93,3 @@ class AlertBannerWidget extends StatelessWidget {
     );
   }
 }
-

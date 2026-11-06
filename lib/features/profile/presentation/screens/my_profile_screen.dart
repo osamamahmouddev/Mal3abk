@@ -6,8 +6,9 @@ import '../../../../core/app/app_spaces.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
-import '../widgets/profile_header_card_widget.dart';
+import '../widgets/profile_header_bloc_builder.dart';
 import '../widgets/profile_nav_tile_widget.dart';
+import '../widgets/profile_teams_tile_bloc_builder.dart';
 import '../widgets/profile_venue_owner_card_widget.dart';
 import '../../../main_shell/presentation/widgets/main_shell_scope_widget.dart';
 
@@ -23,7 +24,7 @@ class MyProfileScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const ProfileHeaderCardWidget(),
+              const ProfileHeaderBlocBuilder(),
               hSpace(16),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -33,15 +34,7 @@ class MyProfileScreen extends StatelessWidget {
                       padding: EdgeInsets.zero,
                       child: Column(
                         children: [
-                          ProfileNavTileWidget(
-                            icon: Icons.groups_outlined,
-                            title: 'profile.my_teams'.tr(context: context),
-                            trailing: 'النجوم · الأبطال',
-                            onTap: () => MainShellScopeWidget.switchTab(
-                              context,
-                              MainShellScopeWidget.teamsTab,
-                            ),
-                          ),
+                          const ProfileTeamsTileBlocBuilder(),
                           const Divider(height: 1, color: AppColors.border),
                           ProfileNavTileWidget(
                             icon: Icons.calendar_today_outlined,
@@ -59,7 +52,6 @@ class MyProfileScreen extends StatelessWidget {
                             title: 'profile.favorite_pitches'.tr(
                               context: context,
                             ),
-                            trailing: '٣',
                             onTap: () => Navigator.of(
                               context,
                             ).pushNamed(AppRoutes.favorites),
@@ -83,7 +75,11 @@ class MyProfileScreen extends StatelessWidget {
                           ProfileNavTileWidget(
                             icon: Icons.settings_outlined,
                             title: 'profile.settings'.tr(context: context),
-                            trailing: 'عربي',
+                            trailing:
+                                (context.locale.languageCode == 'ar'
+                                        ? 'common.arabic'
+                                        : 'common.english')
+                                    .tr(context: context),
                             onTap: () => Navigator.of(
                               context,
                             ).pushNamed(AppRoutes.settings),

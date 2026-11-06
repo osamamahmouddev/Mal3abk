@@ -19,7 +19,11 @@ class AppOnDarkBackButtonWidget extends StatelessWidget {
         padding: EdgeInsets.all(11.r),
         child: Transform.flip(
           flipX: Directionality.of(context) == TextDirection.ltr,
-          child: SvgPicture.asset(AppAssets.icArrowBackWhite, width: 22.r, height: 22.r),
+          child: SvgPicture.asset(
+            AppAssets.icArrowBackWhite,
+            width: 22.r,
+            height: 22.r,
+          ),
         ),
       ),
     );

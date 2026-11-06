@@ -7,15 +7,24 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_button.dart';
-import '../../../../core/widgets/custom_text_form_field.dart';
+import '../../../../core/widgets/otp_code_field_widget.dart';
+import '../../../../core/widgets/resend_countdown_widget.dart';
 import '../cubit/send_otp_cubit.dart';
+import '../cubit/verify_otp_cubit.dart';
 import 'verify_otp_button_bloc_builder.dart';
 
 class LoginOtpStepWidget extends HookWidget {
-  const LoginOtpStepWidget({required this.phoneNumber, super.key});
+  const LoginOtpStepWidget({
+    required this.phoneNumber,
+    required this.sendCount,
+    required this.isResending,
+    super.key,
+  });
 
   /// Normalized number returned by `otp/send`; `otp/verify` expects it.
   final String phoneNumber;
+  final int sendCount;
+  final bool isResending;
 
   @override
   Widget build(BuildContext context) {
@@ -37,16 +46,23 @@ class LoginOtpStepWidget extends HookWidget {
           textAlign: TextAlign.center,
         ),
         hSpace(26),
-        CustomTextFormField(
+        OtpCodeFieldWidget(
           controller: codeController,
-          labelText: 'auth.login.otp_label'.tr(context: context),
-          hintText: '••••••',
-          keyboardType: TextInputType.number,
-          textAlign: TextAlign.center,
-          style: AppTextStyles.font17Regular,
-          autofocus: true,
+          onCompleted: (code) => context.read<VerifyOtpCubit>().verifyOtp(
+            phoneNumber: phoneNumber,
+            code: code,
+          ),
         ),
-        hSpace(20),
+        hSpace(12),
+        ResendCountdownWidget(
+          restartKey: sendCount,
+          enabled: !isResending,
+          onResend: () {
+            codeController.clear();
+            context.read<SendOtpCubit>().resend();
+          },
+        ),
+        hSpace(12),
         VerifyOtpButtonBlocBuilder(
           phoneNumber: phoneNumber,
           codeController: codeController,

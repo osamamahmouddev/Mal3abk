@@ -4,10 +4,12 @@ import 'package:flutter/services.dart';
 
 import 'core/config/env_config.dart';
 import 'core/di/service_locator.dart';
+import 'core/utils/cairo_time.dart';
 import 'mal3abk_app.dart';
 
 Future<void> mainCommon(EnvConfig envConfig) async {
   WidgetsFlutterBinding.ensureInitialized();
+  CairoTime.initialize();
 
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

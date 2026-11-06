@@ -30,40 +30,31 @@ void main() {
   });
 
   group('StartPhoneChangeUseCase', () {
-    test('gets a step-up token and starts the change', () async {
-      when(
-        () => repo.stepUp(),
-      ).thenAnswer((_) async => const ApiResult.success(stepUpResponse));
+    test('starts the change with the step-up token', () async {
       when(
         () => repo.startPhoneChange(any()),
       ).thenAnswer((_) async => ApiResult.success(startResponse));
 
-      final result = await useCase('01112345678');
+      final result = await useCase('01112345678', stepUpToken: stepUpToken);
 
       expect(result, isSuccessWith(startResponse));
       final body =
           verify(() => repo.startPhoneChange(captureAny())).captured.single
               as StartPhoneChangeRequestBody;
       expect(body.newPhoneNumber, '+201112345678');
-      expect(body.stepUpToken, 'step-up-1');
+      expect(body.stepUpToken, stepUpToken);
     });
 
     test('rejects an invalid number before any API call', () async {
-      final result = await useCase('0100');
+      expect(
+        useCase.validate('0100'),
+        isFailureWith('errors.identity.invalid_phone'),
+      );
+
+      final result = await useCase('0100', stepUpToken: stepUpToken);
 
       expect(result, isFailureWith('errors.identity.invalid_phone'));
       verifyZeroInteractions(repo);
-    });
-
-    test('stops when the step-up call fails', () async {
-      when(
-        () => repo.stepUp(),
-      ).thenAnswer((_) async => const ApiResult.failure(phoneInUseFailure));
-
-      final result = await useCase('01112345678');
-
-      expect(result, isFailureWith(phoneInUseFailure.message));
-      verifyNever(() => repo.startPhoneChange(any()));
     });
   });
 }

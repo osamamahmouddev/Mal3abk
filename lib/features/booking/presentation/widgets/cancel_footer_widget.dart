@@ -44,7 +44,9 @@ class CancelFooterWidget extends StatelessWidget {
               text: 'booking.cancel.confirm'.tr(context: context),
               height: 54.h,
               borderRadius: 16,
-              backgroundColor: canConfirm ? AppColors.brandRed : AppColors.border,
+              backgroundColor: canConfirm
+                  ? AppColors.brandRed
+                  : AppColors.border,
               boxShadow: canConfirm ? AppShadows.redGlow : null,
               textStyle: AppTextStyles.font15Bold.copyWith(
                 color: canConfirm ? AppColors.white : AppColors.mapLabel,

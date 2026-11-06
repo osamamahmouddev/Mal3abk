@@ -30,7 +30,10 @@ class TeamStatBoxWidget extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(value, style: AppTextStyles.font20Bold.copyWith(color: valueColor)),
+          Text(
+            value,
+            style: AppTextStyles.font20Bold.copyWith(color: valueColor),
+          ),
           hSpace(2),
           Text(label, style: AppTextStyles.font11Regular),
         ],

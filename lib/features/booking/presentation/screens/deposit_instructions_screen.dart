@@ -1,30 +1,36 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/app/app_spaces.dart';
+import '../../../../core/extensions/app_display_extensions.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_shadows.dart';
 import '../../../../core/styles/app_text_styles.dart';
+import '../../../../core/utils/cairo_time.dart';
 import '../../../../core/widgets/bottom_action_bar_widget.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
-import '../../../../core/widgets/radio_option_card_widget.dart';
+import '../../data/models/create_booking_response_model.dart';
+import '../widgets/deposit_methods_bloc_builder.dart';
 import '../widgets/deposit_step_widget.dart';
 import '../widgets/deposit_summary_card_widget.dart';
-import '../widgets/deposit_timer_banner_widget.dart';
-import '../widgets/deposit_wallet_card_widget.dart';
+import '../widgets/hold_timer_banner_widget.dart';
 
-class DepositInstructionsScreen extends HookWidget {
-  const DepositInstructionsScreen({super.key});
+class DepositInstructionsScreen extends StatelessWidget {
+  const DepositInstructionsScreen({required this.booking, super.key});
+
+  final CreateBookingResponseModel booking;
 
   @override
   Widget build(BuildContext context) {
-    final isInstapay = useState(false);
+    final lang = context.locale.languageCode;
+    final navigator = Navigator.of(context);
+    final start = DateTime.parse(booking.startUtc);
+    final end = DateTime.parse(booking.endUtc);
 
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
@@ -40,9 +46,18 @@ class DepositInstructionsScreen extends HookWidget {
               height: 52.h,
               borderRadius: 16,
               boxShadow: AppShadows.redGlow,
-              icon: SvgPicture.asset(AppAssets.icUploadWhite, width: 20.r, height: 20.r),
-              textStyle: AppTextStyles.font16Bold.copyWith(color: AppColors.white),
-              onTap: () => Navigator.of(context).pushNamed(AppRoutes.uploadProof),
+              icon: SvgPicture.asset(
+                AppAssets.icUploadWhite,
+                width: 20.r,
+                height: 20.r,
+              ),
+              textStyle: AppTextStyles.font16Bold.copyWith(
+                color: AppColors.white,
+              ),
+              onTap: () => navigator.pushReplacementNamed(
+                AppRoutes.uploadProof,
+                arguments: booking.bookingId,
+              ),
             ),
             hSpace(8),
             CustomButton(
@@ -52,47 +67,46 @@ class DepositInstructionsScreen extends HookWidget {
               textStyle: AppTextStyles.font14SemiBold.copyWith(
                 color: AppColors.redText,
               ),
-              onTap: () => Navigator.of(context).maybePop(),
+              onTap: () async {
+                final cancelled = await navigator.pushNamed(
+                  AppRoutes.cancelBooking,
+                  arguments: booking.bookingId,
+                );
+                if (cancelled == true) navigator.pop();
+              },
             ),
           ],
         ),
       ),
       body: ListView(
-        padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
+        physics: const BouncingScrollPhysics(),
+        padding: EdgeInsets.all(16.r),
         children: [
-          const DepositTimerBannerWidget(remaining: '٢٨:٤٥'),
-          hSpace(12),
-          const DepositSummaryCardWidget(),
-          hSpace(12),
-          Text(
-            'booking.deposit.choose_method'.tr(context: context),
-            style: AppTextStyles.font15Bold,
+          HoldTimerBannerWidget(
+            expiresAtUtc: DateTime.parse(booking.holdExpiresAtUtc),
           ),
           hSpace(12),
-          RadioOptionCardWidget(
-            title: 'booking.deposit.vodafone'.tr(context: context),
-            subtitle: 'booking.deposit.vodafone_sub'.tr(context: context),
-            isSelected: !isInstapay.value,
-            onTap: () => isInstapay.value = false,
-          ),
-          hSpace(8),
-          RadioOptionCardWidget(
-            title: 'booking.deposit.instapay'.tr(context: context),
-            subtitle: 'booking.deposit.instapay_sub'.tr(context: context),
-            isSelected: isInstapay.value,
-            onTap: () => isInstapay.value = true,
+          DepositSummaryCardWidget(
+            bookingReference: booking.bookingReference,
+            slotLabel:
+                '${CairoTime.dayAndTime(start, lang)} – ${CairoTime.time(end, lang)}',
+            totalPrice: booking.totalPrice,
+            depositAmount: booking.depositAmount,
           ),
           hSpace(12),
-          const DepositWalletCardWidget(),
+          DepositMethodsBlocBuilder(
+            bookingId: booking.bookingId,
+            bookingReference: booking.bookingReference,
+          ),
           hSpace(12),
           Text(
             'booking.deposit.steps'.tr(context: context),
             style: AppTextStyles.font15Bold,
           ),
           hSpace(14),
-          for (final (number, key) in const [('١', 'step1'), ('٢', 'step2'), ('٣', 'step3')]) ...[
+          for (final (i, key) in const ['step1', 'step2', 'step3'].indexed) ...[
             DepositStepWidget(
-              number: number,
+              number: (i + 1).toLocalizedDigits(lang),
               text: 'booking.deposit.$key'.tr(context: context),
             ),
             hSpace(10),

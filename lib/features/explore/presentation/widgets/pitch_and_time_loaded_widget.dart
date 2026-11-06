@@ -1,0 +1,180 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
+
+import '../../../../core/app/app_spaces.dart';
+import '../../../../core/extensions/app_display_extensions.dart';
+import '../../../../core/routes/routes.dart';
+import '../../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_text_styles.dart';
+import '../../../../core/utils/cairo_time.dart';
+import '../../../../core/widgets/app_top_snack_bar.dart';
+import '../../../../core/widgets/custom_app_bar_widget.dart';
+import '../../../../core/widgets/empty_note_box_widget.dart';
+import '../../../../core/widgets/price_action_footer_widget.dart';
+import '../../../../core/widgets/selectable_tile_widget.dart';
+import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
+import '../../data/models/venue_availability_model.dart';
+import '../cubit/pitch_booking_cubit.dart';
+import '../cubit/pitch_booking_state.dart';
+import 'pitch_day_selector_widget.dart';
+import 'pitch_slot_legend_widget.dart';
+import 'pitch_time_slot_tile_widget.dart';
+
+/// Pitch tabs, day strip and the slot grid for one venue, all in Cairo time.
+class PitchAndTimeLoadedWidget extends StatelessWidget {
+  const PitchAndTimeLoadedWidget({
+    required this.state,
+    required this.venueName,
+    super.key,
+  });
+
+  final PitchBookingLoaded state;
+  final String venueName;
+
+  @override
+  Widget build(BuildContext context) {
+    final lang = context.locale.languageCode;
+    final cubit = context.read<PitchBookingCubit>();
+    final pitches = state.availability.pitches;
+    final pitch = state.currentPitch;
+    final slots = pitch?.slots ?? const <SlotModel>[];
+    final selected = state.selectedSlot;
+    final quote = state.quote;
+    String egp(double value) => 'common.price_egp'.tr(
+      context: context,
+      args: [value.round().toLocalizedDigits(lang)],
+    );
+    String t(String key, [List<String>? args]) =>
+        'explore.slots.$key'.tr(context: context, args: args);
+
+    final day = CairoTime.today().add(Duration(days: state.selectedDayIndex));
+    double? fromPrice(PitchSlotsModel p) {
+      final prices = [
+        for (final s in p.slots)
+          if (s.price != null) s.price!,
+      ];
+      return prices.isEmpty ? null : prices.reduce((a, b) => a < b ? a : b);
+    }
+
+    final price = quote?.total ?? selected?.price;
+
+    return Scaffold(
+      backgroundColor: AppColors.pageBackground,
+      appBar: CustomAppBarWidget(title: t('title'), subtitle: venueName),
+      bottomNavigationBar: PriceActionFooterWidget(
+        caption: selected == null || pitch == null
+            ? t('pick_slot')
+            : [
+                pitch.name,
+                CairoTime.time(DateTime.parse(selected.startUtc), lang),
+                'matches.minutes'.tr(
+                  context: context,
+                  args: [pitch.slotMinutes.toLocalizedDigits(lang)],
+                ),
+              ].join(' · '),
+        price: price == null ? '—' : egp(price),
+        ctaText: t('continue'),
+        onTap: () {
+          if (selected == null) {
+            AppTopSnackBar.showError(context, t('pick_slot'));
+            return;
+          }
+          HapticFeedback.lightImpact();
+          Navigator.of(
+            context,
+          ).pushNamed(AppRoutes.bookingReview, arguments: cubit);
+        },
+      ),
+      body: ListView(
+        physics: const BouncingScrollPhysics(),
+        padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 24.h),
+        children: [
+          PitchDaySelectorWidget(
+            selectedIndex: state.selectedDayIndex,
+            onSelect: cubit.selectDay,
+          ),
+          hSpace(16),
+          if (pitches.length > 1) ...[
+            SizedBox(
+              height: 64.h,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                physics: const BouncingScrollPhysics(),
+                itemCount: pitches.length,
+                separatorBuilder: (_, _) => vSpace(8),
+                itemBuilder: (context, i) {
+                  final from = fromPrice(pitches[i]);
+                  return SizedBox(
+                    width: 150.w,
+                    child: SelectableTileWidget(
+                      title: pitches[i].name,
+                      subtitle: from == null ? null : t('from', [egp(from)]),
+                      subtitleStyle: AppTextStyles.font12Regular,
+                      boldTitle: true,
+                      isSelected: state.selectedPitchIndex == i,
+                      onTap: () {
+                        HapticFeedback.selectionClick();
+                        cubit.selectPitch(i);
+                      },
+                      height: 64,
+                      borderRadius: 14,
+                    ),
+                  );
+                },
+              ),
+            ),
+            hSpace(16),
+          ],
+          Text(
+            t('section', [CairoTime.shortDate(CairoTime.toUtc(day, 12), lang)]),
+            style: AppTextStyles.font15Bold,
+          ),
+          hSpace(14),
+          if (state.isSlotsLoading)
+            const ShimmerListSkeletonWidget(
+              itemHeight: 52,
+              itemCount: 3,
+              padding: EdgeInsets.zero,
+            )
+          else if (slots.isEmpty)
+            EmptyNoteBoxWidget(text: t('no_slots'))
+          else
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                mainAxisSpacing: 10.h,
+                crossAxisSpacing: 8.w,
+                childAspectRatio: 1.8,
+              ),
+              itemCount: slots.length,
+              itemBuilder: (context, i) {
+                final slot = slots[i];
+                final start = CairoTime.fromUtc(DateTime.parse(slot.startUtc));
+                return PitchTimeSlotTileWidget(
+                  time: CairoTime.time(DateTime.parse(slot.startUtc), lang),
+                  isBooked: !slot.isAvailable,
+                  isSelected: selected?.startUtc == slot.startUtc,
+                  isNextDay: DateTime(
+                    start.year,
+                    start.month,
+                    start.day,
+                  ).isAfter(day),
+                  onTap: () {
+                    HapticFeedback.selectionClick();
+                    cubit.selectSlot(slot);
+                  },
+                );
+              },
+            ),
+          hSpace(16),
+          const PitchSlotLegendWidget(),
+        ],
+      ),
+    );
+  }
+}

@@ -1,23 +1,41 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/app/app_spaces.dart';
+import '../../../../core/extensions/app_display_extensions.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/theme/app_system_ui.dart';
 import '../../../../core/widgets/custom_button.dart';
+import '../../../onboarding/presentation/widgets/profile_setup_position_selector_widget.dart';
+import '../../data/models/profile_overview_model.dart';
+import '../cubit/profile_cubit.dart';
 import 'profile_stat_widget.dart';
 
 class ProfileHeaderCardWidget extends StatelessWidget {
-  const ProfileHeaderCardWidget({super.key});
+  const ProfileHeaderCardWidget({required this.overview, super.key});
+
+  final ProfileOverviewModel overview;
 
   @override
   Widget build(BuildContext context) {
+    final lang = context.locale.languageCode;
+    final profile = overview.profile;
+    String count(int? value) => value?.toLocalizedDigits(lang) ?? '—';
+    final subtitle = [
+      ?profile.area,
+      ?profile.city,
+      for (final p in profile.playerPositions)
+        ProfileSetupPositionSelectorWidget.labelKey(p).tr(context: context),
+    ].where((part) => part.isNotEmpty).join(' · ');
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: AppSystemUi.onDark,
       child: Container(
@@ -38,13 +56,21 @@ class ProfileHeaderCardWidget extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        CircleAvatar(
-                          radius: 36.r,
-                          backgroundColor: AppColors.brandRed,
-                          child: Text(
-                            'أس',
-                            style: AppTextStyles.font24Bold.copyWith(
-                              color: AppColors.white,
+                        Hero(
+                          tag: 'my-avatar',
+                          child: CircleAvatar(
+                            radius: 36.r,
+                            backgroundColor: AppColors.brandRed,
+                            foregroundImage: overview.avatarUrl == null
+                                ? null
+                                : CachedNetworkImageProvider(
+                                    overview.avatarUrl!,
+                                  ),
+                            child: Text(
+                              profile.fullName.initials,
+                              style: AppTextStyles.font24Bold.copyWith(
+                                color: AppColors.white,
+                              ),
                             ),
                           ),
                         ),
@@ -54,23 +80,18 @@ class ProfileHeaderCardWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'أحمد سامي',
+                                profile.fullName,
                                 style: AppTextStyles.font22Bold.copyWith(
                                   color: AppColors.white,
                                 ),
                               ),
-                              Text(
-                                'مدينة نصر · وسط · هجوم',
-                                style: AppTextStyles.font13Regular.copyWith(
-                                  color: AppColors.onNavyMuted,
+                              if (subtitle.isNotEmpty)
+                                Text(
+                                  subtitle,
+                                  style: AppTextStyles.font13Regular.copyWith(
+                                    color: AppColors.onNavyMuted,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                'عضو من مارس ٢٠٢٦',
-                                style: AppTextStyles.font12Regular.copyWith(
-                                  color: AppColors.onNavySubtle,
-                                ),
-                              ),
                             ],
                           ),
                         ),
@@ -84,9 +105,14 @@ class ProfileHeaderCardWidget extends StatelessWidget {
                           textStyle: AppTextStyles.font14SemiBold.copyWith(
                             color: AppColors.white,
                           ),
-                          onTap: () => Navigator.of(
-                            context,
-                          ).pushNamed(AppRoutes.profileSetup),
+                          onTap: () async {
+                            final cubit = context.read<ProfileCubit>();
+                            final saved = await Navigator.of(context).pushNamed(
+                              AppRoutes.profileSetup,
+                              arguments: profile,
+                            );
+                            if (saved != null) await cubit.fetchProfile();
+                          },
                         ),
                       ],
                     ),
@@ -95,28 +121,21 @@ class ProfileHeaderCardWidget extends StatelessWidget {
                       children: [
                         Expanded(
                           child: ProfileStatWidget(
-                            value: '٢٢',
+                            value: count(overview.matchesPlayed),
                             label: 'profile.matches'.tr(context: context),
                           ),
                         ),
                         vSpace(8),
                         Expanded(
                           child: ProfileStatWidget(
-                            value: '٦٤٪',
-                            label: 'profile.wins'.tr(context: context),
-                          ),
-                        ),
-                        vSpace(8),
-                        Expanded(
-                          child: ProfileStatWidget(
-                            value: '١٨',
+                            value: count(overview.bookingsCount),
                             label: 'profile.bookings'.tr(context: context),
                           ),
                         ),
                         vSpace(8),
                         Expanded(
                           child: ProfileStatWidget(
-                            value: '٢',
+                            value: count(overview.teamsCount),
                             label: 'profile.teams'.tr(context: context),
                             valueColor: AppColors.accentGold,
                           ),

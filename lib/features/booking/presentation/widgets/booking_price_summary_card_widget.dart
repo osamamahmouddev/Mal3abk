@@ -56,7 +56,10 @@ class BookingPriceSummaryCardWidget extends StatelessWidget {
                   style: depositStyle,
                 ),
                 const Spacer(),
-                Text('booking.amount_50'.tr(context: context), style: depositStyle),
+                Text(
+                  'booking.amount_50'.tr(context: context),
+                  style: depositStyle,
+                ),
               ],
             ),
           ),
