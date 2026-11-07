@@ -6,6 +6,9 @@ import '../app/app_spaces.dart';
 import '../styles/app_colors.dart';
 
 /// Placeholder cards with the exact height of the content they stand in for.
+///
+/// Inside another scrollable (the home feed) it takes its natural height; with
+/// a bounded height it clips like a list instead of overflowing.
 class ShimmerListSkeletonWidget extends StatelessWidget {
   const ShimmerListSkeletonWidget({
     required this.itemHeight,
@@ -24,21 +27,36 @@ class ShimmerListSkeletonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cards = Padding(
+      padding: padding ?? EdgeInsets.all(16.r),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          for (var i = 0; i < itemCount; i++) ...[
+            if (i > 0) hSpace(spacing),
+            Container(
+              height: itemHeight.h,
+              decoration: BoxDecoration(
+                color: AppColors.lightSurface,
+                borderRadius: BorderRadius.circular(borderRadius.r),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+
     return Shimmer.fromColors(
       baseColor: AppColors.lightSurface,
       highlightColor: AppColors.white,
-      child: ListView.separated(
-        padding: padding ?? EdgeInsets.all(16.r),
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: itemCount,
-        separatorBuilder: (_, _) => hSpace(spacing),
-        itemBuilder: (_, _) => Container(
-          height: itemHeight.h,
-          decoration: BoxDecoration(
-            color: AppColors.lightSurface,
-            borderRadius: BorderRadius.circular(borderRadius.r),
-          ),
-        ),
+      child: LayoutBuilder(
+        builder: (context, constraints) => constraints.hasBoundedHeight
+            ? SingleChildScrollView(
+                physics: const NeverScrollableScrollPhysics(),
+                child: cards,
+              )
+            : cards,
       ),
     );
   }
