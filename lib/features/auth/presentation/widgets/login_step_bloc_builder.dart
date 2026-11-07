@@ -17,15 +17,26 @@ class LoginStepBlocBuilder extends StatelessWidget {
     return BlocBuilder<SendOtpCubit, SendOtpState>(
       builder: (context, state) {
         return switch (state) {
-          SendOtpSuccess(:final data, :final sendCount, :final resending) =>
+          SendOtpSuccess(
+            :final data,
+            :final sendCount,
+            :final resending,
+            :final resendBlockedUntil,
+          ) =>
             LoginOtpStepWidget(
               phoneNumber: data.normalizedPhoneNumber,
               sendCount: sendCount,
               isResending: resending,
+              resendBlockedUntil: resendBlockedUntil,
             ),
           SendOtpLoading() => LoginPhoneStepWidget(
             controller: phoneController,
             isLoading: true,
+          ),
+          SendOtpError(:final retryAt) => LoginPhoneStepWidget(
+            controller: phoneController,
+            isLoading: false,
+            rateLimitedUntil: retryAt,
           ),
           _ => LoginPhoneStepWidget(
             controller: phoneController,

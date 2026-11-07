@@ -20,7 +20,7 @@
     "per_hour": "/ hour",
     "vs": "VS",
     "step_of": "Step {current} of {total}",
-    "too_many_requests": "Too many requests. Please try again later.",
+    "too_many_requests": "Too many requests in a row. Wait a moment and try again.",
     "unexpected_error": "An unexpected error occurred. Please try again.",
     "ago": {
       "now": "Just now",
@@ -58,7 +58,8 @@
       "phone_change_expired": "This phone change request has expired. Please start again.",
       "recovery_link_invalid": "This recovery link is invalid or has expired.",
       "user_not_found": "Account not found.",
-      "step_up_unavailable": "This verification isn't available for your account right now."
+      "step_up_unavailable": "This verification isn't available for your account right now.",
+      "otp_rate_limited": "You've requested several codes for this number. Wait for the timer, then request a new one."
     },
     "teams": {
       "cannot_change_captain_role": "The captain's role can't be changed.",
@@ -124,7 +125,9 @@
       "new_account_notice": "First time? We'll create your account automatically.",
       "otp_label": "Verification Code (OTP)",
       "verify_and_enter": "Verify & Enter",
-      "edit_phone": "Change phone number"
+      "edit_phone": "Change phone number",
+      "rate_limited": "You've requested several codes for this number, which we limit to protect your account. You can request a new one in {}.",
+      "send_code_in": "Request a code in {}"
     },
     "email": "Email",
     "password": "Password",

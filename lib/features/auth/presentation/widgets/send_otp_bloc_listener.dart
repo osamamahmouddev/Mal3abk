@@ -16,7 +16,8 @@ class SendOtpBlocListener extends StatelessWidget {
     return BlocListener<SendOtpCubit, SendOtpState>(
       listener: (context, state) {
         switch (state) {
-          case SendOtpError(:final message):
+          // A rate limit is explained by the banner on the phone step.
+          case SendOtpError(:final message, retryAt: null):
             AppTopSnackBar.showError(context, message.tr(context: context));
           case SendOtpSuccess(:final resendError?):
             AppTopSnackBar.showError(context, resendError.tr(context: context));
