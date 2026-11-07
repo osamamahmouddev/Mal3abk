@@ -92,6 +92,7 @@ class PlayerBookingDetailModel {
     this.cancellationPolicySummary,
     this.venue,
     this.pitchName,
+    this.venueCoverPhotoUrl,
     required this.allowedActions,
     this.proofs = const [],
     this.statusHistory = const [],
@@ -119,6 +120,7 @@ class PlayerBookingDetailModel {
 
   final PlayerVenueModel? venue;
   final String? pitchName;
+  final String? venueCoverPhotoUrl;
 
   DateTime get startAt => DateTime.parse(startUtc);
   DateTime get endAt => DateTime.parse(endUtc);

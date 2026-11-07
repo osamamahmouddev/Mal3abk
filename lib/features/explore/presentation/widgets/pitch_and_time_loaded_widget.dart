@@ -99,7 +99,7 @@ class PitchAndTimeLoadedWidget extends StatelessWidget {
           hSpace(16),
           if (pitches.length > 1) ...[
             SizedBox(
-              height: 64.h,
+              height: 76.h,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 physics: const BouncingScrollPhysics(),
@@ -119,7 +119,8 @@ class PitchAndTimeLoadedWidget extends StatelessWidget {
                         HapticFeedback.selectionClick();
                         cubit.selectPitch(i);
                       },
-                      height: 64,
+                      height: 76,
+                      horizontalPadding: 10,
                       borderRadius: 14,
                     ),
                   );

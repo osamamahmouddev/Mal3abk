@@ -210,6 +210,9 @@ class AppRouter {
               BlocProvider<HomeFeedCubit>(
                 create: (_) => sl<HomeFeedCubit>()..fetchFeed(),
               ),
+              BlocProvider<GovernoratesCubit>(
+                create: (_) => sl<GovernoratesCubit>()..load(),
+              ),
               BlocProvider<HomeTeamActivityCubit>(
                 create: (_) => sl<HomeTeamActivityCubit>()..load(),
               ),

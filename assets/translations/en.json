@@ -238,7 +238,7 @@
     "nav_bookings": "Bookings",
     "nav_teams": "Teams",
     "nav_profile": "Profile",
-    "current_location": "Current Location",
+    "current_location": "Your area",
     "play_prompt": "When do you want to play?",
     "today": "Today",
     "default_time": "8:00 PM",
@@ -274,7 +274,10 @@
     "no_slots_soon": "No free slots soon",
     "see_all": "See all",
     "recently_viewed": "Recently viewed",
-    "clear": "Clear"
+    "clear": "Clear",
+    "change_area_title": "Choose your area",
+    "change_area_subtitle": "We'll show pitches near this area.",
+    "apply_area": "Apply"
   },
   "explore": {
     "list_title": "Explore Pitches",

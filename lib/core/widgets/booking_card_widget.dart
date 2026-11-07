@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../app/app_spaces.dart';
-import '../styles/app_assets.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_shadows.dart';
 import '../styles/app_text_styles.dart';
 import 'app_badge_widget.dart';
 import 'custom_button.dart';
 import 'custom_card_widget.dart';
+import 'venue_thumbnail_widget.dart';
 
 enum BookingCardTone {
   confirmed,
@@ -30,6 +29,7 @@ class BookingCardWidget extends StatelessWidget {
     super.key,
     this.depositRowText,
     this.depositAmount,
+    this.imageUrl,
     this.noteText,
     this.primaryActionText,
     this.secondaryActionText,
@@ -46,6 +46,7 @@ class BookingCardWidget extends StatelessWidget {
   final String statusText;
   final String? depositRowText;
   final String? depositAmount;
+  final String? imageUrl;
   final String? noteText;
   final String? primaryActionText;
   final String? secondaryActionText;
@@ -92,14 +93,7 @@ class BookingCardWidget extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12.r),
-                child: SvgPicture.asset(
-                  AppAssets.pitchThumbSquare,
-                  width: 56.r,
-                  height: 56.r,
-                ),
-              ),
+              VenueThumbnailWidget(imageUrl: imageUrl, size: 56),
               vSpace(12),
               Expanded(
                 child: Column(

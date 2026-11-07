@@ -12,9 +12,21 @@ class HomeFeedCubit extends Cubit<HomeFeedState>
 
   final GetHomeFeedUseCase getHomeFeedUseCase;
 
+  /// The area the player picked on the home screen. It lasts until they pick
+  /// another, so pull-to-refresh keeps showing it instead of their profile's.
+  String? _chosenCity;
+  String? _chosenArea;
+
   Future<void> fetchFeed({String? city, String? area}) async {
+    if (city != null) {
+      _chosenCity = city;
+      _chosenArea = area;
+    }
     if (state is! HomeFeedSuccess) emitIfOpen(const HomeFeedState.loading());
-    final result = await getHomeFeedUseCase(city: city, area: area);
+    final result = await getHomeFeedUseCase(
+      city: city ?? _chosenCity,
+      area: city == null ? _chosenArea : area,
+    );
     result.when(
       success: (located) => emitIfOpen(HomeFeedState.success(located)),
       failure: (failure) => emitIfOpen(HomeFeedState.error(failure.message)),

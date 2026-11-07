@@ -48,6 +48,7 @@ PlayerBookingSummaryModel _$PlayerBookingSummaryModelFromJson(
   createdAtUtc: json['createdAtUtc'] as String,
   venueName: json['venueName'] as String?,
   pitchName: json['pitchName'] as String?,
+  venueCoverPhotoUrl: json['venueCoverPhotoUrl'] as String?,
 );
 
 Map<String, dynamic> _$PlayerBookingSummaryModelToJson(
@@ -68,6 +69,7 @@ Map<String, dynamic> _$PlayerBookingSummaryModelToJson(
   'createdAtUtc': instance.createdAtUtc,
   'venueName': instance.venueName,
   'pitchName': instance.pitchName,
+  'venueCoverPhotoUrl': instance.venueCoverPhotoUrl,
 };
 
 const _$BookingStatusEnumMap = {
