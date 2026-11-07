@@ -103,6 +103,7 @@ PlayerBookingDetailModel _$PlayerBookingDetailModelFromJson(
       ? null
       : PlayerVenueModel.fromJson(json['venue'] as Map<String, dynamic>),
   pitchName: json['pitchName'] as String?,
+  venueCoverPhotoUrl: json['venueCoverPhotoUrl'] as String?,
   allowedActions: PlayerAllowedActionsModel.fromJson(
     json['allowedActions'] as Map<String, dynamic>,
   ),
@@ -143,4 +144,5 @@ Map<String, dynamic> _$PlayerBookingDetailModelToJson(
   'createdAtUtc': instance.createdAtUtc,
   'venue': instance.venue,
   'pitchName': instance.pitchName,
+  'venueCoverPhotoUrl': instance.venueCoverPhotoUrl,
 };

@@ -74,7 +74,14 @@ class SelectableTileWidget extends StatelessWidget {
                     AnimatedDefaultTextStyle(
                       duration: AppMotion.medium,
                       style: baseStyle.copyWith(color: fg),
-                      child: Text(title),
+                      // Long names wrap to two lines, then end in an ellipsis,
+                      // so a tile never overflows its height.
+                      child: Text(
+                        title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                     if (subtitle != null)
                       Opacity(
@@ -83,7 +90,11 @@ class SelectableTileWidget extends StatelessWidget {
                           duration: AppMotion.medium,
                           style: (subtitleStyle ?? AppTextStyles.font11Regular)
                               .copyWith(color: fg),
-                          child: Text(subtitle!),
+                          child: Text(
+                            subtitle!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ),
                   ],

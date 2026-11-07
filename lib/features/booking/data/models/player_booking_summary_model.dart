@@ -42,6 +42,7 @@ class PlayerBookingSummaryModel {
     required this.createdAtUtc,
     this.venueName,
     this.pitchName,
+    this.venueCoverPhotoUrl,
   });
 
   final String id;
@@ -61,6 +62,7 @@ class PlayerBookingSummaryModel {
 
   final String? venueName;
   final String? pitchName;
+  final String? venueCoverPhotoUrl;
 
   DateTime get startAt => DateTime.parse(startUtc);
   DateTime get endAt => DateTime.parse(endUtc);

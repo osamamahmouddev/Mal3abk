@@ -50,6 +50,7 @@ class MyBookingsBlocBuilder extends StatelessWidget {
       return FadeSlideInWidget(
         index: index,
         child: BookingCardWidget(
+          imageUrl: booking.venueCoverPhotoUrl,
           venueName: booking.venueName ?? '',
           pitchName: booking.pitchName ?? '',
           dateTime:

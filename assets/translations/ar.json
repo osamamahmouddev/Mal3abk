@@ -247,7 +247,7 @@
     "nav_bookings": "حجوزاتي",
     "nav_teams": "فرقي",
     "nav_profile": "حسابي",
-    "current_location": "موقعك الحالي",
+    "current_location": "منطقتك",
     "play_prompt": "إمتى عايز تلعب؟",
     "today": "النهارده",
     "default_time": "٨:٠٠ م",
@@ -283,7 +283,10 @@
     "no_slots_soon": "مفيش مواعيد قريبة",
     "see_all": "عرض الكل",
     "recently_viewed": "شفتها مؤخراً",
-    "clear": "مسح"
+    "clear": "مسح",
+    "change_area_title": "اختار منطقتك",
+    "change_area_subtitle": "هنعرضلك الملاعب القريبة من المنطقة دي.",
+    "apply_area": "تطبيق"
   },
   "explore": {
     "list_title": "استكشف الملاعب",

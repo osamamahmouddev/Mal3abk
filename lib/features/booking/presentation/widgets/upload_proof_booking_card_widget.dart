@@ -1,15 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/extensions/app_display_extensions.dart';
-import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/utils/cairo_time.dart';
 import '../../../../core/widgets/app_badge_widget.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
+import '../../../../core/widgets/venue_thumbnail_widget.dart';
 import '../../../../core/widgets/hold_countdown_builder.dart';
 import '../../data/models/player_booking_detail_model.dart';
 
@@ -30,13 +29,10 @@ class UploadProofBookingCardWidget extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
       child: Row(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10.r),
-            child: SvgPicture.asset(
-              AppAssets.pitchThumb48,
-              width: 48.r,
-              height: 48.r,
-            ),
+          VenueThumbnailWidget(
+            imageUrl: booking.venueCoverPhotoUrl,
+            size: 48,
+            borderRadius: 10,
           ),
           vSpace(12),
           Expanded(
