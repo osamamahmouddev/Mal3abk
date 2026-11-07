@@ -93,4 +93,76 @@ void main() {
       'new',
     ]);
   });
+
+  group('when the opening view is empty', () {
+    const empty = MapSearchResultModel(
+      pins: [],
+      totalCount: 0,
+      truncated: false,
+    );
+
+    test('moves the map to venues found in a wider area', () async {
+      final calls = <MapBoundsModel>[];
+      when(
+        () => repo.mapVenues(
+          bounds: any(named: 'bounds'),
+          filter: any(named: 'filter'),
+        ),
+      ).thenAnswer((invocation) async {
+        final bounds = invocation.namedArguments[#bounds] as MapBoundsModel;
+        calls.add(bounds);
+        return ApiResult.success(calls.length == 1 ? empty : result('far'));
+      });
+      await cubit.start();
+
+      await cubit.search(near);
+      await pumpEventQueue();
+
+      final fit = (cubit.state as ExploreMapReady).fitTo!;
+      // The venue (30.05, 31.25) and the player's own view are both inside.
+      expect(fit.south, lessThanOrEqualTo(30));
+      expect(fit.north, greaterThanOrEqualTo(30.1));
+      expect(fit.east, greaterThanOrEqualTo(31.3));
+      expect(calls[1].isSearchable, isTrue);
+    });
+
+    test('only looks around once', () async {
+      when(
+        () => repo.mapVenues(
+          bounds: any(named: 'bounds'),
+          filter: any(named: 'filter'),
+        ),
+      ).thenAnswer((_) async => const ApiResult.success(empty));
+      await cubit.start();
+
+      await cubit.search(near);
+      await pumpEventQueue();
+      await cubit.search(near);
+      await pumpEventQueue();
+
+      // Two searches of the view, one wider search in between.
+      verify(
+        () => repo.mapVenues(
+          bounds: any(named: 'bounds'),
+          filter: any(named: 'filter'),
+        ),
+      ).called(3);
+      expect((cubit.state as ExploreMapReady).fitTo, isNull);
+    });
+
+    test('does not move the map when the view already has venues', () async {
+      when(
+        () => repo.mapVenues(
+          bounds: any(named: 'bounds'),
+          filter: any(named: 'filter'),
+        ),
+      ).thenAnswer((_) async => ApiResult.success(result('here')));
+      await cubit.start();
+
+      await cubit.search(near);
+      await pumpEventQueue();
+
+      expect((cubit.state as ExploreMapReady).fitTo, isNull);
+    });
+  });
 }

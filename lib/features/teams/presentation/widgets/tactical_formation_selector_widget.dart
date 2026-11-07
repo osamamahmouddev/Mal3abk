@@ -29,9 +29,13 @@ class TacticalFormationSelectorWidget extends StatelessWidget {
           children: [
             for (final size in const [5, 7, 11])
               CustomChipWidget(
+                // Both sides have the same number: "٥ ضد ٥".
                 label: 'teams.tactics.size'.tr(
                   context: context,
-                  args: [size.toLocalizedDigits(lang)],
+                  args: [
+                    size.toLocalizedDigits(lang),
+                    size.toLocalizedDigits(lang),
+                  ],
                 ),
                 isSelected: board.playersPerSide == size,
                 onTap: () {

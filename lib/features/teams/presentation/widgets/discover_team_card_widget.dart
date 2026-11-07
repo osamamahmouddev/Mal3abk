@@ -84,7 +84,9 @@ class DiscoverTeamCardWidget extends StatelessWidget {
               Column(
                 children: [
                   Text(
-                    team.rating.round().toLocalizedDigits(lang),
+                    team.matchesPlayed == 0
+                        ? '—'
+                        : team.rating.round().toLocalizedDigits(lang),
                     style: AppTextStyles.font16Bold.copyWith(
                       color: AppColors.goldDark,
                     ),

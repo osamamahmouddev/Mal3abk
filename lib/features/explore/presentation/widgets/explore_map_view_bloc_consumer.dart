@@ -41,13 +41,22 @@ class ExploreMapViewBlocConsumer extends HookWidget {
       listenWhen: (previous, current) =>
           previous is ExploreMapReady &&
           current is ExploreMapReady &&
-          previous.center != current.center,
+          (previous.center != current.center ||
+              (current.fitTo != null && previous.fitTo != current.fitTo)),
       listener: (context, state) {
-        if (state is ExploreMapReady) {
-          controller.value?.animateCamera(
-            CameraUpdate.newLatLng(toLatLng(state.center)),
-          );
-        }
+        if (state is! ExploreMapReady) return;
+        final fit = state.fitTo;
+        controller.value?.animateCamera(
+          fit == null
+              ? CameraUpdate.newLatLng(toLatLng(state.center))
+              : CameraUpdate.newLatLngBounds(
+                  LatLngBounds(
+                    southwest: LatLng(fit.south, fit.west),
+                    northeast: LatLng(fit.north, fit.east),
+                  ),
+                  64,
+                ),
+        );
       },
       buildWhen: (previous, current) =>
           previous is! ExploreMapReady ||

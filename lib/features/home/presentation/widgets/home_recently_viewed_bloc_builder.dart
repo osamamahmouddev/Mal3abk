@@ -59,6 +59,7 @@ class HomeRecentlyViewedBlocBuilder extends StatelessWidget {
                   return Align(
                     alignment: AlignmentDirectional.topStart,
                     child: HomeNearbyPitchCardWidget(
+                      imageUrl: venue.coverPhotoUrl,
                       name: venue.name,
                       price: venue.fromHourlyPrice == null
                           ? ''

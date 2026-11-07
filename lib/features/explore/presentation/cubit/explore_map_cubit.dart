@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:math' as math;
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/location/location_service.dart';
@@ -20,6 +23,10 @@ class ExploreMapCubit extends Cubit<ExploreMapState>
   ExploreFilterModel filter = const ExploreFilterModel();
   MapBoundsModel? _lastBounds;
   int _request = 0;
+  bool _triedWiderSearch = false;
+
+  /// Half the side of the area searched once when the opening view is empty.
+  static const double _widerSearchRadius = 0.9;
 
   /// Opens on the player when they allowed location, otherwise on Cairo.
   Future<void> start({bool ask = false}) async {
@@ -50,18 +57,75 @@ class ExploreMapCubit extends Cubit<ExploreMapState>
     final latest = state;
     if (request != _request || latest is! ExploreMapReady) return;
     result.when(
-      success: (data) => emitIfOpen(
-        latest.copyWith(
-          pins: data.pins,
-          truncated: data.truncated,
-          searching: false,
-          selected: data.pins
-              .where((p) => p.venueId == latest.selected?.venueId)
-              .firstOrNull,
-        ),
-      ),
+      success: (data) {
+        emitIfOpen(
+          latest.copyWith(
+            pins: data.pins,
+            truncated: data.truncated,
+            searching: false,
+            fitTo: null,
+            selected: data.pins
+                .where((p) => p.venueId == latest.selected?.venueId)
+                .firstOrNull,
+          ),
+        );
+        if (data.pins.isEmpty) unawaited(_showWhereVenuesAre(bounds));
+      },
       failure: (failure) => emitIfOpen(
         latest.copyWith(searching: false, failure: failure.message),
+      ),
+    );
+  }
+
+  /// The opening view can sit over an area with no pitches while some are a
+  /// few kilometres away. Looks around once and, if it finds any, asks the
+  /// map to move so they are visible. Never moves the map after the player
+  /// has begun exploring on their own.
+  Future<void> _showWhereVenuesAre(MapBoundsModel empty) async {
+    if (_triedWiderSearch) return;
+    _triedWiderSearch = true;
+    final latitude = (empty.north + empty.south) / 2;
+    final longitude = (empty.east + empty.west) / 2;
+    final result = await exploreRepo.mapVenues(
+      bounds: MapBoundsModel(
+        south: latitude - _widerSearchRadius,
+        west: longitude - _widerSearchRadius,
+        north: latitude + _widerSearchRadius,
+        east: longitude + _widerSearchRadius,
+      ),
+      filter: filter,
+    );
+    final current = state;
+    if (current is! ExploreMapReady || _lastBounds != empty) return;
+    final pins = result.maybeWhen(
+      success: (data) => data.pins,
+      orElse: () => const <MapVenuePinModel>[],
+    );
+    if (pins.isEmpty) return;
+    var south = pins.first.latitude;
+    var north = south;
+    var west = pins.first.longitude;
+    var east = west;
+    for (final pin in pins) {
+      south = math.min(south, pin.latitude);
+      north = math.max(north, pin.latitude);
+      west = math.min(west, pin.longitude);
+      east = math.max(east, pin.longitude);
+    }
+    // Keep the player's own spot in view so the map does not feel like it
+    // jumped somewhere unrelated.
+    south = math.min(south, empty.south);
+    north = math.max(north, empty.north);
+    west = math.min(west, empty.west);
+    east = math.max(east, empty.east);
+    emitIfOpen(
+      current.copyWith(
+        fitTo: MapBoundsModel(
+          south: south,
+          west: west,
+          north: north,
+          east: east,
+        ),
       ),
     );
   }
