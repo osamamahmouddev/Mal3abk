@@ -90,7 +90,11 @@ class MyTeamCardWidget extends StatelessWidget {
                 ),
                 Expanded(
                   child: TeamStatWidget(
-                    value: team.rating.round().toLocalizedDigits(lang),
+                    // Every team starts at 1500; it only means something once
+                    // the team has played.
+                    value: team.matchesPlayed == 0
+                        ? '—'
+                        : team.rating.round().toLocalizedDigits(lang),
                     label: 'teams.common.rating'.tr(context: context),
                     isRank: true,
                   ),

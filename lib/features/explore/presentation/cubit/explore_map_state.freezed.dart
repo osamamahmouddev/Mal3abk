@@ -119,11 +119,11 @@ return ready(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  locating,TResult Function( GeoPoint center,  bool hasMyLocation,  List<MapVenuePinModel> pins,  bool searching,  bool truncated,  bool tooWide,  MapVenuePinModel? selected,  String? failure)?  ready,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  locating,TResult Function( GeoPoint center,  bool hasMyLocation,  List<MapVenuePinModel> pins,  bool searching,  bool truncated,  bool tooWide,  MapVenuePinModel? selected,  MapBoundsModel? fitTo,  String? failure)?  ready,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case ExploreMapLocating() when locating != null:
 return locating();case ExploreMapReady() when ready != null:
-return ready(_that.center,_that.hasMyLocation,_that.pins,_that.searching,_that.truncated,_that.tooWide,_that.selected,_that.failure);case _:
+return ready(_that.center,_that.hasMyLocation,_that.pins,_that.searching,_that.truncated,_that.tooWide,_that.selected,_that.fitTo,_that.failure);case _:
   return orElse();
 
 }
@@ -141,11 +141,11 @@ return ready(_that.center,_that.hasMyLocation,_that.pins,_that.searching,_that.t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  locating,required TResult Function( GeoPoint center,  bool hasMyLocation,  List<MapVenuePinModel> pins,  bool searching,  bool truncated,  bool tooWide,  MapVenuePinModel? selected,  String? failure)  ready,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  locating,required TResult Function( GeoPoint center,  bool hasMyLocation,  List<MapVenuePinModel> pins,  bool searching,  bool truncated,  bool tooWide,  MapVenuePinModel? selected,  MapBoundsModel? fitTo,  String? failure)  ready,}) {final _that = this;
 switch (_that) {
 case ExploreMapLocating():
 return locating();case ExploreMapReady():
-return ready(_that.center,_that.hasMyLocation,_that.pins,_that.searching,_that.truncated,_that.tooWide,_that.selected,_that.failure);}
+return ready(_that.center,_that.hasMyLocation,_that.pins,_that.searching,_that.truncated,_that.tooWide,_that.selected,_that.fitTo,_that.failure);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -159,11 +159,11 @@ return ready(_that.center,_that.hasMyLocation,_that.pins,_that.searching,_that.t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  locating,TResult? Function( GeoPoint center,  bool hasMyLocation,  List<MapVenuePinModel> pins,  bool searching,  bool truncated,  bool tooWide,  MapVenuePinModel? selected,  String? failure)?  ready,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  locating,TResult? Function( GeoPoint center,  bool hasMyLocation,  List<MapVenuePinModel> pins,  bool searching,  bool truncated,  bool tooWide,  MapVenuePinModel? selected,  MapBoundsModel? fitTo,  String? failure)?  ready,}) {final _that = this;
 switch (_that) {
 case ExploreMapLocating() when locating != null:
 return locating();case ExploreMapReady() when ready != null:
-return ready(_that.center,_that.hasMyLocation,_that.pins,_that.searching,_that.truncated,_that.tooWide,_that.selected,_that.failure);case _:
+return ready(_that.center,_that.hasMyLocation,_that.pins,_that.searching,_that.truncated,_that.tooWide,_that.selected,_that.fitTo,_that.failure);case _:
   return null;
 
 }
@@ -207,7 +207,7 @@ String toString() {
 
 
 class ExploreMapReady implements ExploreMapState {
-  const ExploreMapReady({required this.center, required this.hasMyLocation, final  List<MapVenuePinModel> pins = const <MapVenuePinModel>[], this.searching = false, this.truncated = false, this.tooWide = false, this.selected, this.failure}): _pins = pins;
+  const ExploreMapReady({required this.center, required this.hasMyLocation, final  List<MapVenuePinModel> pins = const <MapVenuePinModel>[], this.searching = false, this.truncated = false, this.tooWide = false, this.selected, this.fitTo, this.failure}): _pins = pins;
   
 
  final  GeoPoint center;
@@ -223,6 +223,7 @@ class ExploreMapReady implements ExploreMapState {
 @JsonKey() final  bool truncated;
 @JsonKey() final  bool tooWide;
  final  MapVenuePinModel? selected;
+ final  MapBoundsModel? fitTo;
  final  String? failure;
 
 /// Create a copy of ExploreMapState
@@ -235,16 +236,16 @@ $ExploreMapReadyCopyWith<ExploreMapReady> get copyWith => _$ExploreMapReadyCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ExploreMapReady&&(identical(other.center, center) || other.center == center)&&(identical(other.hasMyLocation, hasMyLocation) || other.hasMyLocation == hasMyLocation)&&const DeepCollectionEquality().equals(other._pins, _pins)&&(identical(other.searching, searching) || other.searching == searching)&&(identical(other.truncated, truncated) || other.truncated == truncated)&&(identical(other.tooWide, tooWide) || other.tooWide == tooWide)&&(identical(other.selected, selected) || other.selected == selected)&&(identical(other.failure, failure) || other.failure == failure));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ExploreMapReady&&(identical(other.center, center) || other.center == center)&&(identical(other.hasMyLocation, hasMyLocation) || other.hasMyLocation == hasMyLocation)&&const DeepCollectionEquality().equals(other._pins, _pins)&&(identical(other.searching, searching) || other.searching == searching)&&(identical(other.truncated, truncated) || other.truncated == truncated)&&(identical(other.tooWide, tooWide) || other.tooWide == tooWide)&&(identical(other.selected, selected) || other.selected == selected)&&(identical(other.fitTo, fitTo) || other.fitTo == fitTo)&&(identical(other.failure, failure) || other.failure == failure));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,center,hasMyLocation,const DeepCollectionEquality().hash(_pins),searching,truncated,tooWide,selected,failure);
+int get hashCode => Object.hash(runtimeType,center,hasMyLocation,const DeepCollectionEquality().hash(_pins),searching,truncated,tooWide,selected,fitTo,failure);
 
 @override
 String toString() {
-  return 'ExploreMapState.ready(center: $center, hasMyLocation: $hasMyLocation, pins: $pins, searching: $searching, truncated: $truncated, tooWide: $tooWide, selected: $selected, failure: $failure)';
+  return 'ExploreMapState.ready(center: $center, hasMyLocation: $hasMyLocation, pins: $pins, searching: $searching, truncated: $truncated, tooWide: $tooWide, selected: $selected, fitTo: $fitTo, failure: $failure)';
 }
 
 
@@ -255,7 +256,7 @@ abstract mixin class $ExploreMapReadyCopyWith<$Res> implements $ExploreMapStateC
   factory $ExploreMapReadyCopyWith(ExploreMapReady value, $Res Function(ExploreMapReady) _then) = _$ExploreMapReadyCopyWithImpl;
 @useResult
 $Res call({
- GeoPoint center, bool hasMyLocation, List<MapVenuePinModel> pins, bool searching, bool truncated, bool tooWide, MapVenuePinModel? selected, String? failure
+ GeoPoint center, bool hasMyLocation, List<MapVenuePinModel> pins, bool searching, bool truncated, bool tooWide, MapVenuePinModel? selected, MapBoundsModel? fitTo, String? failure
 });
 
 
@@ -272,7 +273,7 @@ class _$ExploreMapReadyCopyWithImpl<$Res>
 
 /// Create a copy of ExploreMapState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? center = null,Object? hasMyLocation = null,Object? pins = null,Object? searching = null,Object? truncated = null,Object? tooWide = null,Object? selected = freezed,Object? failure = freezed,}) {
+@pragma('vm:prefer-inline') $Res call({Object? center = null,Object? hasMyLocation = null,Object? pins = null,Object? searching = null,Object? truncated = null,Object? tooWide = null,Object? selected = freezed,Object? fitTo = freezed,Object? failure = freezed,}) {
   return _then(ExploreMapReady(
 center: null == center ? _self.center : center // ignore: cast_nullable_to_non_nullable
 as GeoPoint,hasMyLocation: null == hasMyLocation ? _self.hasMyLocation : hasMyLocation // ignore: cast_nullable_to_non_nullable
@@ -281,7 +282,8 @@ as List<MapVenuePinModel>,searching: null == searching ? _self.searching : searc
 as bool,truncated: null == truncated ? _self.truncated : truncated // ignore: cast_nullable_to_non_nullable
 as bool,tooWide: null == tooWide ? _self.tooWide : tooWide // ignore: cast_nullable_to_non_nullable
 as bool,selected: freezed == selected ? _self.selected : selected // ignore: cast_nullable_to_non_nullable
-as MapVenuePinModel?,failure: freezed == failure ? _self.failure : failure // ignore: cast_nullable_to_non_nullable
+as MapVenuePinModel?,fitTo: freezed == fitTo ? _self.fitTo : fitTo // ignore: cast_nullable_to_non_nullable
+as MapBoundsModel?,failure: freezed == failure ? _self.failure : failure // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -15,6 +16,7 @@ class HomeNearbyPitchCardWidget extends StatelessWidget {
     required this.dist,
     required this.slot,
     required this.onTap,
+    this.imageUrl,
     super.key,
   });
 
@@ -24,9 +26,18 @@ class HomeNearbyPitchCardWidget extends StatelessWidget {
   final String slot;
   final VoidCallback onTap;
 
+  /// The venue's cover photo; the built-in pattern shows until it loads, or
+  /// when the venue has none.
+  final String? imageUrl;
+
   @override
   Widget build(BuildContext context) {
     final radius = BorderRadius.circular(20.r);
+    final placeholder = SvgPicture.asset(
+      AppAssets.pitchThumbWide,
+      height: 96.h,
+      fit: BoxFit.cover,
+    );
 
     return Container(
       width: 222.w,
@@ -46,10 +57,17 @@ class HomeNearbyPitchCardWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SvgPicture.asset(
-                AppAssets.pitchThumbWide,
+              SizedBox(
                 height: 96.h,
-                fit: BoxFit.cover,
+                child: imageUrl == null || imageUrl!.isEmpty
+                    ? placeholder
+                    : CachedNetworkImage(
+                        imageUrl: imageUrl!,
+                        fit: BoxFit.cover,
+                        memCacheWidth: 700,
+                        placeholder: (_, _) => placeholder,
+                        errorWidget: (_, _, _) => placeholder,
+                      ),
               ),
               Padding(
                 padding: EdgeInsets.fromLTRB(12.w, 5.h, 12.w, 12.h),
