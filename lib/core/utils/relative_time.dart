@@ -9,8 +9,11 @@ class RelativeTime {
 
   static String since(DateTime utc, String languageCode, {DateTime? nowUtc}) {
     final elapsed = (nowUtc ?? DateTime.now().toUtc()).difference(utc.toUtc());
-    String ago(String unit, int value) =>
-        'common.ago.$unit'.tr(args: [value.toLocalizedDigits(languageCode)]);
+    // Plural forms: Arabic says دقيقة / دقيقتين / ٣ دقايق / ١١ دقيقة.
+    String ago(String unit, int value) => 'common.ago.$unit'.plural(
+      value,
+      args: [value.toLocalizedDigits(languageCode)],
+    );
     if (elapsed.inMinutes < 1) return 'common.ago.now'.tr();
     if (elapsed.inHours < 1) return ago('minutes', elapsed.inMinutes);
     if (elapsed.inDays < 1) return ago('hours', elapsed.inHours);

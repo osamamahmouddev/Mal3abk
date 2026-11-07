@@ -44,12 +44,18 @@ class DepositWalletCardWidget extends StatelessWidget {
           hSpace(10),
           Row(
             children: [
+              // The digits read left to right, but the number sits at the
+              // start of the row under its label in both languages.
               Expanded(
-                child: Text(
-                  wallet,
-                  textDirection: TextDirection.ltr,
-                  textAlign: TextAlign.start,
-                  style: AppTextStyles.font18Bold,
+                child: Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text(
+                    wallet,
+                    textDirection: TextDirection.ltr,
+                    style: AppTextStyles.font18Bold.copyWith(
+                      letterSpacing: 0.5,
+                    ),
+                  ),
                 ),
               ),
               CustomButton(

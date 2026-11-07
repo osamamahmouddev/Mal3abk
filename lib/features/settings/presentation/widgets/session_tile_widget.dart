@@ -9,6 +9,7 @@ import '../../../../core/utils/relative_time.dart';
 import '../../../../core/widgets/app_badge_widget.dart';
 import '../../data/models/session_model.dart';
 
+/// One signed-in device: what it is, when it was last used, and a way out.
 class SessionTileWidget extends StatelessWidget {
   const SessionTileWidget({
     required this.session,
@@ -24,14 +25,42 @@ class SessionTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final lang = context.locale.languageCode;
+    final title =
+        session.deviceLabel ??
+        session.platformLabel ??
+        'settings.sessions.unknown_device'.tr(context: context);
+    final lastActive = 'settings.sessions.last_active'.tr(
+      context: context,
+      args: [RelativeTime.since(session.lastActivityAtUtc, lang)],
+    );
+    final subtitle = [
+      if (session.deviceLabel != null && session.platformLabel != null)
+        session.platformLabel!,
+      lastActive,
+    ].join(' · ');
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
       child: Row(
         children: [
-          Icon(
-            Icons.smartphone_rounded,
-            color: AppColors.brandNavy,
-            size: 24.sp,
+          Container(
+            width: 44.r,
+            height: 44.r,
+            decoration: BoxDecoration(
+              color: session.isCurrent
+                  ? AppColors.successLight
+                  : AppColors.lightSurface,
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            child: Icon(
+              session.isApple
+                  ? Icons.phone_iphone_rounded
+                  : Icons.phone_android_rounded,
+              color: session.isCurrent
+                  ? AppColors.successGreen
+                  : AppColors.brandNavy,
+              size: 22.r,
+            ),
           ),
           vSpace(12),
           Expanded(
@@ -39,36 +68,43 @@ class SessionTileWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  session.displayName,
+                  title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: AppTextStyles.font14SemiBold,
                 ),
-                hSpace(2),
+                hSpace(3),
                 Text(
-                  'settings.sessions.last_active'.tr(
-                    context: context,
-                    args: [RelativeTime.since(session.lastActivityAtUtc, lang)],
+                  subtitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.font12Regular.copyWith(
+                    color: AppColors.textSecondary,
                   ),
-                  style: AppTextStyles.font11Regular,
                 ),
               ],
             ),
           ),
+          vSpace(8),
           if (session.isCurrent)
             AppBadgeWidget(
               text: 'settings.sessions.this_device'.tr(context: context),
               type: AppBadgeType.success,
             )
           else
-            TextButton(
+            OutlinedButton(
               onPressed: enabled ? onRevoke : null,
-              child: Text(
-                'settings.sessions.revoke'.tr(context: context),
-                style: AppTextStyles.font13SemiBold.copyWith(
-                  color: AppColors.redText,
+              style: OutlinedButton.styleFrom(
+                foregroundColor: AppColors.redText,
+                side: const BorderSide(color: AppColors.redBorder),
+                padding: EdgeInsets.symmetric(horizontal: 12.w),
+                minimumSize: Size(0, 34.h),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.r),
                 ),
+                textStyle: AppTextStyles.font13SemiBold,
               ),
+              child: Text('settings.sessions.revoke'.tr(context: context)),
             ),
         ],
       ),

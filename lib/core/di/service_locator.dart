@@ -129,6 +129,7 @@ import '../../features/teams/presentation/cubit/team_action_cubit.dart';
 import '../../features/teams/presentation/cubit/team_dashboard_cubit.dart';
 import '../../features/teams/presentation/cubit/team_invite_cubit.dart';
 import '../config/env_config.dart';
+import '../device/device_identity_provider.dart';
 import '../local_storage/auth_token_storage.dart';
 import '../local_storage/device_id_storage.dart';
 import '../network/auth_interceptor.dart';
@@ -148,6 +149,7 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
   sl.registerLazySingleton<LocationService>(LocationService.new);
   sl.registerLazySingleton<AuthTokenStorage>(AuthTokenStorage.new);
   sl.registerLazySingleton<DeviceIdStorage>(DeviceIdStorage.new);
+  sl.registerLazySingleton<DeviceIdentityProvider>(DeviceIdentityProvider.new);
   sl.registerLazySingleton<TurnstileTokenProvider>(
     () => TurnstileTokenProvider(envConfig: sl<EnvConfig>()),
   );
@@ -157,6 +159,7 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
       DioFactory.createDio(
         envConfig: sl<EnvConfig>(),
         deviceIdStorage: sl<DeviceIdStorage>(),
+        deviceIdentityProvider: sl<DeviceIdentityProvider>(),
       ),
     ),
   );
@@ -164,6 +167,7 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
     final dio = DioFactory.createDio(
       envConfig: sl<EnvConfig>(),
       deviceIdStorage: sl<DeviceIdStorage>(),
+      deviceIdentityProvider: sl<DeviceIdentityProvider>(),
     );
     dio.interceptors.add(
       AuthInterceptor(

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 import '../config/env_config.dart';
+import '../device/device_identity_provider.dart';
 import '../local_storage/device_id_storage.dart';
 import 'api_logging_interceptor.dart';
 import 'request_headers_interceptor.dart';
@@ -16,6 +17,7 @@ class DioFactory {
   static Dio createDio({
     required EnvConfig envConfig,
     required DeviceIdStorage deviceIdStorage,
+    DeviceIdentityProvider? deviceIdentityProvider,
   }) {
     final dio = Dio(
       BaseOptions(
@@ -31,7 +33,10 @@ class DioFactory {
     );
 
     dio.interceptors.add(
-      RequestHeadersInterceptor(deviceIdStorage: deviceIdStorage),
+      RequestHeadersInterceptor(
+        deviceIdStorage: deviceIdStorage,
+        deviceIdentityProvider: deviceIdentityProvider,
+      ),
     );
     if (kDebugMode) {
       dio.interceptors.add(ApiLoggingInterceptor());
