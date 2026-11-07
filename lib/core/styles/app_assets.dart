@@ -13,6 +13,11 @@ class AppAssets {
   static const String iconMark192 = 'assets/images/pngs/icon-mark-192.png';
   static const String iconMark48 = 'assets/images/pngs/icon-mark-48.png';
 
+  // Map pins (brand pin with a white outline and shadow; tip at 85.6%).
+  static const String mapPin = 'assets/images/pngs/map-pin.png';
+  static const String mapPinSelected =
+      'assets/images/pngs/map-pin-selected.png';
+
   // Red Icons
   static const String iconRed1024 = 'assets/images/pngs/icon-red-1024.png';
   static const String iconRed512 = 'assets/images/pngs/icon-red-512.png';
