@@ -11,9 +11,11 @@ import '../../../../core/widgets/booking_card_widget.dart';
 import '../../../../core/widgets/custom_state_widget.dart';
 import '../../../../core/widgets/fade_slide_in_widget.dart';
 import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
+import '../../../main_shell/presentation/widgets/main_shell_scope_widget.dart';
 import '../../data/models/player_booking_summary_model.dart';
 import '../cubit/my_bookings_cubit.dart';
 import '../cubit/my_bookings_state.dart';
+import '../cubit/my_bookings_tab.dart';
 import 'booking_status_style.dart';
 
 class MyBookingsBlocBuilder extends StatelessWidget {
@@ -28,6 +30,19 @@ class MyBookingsBlocBuilder extends StatelessWidget {
       await Navigator.of(context).pushNamed(route, arguments: bookingId);
       final current = cubit.state;
       if (current is MyBookingsSuccess) await cubit.load(current.tab);
+    }
+
+    void openExplore(BuildContext context) {
+      final inShell =
+          context.getInheritedWidgetOfExactType<MainShellScopeWidget>() != null;
+      if (inShell) {
+        MainShellScopeWidget.switchTab(
+          context,
+          MainShellScopeWidget.exploreTab,
+        );
+      } else {
+        Navigator.of(context).pushNamed(AppRoutes.exploreList);
+      }
     }
 
     Widget card(PlayerBookingSummaryModel booking, int index) {
@@ -67,9 +82,20 @@ class MyBookingsBlocBuilder extends StatelessWidget {
         return switch (state) {
           MyBookingsSuccess(:final items, :final tab) when items.isEmpty =>
             CustomStateWidget(
-              icon: const Icon(Icons.event_note_rounded, size: 48),
+              icon: Icon(switch (tab) {
+                MyBookingsTab.upcoming => Icons.event_available_rounded,
+                MyBookingsTab.pending => Icons.hourglass_top_rounded,
+                MyBookingsTab.completed => Icons.sports_soccer_rounded,
+                MyBookingsTab.cancelled => Icons.event_busy_rounded,
+              }),
               title: 'booking.list.empty_${tab.name}'.tr(context: context),
-              description: 'booking.list.empty_desc'.tr(context: context),
+              description: 'booking.list.empty_desc_${tab.name}'.tr(
+                context: context,
+              ),
+              actionText: tab == MyBookingsTab.cancelled
+                  ? null
+                  : 'booking.list.empty_cta'.tr(context: context),
+              onActionTap: () => openExplore(context),
             ),
           MyBookingsSuccess(:final items, :final hasMore, :final tab) =>
             RefreshIndicator.adaptive(

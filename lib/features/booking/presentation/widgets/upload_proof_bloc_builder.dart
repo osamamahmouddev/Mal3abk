@@ -10,6 +10,7 @@ import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_shadows.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/app_top_snack_bar.dart';
+import '../../../../core/widgets/image_source_sheet_widget.dart';
 import '../../../../core/widgets/bottom_action_bar_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../data/models/player_booking_detail_model.dart';
@@ -30,31 +31,16 @@ class UploadProofBlocBuilder extends HookWidget {
     final sender = useTextEditingController();
 
     Future<void> pick() async {
-      final source = await showModalBottomSheet<ImageSource>(
-        context: context,
-        backgroundColor: AppColors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
-        ),
-        builder: (sheetContext) => SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                leading: const Icon(Icons.photo_library_rounded),
-                title: Text('profile.avatar.gallery'.tr(context: context)),
-                onTap: () =>
-                    Navigator.of(sheetContext).pop(ImageSource.gallery),
-              ),
-              ListTile(
-                leading: const Icon(Icons.photo_camera_rounded),
-                title: Text('profile.avatar.camera'.tr(context: context)),
-                onTap: () => Navigator.of(sheetContext).pop(ImageSource.camera),
-              ),
-            ],
-          ),
-        ),
+      final choice = await ImageSourceSheetWidget.show(
+        context,
+        title: 'common.image_source.proof_title'.tr(context: context),
+        subtitle: 'common.image_source.proof_subtitle'.tr(context: context),
       );
+      final source = switch (choice) {
+        ImageSourceChoice.camera => ImageSource.camera,
+        ImageSourceChoice.gallery => ImageSource.gallery,
+        _ => null,
+      };
       if (source == null) return;
       final file = await ImagePicker().pickImage(
         source: source,

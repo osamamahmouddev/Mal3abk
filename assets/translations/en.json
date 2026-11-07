@@ -24,13 +24,32 @@
     "unexpected_error": "An unexpected error occurred. Please try again.",
     "ago": {
       "now": "Just now",
-      "minutes": "{}m ago",
-      "hours": "{}h ago",
-      "days": "{}d ago"
+      "minutes": {
+        "one": "1 min ago",
+        "other": "{} min ago"
+      },
+      "hours": {
+        "one": "1 hour ago",
+        "other": "{} hours ago"
+      },
+      "days": {
+        "one": "Yesterday",
+        "other": "{} days ago"
+      }
     },
     "resend_in": "You can request a new code in {}",
     "resend_code": "Send a new code",
-    "price_egp": "EGP {}"
+    "price_egp": "EGP {}",
+    "image_source": {
+      "gallery": "Photos",
+      "gallery_hint": "Pick one you already have",
+      "camera": "Camera",
+      "camera_hint": "Take one now",
+      "avatar_title": "Your profile photo",
+      "avatar_subtitle": "A clear photo of your face helps teammates recognise you.",
+      "proof_title": "Transfer receipt",
+      "proof_subtitle": "Make sure the amount and transaction number are readable."
+    }
   },
   "errors": {
     "network": "Unable to connect to the server. Please check your internet connection.",
@@ -546,11 +565,15 @@
       "sample2_time": "Mon, Jul 28 · 10:00 – 11:00 PM",
       "sample2_note": "Reason: the receipt shows 30 EGP. Re-upload within 45 minutes.",
       "details": "Details",
-      "empty_desc": "Book a pitch from Explore and it will show up here.",
       "empty_upcoming": "No upcoming bookings",
       "empty_pending": "Nothing pending",
       "empty_completed": "No past matches",
-      "empty_cancelled": "No cancelled bookings"
+      "empty_cancelled": "No cancelled bookings",
+      "empty_desc_upcoming": "Once you book a pitch, it shows up here.",
+      "empty_desc_pending": "Bookings waiting for a deposit or the venue's confirmation show up here.",
+      "empty_desc_completed": "Matches you've played show up here, ready for a review.",
+      "empty_desc_cancelled": "No cancelled bookings. Keep it up!",
+      "empty_cta": "Book a pitch"
     },
     "cancel": {
       "free_header": "Free cancellation — 4 h 20 min left before the deadline",
@@ -952,7 +975,8 @@
       "last_active": "Last active {}",
       "this_device": "This device",
       "revoke": "Sign out",
-      "revoke_others": "Sign out of all other devices"
+      "revoke_others": "Sign out of all other devices",
+      "unknown_device": "Unknown device"
     },
     "export": {
       "title": "Download my data"
