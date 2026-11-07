@@ -18,7 +18,7 @@ class ApiFailureMapper {
     'validation_failed': 'errors.validation_failed',
     'VALIDATION_FAILED': 'errors.validation_failed',
     'RATE_LIMIT_EXCEEDED': 'common.too_many_requests',
-    'Identity.RateLimitExceeded': 'common.too_many_requests',
+    'Identity.RateLimitExceeded': 'errors.identity.otp_rate_limited',
     'Identity.InvalidEgyptianPhoneNumber': 'errors.identity.invalid_phone',
     'Identity.InvalidPhoneNumber': 'errors.identity.invalid_phone',
     'Identity.NotMobileNumber': 'errors.identity.invalid_phone',

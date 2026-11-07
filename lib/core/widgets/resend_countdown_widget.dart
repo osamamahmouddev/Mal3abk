@@ -4,9 +4,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import '../extensions/app_display_extensions.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
+import '../utils/countdown_clock.dart';
 
 /// "Resend in 0:59", then a resend link. Restarts whenever [restartKey]
 /// changes.
@@ -36,11 +36,11 @@ class ResendCountdownWidget extends HookWidget {
       return timer.cancel;
     }, [restartKey]);
 
-    final lang = context.locale.languageCode;
     if (remaining.value > 0) {
-      final s = remaining.value;
-      final raw = '${s ~/ 60}:${(s % 60).toString().padLeft(2, '0')}';
-      final clock = lang == 'ar' ? raw.toArabicDigits() : raw;
+      final clock = CountdownClock.format(
+        remaining.value,
+        context.locale.languageCode,
+      );
       return Text(
         'common.resend_in'.tr(context: context, args: [clock]),
         textAlign: TextAlign.center,

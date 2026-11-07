@@ -72,7 +72,7 @@ void main() {
 
       final result = await repo.sendOtp(testPhoneNumber);
 
-      expect(result, isFailureWith('common.too_many_requests'));
+      expect(result, isFailureWith('errors.identity.otp_rate_limited'));
     });
   });
 

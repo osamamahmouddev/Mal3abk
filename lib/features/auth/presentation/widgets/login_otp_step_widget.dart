@@ -18,6 +18,7 @@ class LoginOtpStepWidget extends HookWidget {
     required this.phoneNumber,
     required this.sendCount,
     required this.isResending,
+    this.resendBlockedUntil,
     super.key,
   });
 
@@ -25,6 +26,10 @@ class LoginOtpStepWidget extends HookWidget {
   final String phoneNumber;
   final int sendCount;
   final bool isResending;
+
+  /// Set after too many codes: the resend countdown runs until then instead
+  /// of the usual minute.
+  final DateTime? resendBlockedUntil;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +60,13 @@ class LoginOtpStepWidget extends HookWidget {
         ),
         hSpace(12),
         ResendCountdownWidget(
-          restartKey: sendCount,
+          seconds: resendBlockedUntil == null
+              ? 60
+              : resendBlockedUntil!
+                    .difference(DateTime.now())
+                    .inSeconds
+                    .clamp(1, 24 * 60 * 60),
+          restartKey: resendBlockedUntil?.millisecondsSinceEpoch ?? sendCount,
           enabled: !isResending,
           onResend: () {
             codeController.clear();

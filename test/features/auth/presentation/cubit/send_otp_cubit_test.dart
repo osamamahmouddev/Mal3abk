@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mal3abk/core/network/api_result.dart';
+import 'package:mal3abk/core/network/app_api_failure.dart';
 import 'package:mal3abk/features/auth/domain/use_cases/send_otp_use_case.dart';
 import 'package:mal3abk/features/auth/presentation/cubit/send_otp_cubit.dart';
 import 'package:mal3abk/features/auth/presentation/cubit/send_otp_state.dart';
@@ -8,6 +9,13 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../helpers/auth_fixtures.dart';
 
 class MockSendOtpUseCase extends Mock implements SendOtpUseCase {}
+
+const _rateLimited = AppApiFailure(
+  message: 'errors.identity.otp_rate_limited',
+  code: 'Identity.RateLimitExceeded',
+  statusCode: 429,
+  extraData: {'retryAfterSeconds': 600},
+);
 
 void main() {
   late MockSendOtpUseCase useCase;
@@ -84,6 +92,46 @@ void main() {
       await cubit.resend();
       await expectation;
       verify(() => useCase(testPhoneNumber)).called(1);
+    });
+
+    test('keeps the wait from Retry-After when rate limited', () async {
+      when(
+        () => useCase(any()),
+      ).thenAnswer((_) async => const ApiResult.failure(_rateLimited));
+
+      await cubit.sendOtp('01012345678');
+
+      final state = cubit.state as SendOtpError;
+      expect(state.message, 'errors.identity.otp_rate_limited');
+      final wait = state.retryAt!.difference(DateTime.now());
+      expect(wait.inSeconds, inInclusiveRange(595, 600));
+    });
+
+    test('does not call the server again while the wait runs', () async {
+      when(
+        () => useCase(any()),
+      ).thenAnswer((_) async => const ApiResult.failure(_rateLimited));
+      await cubit.sendOtp('01012345678');
+
+      await cubit.sendOtp('01012345678');
+
+      verify(() => useCase(any())).called(1);
+    });
+
+    test('blocks resend until the server allows it', () async {
+      when(
+        () => useCase(any()),
+      ).thenAnswer((_) async => const ApiResult.success(sendOtpResponse));
+      await cubit.sendOtp('01012345678');
+      when(
+        () => useCase(any()),
+      ).thenAnswer((_) async => const ApiResult.failure(_rateLimited));
+
+      await cubit.resend();
+
+      final state = cubit.state as SendOtpSuccess;
+      expect(state.resendBlockedUntil, isNotNull);
+      expect(state.resendError, 'errors.identity.otp_rate_limited');
     });
   });
 }
