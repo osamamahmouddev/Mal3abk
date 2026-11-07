@@ -6,11 +6,14 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/app/app_spaces.dart';
+import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../screens/photo_gallery_screen.dart';
 import 'venue_hero_button_widget.dart';
 
-/// Swipeable venue photos with back and favourite buttons.
+/// Swipeable venue photos with back and favourite buttons; tapping a photo
+/// opens it full screen.
 class VenueHeroWidget extends HookWidget {
   const VenueHeroWidget({
     required this.venueId,
@@ -28,6 +31,18 @@ class VenueHeroWidget extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final page = useState(0);
+    final controller = usePageController();
+
+    Future<void> openGallery(int index) async {
+      final lastShown = await Navigator.of(context).pushNamed<int>(
+        AppRoutes.photoGallery,
+        arguments: PhotoGalleryArgs(photos: photos, initialIndex: index),
+      );
+      if (lastShown != null && controller.hasClients) {
+        controller.jumpToPage(lastShown);
+      }
+    }
+
     final placeholder = SvgPicture.asset(
       AppAssets.pitchHero,
       fit: BoxFit.cover,
@@ -43,13 +58,17 @@ class VenueHeroWidget extends HookWidget {
               child: photos.isEmpty
                   ? placeholder
                   : PageView.builder(
+                      controller: controller,
                       itemCount: photos.length,
                       onPageChanged: (index) => page.value = index,
-                      itemBuilder: (_, index) => CachedNetworkImage(
-                        imageUrl: photos[index],
-                        fit: BoxFit.cover,
-                        placeholder: (_, _) => placeholder,
-                        errorWidget: (_, _, _) => placeholder,
+                      itemBuilder: (_, index) => GestureDetector(
+                        onTap: () => openGallery(index),
+                        child: CachedNetworkImage(
+                          imageUrl: photos[index],
+                          fit: BoxFit.cover,
+                          placeholder: (_, _) => placeholder,
+                          errorWidget: (_, _, _) => placeholder,
+                        ),
                       ),
                     ),
             ),

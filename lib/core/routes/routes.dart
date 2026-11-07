@@ -15,6 +15,7 @@ class AppRoutes {
   static const String filtersAndSort = '/filters-and-sort';
   static const String venueProfile = '/venue-profile';
   static const String pitchAndTime = '/pitch-and-time';
+  static const String photoGallery = '/photo-gallery';
   static const String favorites = '/favorites';
 
   static const String bookingReview = '/booking-review';
