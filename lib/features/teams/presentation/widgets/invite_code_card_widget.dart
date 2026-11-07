@@ -59,13 +59,17 @@ class InviteCodeCardWidget extends StatelessWidget {
                 hSpace(4),
                 Row(
                   children: [
+                    // The code reads left to right but sits at the start of
+                    // the row, under its label, in both languages.
                     Expanded(
-                      child: Text(
-                        code,
-                        textDirection: TextDirection.ltr,
-                        textAlign: TextAlign.start,
-                        style: AppTextStyles.font26Bold.copyWith(
-                          color: AppColors.accentGold,
+                      child: Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: Text(
+                          code,
+                          textDirection: TextDirection.ltr,
+                          style: AppTextStyles.font26Bold.copyWith(
+                            color: AppColors.accentGold,
+                          ),
                         ),
                       ),
                     ),

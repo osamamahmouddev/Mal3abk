@@ -117,11 +117,20 @@ class CustomButton extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         if (icon != null) ...[icon!, vSpace(8)],
-                        Text(
-                          text,
-                          style:
-                              textStyle ??
-                              AppTextStyles.font16SemiBold.copyWith(color: fg),
+                        // Shrinks a long label to fit instead of overflowing.
+                        Flexible(
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              text,
+                              maxLines: 1,
+                              style:
+                                  textStyle ??
+                                  AppTextStyles.font16SemiBold.copyWith(
+                                    color: fg,
+                                  ),
+                            ),
+                          ),
                         ),
                       ],
                     ),
