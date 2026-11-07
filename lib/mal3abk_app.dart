@@ -28,7 +28,7 @@ class Mal3abkApp extends StatelessWidget {
       builder: (context, _) => MaterialApp(
         debugShowCheckedModeBanner: false,
         navigatorKey: AppNavigator.navigatorKey,
-        title: 'app.name'.tr(),
+        onGenerateTitle: (context) => 'app.name'.tr(context: context),
         theme: AppTheme.light,
         initialRoute: AppRoutes.splash,
         onGenerateInitialRoutes: AppRouter.onGenerateInitialRoutes,
