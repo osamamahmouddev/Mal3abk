@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../core/location/location_service.dart';
+import '../../../../core/styles/app_assets.dart';
 import '../../data/models/map_bounds_model.dart';
 import '../cubit/explore_map_cubit.dart';
 import '../cubit/explore_map_state.dart';
@@ -16,10 +17,29 @@ class ExploreMapViewBlocConsumer extends HookWidget {
 
   static const double initialZoom = 13;
 
+  /// Where the pin's tip sits in its image, so the tip marks the venue.
+  static const Offset pinAnchor = Offset(0.5, 0.856);
+
   @override
   Widget build(BuildContext context) {
     final controller = useRef<GoogleMapController?>(null);
     final cubit = context.read<ExploreMapCubit>();
+    final pins = useFuture(
+      useMemoized(
+        () => Future.wait([
+          BitmapDescriptor.asset(
+            ImageConfiguration.empty,
+            AppAssets.mapPin,
+            width: 46,
+          ),
+          BitmapDescriptor.asset(
+            ImageConfiguration.empty,
+            AppAssets.mapPinSelected,
+            width: 60,
+          ),
+        ]),
+      ),
+    ).data;
 
     Future<void> searchVisible() async {
       final map = controller.value;
@@ -86,11 +106,12 @@ class ExploreMapViewBlocConsumer extends HookWidget {
               Marker(
                 markerId: MarkerId(pin.venueId),
                 position: LatLng(pin.latitude, pin.longitude),
-                icon: BitmapDescriptor.defaultMarkerWithHue(
-                  pin.venueId == state.selected?.venueId
-                      ? BitmapDescriptor.hueRed
-                      : BitmapDescriptor.hueAzure,
-                ),
+                icon: pins == null
+                    ? BitmapDescriptor.defaultMarker
+                    : pins[pin.venueId == state.selected?.venueId ? 1 : 0],
+                anchor: pinAnchor,
+                // The selected pin is drawn above its neighbours.
+                zIndexInt: pin.venueId == state.selected?.venueId ? 1 : 0,
                 onTap: () {
                   HapticFeedback.selectionClick();
                   cubit.select(pin);
