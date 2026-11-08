@@ -1037,5 +1037,10 @@
   "reference": {
     "governorate_hint": "Choose a governorate",
     "area_hint": "Type your area"
+  },
+  "force_update": {
+    "title": "Update Required",
+    "description": "An update to the latest version of Malabak is required to keep your account secure and continue using the app.",
+    "cta": "Update Now"
   }
 }

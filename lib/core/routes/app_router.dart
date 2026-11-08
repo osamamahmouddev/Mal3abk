@@ -80,6 +80,7 @@ import '../../features/profile/presentation/screens/my_profile_screen.dart';
 import '../../features/settings/presentation/screens/help_and_support_screen.dart';
 import '../../features/settings/presentation/screens/settings_screen.dart';
 import '../../features/splash/presentation/cubit/splash_cubit.dart';
+import '../../features/splash/presentation/screens/force_update_screen.dart';
 import '../../features/splash/presentation/screens/splash_screen.dart';
 import '../../features/reference/presentation/cubit/governorates_cubit.dart';
 import '../../features/teams/data/models/team_profile_model.dart';
@@ -134,6 +135,12 @@ class AppRouter {
             ],
             child: const SplashScreen(),
           ),
+        );
+
+      case AppRoutes.forceUpdate:
+        return MaterialPageRoute(
+          settings: const RouteSettings(name: AppRoutes.forceUpdate),
+          builder: (_) => const ForceUpdateScreen(),
         );
 
       case AppRoutes.welcome:

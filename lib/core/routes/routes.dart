@@ -2,6 +2,7 @@ class AppRoutes {
   const AppRoutes._();
 
   static const String splash = '/';
+  static const String forceUpdate = '/force-update';
   static const String welcome = '/welcome';
   static const String login = '/login';
   static const String profileSetup = '/profile-setup';

@@ -14,6 +14,7 @@ import '../../../../core/utils/cairo_time.dart';
 import '../../../../core/widgets/bottom_action_bar_widget.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
+import '../../../../core/widgets/secure_screen_widget.dart';
 import '../../data/models/create_booking_response_model.dart';
 import '../widgets/deposit_methods_bloc_builder.dart';
 import '../widgets/deposit_step_widget.dart';
@@ -32,8 +33,9 @@ class DepositInstructionsScreen extends StatelessWidget {
     final start = DateTime.parse(booking.startUtc);
     final end = DateTime.parse(booking.endUtc);
 
-    return Scaffold(
-      backgroundColor: AppColors.pageBackground,
+    return SecureScreenWidget(
+      child: Scaffold(
+        backgroundColor: AppColors.pageBackground,
       appBar: CustomAppBarWidget(
         title: 'booking.deposit.title'.tr(context: context),
       ),
@@ -113,6 +115,7 @@ class DepositInstructionsScreen extends StatelessWidget {
           ],
         ],
       ),
-    );
+    ),
+  );
   }
 }

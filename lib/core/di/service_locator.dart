@@ -41,7 +41,9 @@ import '../../features/matches/presentation/cubit/match_details_cubit.dart';
 import '../../features/matches/presentation/cubit/match_result_cubit.dart';
 import '../../features/matches/presentation/cubit/send_challenge_cubit.dart';
 import '../location/location_service.dart';
+import '../security/app_attestation_provider.dart';
 import '../security/biometric_lock.dart';
+import '../security/screen_security.dart';
 import '../../features/explore/presentation/cubit/explore_map_cubit.dart';
 import '../../features/auth/data/apis/auth_api_service.dart';
 import '../../features/auth/data/repos/auth_repo_impl.dart';
@@ -146,6 +148,10 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
   // Environment & External
   sl.registerSingleton<EnvConfig>(envConfig);
   sl.registerLazySingleton<BiometricLock>(BiometricLock.new);
+  sl.registerLazySingleton<ScreenSecurity>(ScreenSecurity.new);
+  sl.registerLazySingleton<AppAttestationProvider>(
+    () => AppAttestationProvider(envConfig: sl<EnvConfig>()),
+  );
   sl.registerLazySingleton<LocationService>(LocationService.new);
   sl.registerLazySingleton<AuthTokenStorage>(AuthTokenStorage.new);
   sl.registerLazySingleton<DeviceIdStorage>(DeviceIdStorage.new);
