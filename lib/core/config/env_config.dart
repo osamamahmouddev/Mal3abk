@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 abstract class EnvConfig {
   String get baseUrl;
   String get envName;
@@ -15,17 +13,12 @@ class DevEnvConfig implements EnvConfig {
 
   static const String _baseUrlOverride = String.fromEnvironment('BASE_URL');
 
-  /// Local API (`dotnet run`) listens on port 5000. The Android emulator
-  /// reaches the host machine through 10.0.2.2. `127.0.0.1` rather than
-  /// `localhost` avoids a stalled IPv6 (`::1`) connect. A physical device
-  /// needs `--dart-define=BASE_URL=http://<host-lan-ip>:5000`.
+  /// MonsterASP live API server: http://mal3abk.runasp.net
+  /// Can be overridden with `--dart-define=BASE_URL=...`
   @override
   String get baseUrl {
     if (_baseUrlOverride.isNotEmpty) return _baseUrlOverride;
-    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
-      return 'http://10.0.2.2:5000';
-    }
-    return 'http://127.0.0.1:5000';
+    return 'http://mal3abk.runasp.net';
   }
 
   @override
@@ -45,8 +38,13 @@ class DevEnvConfig implements EnvConfig {
 class ProdEnvConfig implements EnvConfig {
   const ProdEnvConfig();
 
+  static const String _baseUrlOverride = String.fromEnvironment('BASE_URL');
+
   @override
-  String get baseUrl => 'https://api.malabak.app';
+  String get baseUrl {
+    if (_baseUrlOverride.isNotEmpty) return _baseUrlOverride;
+    return 'http://mal3abk.runasp.net';
+  }
 
   @override
   String get envName => 'prod';
@@ -55,5 +53,8 @@ class ProdEnvConfig implements EnvConfig {
   bool get isDebug => false;
 
   @override
-  String get turnstileToken => '';
+  String get turnstileToken => const String.fromEnvironment(
+    'TURNSTILE_TOKEN',
+    defaultValue: 'dev-mobile-turnstile',
+  );
 }

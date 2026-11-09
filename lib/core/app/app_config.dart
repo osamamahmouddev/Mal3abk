@@ -3,7 +3,7 @@ class AppConfig {
 
   static const String baseUrl = String.fromEnvironment(
     'BASE_URL',
-    defaultValue: 'https://api.dev.mal3abk.com',
+    defaultValue: 'http://mal3abk.runasp.net',
   );
 
   static const String env = String.fromEnvironment('ENV', defaultValue: 'dev');
