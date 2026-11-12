@@ -1,0 +1,4 @@
+tags:
+  integration:
+    # Needs the local API on DevEnvConfig.baseUrl and Mailpit on 127.0.0.1:8025;
+    # the tests skip themselves when they are not reachable.
