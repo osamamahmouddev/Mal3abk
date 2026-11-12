@@ -2,13 +2,22 @@
 
 How the player app talks to the Malabak API, and what is still waiting on the backend.
 
-## Running against the local API
+## Flavors: `dev` is the local API, `prod` is the server
 
-The API (`dotnet run` in `mal3abk-backend`) listens on port 5000, with Swagger at `/swagger`. In Development, OTP codes and recovery links are posted to the private Slack channel `#malabak-otp`.
+| Flavor | Entry point | API | Android app id |
+|---|---|---|---|
+| `dev` | `lib/main_dev.dart` | the API on your machine (port 5000) | `com.example.mal3abk.dev`, named "mal3abk dev" |
+| `prod` | `lib/main_prod.dart` (also `lib/main.dart`, so release builds and TestFlight get prod) | the live server | `com.example.mal3abk` |
 
 ```bash
-flutter run -t lib/main_dev.dart
+fvm flutter run   --flavor dev  -t lib/main_dev.dart     # local API
+fvm flutter run   --flavor prod -t lib/main_prod.dart    # live server
+fvm flutter build apk --flavor prod -t lib/main_prod.dart
 ```
+
+Always pass the flavor and its entry point together. The two flavors install side by side. iOS has no flavors yet; it builds `lib/main.dart` (prod).
+
+The API (`dotnet run` in `mal3abk-backend`) listens on port 5000, with Swagger at `/swagger`. In Development, OTP codes and recovery links are posted to the private Slack channel `#malabak-otp`.
 
 | Target | Base URL used by `DevEnvConfig` |
 |---|---|
@@ -16,9 +25,17 @@ flutter run -t lib/main_dev.dart
 | iOS simulator / desktop | `http://127.0.0.1:5000` |
 | Physical device or staging | `--dart-define=BASE_URL=http://<host-lan-ip>:5000` |
 
-Plain HTTP is allowed only in the Android **debug** manifest. Release builds stay HTTPS-only.
+Plain HTTP is allowed only in the Android **debug** manifest. Release builds stay HTTPS-only, so the `prod` release build needs an HTTPS server address.
 
 The web build cannot call the local API, because the API's CORS policy only allows the web dashboard origins. Mobile builds are not affected.
+
+### Integration tests against the local API
+
+`test/integration/` (tag `integration`) drives the app's real use cases, Dio stack and interceptors against the local API, including a full player journey: sign up, profile, find a pitch, quote, hold, proof, cancel, team. OTP codes are read from Mailpit, so start the API with `Identity__OtpDelivery__Provider=Sms` (and no SMS providers) and Mailpit on `127.0.0.1:8025`. When the API or Mailpit is down the tests skip themselves.
+
+```bash
+fvm flutter test test/integration
+```
 
 ## Google Maps key
 

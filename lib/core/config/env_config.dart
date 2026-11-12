@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 abstract class EnvConfig {
   String get baseUrl;
   String get envName;
@@ -8,17 +10,22 @@ abstract class EnvConfig {
   String get turnstileToken;
 }
 
+/// The `dev` flavor: the API running on the developer's machine.
 class DevEnvConfig implements EnvConfig {
   const DevEnvConfig();
 
   static const String _baseUrlOverride = String.fromEnvironment('BASE_URL');
 
-  /// MonsterASP live API server: http://mal3abk.runasp.net
-  /// Can be overridden with `--dart-define=BASE_URL=...`
+  /// The Android emulator reaches the host through `10.0.2.2`; the iOS
+  /// simulator and desktop share the host's loopback. A physical device needs
+  /// `--dart-define=BASE_URL=http://<host-lan-ip>:5000`.
   @override
   String get baseUrl {
     if (_baseUrlOverride.isNotEmpty) return _baseUrlOverride;
-    return 'http://mal3abk.runasp.net';
+    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+      return 'http://10.0.2.2:5000';
+    }
+    return 'http://127.0.0.1:5000';
   }
 
   @override
@@ -35,11 +42,14 @@ class DevEnvConfig implements EnvConfig {
   );
 }
 
+/// The `prod` flavor: the live server.
 class ProdEnvConfig implements EnvConfig {
   const ProdEnvConfig();
 
   static const String _baseUrlOverride = String.fromEnvironment('BASE_URL');
 
+  /// MonsterASP live API server. Can be overridden with
+  /// `--dart-define=BASE_URL=...`.
   @override
   String get baseUrl {
     if (_baseUrlOverride.isNotEmpty) return _baseUrlOverride;
