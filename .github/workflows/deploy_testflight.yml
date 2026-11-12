@@ -58,6 +58,19 @@ jobs:
           PP_UUID=$(python3 -c "import plistlib, re; f=open('$PP_PATH', 'rb').read(); m=re.search(rb'<\?xml.*?</plist>', f, re.DOTALL); print(plistlib.loads(m.group(0))['UUID'])")
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/${PP_UUID}.mobileprovision
 
+      # Without the key the iOS map renders blank: AppDelegate only starts
+      # Google Maps when MAPS_API_KEY is in the Info.plist, and the key file is
+      # not in git (see docs/backend-integration.md).
+      - name: Create iOS Google Maps key file
+        env:
+          MAPS_API_KEY_IOS: ${{ secrets.MAPS_API_KEY_IOS }}
+        run: |
+          if [ -z "$MAPS_API_KEY_IOS" ]; then
+            echo "::error::Add the MAPS_API_KEY_IOS repository secret: the map is blank on iOS without it."
+            exit 1
+          fi
+          printf 'MAPS_API_KEY = %s\n' "$MAPS_API_KEY_IOS" > ios/Flutter/Secrets.xcconfig
+
       - name: Install Dependencies
         run: |
           flutter pub get

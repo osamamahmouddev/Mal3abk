@@ -1,14 +1,14 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import '../styles/app_motion.dart';
+import '../animations/app_animations.dart';
 
 /// Gently shrinks [child] while a finger is down. Only this widget rebuilds.
 class PressScaleWidget extends HookWidget {
   const PressScaleWidget({
     required this.child,
     this.enabled = true,
-    this.scale = AppMotion.pressedScale,
+    this.scale = AppAnimations.pressedScale,
     super.key,
   });
 
@@ -27,8 +27,8 @@ class PressScaleWidget extends HookWidget {
       onPointerCancel: (_) => isPressed.value = false,
       child: AnimatedScale(
         scale: isPressed.value ? scale : 1,
-        duration: AppMotion.fast,
-        curve: AppMotion.standard,
+        duration: AppAnimations.duration(context, AppAnimations.fast),
+        curve: AppAnimations.standard,
         child: child,
       ),
     );

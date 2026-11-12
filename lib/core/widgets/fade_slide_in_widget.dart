@@ -3,10 +3,11 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import '../styles/app_motion.dart';
+import '../animations/app_animations.dart';
 
 /// Fades and slides [child] up once when it first appears.
 /// [index] staggers siblings. Driven by transitions, so it never rebuilds.
+/// With animations turned off in the system settings it shows [child] at once.
 class FadeSlideInWidget extends HookWidget {
   const FadeSlideInWidget({required this.child, this.index = 0, super.key});
 
@@ -15,20 +16,27 @@ class FadeSlideInWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = useAnimationController(duration: AppMotion.slow);
+    final reduced = AppAnimations.isReduced(context);
+    final controller = useAnimationController(duration: AppAnimations.slow);
     final curved = useMemoized(
-      () => CurvedAnimation(parent: controller, curve: AppMotion.standard),
+      () => CurvedAnimation(parent: controller, curve: AppAnimations.standard),
     );
     final slide = useMemoized(
       () => Tween(
-        begin: const Offset(0, AppMotion.entranceOffset),
+        begin: const Offset(0, AppAnimations.entranceOffset),
         end: Offset.zero,
       ).animate(curved),
     );
 
     useEffect(() {
-      final step = index.clamp(0, AppMotion.maxStaggerIndex);
-      final timer = Timer(AppMotion.staggerStep * step, controller.forward);
+      if (reduced) {
+        controller.value = 1;
+        return curved.dispose;
+      }
+      final timer = Timer(
+        AppAnimations.staggerDelay(index),
+        controller.forward,
+      );
       return () {
         timer.cancel();
         curved.dispose();

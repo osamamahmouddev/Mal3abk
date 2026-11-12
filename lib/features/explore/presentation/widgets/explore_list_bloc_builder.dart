@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/animations/state_switcher_widget.dart';
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/extensions/app_display_extensions.dart';
 import '../../../../core/routes/routes.dart';
@@ -51,80 +52,86 @@ class ExploreListBlocBuilder extends StatelessWidget {
         state.failure!.tr(context: context),
       ),
       child: BlocBuilder<ExploreListCubit, ExploreListState>(
-        builder: (context, state) => switch (state) {
-          ExploreListSuccess(:final result) when result.items.isEmpty =>
-            CustomStateWidget(
-              icon: const Icon(Icons.search_off_rounded, size: 48),
-              title: 'explore.no_results_title'.tr(context: context),
-              description: 'explore.no_results_desc'.tr(context: context),
-            ),
-          ExploreListSuccess(:final result) =>
-            BlocBuilder<FavoriteToggleCubit, FavoriteToggleState>(
-              builder: (context, _) {
-                final favorites = context.read<FavoriteToggleCubit>();
-                return RefreshIndicator.adaptive(
-                  onRefresh: context.read<ExploreListCubit>().fetchVenues,
-                  child: ListView.separated(
-                    physics: const AlwaysScrollableScrollPhysics(
-                      parent: BouncingScrollPhysics(),
-                    ),
-                    padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
-                    itemCount: result.items.length,
-                    separatorBuilder: (_, _) => hSpace(12),
-                    itemBuilder: (context, index) {
-                      final item = result.items[index];
-                      final next = item.nextAvailableStartUtc;
-                      return FadeSlideInWidget(
-                        index: index,
-                        child: PitchCardWidget(
-                          name: item.name,
-                          specs: specs(item),
-                          pricePerHour: item.fromHourlyPrice == null
-                              ? ''
-                              : 'common.price_egp'.tr(
-                                  context: context,
-                                  args: [
-                                    item.fromHourlyPrice!
-                                        .round()
-                                        .toLocalizedDigits(lang),
-                                  ],
-                                ),
-                          imageUrl: item.coverPhotoUrl,
-                          isFavorite: favorites.isFavorite(
-                            item.venueId,
-                            loaded: item.isFavorite,
-                          ),
-                          onFavoriteTap: () {
-                            HapticFeedback.lightImpact();
-                            favorites.toggle(
+        builder: (context, state) => StateSwitcherWidget(
+          stateKey: state.runtimeType,
+          child: switch (state) {
+            ExploreListSuccess(:final result) when result.items.isEmpty =>
+              CustomStateWidget(
+                icon: const Icon(Icons.search_off_rounded, size: 48),
+                title: 'explore.no_results_title'.tr(context: context),
+                description: 'explore.no_results_desc'.tr(context: context),
+              ),
+            ExploreListSuccess(:final result) =>
+              BlocBuilder<FavoriteToggleCubit, FavoriteToggleState>(
+                builder: (context, _) {
+                  final favorites = context.read<FavoriteToggleCubit>();
+                  return RefreshIndicator.adaptive(
+                    onRefresh: context.read<ExploreListCubit>().fetchVenues,
+                    child: ListView.separated(
+                      physics: const AlwaysScrollableScrollPhysics(
+                        parent: BouncingScrollPhysics(),
+                      ),
+                      padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
+                      itemCount: result.items.length,
+                      separatorBuilder: (_, _) => hSpace(12),
+                      itemBuilder: (context, index) {
+                        final item = result.items[index];
+                        final next = item.nextAvailableStartUtc;
+                        return FadeSlideInWidget(
+                          index: index,
+                          child: PitchCardWidget(
+                            name: item.name,
+                            specs: specs(item),
+                            pricePerHour: item.fromHourlyPrice == null
+                                ? ''
+                                : 'common.price_egp'.tr(
+                                    context: context,
+                                    args: [
+                                      item.fromHourlyPrice!
+                                          .round()
+                                          .toLocalizedDigits(lang),
+                                    ],
+                                  ),
+                            imageUrl: item.coverPhotoUrl,
+                            isFavorite: favorites.isFavorite(
                               item.venueId,
                               loaded: item.isFavorite,
-                            );
-                          },
-                          availableSlots: [
-                            if (next != null)
-                              CairoTime.dayAndTime(DateTime.parse(next), lang),
-                          ],
-                          onTap: () => Navigator.of(context).pushNamed(
-                            AppRoutes.venueProfile,
-                            arguments: item.venueId,
+                            ),
+                            onFavoriteTap: () {
+                              HapticFeedback.lightImpact();
+                              favorites.toggle(
+                                item.venueId,
+                                loaded: item.isFavorite,
+                              );
+                            },
+                            availableSlots: [
+                              if (next != null)
+                                CairoTime.dayAndTime(
+                                  DateTime.parse(next),
+                                  lang,
+                                ),
+                            ],
+                            onTap: () => Navigator.of(context).pushNamed(
+                              AppRoutes.venueProfile,
+                              arguments: item.venueId,
+                            ),
+                            onSlotTap: (_) => onSlotTap(item),
                           ),
-                          onSlotTap: (_) => onSlotTap(item),
-                        ),
-                      );
-                    },
-                  ),
-                );
-              },
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+            ExploreListError(:final message) => CustomStateWidget(
+              title: message.tr(context: context),
+              description: '',
+              actionText: 'common.retry'.tr(context: context),
+              onActionTap: context.read<ExploreListCubit>().fetchVenues,
             ),
-          ExploreListError(:final message) => CustomStateWidget(
-            title: message.tr(context: context),
-            description: '',
-            actionText: 'common.retry'.tr(context: context),
-            onActionTap: context.read<ExploreListCubit>().fetchVenues,
-          ),
-          _ => const ShimmerListSkeletonWidget(itemHeight: 150, itemCount: 4),
-        },
+            _ => const ShimmerListSkeletonWidget(itemHeight: 150, itemCount: 4),
+          },
+        ),
       ),
     );
   }

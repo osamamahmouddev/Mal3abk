@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/animations/animated_check_widget.dart';
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
@@ -21,18 +22,16 @@ class UploadProofSubmittedWidget extends StatelessWidget {
         children: [
           Center(
             child: Container(
-              width: 80.r,
-              height: 80.r,
+              width: 88.r,
+              height: 88.r,
               alignment: Alignment.center,
               decoration: const BoxDecoration(
                 color: AppColors.successLight,
                 shape: BoxShape.circle,
               ),
-              child: Text(
-                '✓',
-                style: AppTextStyles.font28Bold.copyWith(
-                  color: AppColors.successGreen,
-                ),
+              child: AnimatedCheckWidget(
+                color: AppColors.successGreen,
+                size: 44.r,
               ),
             ),
           ),
