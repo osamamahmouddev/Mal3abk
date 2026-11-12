@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -54,6 +54,8 @@ class LoginPhoneStepWidget extends HookWidget {
           labelText: 'auth.login.phone_label'.tr(context: context),
           hintText: '010 1234 5678',
           keyboardType: TextInputType.phone,
+          textDirection: TextDirection.ltr,
+          textAlign: TextAlign.end,
           inputFormatters: const [EgyptianPhoneInputFormatter()],
           style: AppTextStyles.font17Regular,
           contentPadding: EdgeInsetsDirectional.symmetric(

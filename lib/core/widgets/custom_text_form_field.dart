@@ -15,6 +15,7 @@ class CustomTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.prefixIcon,
     this.textAlign = TextAlign.start,
+    this.textDirection,
     this.controller,
     this.initialValue,
     this.onChanged,
@@ -47,6 +48,10 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final Widget? prefixIcon;
   final TextAlign textAlign;
+
+  /// Forces the text direction, e.g. [TextDirection.ltr] for phone numbers
+  /// inside an RTL screen; null follows the screen.
+  final TextDirection? textDirection;
   final TextEditingController? controller;
   final String? initialValue;
   final ValueChanged<String>? onChanged;
@@ -96,6 +101,7 @@ class CustomTextFormField extends StatelessWidget {
           keyboardType: keyboardType,
           textInputAction: TextInputAction.next,
           textAlign: textAlign,
+          textDirection: textDirection,
           autofocus: autofocus,
           readOnly: readOnly,
           enabled: enabled,

@@ -13,13 +13,17 @@ class ExploreSearchSummaryWidget extends StatelessWidget {
   const ExploreSearchSummaryWidget({
     super.key,
     this.floating = false,
-    this.subtitleKey = 'explore.summary_when',
+    this.titleKey = 'explore.summary_all',
+    this.subtitleKey = 'explore.summary_when_any',
     this.activeFilters = 0,
     this.onOpenFilters,
   });
 
   /// White with shadow when floating over the map; gray when inline.
   final bool floating;
+
+  /// Where the list is from: the whole country or around the player.
+  final String titleKey;
   final String subtitleKey;
   final int activeFilters;
 
@@ -69,7 +73,7 @@ class ExploreSearchSummaryWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'explore.summary_area'.tr(context: context),
+                            titleKey.tr(context: context),
                             style: AppTextStyles.font14Bold,
                           ),
                           Text(
