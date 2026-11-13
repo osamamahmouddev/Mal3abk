@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../animations/app_page_transitions_builder.dart';
@@ -33,7 +34,6 @@ class AppTheme {
       pageTransitionsTheme: const PageTransitionsTheme(
         builders: {
           TargetPlatform.android: AppPageTransitionsBuilder(),
-          // iOS keeps the native slide: it carries the swipe-back gesture.
           TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
         },
       ),
