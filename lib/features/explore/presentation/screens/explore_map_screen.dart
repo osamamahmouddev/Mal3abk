@@ -12,10 +12,22 @@ class ExploreMapScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.mapBackground,
+      // The map has rounded bottom corners; this shows behind them, matching
+      // the strip the nav bar sits on.
+      backgroundColor: AppColors.pageBackground,
       body: Stack(
         children: [
-          const Positioned.fill(child: ExploreMapViewBlocConsumer()),
+          Positioned.fill(
+            child: ClipRRect(
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(28.r),
+              ),
+              child: const ColoredBox(
+                color: AppColors.mapBackground,
+                child: ExploreMapViewBlocConsumer(),
+              ),
+            ),
+          ),
           const SafeArea(child: ExploreMapTopOverlayWidget()),
           Positioned(
             left: 12.w,

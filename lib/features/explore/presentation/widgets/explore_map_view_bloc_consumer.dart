@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../core/location/location_service.dart';
@@ -91,6 +92,9 @@ class ExploreMapViewBlocConsumer extends HookWidget {
             target: toLatLng(state.center),
             zoom: initialZoom,
           ),
+          // Lifts the Google logo and legal text clear of the nav bar below the
+          // map instead of letting them sit on its edge.
+          padding: EdgeInsets.only(bottom: 18.h),
           myLocationEnabled: state.hasMyLocation,
           myLocationButtonEnabled: false,
           zoomControlsEnabled: false,
