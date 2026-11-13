@@ -10,6 +10,7 @@ import '../../../booking/domain/use_cases/get_booking_quote_use_case.dart';
 import '../../data/models/venue_availability_model.dart';
 import '../../domain/use_cases/get_venue_availability_use_case.dart';
 import 'pitch_booking_state.dart';
+import 'pitch_slot_filter.dart';
 
 class PitchBookingCubit extends Cubit<PitchBookingState> {
   PitchBookingCubit({
@@ -188,6 +189,18 @@ class PitchBookingCubit extends Cubit<PitchBookingState> {
     );
 
     await fetchQuoteForSlot(slot);
+  }
+
+  /// Shows only the slots of [filter]; tapping the active filter again shows
+  /// every slot.
+  void toggleSlotFilter(PitchSlotFilter filter) {
+    final current = state;
+    if (current is! PitchBookingLoaded) return;
+    emit(
+      current.copyWith(
+        slotFilter: current.slotFilter == filter ? PitchSlotFilter.all : filter,
+      ),
+    );
   }
 
   Future<void> fetchQuoteForSlot(SlotModel slot) async {

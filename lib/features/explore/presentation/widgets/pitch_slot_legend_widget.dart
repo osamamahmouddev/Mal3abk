@@ -1,61 +1,54 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
+import 'package:flutter/services.dart';
 
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/styles/app_colors.dart';
-import '../../../../core/styles/app_text_styles.dart';
+import '../cubit/pitch_slot_filter.dart';
+import 'pitch_slot_legend_item_widget.dart';
 
+/// Color key under the slot grid; each entry also filters the grid.
 class PitchSlotLegendWidget extends StatelessWidget {
-  const PitchSlotLegendWidget({super.key});
+  const PitchSlotLegendWidget({
+    required this.activeFilter,
+    required this.onSelect,
+    super.key,
+  });
+
+  final PitchSlotFilter activeFilter;
+  final ValueChanged<PitchSlotFilter> onSelect;
 
   @override
   Widget build(BuildContext context) {
-    final labelStyle = AppTextStyles.font12Regular.copyWith(
-      color: AppColors.offlineBanner,
-    );
+    void select(PitchSlotFilter filter) {
+      HapticFeedback.selectionClick();
+      onSelect(filter);
+    }
 
     return Row(
       children: [
-        Container(
-          width: 12.r,
-          height: 12.r,
-          decoration: BoxDecoration(
-            color: AppColors.brandNavy,
-            borderRadius: BorderRadius.circular(3.r),
-          ),
+        PitchSlotLegendItemWidget(
+          label: 'explore.slots.legend_selected'.tr(context: context),
+          swatchColor: AppColors.brandNavy,
+          isActive: activeFilter == PitchSlotFilter.selected,
+          onTap: () => select(PitchSlotFilter.selected),
         ),
-        vSpace(6),
-        Text(
-          'explore.slots.legend_selected'.tr(context: context),
-          style: labelStyle,
+        vSpace(4),
+        PitchSlotLegendItemWidget(
+          label: 'explore.slots.legend_available'.tr(context: context),
+          swatchColor: AppColors.white,
+          swatchBorderColor: AppColors.borderInput,
+          isActive: activeFilter == PitchSlotFilter.available,
+          onTap: () => select(PitchSlotFilter.available),
         ),
-        vSpace(16),
-        Container(
-          width: 14.r,
-          height: 14.r,
-          decoration: BoxDecoration(
-            color: AppColors.white,
-            borderRadius: BorderRadius.circular(3.r),
-            border: Border.all(color: AppColors.borderInput),
-          ),
+        vSpace(4),
+        PitchSlotLegendItemWidget(
+          label: 'explore.slots.booked'.tr(context: context),
+          swatchColor: AppColors.lightSurface,
+          swatchBorderColor: AppColors.lightSurfaceDeep,
+          isActive: activeFilter == PitchSlotFilter.booked,
+          onTap: () => select(PitchSlotFilter.booked),
         ),
-        vSpace(6),
-        Text(
-          'explore.slots.legend_available'.tr(context: context),
-          style: labelStyle,
-        ),
-        vSpace(16),
-        Container(
-          width: 12.r,
-          height: 12.r,
-          decoration: BoxDecoration(
-            color: AppColors.lightSurface,
-            borderRadius: BorderRadius.circular(3.r),
-          ),
-        ),
-        vSpace(6),
-        Text('explore.slots.booked'.tr(context: context), style: labelStyle),
       ],
     );
   }

@@ -17,6 +17,7 @@ import '../cubit/favorite_toggle_state.dart';
 import '../cubit/venue_profile_cubit.dart';
 import '../cubit/venue_profile_state.dart';
 import 'venue_amenities_tab_widget.dart';
+import 'venue_hero_actions_widget.dart';
 import 'venue_hero_widget.dart';
 import 'venue_info_header_widget.dart';
 import 'venue_pitches_tab_widget.dart';
@@ -77,65 +78,62 @@ class VenueProfileBlocBuilder extends StatelessWidget {
                         ),
                   onTap: book,
                 ),
-                body: RefreshIndicator.adaptive(
-                  onRefresh: () =>
-                      context.read<VenueProfileCubit>().loadVenue(venueId),
-                  child: ListView(
-                    physics: const AlwaysScrollableScrollPhysics(
-                      parent: BouncingScrollPhysics(),
-                    ),
-                    padding: EdgeInsets.only(bottom: 16.h),
-                    children: [
-                      BlocBuilder<FavoriteToggleCubit, FavoriteToggleState>(
-                        builder: (context, _) {
-                          final favorites = context.read<FavoriteToggleCubit>();
-                          return VenueHeroWidget(
+                body: Stack(
+                  children: [
+                    RefreshIndicator.adaptive(
+                      onRefresh: () =>
+                          context.read<VenueProfileCubit>().loadVenue(venueId),
+                      child: ListView(
+                        physics: const AlwaysScrollableScrollPhysics(
+                          parent: BouncingScrollPhysics(),
+                        ),
+                        padding: EdgeInsets.only(bottom: 16.h),
+                        children: [
+                          VenueHeroWidget(
                             venueId: venue.venueId,
                             photos: venue.photos,
-                            isFavorite: favorites.isFavorite(
-                              venue.venueId,
-                              loaded: isFavorite,
-                            ),
-                            onFavoriteTap: () => favorites.toggle(
-                              venue.venueId,
-                              loaded: isFavorite,
-                            ),
-                          );
-                        },
-                      ),
-                      VenueInfoHeaderWidget(
-                        name: venue.name,
-                        address: [
-                          venue.address,
-                          venue.area,
-                        ].where((p) => p.isNotEmpty).join('، '),
-                      ),
-                      CustomTabBarWidget(
-                        tabs: [
-                          'explore.venue.tab_pitches'.tr(context: context),
-                          'explore.venue.tab_amenities'.tr(context: context),
-                          'explore.venue.tab_policies'.tr(context: context),
+                          ),
+                          VenueInfoHeaderWidget(
+                            name: venue.name,
+                            address: [
+                              venue.address,
+                              venue.area,
+                            ].where((p) => p.isNotEmpty).join('، '),
+                          ),
+                          CustomTabBarWidget(
+                            tabs: [
+                              'explore.venue.tab_pitches'.tr(context: context),
+                              'explore.venue.tab_amenities'.tr(
+                                context: context,
+                              ),
+                              'explore.venue.tab_policies'.tr(context: context),
+                            ],
+                            selectedIndex: selectedTab,
+                            onTabSelected: onTabSelected,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 0),
+                            child: switch (selectedTab) {
+                              1 => VenueAmenitiesTabWidget(
+                                facilities: venue.facilities,
+                              ),
+                              2 => VenuePoliciesTabWidget(
+                                policy: venue.depositPolicy,
+                              ),
+                              _ => VenuePitchesTabWidget(
+                                pitches: pitches,
+                                onPitchTap: book,
+                              ),
+                            },
+                          ),
                         ],
-                        selectedIndex: selectedTab,
-                        onTabSelected: onTabSelected,
                       ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 0),
-                        child: switch (selectedTab) {
-                          1 => VenueAmenitiesTabWidget(
-                            facilities: venue.facilities,
-                          ),
-                          2 => VenuePoliciesTabWidget(
-                            policy: venue.depositPolicy,
-                          ),
-                          _ => VenuePitchesTabWidget(
-                            pitches: pitches,
-                            onPitchTap: book,
-                          ),
-                        },
-                      ),
-                    ],
-                  ),
+                    ),
+                    VenueHeroActionsWidget(
+                      venueId: venue.venueId,
+                      loadedIsFavorite: isFavorite,
+                    ),
+                  ],
                 ),
               );
             }(),

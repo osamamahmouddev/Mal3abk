@@ -41,6 +41,7 @@ class PitchAndTimeLoadedWidget extends StatelessWidget {
     final pitches = state.availability.pitches;
     final pitch = state.currentPitch;
     final slots = pitch?.slots ?? const <SlotModel>[];
+    final visibleSlots = state.visibleSlots;
     final selected = state.selectedSlot;
     final quote = state.quote;
     String egp(double value) => 'common.price_egp'.tr(
@@ -142,6 +143,8 @@ class PitchAndTimeLoadedWidget extends StatelessWidget {
             )
           else if (slots.isEmpty)
             EmptyNoteBoxWidget(text: t('no_slots'))
+          else if (visibleSlots.isEmpty)
+            EmptyNoteBoxWidget(text: t('no_filtered_slots'))
           else
             GridView.builder(
               shrinkWrap: true,
@@ -152,9 +155,9 @@ class PitchAndTimeLoadedWidget extends StatelessWidget {
                 crossAxisSpacing: 8.w,
                 childAspectRatio: 1.8,
               ),
-              itemCount: slots.length,
+              itemCount: visibleSlots.length,
               itemBuilder: (context, i) {
-                final slot = slots[i];
+                final slot = visibleSlots[i];
                 final start = CairoTime.fromUtc(DateTime.parse(slot.startUtc));
                 return PitchTimeSlotTileWidget(
                   time: CairoTime.time(DateTime.parse(slot.startUtc), lang),
@@ -173,7 +176,10 @@ class PitchAndTimeLoadedWidget extends StatelessWidget {
               },
             ),
           hSpace(16),
-          const PitchSlotLegendWidget(),
+          PitchSlotLegendWidget(
+            activeFilter: state.slotFilter,
+            onSelect: cubit.toggleSlotFilter,
+          ),
         ],
       ),
     );

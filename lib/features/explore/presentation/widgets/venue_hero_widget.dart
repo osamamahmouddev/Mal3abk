@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,23 +9,18 @@ import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../screens/photo_gallery_screen.dart';
-import 'venue_hero_button_widget.dart';
 
-/// Swipeable venue photos with back and favourite buttons; tapping a photo
-/// opens it full screen.
+/// Swipeable venue photos; tapping a photo opens it full screen. The back and
+/// favourite buttons sit above it in `VenueHeroActionsWidget`.
 class VenueHeroWidget extends HookWidget {
   const VenueHeroWidget({
     required this.venueId,
     required this.photos,
-    required this.isFavorite,
-    required this.onFavoriteTap,
     super.key,
   });
 
   final String venueId;
   final List<String> photos;
-  final bool isFavorite;
-  final VoidCallback onFavoriteTap;
 
   @override
   Widget build(BuildContext context) {
@@ -71,30 +65,6 @@ class VenueHeroWidget extends HookWidget {
                         ),
                       ),
                     ),
-            ),
-          ),
-          SafeArea(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  VenueHeroButtonWidget(
-                    iconAsset: AppAssets.icArrowBack20,
-                    mirrorInLtr: true,
-                    onTap: () => Navigator.of(context).maybePop(),
-                  ),
-                  VenueHeroButtonWidget(
-                    iconAsset: isFavorite
-                        ? AppAssets.icHeartFilled
-                        : AppAssets.icHeartOutline,
-                    onTap: () {
-                      HapticFeedback.lightImpact();
-                      onFavoriteTap();
-                    },
-                  ),
-                ],
-              ),
             ),
           ),
           if (photos.length > 1)

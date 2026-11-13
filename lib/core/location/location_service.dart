@@ -1,5 +1,7 @@
 import 'package:geolocator/geolocator.dart';
 
+import '../utils/app_logger.dart';
+
 /// A point on the map, in degrees.
 class GeoPoint {
   const GeoPoint({required this.latitude, required this.longitude});
@@ -35,23 +37,33 @@ class LocationService {
         permission == LocationPermission.whileInUse;
   }
 
-  /// Null when permission is missing, location is off or it times out.
+  /// A fresh fix, or the device's last known one when no fresh fix arrives in
+  /// [timeout] (indoors, or an emulator that only reports when moved). Null
+  /// when permission is missing, location is off or nothing is known.
   Future<GeoPoint?> current({bool ask = false}) async {
+    Position? position;
     try {
       final allowed = ask ? await requestPermission() : await hasPermission();
-      if (!allowed || !await Geolocator.isLocationServiceEnabled()) return null;
-      final position = await Geolocator.getCurrentPosition(
+      final serviceOn = await Geolocator.isLocationServiceEnabled();
+      if (!allowed || !serviceOn) {
+        AppLogger.w('Location unavailable: allowed=$allowed, on=$serviceOn');
+        return null;
+      }
+      position = await Geolocator.getCurrentPosition(
         locationSettings: const LocationSettings(
           accuracy: LocationAccuracy.medium,
           timeLimit: timeout,
         ),
       );
-      return GeoPoint(
-        latitude: position.latitude,
-        longitude: position.longitude,
-      );
-    } on Exception {
-      return null;
+    } on Exception catch (e) {
+      AppLogger.w('No fresh location fix, using the last known one: $e');
+      try {
+        position = await Geolocator.getLastKnownPosition();
+      } on Exception catch (e, st) {
+        AppLogger.e('Reading location failed', error: e, stackTrace: st);
+      }
     }
+    if (position == null) return null;
+    return GeoPoint(latitude: position.latitude, longitude: position.longitude);
   }
 }

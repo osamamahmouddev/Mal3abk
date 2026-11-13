@@ -397,7 +397,8 @@
       "continue": "Continue",
       "pick_slot": "Pick a time first",
       "from": "from {}",
-      "no_slots": "No free times that day."
+      "no_slots": "No free times that day.",
+      "no_filtered_slots": "No times match this filter. Tap it again to see all times."
     },
     "favorites_empty_title": "No favourite pitches",
     "favorites_empty_desc": "Tap the heart on any pitch to find it here quickly.",

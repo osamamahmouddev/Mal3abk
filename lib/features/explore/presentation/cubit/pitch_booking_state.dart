@@ -1,6 +1,7 @@
 import '../../data/models/venue_availability_model.dart';
 import '../../../booking/data/models/booking_quote_response_model.dart';
 import '../../../booking/data/models/create_booking_response_model.dart';
+import 'pitch_slot_filter.dart';
 
 sealed class PitchBookingState {
   const PitchBookingState();
@@ -27,6 +28,7 @@ class PitchBookingLoaded extends PitchBookingState {
     this.createdBooking,
     this.bookingError,
     this.isSlotsLoading = false,
+    this.slotFilter = PitchSlotFilter.all,
   });
 
   final VenueAvailabilityModel availability;
@@ -40,6 +42,7 @@ class PitchBookingLoaded extends PitchBookingState {
   final CreateBookingResponseModel? createdBooking;
   final String? bookingError;
   final bool isSlotsLoading;
+  final PitchSlotFilter slotFilter;
 
   PitchSlotsModel? get currentPitch {
     if (availability.pitches.isEmpty) return null;
@@ -47,6 +50,26 @@ class PitchBookingLoaded extends PitchBookingState {
       return availability.pitches[selectedPitchIndex];
     }
     return availability.pitches.first;
+  }
+
+  /// The current pitch's slots that pass [slotFilter].
+  List<SlotModel> get visibleSlots {
+    final slots = currentPitch?.slots ?? const <SlotModel>[];
+    return switch (slotFilter) {
+      PitchSlotFilter.all => slots,
+      PitchSlotFilter.selected => [
+        for (final s in slots)
+          if (s.startUtc == selectedSlot?.startUtc) s,
+      ],
+      PitchSlotFilter.available => [
+        for (final s in slots)
+          if (s.isAvailable) s,
+      ],
+      PitchSlotFilter.booked => [
+        for (final s in slots)
+          if (!s.isAvailable) s,
+      ],
+    };
   }
 
   PitchBookingLoaded copyWith({
@@ -65,6 +88,7 @@ class PitchBookingLoaded extends PitchBookingState {
     String? bookingError,
     bool clearBookingError = false,
     bool? isSlotsLoading,
+    PitchSlotFilter? slotFilter,
   }) {
     return PitchBookingLoaded(
       availability: availability ?? this.availability,
@@ -82,6 +106,7 @@ class PitchBookingLoaded extends PitchBookingState {
           ? null
           : (bookingError ?? this.bookingError),
       isSlotsLoading: isSlotsLoading ?? this.isSlotsLoading,
+      slotFilter: slotFilter ?? this.slotFilter,
     );
   }
 }
