@@ -55,14 +55,15 @@ extension VerifyOtpStatePatterns on VerifyOtpState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( VerifyOtpInitial value)?  initial,TResult Function( VerifyOtpLoading value)?  loading,TResult Function( VerifyOtpSuccess value)?  success,TResult Function( VerifyOtpError value)?  error,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( VerifyOtpInitial value)?  initial,TResult Function( VerifyOtpLoading value)?  loading,TResult Function( VerifyOtpSuccess value)?  success,TResult Function( VerifyOtpError value)?  error,TResult Function( VerifyOtpAccountPendingDeletion value)?  accountPendingDeletion,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case VerifyOtpInitial() when initial != null:
 return initial(_that);case VerifyOtpLoading() when loading != null:
 return loading(_that);case VerifyOtpSuccess() when success != null:
 return success(_that);case VerifyOtpError() when error != null:
-return error(_that);case _:
+return error(_that);case VerifyOtpAccountPendingDeletion() when accountPendingDeletion != null:
+return accountPendingDeletion(_that);case _:
   return orElse();
 
 }
@@ -80,14 +81,15 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( VerifyOtpInitial value)  initial,required TResult Function( VerifyOtpLoading value)  loading,required TResult Function( VerifyOtpSuccess value)  success,required TResult Function( VerifyOtpError value)  error,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( VerifyOtpInitial value)  initial,required TResult Function( VerifyOtpLoading value)  loading,required TResult Function( VerifyOtpSuccess value)  success,required TResult Function( VerifyOtpError value)  error,required TResult Function( VerifyOtpAccountPendingDeletion value)  accountPendingDeletion,}){
 final _that = this;
 switch (_that) {
 case VerifyOtpInitial():
 return initial(_that);case VerifyOtpLoading():
 return loading(_that);case VerifyOtpSuccess():
 return success(_that);case VerifyOtpError():
-return error(_that);case _:
+return error(_that);case VerifyOtpAccountPendingDeletion():
+return accountPendingDeletion(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -104,14 +106,15 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( VerifyOtpInitial value)?  initial,TResult? Function( VerifyOtpLoading value)?  loading,TResult? Function( VerifyOtpSuccess value)?  success,TResult? Function( VerifyOtpError value)?  error,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( VerifyOtpInitial value)?  initial,TResult? Function( VerifyOtpLoading value)?  loading,TResult? Function( VerifyOtpSuccess value)?  success,TResult? Function( VerifyOtpError value)?  error,TResult? Function( VerifyOtpAccountPendingDeletion value)?  accountPendingDeletion,}){
 final _that = this;
 switch (_that) {
 case VerifyOtpInitial() when initial != null:
 return initial(_that);case VerifyOtpLoading() when loading != null:
 return loading(_that);case VerifyOtpSuccess() when success != null:
 return success(_that);case VerifyOtpError() when error != null:
-return error(_that);case _:
+return error(_that);case VerifyOtpAccountPendingDeletion() when accountPendingDeletion != null:
+return accountPendingDeletion(_that);case _:
   return null;
 
 }
@@ -128,13 +131,14 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( VerifyOtpResponseModel data)?  success,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( VerifyOtpResponseModel data)?  success,TResult Function( String message)?  error,TResult Function()?  accountPendingDeletion,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case VerifyOtpInitial() when initial != null:
 return initial();case VerifyOtpLoading() when loading != null:
 return loading();case VerifyOtpSuccess() when success != null:
 return success(_that.data);case VerifyOtpError() when error != null:
-return error(_that.message);case _:
+return error(_that.message);case VerifyOtpAccountPendingDeletion() when accountPendingDeletion != null:
+return accountPendingDeletion();case _:
   return orElse();
 
 }
@@ -152,13 +156,14 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( VerifyOtpResponseModel data)  success,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( VerifyOtpResponseModel data)  success,required TResult Function( String message)  error,required TResult Function()  accountPendingDeletion,}) {final _that = this;
 switch (_that) {
 case VerifyOtpInitial():
 return initial();case VerifyOtpLoading():
 return loading();case VerifyOtpSuccess():
 return success(_that.data);case VerifyOtpError():
-return error(_that.message);case _:
+return error(_that.message);case VerifyOtpAccountPendingDeletion():
+return accountPendingDeletion();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -175,13 +180,14 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( VerifyOtpResponseModel data)?  success,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( VerifyOtpResponseModel data)?  success,TResult? Function( String message)?  error,TResult? Function()?  accountPendingDeletion,}) {final _that = this;
 switch (_that) {
 case VerifyOtpInitial() when initial != null:
 return initial();case VerifyOtpLoading() when loading != null:
 return loading();case VerifyOtpSuccess() when success != null:
 return success(_that.data);case VerifyOtpError() when error != null:
-return error(_that.message);case _:
+return error(_that.message);case VerifyOtpAccountPendingDeletion() when accountPendingDeletion != null:
+return accountPendingDeletion();case _:
   return null;
 
 }
@@ -384,5 +390,37 @@ as String,
 
 
 }
+
+/// @nodoc
+
+
+class VerifyOtpAccountPendingDeletion implements VerifyOtpState {
+  const VerifyOtpAccountPendingDeletion();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is VerifyOtpAccountPendingDeletion);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'VerifyOtpState.accountPendingDeletion()';
+}
+
+
+}
+
+
+
 
 // dart format on

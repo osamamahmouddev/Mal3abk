@@ -11,4 +11,6 @@ class VerifyOtpState with _$VerifyOtpState {
   const factory VerifyOtpState.success(VerifyOtpResponseModel data) =
       VerifyOtpSuccess;
   const factory VerifyOtpState.error(String message) = VerifyOtpError;
+  const factory VerifyOtpState.accountPendingDeletion() =
+      VerifyOtpAccountPendingDeletion;
 }

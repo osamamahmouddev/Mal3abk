@@ -35,6 +35,13 @@ class LoginOtpStepWidget extends HookWidget {
   Widget build(BuildContext context) {
     final codeController = useTextEditingController();
 
+    useEffect(() {
+      if (isResending) {
+        codeController.clear();
+      }
+      return null;
+    }, [isResending]);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -83,7 +90,10 @@ class LoginOtpStepWidget extends HookWidget {
           text: 'auth.login.edit_phone'.tr(context: context),
           type: CustomButtonType.ghost,
           height: 44.h,
-          onTap: () => context.read<SendOtpCubit>().reset(),
+          onTap: () {
+            context.read<VerifyOtpCubit>().reset();
+            context.read<SendOtpCubit>().reset();
+          },
         ),
       ],
     );
