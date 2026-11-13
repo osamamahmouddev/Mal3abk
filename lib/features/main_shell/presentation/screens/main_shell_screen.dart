@@ -5,7 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import '../../../../core/routes/navigation_logger_observer.dart';
 import '../../../../core/routes/tab_root_observer.dart';
 import '../../../../core/styles/app_colors.dart';
-import '../../../../core/styles/app_motion.dart';
+import '../../../../core/animations/app_animations.dart';
 import '../../../../core/widgets/main_nav_bar_widget.dart';
 import '../widgets/main_shell_scope_widget.dart';
 import '../widgets/main_tab_navigator_widget.dart';
@@ -43,8 +43,17 @@ class MainShellScreen extends HookWidget {
       rootObservers[currentIndex.value].isAtRoot,
     );
     final tabFade = useAnimationController(
-      duration: AppMotion.medium,
+      duration: AppAnimations.duration(context, AppAnimations.slow),
       initialValue: 1,
+    );
+    final tabCurve = useMemoized(
+      () => CurvedAnimation(parent: tabFade, curve: AppAnimations.standard),
+    );
+    final tabRise = useMemoized(
+      () => Tween<Offset>(
+        begin: const Offset(0, AppAnimations.entranceOffset / 2),
+        end: Offset.zero,
+      ).animate(tabCurve),
     );
 
     void switchTab(int index) {
@@ -81,22 +90,25 @@ class MainShellScreen extends HookWidget {
                 )
               : null,
           body: FadeTransition(
-            opacity: tabFade,
-            child: IndexedStack(
-              index: currentIndex.value,
-              children: [
-                for (var i = 0; i < tabs.length; i++)
-                  if (visitedTabs.value.contains(i))
-                    MainTabNavigatorWidget(
-                      navigatorKey: navigatorKeys[i],
-                      initialRoute: tabs[i],
-                      observer: observers[i],
-                      rootObserver: rootObservers[i],
-                      isActive: i == currentIndex.value,
-                    )
-                  else
-                    const Offstage(),
-              ],
+            opacity: tabCurve,
+            child: SlideTransition(
+              position: tabRise,
+              child: IndexedStack(
+                index: currentIndex.value,
+                children: [
+                  for (var i = 0; i < tabs.length; i++)
+                    if (visitedTabs.value.contains(i))
+                      MainTabNavigatorWidget(
+                        navigatorKey: navigatorKeys[i],
+                        initialRoute: tabs[i],
+                        observer: observers[i],
+                        rootObserver: rootObservers[i],
+                        isActive: i == currentIndex.value,
+                      )
+                    else
+                      const Offstage(),
+                ],
+              ),
             ),
           ),
         ),

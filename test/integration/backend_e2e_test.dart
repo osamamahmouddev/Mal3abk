@@ -1,4 +1,7 @@
 @Tags(['integration'])
+library;
+
+import 'dart:io';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
@@ -11,29 +14,48 @@ import 'package:mal3abk/features/explore/data/apis/explore_api_service.dart';
 import 'package:mal3abk/features/home/data/apis/home_api_service.dart';
 import 'package:mal3abk/features/profile/data/apis/profile_api_service.dart';
 
+/// Read-only smoke tests of the public endpoints, plus a short sign-in, against
+/// the local API (the `dev` flavor). The whole file skips when it is down.
+/// Point it elsewhere with `--dart-define=BASE_URL=...`.
 void main() {
   const baseUrl = String.fromEnvironment(
     'BASE_URL',
-    defaultValue: 'http://mal3abk.runasp.net',
+    defaultValue: 'http://127.0.0.1:5000',
   );
   const mailpitUrl = 'http://127.0.0.1:8025';
 
+  var apiIsUp = true;
   late Dio dio;
   late HomeApiService homeApi;
   late ExploreApiService exploreApi;
   late AuthApiService authApi;
 
-  setUpAll(() {
+  setUpAll(() async {
+    // The test binding is not initialised here, so real HTTP works; this
+    // only guards against an inherited override.
+    HttpOverrides.global = null;
+    try {
+      await Dio().get<dynamic>(
+        '$baseUrl/api/v1/ping',
+        options: Options(receiveTimeout: const Duration(seconds: 3)),
+      );
+    } on DioException {
+      apiIsUp = false;
+    }
     dio = Dio(
       BaseOptions(
         baseUrl: baseUrl,
         connectTimeout: const Duration(seconds: 5),
-        receiveTimeout: const Duration(seconds: 5),
+        receiveTimeout: const Duration(seconds: 15),
       ),
     );
     homeApi = HomeApiService(dio);
     exploreApi = ExploreApiService(dio);
     authApi = AuthApiService(dio);
+  });
+
+  setUp(() {
+    if (!apiIsUp) markTestSkipped('local API is not running at $baseUrl');
   });
 
   group('End-to-End Real Backend Integration Tests', () {

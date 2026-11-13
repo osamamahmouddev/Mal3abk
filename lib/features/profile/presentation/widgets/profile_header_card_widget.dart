@@ -26,9 +26,7 @@ class ProfileHeaderCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final lang = context.locale.languageCode;
     final profile = overview.profile;
-    String count(int? value) => value?.toLocalizedDigits(lang) ?? '—';
     final subtitle = [
       ?profile.area,
       ?profile.city,
@@ -121,21 +119,21 @@ class ProfileHeaderCardWidget extends StatelessWidget {
                       children: [
                         Expanded(
                           child: ProfileStatWidget(
-                            value: count(overview.matchesPlayed),
+                            count: overview.matchesPlayed,
                             label: 'profile.matches'.tr(context: context),
                           ),
                         ),
                         vSpace(8),
                         Expanded(
                           child: ProfileStatWidget(
-                            value: count(overview.bookingsCount),
+                            count: overview.bookingsCount,
                             label: 'profile.bookings'.tr(context: context),
                           ),
                         ),
                         vSpace(8),
                         Expanded(
                           child: ProfileStatWidget(
-                            value: count(overview.teamsCount),
+                            count: overview.teamsCount,
                             label: 'profile.teams'.tr(context: context),
                             valueColor: AppColors.accentGold,
                           ),

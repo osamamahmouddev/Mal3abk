@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
@@ -30,6 +30,8 @@ class ChangePhoneFormWidget extends HookWidget {
           labelText: 'phone_change.new_phone_label'.tr(context: context),
           hintText: '01012345678',
           keyboardType: TextInputType.phone,
+          textDirection: TextDirection.ltr,
+          textAlign: TextAlign.end,
           style: AppTextStyles.font17Regular,
           contentPadding: EdgeInsetsDirectional.symmetric(
             horizontal: 16.w,

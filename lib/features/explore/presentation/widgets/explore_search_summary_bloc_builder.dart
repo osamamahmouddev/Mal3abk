@@ -17,6 +17,9 @@ class ExploreSearchSummaryBlocBuilder extends StatelessWidget {
       builder: (context, _) {
         final cubit = context.read<ExploreListCubit>();
         return ExploreSearchSummaryWidget(
+          titleKey: cubit.near == null
+              ? 'explore.summary_all'
+              : 'explore.summary_near',
           activeFilters: cubit.filter.activeCount,
           onOpenFilters: () async {
             final next = await Navigator.of(context).pushNamed(

@@ -1,9 +1,10 @@
 @Tags(['integration'])
+library;
+
 import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mal3abk/core/network/api_constants.dart';
 import 'package:mal3abk/features/auth/data/apis/auth_api_service.dart';
 import 'package:mal3abk/features/auth/data/models/send_otp_request_body.dart';
 import 'package:mal3abk/features/auth/data/models/verify_otp_request_body.dart';
@@ -136,7 +137,8 @@ void main() {
       } on DioException catch (e) {
         expect(e.response?.statusCode, anyOf(400, 403, 409));
         final problem = e.response?.data as Map<String, dynamic>?;
-        final code = problem?['errorCode'] ?? problem?['code'] ?? problem?['title'];
+        final code =
+            problem?['errorCode'] ?? problem?['code'] ?? problem?['title'];
         expect(code, 'Identity.AccountPendingDeletion');
       }
 

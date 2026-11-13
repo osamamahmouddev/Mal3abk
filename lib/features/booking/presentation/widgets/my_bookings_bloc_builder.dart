@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/animations/state_switcher_widget.dart';
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/extensions/app_display_extensions.dart';
 import '../../../../core/routes/routes.dart';
@@ -80,59 +81,62 @@ class MyBookingsBlocBuilder extends StatelessWidget {
 
     return BlocBuilder<MyBookingsCubit, MyBookingsState>(
       builder: (context, state) {
-        return switch (state) {
-          MyBookingsSuccess(:final items, :final tab) when items.isEmpty =>
-            CustomStateWidget(
-              icon: Icon(switch (tab) {
-                MyBookingsTab.upcoming => Icons.event_available_rounded,
-                MyBookingsTab.pending => Icons.hourglass_top_rounded,
-                MyBookingsTab.completed => Icons.sports_soccer_rounded,
-                MyBookingsTab.cancelled => Icons.event_busy_rounded,
-              }),
-              title: 'booking.list.empty_${tab.name}'.tr(context: context),
-              description: 'booking.list.empty_desc_${tab.name}'.tr(
-                context: context,
+        return StateSwitcherWidget(
+          stateKey: state.runtimeType,
+          child: switch (state) {
+            MyBookingsSuccess(:final items, :final tab) when items.isEmpty =>
+              CustomStateWidget(
+                icon: Icon(switch (tab) {
+                  MyBookingsTab.upcoming => Icons.event_available_rounded,
+                  MyBookingsTab.pending => Icons.hourglass_top_rounded,
+                  MyBookingsTab.completed => Icons.sports_soccer_rounded,
+                  MyBookingsTab.cancelled => Icons.event_busy_rounded,
+                }),
+                title: 'booking.list.empty_${tab.name}'.tr(context: context),
+                description: 'booking.list.empty_desc_${tab.name}'.tr(
+                  context: context,
+                ),
+                actionText: tab == MyBookingsTab.cancelled
+                    ? null
+                    : 'booking.list.empty_cta'.tr(context: context),
+                onActionTap: () => openExplore(context),
               ),
-              actionText: tab == MyBookingsTab.cancelled
-                  ? null
-                  : 'booking.list.empty_cta'.tr(context: context),
-              onActionTap: () => openExplore(context),
-            ),
-          MyBookingsSuccess(:final items, :final hasMore, :final tab) =>
-            RefreshIndicator.adaptive(
-              onRefresh: () => cubit.load(tab),
-              child: NotificationListener<ScrollNotification>(
-                onNotification: (scroll) {
-                  if (hasMore && scroll.metrics.extentAfter < 300) {
-                    cubit.loadMore();
-                  }
-                  return false;
-                },
-                child: ListView.separated(
-                  physics: const AlwaysScrollableScrollPhysics(
-                    parent: BouncingScrollPhysics(),
+            MyBookingsSuccess(:final items, :final hasMore, :final tab) =>
+              RefreshIndicator.adaptive(
+                onRefresh: () => cubit.load(tab),
+                child: NotificationListener<ScrollNotification>(
+                  onNotification: (scroll) {
+                    if (hasMore && scroll.metrics.extentAfter < 300) {
+                      cubit.loadMore();
+                    }
+                    return false;
+                  },
+                  child: ListView.separated(
+                    physics: const AlwaysScrollableScrollPhysics(
+                      parent: BouncingScrollPhysics(),
+                    ),
+                    padding: EdgeInsets.all(16.r),
+                    itemCount: items.length + (hasMore ? 1 : 0),
+                    separatorBuilder: (_, _) => hSpace(12),
+                    itemBuilder: (context, index) => index == items.length
+                        ? const ShimmerListSkeletonWidget(
+                            itemHeight: 140,
+                            itemCount: 1,
+                            padding: EdgeInsets.zero,
+                          )
+                        : card(items[index], index),
                   ),
-                  padding: EdgeInsets.all(16.r),
-                  itemCount: items.length + (hasMore ? 1 : 0),
-                  separatorBuilder: (_, _) => hSpace(12),
-                  itemBuilder: (context, index) => index == items.length
-                      ? const ShimmerListSkeletonWidget(
-                          itemHeight: 140,
-                          itemCount: 1,
-                          padding: EdgeInsets.zero,
-                        )
-                      : card(items[index], index),
                 ),
               ),
+            MyBookingsError(:final message, :final tab) => CustomStateWidget(
+              title: message.tr(context: context),
+              description: '',
+              actionText: 'common.retry'.tr(context: context),
+              onActionTap: () => cubit.load(tab),
             ),
-          MyBookingsError(:final message, :final tab) => CustomStateWidget(
-            title: message.tr(context: context),
-            description: '',
-            actionText: 'common.retry'.tr(context: context),
-            onActionTap: () => cubit.load(tab),
-          ),
-          _ => const ShimmerListSkeletonWidget(itemHeight: 160, itemCount: 3),
-        };
+            _ => const ShimmerListSkeletonWidget(itemHeight: 160, itemCount: 3),
+          },
+        );
       },
     );
   }

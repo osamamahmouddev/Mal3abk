@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../animations/app_animations.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_shadows.dart';
 import 'custom_bottom_nav_bar_item_widget.dart';
@@ -38,17 +39,42 @@ class CustomBottomNavBarWidget extends StatelessWidget {
           border: Border.all(color: AppColors.borderCard),
           boxShadow: AppShadows.navBar,
         ),
-        child: Row(
-          children: [
-            for (var index = 0; index < items.length; index++)
-              Expanded(
-                child: CustomBottomNavBarItemWidget(
-                  item: items[index],
-                  isSelected: currentIndex == index,
-                  onTap: () => onTap(index),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final itemWidth = constraints.maxWidth / items.length;
+            return Stack(
+              children: [
+                // One pill that glides to the selected tab instead of each tab
+                // fading its own background.
+                AnimatedPositionedDirectional(
+                  duration: AppAnimations.duration(context, AppAnimations.slow),
+                  curve: AppAnimations.emphasized,
+                  start: currentIndex * itemWidth,
+                  top: 0,
+                  bottom: 0,
+                  width: itemWidth,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: AppColors.brandNavy,
+                      borderRadius: BorderRadius.circular(20.r),
+                    ),
+                  ),
                 ),
-              ),
-          ],
+                Row(
+                  children: [
+                    for (var index = 0; index < items.length; index++)
+                      Expanded(
+                        child: CustomBottomNavBarItemWidget(
+                          item: items[index],
+                          isSelected: currentIndex == index,
+                          onTap: () => onTap(index),
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
