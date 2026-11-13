@@ -28,107 +28,122 @@ class HomeScreen extends StatelessWidget {
     final padding = EdgeInsets.symmetric(horizontal: 16.w);
 
     return Scaffold(
-      backgroundColor: AppColors.pageBackground,
+      // White behind the status bar so it continues the white header; the
+      // page colour starts below it.
+      backgroundColor: AppColors.white,
       body: SafeArea(
         bottom: false,
-        child: Column(
-          children: [
-            const HomeLocationHeaderWidget(),
-            Expanded(
-              child: RefreshIndicator.adaptive(
-                onRefresh: () => Future.wait([
-                  context.read<HomeFeedCubit>().fetchFeed(),
-                  context.read<HomeTeamActivityCubit>().load(),
-                  context.read<MyBookingsCubit>().load(MyBookingsTab.upcoming),
-                  context.read<RecentlyViewedCubit>().load(),
-                ]),
-                child: ListView(
-                  physics: const AlwaysScrollableScrollPhysics(
-                    parent: BouncingScrollPhysics(),
-                  ),
-                  padding: EdgeInsets.only(top: 14.h, bottom: 16.h),
-                  children: [
-                    FadeSlideInWidget(
-                      child: Padding(
-                        padding: padding,
-                        child: const HomeHeroSearchCardWidget(),
-                      ),
+        child: ColoredBox(
+          color: AppColors.pageBackground,
+          child: Column(
+            children: [
+              const HomeLocationHeaderWidget(),
+              Expanded(
+                child: RefreshIndicator.adaptive(
+                  onRefresh: () => Future.wait([
+                    context.read<HomeFeedCubit>().fetchFeed(),
+                    context.read<HomeTeamActivityCubit>().load(),
+                    context.read<MyBookingsCubit>().load(
+                      MyBookingsTab.upcoming,
                     ),
-                    hSpace(18),
-                    FadeSlideInWidget(
-                      index: 1,
-                      child: Padding(
-                        padding: padding,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            SectionHeaderWidget(
-                              title: 'home.upcoming_booking'.tr(
-                                context: context,
-                              ),
-                              actionText: 'home.bookings'.tr(context: context),
-                              onAction: () => MainShellScopeWidget.switchTab(
-                                context,
-                                MainShellScopeWidget.bookingsTab,
-                              ),
-                            ),
-                            hSpace(12),
-                            const HomeUpcomingBookingBlocBuilder(),
-                          ],
+                    context.read<RecentlyViewedCubit>().load(),
+                  ]),
+                  child: ListView(
+                    physics: const AlwaysScrollableScrollPhysics(
+                      parent: BouncingScrollPhysics(),
+                    ),
+                    padding: EdgeInsets.only(top: 14.h, bottom: 16.h),
+                    children: [
+                      FadeSlideInWidget(
+                        child: Padding(
+                          padding: padding,
+                          child: const HomeHeroSearchCardWidget(),
                         ),
                       ),
-                    ),
-                    hSpace(18),
-                    FadeSlideInWidget(
-                      index: 2,
-                      child: Padding(
-                        padding: padding,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            SectionHeaderWidget(
-                              title: 'home.teams_activity'.tr(context: context),
-                              actionText: 'home.my_teams'.tr(context: context),
-                              onAction: () => MainShellScopeWidget.switchTab(
-                                context,
-                                MainShellScopeWidget.teamsTab,
+                      hSpace(18),
+                      FadeSlideInWidget(
+                        index: 1,
+                        child: Padding(
+                          padding: padding,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              SectionHeaderWidget(
+                                title: 'home.upcoming_booking'.tr(
+                                  context: context,
+                                ),
+                                actionText: 'home.bookings'.tr(
+                                  context: context,
+                                ),
+                                onAction: () => MainShellScopeWidget.switchTab(
+                                  context,
+                                  MainShellScopeWidget.bookingsTab,
+                                ),
                               ),
-                            ),
-                            hSpace(12),
-                            const HomeTeamActivityBlocBuilder(),
-                          ],
-                        ),
-                      ),
-                    ),
-                    hSpace(18),
-                    FadeSlideInWidget(
-                      index: 3,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Padding(
-                            padding: padding,
-                            child: SectionHeaderWidget(
-                              title: 'home.nearby_pitches'.tr(context: context),
-                              actionText: 'home.see_all'.tr(context: context),
-                              actionColor: AppColors.brandRed,
-                              onAction: () => MainShellScopeWidget.switchTab(
-                                context,
-                                MainShellScopeWidget.exploreTab,
-                              ),
-                            ),
+                              hSpace(12),
+                              const HomeUpcomingBookingBlocBuilder(),
+                            ],
                           ),
-                          hSpace(12),
-                          const HomeNearbyPitchesBlocBuilder(),
-                          const HomeRecentlyViewedBlocBuilder(),
-                        ],
+                        ),
                       ),
-                    ),
-                  ],
+                      hSpace(18),
+                      FadeSlideInWidget(
+                        index: 2,
+                        child: Padding(
+                          padding: padding,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              SectionHeaderWidget(
+                                title: 'home.teams_activity'.tr(
+                                  context: context,
+                                ),
+                                actionText: 'home.my_teams'.tr(
+                                  context: context,
+                                ),
+                                onAction: () => MainShellScopeWidget.switchTab(
+                                  context,
+                                  MainShellScopeWidget.teamsTab,
+                                ),
+                              ),
+                              hSpace(12),
+                              const HomeTeamActivityBlocBuilder(),
+                            ],
+                          ),
+                        ),
+                      ),
+                      hSpace(18),
+                      FadeSlideInWidget(
+                        index: 3,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Padding(
+                              padding: padding,
+                              child: SectionHeaderWidget(
+                                title: 'home.nearby_pitches'.tr(
+                                  context: context,
+                                ),
+                                actionText: 'home.see_all'.tr(context: context),
+                                actionColor: AppColors.brandRed,
+                                onAction: () => MainShellScopeWidget.switchTab(
+                                  context,
+                                  MainShellScopeWidget.exploreTab,
+                                ),
+                              ),
+                            ),
+                            hSpace(12),
+                            const HomeNearbyPitchesBlocBuilder(),
+                            const HomeRecentlyViewedBlocBuilder(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -36,6 +36,9 @@ class ExploreMapTopOverlayWidget extends StatelessWidget {
             children: [
               ExploreSearchSummaryWidget(
                 floating: true,
+                titleKey: ready?.hasMyLocation == true
+                    ? 'explore.summary_near'
+                    : 'explore.summary_all',
                 subtitleKey: 'explore.map.subtitle',
                 activeFilters: cubit.filter.activeCount,
                 onOpenFilters: () async {

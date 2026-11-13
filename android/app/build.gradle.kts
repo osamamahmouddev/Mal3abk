@@ -35,6 +35,23 @@ android {
         manifestPlaceholders["MAPS_API_KEY"] = localProperties.getProperty("MAPS_API_KEY", "")
     }
 
+    // `dev` talks to the API on the developer's machine, `prod` to the live
+    // server. The API address itself comes from the Dart entry point
+    // (lib/main_dev.dart / lib/main_prod.dart), so both flavors always pair:
+    //   flutter run --flavor dev  -t lib/main_dev.dart
+    //   flutter build apk --flavor prod -t lib/main_prod.dart
+    flavorDimensions += "env"
+    productFlavors {
+        create("dev") {
+            dimension = "env"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+        }
+        create("prod") {
+            dimension = "env"
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
