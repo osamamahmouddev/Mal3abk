@@ -38,9 +38,11 @@ class CustomDialogWidget extends StatelessWidget {
     VoidCallback? onSecondaryAction,
     bool isDestructive = false,
     Widget? icon,
+    bool barrierDismissible = true,
   }) {
     return showDialog<T>(
       context: context,
+      barrierDismissible: barrierDismissible,
       builder: (_) => CustomDialogWidget(
         title: title,
         description: description,

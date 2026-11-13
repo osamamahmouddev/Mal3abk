@@ -8,11 +8,13 @@ class VerifyOtpRequestBody {
     required this.phoneNumber,
     required this.code,
     this.fullName,
+    this.restoreAccount,
   });
 
   final String phoneNumber;
   final String code;
   final String? fullName;
+  final bool? restoreAccount;
 
   factory VerifyOtpRequestBody.fromJson(Map<String, dynamic> json) =>
       _$VerifyOtpRequestBodyFromJson(json);

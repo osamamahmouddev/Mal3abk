@@ -19,6 +19,7 @@ class VerifyOtpUseCase {
   Future<ApiResult<VerifyOtpResponseModel>> call({
     required String phoneNumber,
     required String code,
+    bool? restoreAccount,
   }) async {
     final codeResult = validateOtpCodeUseCase(code);
     if (codeResult case ApiFailure(:final failure)) {
@@ -27,7 +28,11 @@ class VerifyOtpUseCase {
     final validCode = (codeResult as Success<String>).data;
 
     final verifyResult = await authRepo.verifyOtp(
-      VerifyOtpRequestBody(phoneNumber: phoneNumber, code: validCode),
+      VerifyOtpRequestBody(
+        phoneNumber: phoneNumber,
+        code: validCode,
+        restoreAccount: restoreAccount,
+      ),
     );
     if (verifyResult case ApiFailure(:final failure)) {
       return ApiResult.failure(failure);

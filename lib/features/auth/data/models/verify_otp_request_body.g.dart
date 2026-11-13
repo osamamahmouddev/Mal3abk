@@ -12,6 +12,7 @@ VerifyOtpRequestBody _$VerifyOtpRequestBodyFromJson(
   phoneNumber: json['phoneNumber'] as String,
   code: json['code'] as String,
   fullName: json['fullName'] as String?,
+  restoreAccount: json['restoreAccount'] as bool?,
 );
 
 Map<String, dynamic> _$VerifyOtpRequestBodyToJson(
@@ -20,4 +21,5 @@ Map<String, dynamic> _$VerifyOtpRequestBodyToJson(
   'phoneNumber': instance.phoneNumber,
   'code': instance.code,
   'fullName': ?instance.fullName,
+  'restoreAccount': ?instance.restoreAccount,
 };

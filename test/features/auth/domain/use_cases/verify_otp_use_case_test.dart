@@ -53,12 +53,33 @@ void main() {
               as VerifyOtpRequestBody;
       expect(body.phoneNumber, testPhoneNumber);
       expect(body.code, testCode);
+      expect(body.restoreAccount, isNull);
       verify(
         () => authRepo.saveSession(
           accessToken: 'access-1',
           refreshToken: 'refresh-1',
         ),
       ).called(1);
+    });
+
+    test('threads restoreAccount: true to the repo', () async {
+      when(
+        () => authRepo.verifyOtp(any()),
+      ).thenAnswer((_) async => const ApiResult.success(verifyOtpResponse));
+
+      final result = await useCase(
+        phoneNumber: testPhoneNumber,
+        code: testCode,
+        restoreAccount: true,
+      );
+
+      expect(result, isSuccessWith(verifyOtpResponse));
+      final body =
+          verify(() => authRepo.verifyOtp(captureAny())).captured.single
+              as VerifyOtpRequestBody;
+      expect(body.phoneNumber, testPhoneNumber);
+      expect(body.code, testCode);
+      expect(body.restoreAccount, isTrue);
     });
 
     test('rejects a malformed code without calling the API', () async {

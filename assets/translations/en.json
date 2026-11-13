@@ -78,7 +78,8 @@
       "recovery_link_invalid": "This recovery link is invalid or has expired.",
       "user_not_found": "Account not found.",
       "step_up_unavailable": "This verification isn't available for your account right now.",
-      "otp_rate_limited": "You've requested several codes for this number. Wait for the timer, then request a new one."
+      "otp_rate_limited": "You've requested several codes for this number. Wait for the timer, then request a new one.",
+      "account_pending_deletion": "This account is scheduled for deletion."
     },
     "teams": {
       "cannot_change_captain_role": "The captain's role can't be changed.",
@@ -147,6 +148,12 @@
       "edit_phone": "Change phone number",
       "rate_limited": "You've requested several codes for this number, which we limit to protect your account. You can request a new one in {}.",
       "send_code_in": "Request a code in {}"
+    },
+    "restore_dialog": {
+      "title": "This account is scheduled for deletion. Restore it?",
+      "description": "Restoring your account will cancel the deletion request and keep your data.",
+      "restore": "Restore",
+      "cancel": "Cancel"
     },
     "email": "Email",
     "password": "Password",

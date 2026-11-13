@@ -56,6 +56,8 @@ class ApiFailureMapper {
     'Identity.RecoveryTokenExpired': 'errors.identity.recovery_link_invalid',
     'Identity.InvalidRecoveryState': 'errors.identity.recovery_link_invalid',
     'Identity.UserNotFound': 'errors.identity.user_not_found',
+    'Identity.AccountPendingDeletion':
+        'errors.identity.account_pending_deletion',
     'Media.Rejected': 'errors.media.invalid_image',
     'Media.TooLarge': 'errors.media.too_large',
     'Media.NotFound': 'errors.media.upload_expired',
