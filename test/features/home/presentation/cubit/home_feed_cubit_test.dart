@@ -33,9 +33,18 @@ void main() {
     verify(() => useCase(city: 'giza', area: 'dokki')).called(2);
   });
 
-  test('uses the profile area until the player picks one', () async {
+  test('shows all of Egypt until the player picks an area', () async {
     await cubit.fetchFeed();
 
     verify(() => useCase(city: null, area: null)).called(1);
+  });
+
+  test('choosing all of Egypt drops the picked area', () async {
+    await cubit.fetchFeed(city: 'giza', area: 'dokki');
+
+    await cubit.showAllEgypt();
+    await cubit.fetchFeed();
+
+    verify(() => useCase(city: null, area: null)).called(2);
   });
 }

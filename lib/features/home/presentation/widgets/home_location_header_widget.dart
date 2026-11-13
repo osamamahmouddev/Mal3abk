@@ -33,7 +33,10 @@ class HomeLocationHeaderWidget extends StatelessWidget {
         governorates: context.read<GovernoratesCubit>(),
         initialCity: current?.city,
       );
-      if (picked != null) {
+      if (picked == null) return;
+      if (picked.city == null) {
+        await feed.showAllEgypt();
+      } else {
         await feed.fetchFeed(city: picked.city, area: picked.area);
       }
     }

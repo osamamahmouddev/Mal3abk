@@ -13,7 +13,8 @@ import '../../../reference/presentation/cubit/governorates_cubit.dart';
 import '../../../reference/presentation/widgets/governorate_area_picker_bloc_builder.dart';
 
 /// The place the player picked: a governorate code and, optionally, an area.
-typedef PickedArea = ({String city, String? area});
+/// A null city means all of Egypt.
+typedef PickedArea = ({String? city, String? area});
 
 /// Bottom sheet for choosing the area the home feed shows.
 class HomeAreaSheetWidget extends HookWidget {
@@ -41,7 +42,6 @@ class HomeAreaSheetWidget extends HookWidget {
   Widget build(BuildContext context) {
     final governorate = useValueNotifier<GovernorateModel?>(null);
     final area = useValueNotifier<String?>(null);
-    final canApply = useValueListenable(governorate) != null;
 
     return Container(
       decoration: BoxDecoration(
@@ -90,6 +90,7 @@ class HomeAreaSheetWidget extends HookWidget {
                 ),
                 governorate: governorate,
                 area: area,
+                isRequired: false,
                 initialCity: initialCity,
               ),
               hSpace(24),
@@ -97,10 +98,20 @@ class HomeAreaSheetWidget extends HookWidget {
                 text: 'home.apply_area'.tr(context: context),
                 height: 52.h,
                 borderRadius: 14,
-                enabled: canApply,
                 onTap: () => Navigator.of(
                   context,
-                ).pop((city: governorate.value!.code, area: area.value)),
+                ).pop((city: governorate.value?.code, area: area.value)),
+              ),
+              hSpace(8),
+              TextButton(
+                onPressed: () =>
+                    Navigator.of(context).pop((city: null, area: null)),
+                child: Text(
+                  'home.show_all_egypt'.tr(context: context),
+                  style: AppTextStyles.font14SemiBold.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
               ),
             ],
           ),

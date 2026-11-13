@@ -383,10 +383,7 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
     () => HomeRepoImpl(homeApiService: sl<HomeApiService>()),
   );
   sl.registerLazySingleton<GetHomeFeedUseCase>(
-    () => GetHomeFeedUseCase(
-      homeRepo: sl<HomeRepo>(),
-      profileRepo: sl<ProfileRepo>(),
-    ),
+    () => GetHomeFeedUseCase(homeRepo: sl<HomeRepo>()),
   );
   sl.registerFactory<HomeFeedCubit>(
     () => HomeFeedCubit(getHomeFeedUseCase: sl<GetHomeFeedUseCase>()),

@@ -14,6 +14,7 @@ import '../../../../core/utils/cairo_time.dart';
 import '../../../../core/widgets/bottom_action_bar_widget.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
+import '../../../../core/widgets/fade_slide_in_widget.dart';
 import '../../../../core/widgets/secure_screen_widget.dart';
 import '../../data/models/create_booking_response_model.dart';
 import '../widgets/deposit_methods_bloc_builder.dart';
@@ -36,86 +37,104 @@ class DepositInstructionsScreen extends StatelessWidget {
     return SecureScreenWidget(
       child: Scaffold(
         backgroundColor: AppColors.pageBackground,
-      appBar: CustomAppBarWidget(
-        title: 'booking.deposit.title'.tr(context: context),
-      ),
-      bottomNavigationBar: BottomActionBarWidget(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CustomButton(
-              text: 'booking.deposit.cta'.tr(context: context),
-              height: 52.h,
-              borderRadius: 16,
-              boxShadow: AppShadows.redGlow,
-              icon: SvgPicture.asset(
-                AppAssets.icUploadWhite,
-                width: 20.r,
-                height: 20.r,
-              ),
-              textStyle: AppTextStyles.font16Bold.copyWith(
-                color: AppColors.white,
-              ),
-              onTap: () => navigator.pushReplacementNamed(
-                AppRoutes.uploadProof,
-                arguments: booking.bookingId,
-              ),
-            ),
-            hSpace(8),
-            CustomButton(
-              text: 'booking.deposit.cancel_request'.tr(context: context),
-              type: CustomButtonType.ghost,
-              height: 44.h,
-              textStyle: AppTextStyles.font14SemiBold.copyWith(
-                color: AppColors.redText,
-              ),
-              onTap: () async {
-                final cancelled = await navigator.pushNamed(
-                  AppRoutes.cancelBooking,
+        appBar: CustomAppBarWidget(
+          title: 'booking.deposit.title'.tr(context: context),
+        ),
+        bottomNavigationBar: BottomActionBarWidget(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CustomButton(
+                text: 'booking.deposit.cta'.tr(context: context),
+                height: 52.h,
+                borderRadius: 16,
+                boxShadow: AppShadows.redGlow,
+                icon: SvgPicture.asset(
+                  AppAssets.icUploadWhite,
+                  width: 20.r,
+                  height: 20.r,
+                ),
+                textStyle: AppTextStyles.font16Bold.copyWith(
+                  color: AppColors.white,
+                ),
+                onTap: () => navigator.pushReplacementNamed(
+                  AppRoutes.uploadProof,
                   arguments: booking.bookingId,
-                );
-                if (cancelled == true) navigator.pop();
-              },
+                ),
+              ),
+              hSpace(8),
+              CustomButton(
+                text: 'booking.deposit.cancel_request'.tr(context: context),
+                type: CustomButtonType.ghost,
+                height: 44.h,
+                textStyle: AppTextStyles.font14SemiBold.copyWith(
+                  color: AppColors.redText,
+                ),
+                onTap: () async {
+                  final cancelled = await navigator.pushNamed(
+                    AppRoutes.cancelBooking,
+                    arguments: booking.bookingId,
+                  );
+                  if (cancelled == true) navigator.pop();
+                },
+              ),
+            ],
+          ),
+        ),
+        body: ListView(
+          physics: const BouncingScrollPhysics(),
+          padding: EdgeInsets.all(16.r),
+          children: [
+            FadeSlideInWidget(
+              child: HoldTimerBannerWidget(
+                expiresAtUtc: DateTime.parse(booking.holdExpiresAtUtc),
+              ),
             ),
+            hSpace(12),
+            FadeSlideInWidget(
+              index: 1,
+              child: DepositSummaryCardWidget(
+                bookingReference: booking.bookingReference,
+                slotLabel:
+                    '${CairoTime.dayAndTime(start, lang)} – ${CairoTime.time(end, lang)}',
+                totalPrice: booking.totalPrice,
+                depositAmount: booking.depositAmount,
+              ),
+            ),
+            hSpace(12),
+            FadeSlideInWidget(
+              index: 2,
+              child: DepositMethodsBlocBuilder(
+                bookingId: booking.bookingId,
+                bookingReference: booking.bookingReference,
+              ),
+            ),
+            hSpace(12),
+            FadeSlideInWidget(
+              index: 3,
+              child: Text(
+                'booking.deposit.steps'.tr(context: context),
+                style: AppTextStyles.font15Bold,
+              ),
+            ),
+            hSpace(14),
+            for (final (i, key) in const [
+              'step1',
+              'step2',
+              'step3',
+            ].indexed) ...[
+              FadeSlideInWidget(
+                index: 4 + i,
+                child: DepositStepWidget(
+                  number: (i + 1).toLocalizedDigits(lang),
+                  text: 'booking.deposit.$key'.tr(context: context),
+                ),
+              ),
+              hSpace(10),
+            ],
           ],
         ),
       ),
-      body: ListView(
-        physics: const BouncingScrollPhysics(),
-        padding: EdgeInsets.all(16.r),
-        children: [
-          HoldTimerBannerWidget(
-            expiresAtUtc: DateTime.parse(booking.holdExpiresAtUtc),
-          ),
-          hSpace(12),
-          DepositSummaryCardWidget(
-            bookingReference: booking.bookingReference,
-            slotLabel:
-                '${CairoTime.dayAndTime(start, lang)} – ${CairoTime.time(end, lang)}',
-            totalPrice: booking.totalPrice,
-            depositAmount: booking.depositAmount,
-          ),
-          hSpace(12),
-          DepositMethodsBlocBuilder(
-            bookingId: booking.bookingId,
-            bookingReference: booking.bookingReference,
-          ),
-          hSpace(12),
-          Text(
-            'booking.deposit.steps'.tr(context: context),
-            style: AppTextStyles.font15Bold,
-          ),
-          hSpace(14),
-          for (final (i, key) in const ['step1', 'step2', 'step3'].indexed) ...[
-            DepositStepWidget(
-              number: (i + 1).toLocalizedDigits(lang),
-              text: 'booking.deposit.$key'.tr(context: context),
-            ),
-            hSpace(10),
-          ],
-        ],
-      ),
-    ),
-  );
+    );
   }
 }

@@ -284,7 +284,8 @@
     "clear": "Clear",
     "change_area_title": "Choose your area",
     "change_area_subtitle": "We'll show pitches near this area.",
-    "apply_area": "Apply"
+    "apply_area": "Apply",
+    "show_all_egypt": "Show all of Egypt"
   },
   "explore": {
     "list_title": "Explore Pitches",
@@ -503,6 +504,10 @@
       "currency": "EGP",
       "sender_label": "Sender number (optional)",
       "sender_hint": "Last 4 digits of the wallet",
+      "sender_invalid": "Enter at least 4 digits (numbers only)",
+      "ready_title": "Receipt ready to send",
+      "ready_size": "{kb} KB",
+      "change": "Tap to change the photo",
       "confirm": "I confirm I transferred the deposit and this receipt is for this booking.",
       "note": "Uploading isn't payment confirmation. The venue checks the transfer, then the booking is confirmed.",
       "submit": "Submit receipt for review",

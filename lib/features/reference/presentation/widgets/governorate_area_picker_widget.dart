@@ -17,6 +17,7 @@ class GovernorateAreaPickerWidget extends StatelessWidget {
     required this.governorates,
     required this.governorate,
     required this.area,
+    this.isRequired = true,
     super.key,
   });
 
@@ -24,6 +25,7 @@ class GovernorateAreaPickerWidget extends StatelessWidget {
   final List<GovernorateModel> governorates;
   final ValueNotifier<GovernorateModel?> governorate;
   final ValueNotifier<String?> area;
+  final bool isRequired;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,7 @@ class GovernorateAreaPickerWidget extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('$label *', style: AppTextStyles.font14SemiBold),
+            Text(isRequired ? '$label *' : label, style: AppTextStyles.font14SemiBold),
             hSpace(10),
             DropdownButtonFormField<GovernorateModel>(
               initialValue: selected,
