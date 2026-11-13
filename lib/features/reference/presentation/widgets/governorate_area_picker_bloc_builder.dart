@@ -14,6 +14,7 @@ class GovernorateAreaPickerBlocBuilder extends StatelessWidget {
     required this.label,
     required this.governorate,
     required this.area,
+    this.isRequired = true,
     super.key,
     this.initialCity,
   });
@@ -21,6 +22,7 @@ class GovernorateAreaPickerBlocBuilder extends StatelessWidget {
   final String label;
   final ValueNotifier<GovernorateModel?> governorate;
   final ValueNotifier<String?> area;
+  final bool isRequired;
   final String? initialCity;
 
   @override
@@ -42,6 +44,7 @@ class GovernorateAreaPickerBlocBuilder extends StatelessWidget {
           governorates: governorates,
           governorate: governorate,
           area: area,
+          isRequired: isRequired,
         ),
         GovernoratesError() => TextButton(
           onPressed: () => context.read<GovernoratesCubit>().load(),

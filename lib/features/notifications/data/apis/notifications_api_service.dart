@@ -9,6 +9,10 @@ import '../models/update_notification_preference_request_body.dart';
 
 part 'notifications_api_service.g.dart';
 
+/// The player app's own notifications (bookings, teams, matches) plus the account-wide ones (security, support). One
+/// account can also work at a venue; the API keeps those notifications for the venue dashboard.
+const int playerNotificationSurface = 0;
+
 @RestApi()
 abstract class NotificationsApiService {
   factory NotificationsApiService(Dio dio, {String? baseUrl}) =
@@ -18,16 +22,21 @@ abstract class NotificationsApiService {
   Future<NotificationPageModel> getNotifications({
     @Query('page') int page = 1,
     @Query('pageSize') int pageSize = 20,
+    @Query('surface') int surface = playerNotificationSurface,
   });
 
   @GET(ApiConstants.notificationsUnreadCount)
-  Future<UnreadCountModel> getUnreadCount();
+  Future<UnreadCountModel> getUnreadCount({
+    @Query('surface') int surface = playerNotificationSurface,
+  });
 
   @POST(ApiConstants.notificationRead)
   Future<void> markRead(@Path('id') String notificationId);
 
   @POST(ApiConstants.notificationsReadAll)
-  Future<void> markAllRead();
+  Future<void> markAllRead({
+    @Query('surface') int surface = playerNotificationSurface,
+  });
 
   @GET(ApiConstants.notificationPreferences)
   Future<List<NotificationPreferenceModel>> getPreferences();

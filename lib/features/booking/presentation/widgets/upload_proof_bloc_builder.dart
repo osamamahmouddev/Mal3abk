@@ -19,6 +19,9 @@ import '../cubit/proof_upload_state.dart';
 import 'upload_proof_form_widget.dart';
 import 'upload_proof_submitted_widget.dart';
 
+/// The shortest sender number accepted: the last digits of the wallet that sent the transfer.
+const int _minSenderDigits = 4;
+
 class UploadProofBlocBuilder extends HookWidget {
   const UploadProofBlocBuilder({required this.booking, super.key});
 
@@ -29,6 +32,7 @@ class UploadProofBlocBuilder extends HookWidget {
     final fileBytes = useState<Uint8List?>(null);
     final confirmed = useState(false);
     final sender = useTextEditingController();
+    final senderError = useState<String?>(null);
 
     Future<void> pick() async {
       final choice = await ImageSourceSheetWidget.show(
@@ -76,9 +80,11 @@ class UploadProofBlocBuilder extends HookWidget {
             Expanded(
               child: UploadProofFormWidget(
                 booking: booking,
-                hasFile: fileBytes.value != null,
+                fileBytes: fileBytes.value,
                 confirmed: confirmed.value,
                 senderController: sender,
+                senderError: senderError.value,
+                onSenderChanged: (_) => senderError.value = null,
                 onPickFile: pick,
                 onConfirmChanged: (value) => confirmed.value = value,
               ),
@@ -100,6 +106,14 @@ class UploadProofBlocBuilder extends HookWidget {
                   if (bytes == null) return;
                   FocusScope.of(context).unfocus();
                   final notes = sender.text.trim();
+                  // Optional, but when given it must be at least the last four digits of the wallet or account.
+                  if (notes.isNotEmpty && notes.length < _minSenderDigits) {
+                    senderError.value = 'booking.upload.sender_invalid'.tr(
+                      context: context,
+                    );
+                    HapticFeedback.heavyImpact();
+                    return;
+                  }
                   context.read<ProofUploadCubit>().uploadProof(
                     bookingId: booking.id,
                     imageBytes: bytes,
