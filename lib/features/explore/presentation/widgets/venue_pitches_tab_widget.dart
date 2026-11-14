@@ -1,8 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/extensions/app_display_extensions.dart';
+import '../../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/empty_note_box_widget.dart';
 import '../../../../core/widgets/info_note_card_widget.dart';
 import '../../data/models/pitch_details_model.dart';
@@ -29,7 +32,16 @@ class VenuePitchesTabWidget extends StatelessWidget {
       children: [
         if (pitches.isEmpty)
           EmptyNoteBoxWidget(text: t('no_pitches'))
-        else
+        else ...[
+          Padding(
+            padding: EdgeInsets.only(bottom: 12.h),
+            child: Text(
+              t('pitches_photos_hint'),
+              style: AppTextStyles.font12Regular.copyWith(
+                color: AppColors.textSecondary,
+              ),
+            ),
+          ),
           for (final (i, pitch) in pitches.indexed) ...[
             VenuePitchOptionCardWidget(
               title: pitch.name,
@@ -38,6 +50,8 @@ class VenuePitchesTabWidget extends StatelessWidget {
                   pitch.playersPerTeam.toLocalizedDigits(lang),
                 ]),
                 lang == 'ar' ? pitch.surface.nameAr : pitch.surface.nameEn,
+                if (pitch.lengthMeters != null && pitch.widthMeters != null)
+                  '${pitch.lengthMeters!.round().toLocalizedDigits(lang)} × ${pitch.widthMeters!.round().toLocalizedDigits(lang)} م',
               ].join(' · '),
               price: pitch.baseHourlyPrice == null
                   ? ''
@@ -47,10 +61,12 @@ class VenuePitchesTabWidget extends StatelessWidget {
                         pitch.baseHourlyPrice!.round().toLocalizedDigits(lang),
                       ],
                     ),
+              photos: pitch.photos,
               onTap: () => onPitchTap(i),
             ),
             hSpace(12),
           ],
+        ],
         hSpace(4),
         InfoNoteCardWidget(title: t('payment_title'), body: t('payment_body')),
       ],
