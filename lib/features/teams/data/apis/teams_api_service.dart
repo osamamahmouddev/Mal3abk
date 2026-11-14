@@ -14,6 +14,7 @@ import '../models/team_leaderboard_page_model.dart';
 import '../models/team_profile_model.dart';
 import '../models/team_summary_model.dart';
 import '../models/transfer_captaincy_request_body.dart';
+import '../models/update_member_role_request_body.dart';
 import '../models/update_team_settings_request_body.dart';
 
 part 'teams_api_service.g.dart';
@@ -34,6 +35,9 @@ abstract class TeamsApiService {
     @Query('page') int page = 1,
     @Query('pageSize') int pageSize = 20,
   });
+
+  @GET(ApiConstants.teamDetail)
+  Future<TeamDetailModel> getTeam(@Path('id') String teamId);
 
   @GET(ApiConstants.teamProfile)
   Future<TeamProfileModel> getTeamProfile(@Path('id') String teamId);
@@ -89,6 +93,13 @@ abstract class TeamsApiService {
   Future<void> updateSettings(
     @Path('id') String teamId,
     @Body() UpdateTeamSettingsRequestBody body,
+  );
+
+  @PUT(ApiConstants.teamMemberRole)
+  Future<void> updateMemberRole(
+    @Path('id') String teamId,
+    @Path('playerId') String playerId,
+    @Body() UpdateMemberRoleRequestBody body,
   );
 
   @POST(ApiConstants.transferCaptaincy)

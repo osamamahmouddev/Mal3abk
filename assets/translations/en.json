@@ -87,6 +87,10 @@
       "cannot_transfer_to_self": "You are already the captain.",
       "duplicate_join_request": "You already asked to join this team.",
       "invalid_invite_code": "This invite code is not valid.",
+      "invalid_role": "That role is not allowed. A player can only be vice-captain or member.",
+      "invite_code_unavailable": "We could not make a new code right now. Try again.",
+      "removed_from_team": "A team leader removed you from this team. Ask them for a new invite or send a join request.",
+      "suspended": "This team is suspended by Malabak and cannot do this right now.",
       "invalid_location": "Choose the governorate and city.",
       "invalid_name": "The team name must be 3 to 40 characters.",
       "invite_code_expired": "This invite code has expired. Ask the captain for a new one.",
@@ -103,6 +107,7 @@
       "player_already_in_team": "You're already in this team.",
       "player_not_in_team": "You're not in this team.",
       "roster_full": "The squad is full.",
+      "settings_not_saved": "The team was created, but its privacy choice was not saved. Change it from the team settings.",
       "self_removal_must_transfer_captaincy": "Hand over the captaincy before leaving."
     },
     "matches": {
@@ -746,9 +751,12 @@
       "whatsapp": "Send on WhatsApp",
       "copy_link": "Copy link",
       "copied": "Copied",
-      "code_note": "The code is valid for 7 days. Anyone who joins shows up for you and you can remove them.",
+      "code_note": "Send the same code to every player. Anyone who joins shows up for you and you can remove them.",
+      "new_code": "Make a new code",
+      "new_code_title": "Make a new code?",
+      "new_code_desc": "The old code stops working right away, and nobody can join with it.",
       "done": "Done — view members",
-      "join_note": "Players open \"Join with code\" on My teams and enter it. The code is valid for 7 days.",
+      "join_note": "Players open \"Join with code\" on My teams and enter it.",
       "share_message": "Join my team on Malabak! Open the app → My teams → Join with code, and enter: {}"
     },
     "join": {
@@ -765,8 +773,15 @@
       "joined": "In the team since {}",
       "make_captain": "Make {} captain",
       "make_captain_desc": "{} becomes captain right away and you stay a member.",
+      "make_vice": "Make {} vice-captain",
+      "make_vice_desc": "{} will be able to invite players, accept join requests, remove members and change team settings.",
+      "make_member": "Make {} a member again",
+      "make_member_desc": "{} will no longer be vice-captain and loses team management rights.",
       "remove": "Remove {} from the team",
-      "remove_desc": "{} leaves the team; their past results stay on record."
+      "remove_desc": "{} leaves the team; their past results stay on record.",
+      "disband": "Close the team",
+      "disband_title": "Close the team?",
+      "disband_desc": "You are the only member, so leaving closes the team and hides it from everyone. Its past results stay on record."
     },
     "rankings": {
       "title": "Rankings",
@@ -824,7 +839,10 @@
       "declineRequest": "Request declined.",
       "removeMember": "Player removed.",
       "transferCaptaincy": "Captaincy transferred.",
+      "makeViceCaptain": "The player is now vice-captain.",
+      "makeMember": "The player is a member again.",
       "leaveTeam": "You left the team.",
+      "disbandTeam": "The team was closed.",
       "updateSettings": "Settings saved.",
       "requestToJoin": "Your request was sent to the captain."
     },

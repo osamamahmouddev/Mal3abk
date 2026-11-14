@@ -14,6 +14,7 @@ import '../models/team_leaderboard_page_model.dart';
 import '../models/team_profile_model.dart';
 import '../models/team_summary_model.dart';
 import '../models/transfer_captaincy_request_body.dart';
+import '../models/update_member_role_request_body.dart';
 import '../models/update_team_settings_request_body.dart';
 
 class TeamsRepoImpl implements TeamsRepo {
@@ -50,6 +51,15 @@ class TeamsRepoImpl implements TeamsRepo {
           page: page,
         ),
       );
+    } catch (e, st) {
+      return ApiResult.failure(ApiFailureMapper.map(e, st));
+    }
+  }
+
+  @override
+  Future<ApiResult<TeamDetailModel>> getTeam(String teamId) async {
+    try {
+      return ApiResult.success(await teamsApiService.getTeam(teamId));
     } catch (e, st) {
       return ApiResult.failure(ApiFailureMapper.map(e, st));
     }
@@ -188,6 +198,24 @@ class TeamsRepoImpl implements TeamsRepo {
   ) async {
     try {
       await teamsApiService.updateSettings(teamId, body);
+      return const ApiResult.success(null);
+    } catch (e, st) {
+      return ApiResult.failure(ApiFailureMapper.map(e, st));
+    }
+  }
+
+  @override
+  Future<ApiResult<void>> updateMemberRole(
+    String teamId,
+    String playerId,
+    int role,
+  ) async {
+    try {
+      await teamsApiService.updateMemberRole(
+        teamId,
+        playerId,
+        UpdateMemberRoleRequestBody(role: role),
+      );
       return const ApiResult.success(null);
     } catch (e, st) {
       return ApiResult.failure(ApiFailureMapper.map(e, st));

@@ -27,7 +27,7 @@ class TeamProfilePlayersSectionWidget extends StatelessWidget {
             context: context,
             args: [roster.length.toLocalizedDigits(lang)],
           ),
-          actionText: profile.isCaptain
+          actionText: profile.isLeader
               ? 'teams.profile.manage'.tr(context: context)
               : null,
           onAction: () => Navigator.of(

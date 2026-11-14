@@ -7,8 +7,9 @@ import '../../data/models/team_dashboard_model.dart';
 import '../../data/models/team_join_request_model.dart';
 import '../repos/teams_repo.dart';
 
-/// Loads a team profile with its matches; leaders also get open challenges and
-/// the captain pending join requests. A failing extra still shows the profile.
+/// Loads a team profile with its matches; leaders (captain and vice-captain)
+/// also get open challenges and pending join requests. A failing extra still
+/// shows the profile.
 class GetTeamDashboardUseCase {
   GetTeamDashboardUseCase({required this.teamsRepo, required this.matchesRepo});
 
@@ -27,7 +28,7 @@ class GetTeamDashboardUseCase {
             teamId: teamId,
             pageSize: recentMatchesCount,
           ),
-          profile.isCaptain
+          profile.isLeader
               ? teamsRepo.getPendingJoinRequests(teamId)
               : Future.value(
                   const ApiResult<List<TeamJoinRequestModel>>.success([]),

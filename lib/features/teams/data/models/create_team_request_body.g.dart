@@ -15,6 +15,9 @@ CreateTeamRequestBody _$CreateTeamRequestBodyFromJson(
   governorate: json['governorate'] as String,
   district: json['district'] as String?,
   logoUrl: json['logoUrl'] as String?,
+  isPublic: json['isPublic'] as bool?,
+  isRecruiting: json['isRecruiting'] as bool?,
+  isOpenForChallenges: json['isOpenForChallenges'] as bool?,
 );
 
 Map<String, dynamic> _$CreateTeamRequestBodyToJson(
@@ -26,4 +29,7 @@ Map<String, dynamic> _$CreateTeamRequestBodyToJson(
   'governorate': instance.governorate,
   'district': instance.district,
   'logoUrl': instance.logoUrl,
+  'isPublic': instance.isPublic,
+  'isRecruiting': instance.isRecruiting,
+  'isOpenForChallenges': instance.isOpenForChallenges,
 };

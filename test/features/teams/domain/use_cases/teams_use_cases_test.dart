@@ -4,6 +4,7 @@ import 'package:mal3abk/core/network/app_api_failure.dart';
 import 'package:mal3abk/features/matches/data/models/team_challenge_model.dart';
 import 'package:mal3abk/features/matches/domain/repos/matches_repo.dart';
 import 'package:mal3abk/features/teams/data/models/create_team_request_body.dart';
+import 'package:mal3abk/features/teams/data/models/created_team_model.dart';
 import 'package:mal3abk/features/teams/data/models/update_team_settings_request_body.dart';
 import 'package:mal3abk/features/teams/domain/repos/teams_repo.dart';
 import 'package:mal3abk/features/teams/domain/use_cases/create_team_use_case.dart';
@@ -136,7 +137,12 @@ void main() {
         isPublic: false,
       );
 
-      expect(result, isSuccessWith(teamDetail));
+      expect(
+        result,
+        isA<Success<CreatedTeamModel>>()
+            .having((r) => r.data.team, 'team', teamDetail)
+            .having((r) => r.data.settingsSaved, 'settingsSaved', isTrue),
+      );
       final sent =
           verify(() => repo.createTeam(captureAny())).captured.single
               as CreateTeamRequestBody;

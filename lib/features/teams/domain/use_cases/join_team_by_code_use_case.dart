@@ -6,7 +6,9 @@ import '../repos/teams_repo.dart';
 class JoinTeamByCodeUseCase {
   JoinTeamByCodeUseCase({required this.teamsRepo});
 
-  static final RegExp _codePattern = RegExp(r'^[A-Z0-9]{4,12}$');
+  /// Team invite codes are exactly this long on the server.
+  static const int codeLength = 6;
+  static final RegExp _codePattern = RegExp('^[A-Z0-9]{$codeLength}\$');
 
   final TeamsRepo teamsRepo;
 

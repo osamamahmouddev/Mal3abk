@@ -18,8 +18,14 @@ class CreateTeamBlocListener extends StatelessWidget {
     return BlocListener<CreateTeamCubit, CreateTeamState>(
       listener: (context, state) {
         switch (state) {
-          case CreateTeamSuccess(:final team):
+          case CreateTeamSuccess(:final team, :final settingsSaved):
             HapticFeedback.mediumImpact();
+            if (!settingsSaved) {
+              AppTopSnackBar.showError(
+                context,
+                'errors.teams.settings_not_saved'.tr(context: context),
+              );
+            }
             Navigator.of(
               context,
             ).pushReplacementNamed(AppRoutes.teamProfile, arguments: team.id);

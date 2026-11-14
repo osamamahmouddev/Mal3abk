@@ -3,7 +3,10 @@ enum TeamActionType {
   declineRequest,
   removeMember,
   transferCaptaincy,
+  makeViceCaptain,
+  makeMember,
   leaveTeam,
+  disbandTeam,
   updateSettings,
   requestToJoin,
 }

@@ -11,6 +11,7 @@ import '../../../../core/widgets/bottom_action_bar_widget.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../core/widgets/plain_note_box_widget.dart';
+import '../../domain/use_cases/join_team_by_code_use_case.dart';
 import '../widgets/join_team_bloc_listener.dart';
 import '../widgets/join_team_submit_bloc_builder.dart';
 
@@ -57,7 +58,9 @@ class JoinTeamByCodeScreen extends HookWidget {
                 color: AppColors.textDisabled,
               ),
               inputFormatters: [
-                LengthLimitingTextInputFormatter(12),
+                LengthLimitingTextInputFormatter(
+                  JoinTeamByCodeUseCase.codeLength,
+                ),
                 FilteringTextInputFormatter.allow(RegExp('[A-Za-z0-9]')),
               ],
             ),

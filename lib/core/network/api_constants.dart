@@ -61,6 +61,7 @@ class ApiConstants {
 
   static const String myTeams = '/api/v1/me/teams';
   static const String teams = '/api/v1/teams';
+  static const String teamDetail = '/api/v1/teams/{id}';
   static const String teamProfile = '/api/v1/teams/{id}/profile';
   static const String acceptTeamInvitation = '/api/v1/teams/invitations/accept';
   static const String teamInvitations = '/api/v1/teams/{id}/invitations';
@@ -72,6 +73,8 @@ class ApiConstants {
   static const String leaveTeam = '/api/v1/teams/{id}/leave';
   static const String teamMember = '/api/v1/teams/{id}/members/{playerId}';
   static const String teamSettings = '/api/v1/teams/{id}/settings';
+  static const String teamMemberRole =
+      '/api/v1/teams/{id}/members/{playerId}/role';
   static const String transferCaptaincy =
       '/api/v1/teams/{id}/transfer-captaincy';
   static const String leaderboard = '/api/v1/teams/leaderboard';

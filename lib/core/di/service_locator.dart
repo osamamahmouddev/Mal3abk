@@ -121,6 +121,7 @@ import '../../features/teams/domain/repos/teams_repo.dart';
 import '../../features/teams/domain/use_cases/create_team_use_case.dart';
 import '../../features/teams/domain/use_cases/get_leaderboard_use_case.dart';
 import '../../features/teams/domain/use_cases/get_team_dashboard_use_case.dart';
+import '../../features/teams/domain/use_cases/get_team_invite_code_use_case.dart';
 import '../../features/teams/domain/use_cases/join_team_by_code_use_case.dart';
 import '../../features/teams/presentation/cubit/create_team_cubit.dart';
 import '../../features/teams/presentation/cubit/discover_teams_cubit.dart';
@@ -597,6 +598,9 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
   sl.registerLazySingleton<JoinTeamByCodeUseCase>(
     () => JoinTeamByCodeUseCase(teamsRepo: sl<TeamsRepo>()),
   );
+  sl.registerLazySingleton<GetTeamInviteCodeUseCase>(
+    () => GetTeamInviteCodeUseCase(teamsRepo: sl<TeamsRepo>()),
+  );
   sl.registerFactory<MyTeamsCubit>(
     () => MyTeamsCubit(teamsRepo: sl<TeamsRepo>()),
   );
@@ -615,7 +619,10 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
     () => JoinTeamCubit(joinTeamByCodeUseCase: sl<JoinTeamByCodeUseCase>()),
   );
   sl.registerFactory<TeamInviteCubit>(
-    () => TeamInviteCubit(teamsRepo: sl<TeamsRepo>()),
+    () => TeamInviteCubit(
+      getTeamInviteCodeUseCase: sl<GetTeamInviteCodeUseCase>(),
+      teamsRepo: sl<TeamsRepo>(),
+    ),
   );
   sl.registerFactory<LeaderboardCubit>(
     () => LeaderboardCubit(getLeaderboardUseCase: sl<GetLeaderboardUseCase>()),

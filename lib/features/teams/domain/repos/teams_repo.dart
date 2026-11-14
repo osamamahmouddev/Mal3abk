@@ -18,6 +18,7 @@ abstract class TeamsRepo {
     bool? isOpenForChallenges,
     int page = 1,
   });
+  Future<ApiResult<TeamDetailModel>> getTeam(String teamId);
   Future<ApiResult<TeamProfileModel>> getTeamProfile(String teamId);
   Future<ApiResult<TeamDetailModel>> createTeam(CreateTeamRequestBody body);
   Future<ApiResult<TeamDetailModel>> acceptInvitation(String inviteCode);
@@ -36,6 +37,13 @@ abstract class TeamsRepo {
   Future<ApiResult<void>> updateSettings(
     String teamId,
     UpdateTeamSettingsRequestBody body,
+  );
+
+  /// [role] is 2 (vice-captain) or 3 (member).
+  Future<ApiResult<void>> updateMemberRole(
+    String teamId,
+    String playerId,
+    int role,
   );
   Future<ApiResult<void>> transferCaptaincy(
     String teamId,

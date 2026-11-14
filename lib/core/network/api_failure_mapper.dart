@@ -89,7 +89,11 @@ class ApiFailureMapper {
     'Team.NotRecruiting': 'errors.teams.not_recruiting',
     'Team.PlayerAlreadyInTeam': 'errors.teams.player_already_in_team',
     'Team.PlayerNotInTeam': 'errors.teams.player_not_in_team',
+    'Team.InvalidRole': 'errors.teams.invalid_role',
+    'Team.InviteCodeUnavailable': 'errors.teams.invite_code_unavailable',
+    'Team.RemovedFromTeam': 'errors.teams.removed_from_team',
     'Team.RosterFull': 'errors.teams.roster_full',
+    'Team.Suspended': 'errors.teams.suspended',
     'Team.SelfRemovalMustTransferCaptaincy':
         'errors.teams.self_removal_must_transfer_captaincy',
     'Challenge.CannotChallengeSelf': 'errors.matches.cannot_challenge_self',

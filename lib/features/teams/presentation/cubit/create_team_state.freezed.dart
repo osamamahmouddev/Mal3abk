@@ -125,12 +125,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( TeamDetailModel team)?  success,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( TeamDetailModel team,  bool settingsSaved)?  success,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case CreateTeamInitial() when initial != null:
 return initial();case CreateTeamLoading() when loading != null:
 return loading();case CreateTeamSuccess() when success != null:
-return success(_that.team);case CreateTeamError() when error != null:
+return success(_that.team,_that.settingsSaved);case CreateTeamError() when error != null:
 return error(_that.message);case _:
   return orElse();
 
@@ -149,12 +149,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( TeamDetailModel team)  success,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( TeamDetailModel team,  bool settingsSaved)  success,required TResult Function( String message)  error,}) {final _that = this;
 switch (_that) {
 case CreateTeamInitial():
 return initial();case CreateTeamLoading():
 return loading();case CreateTeamSuccess():
-return success(_that.team);case CreateTeamError():
+return success(_that.team,_that.settingsSaved);case CreateTeamError():
 return error(_that.message);}
 }
 /// A variant of `when` that fallback to returning `null`
@@ -169,12 +169,12 @@ return error(_that.message);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( TeamDetailModel team)?  success,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( TeamDetailModel team,  bool settingsSaved)?  success,TResult? Function( String message)?  error,}) {final _that = this;
 switch (_that) {
 case CreateTeamInitial() when initial != null:
 return initial();case CreateTeamLoading() when loading != null:
 return loading();case CreateTeamSuccess() when success != null:
-return success(_that.team);case CreateTeamError() when error != null:
+return success(_that.team,_that.settingsSaved);case CreateTeamError() when error != null:
 return error(_that.message);case _:
   return null;
 
@@ -251,10 +251,11 @@ String toString() {
 
 
 class CreateTeamSuccess implements CreateTeamState {
-  const CreateTeamSuccess(this.team);
+  const CreateTeamSuccess(this.team, {this.settingsSaved = true});
   
 
  final  TeamDetailModel team;
+@JsonKey() final  bool settingsSaved;
 
 /// Create a copy of CreateTeamState
 /// with the given fields replaced by the non-null parameter values.
@@ -266,16 +267,16 @@ $CreateTeamSuccessCopyWith<CreateTeamSuccess> get copyWith => _$CreateTeamSucces
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateTeamSuccess&&(identical(other.team, team) || other.team == team));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateTeamSuccess&&(identical(other.team, team) || other.team == team)&&(identical(other.settingsSaved, settingsSaved) || other.settingsSaved == settingsSaved));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,team);
+int get hashCode => Object.hash(runtimeType,team,settingsSaved);
 
 @override
 String toString() {
-  return 'CreateTeamState.success(team: $team)';
+  return 'CreateTeamState.success(team: $team, settingsSaved: $settingsSaved)';
 }
 
 
@@ -286,7 +287,7 @@ abstract mixin class $CreateTeamSuccessCopyWith<$Res> implements $CreateTeamStat
   factory $CreateTeamSuccessCopyWith(CreateTeamSuccess value, $Res Function(CreateTeamSuccess) _then) = _$CreateTeamSuccessCopyWithImpl;
 @useResult
 $Res call({
- TeamDetailModel team
+ TeamDetailModel team, bool settingsSaved
 });
 
 
@@ -303,10 +304,11 @@ class _$CreateTeamSuccessCopyWithImpl<$Res>
 
 /// Create a copy of CreateTeamState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? team = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? team = null,Object? settingsSaved = null,}) {
   return _then(CreateTeamSuccess(
 null == team ? _self.team : team // ignore: cast_nullable_to_non_nullable
-as TeamDetailModel,
+as TeamDetailModel,settingsSaved: null == settingsSaved ? _self.settingsSaved : settingsSaved // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

@@ -8,7 +8,12 @@ part 'create_team_state.freezed.dart';
 sealed class CreateTeamState with _$CreateTeamState {
   const factory CreateTeamState.initial() = CreateTeamInitial;
   const factory CreateTeamState.loading() = CreateTeamLoading;
-  const factory CreateTeamState.success(TeamDetailModel team) =
-      CreateTeamSuccess;
+
+  /// [settingsSaved] is false when the team exists but its privacy choice
+  /// could not be saved; the player is told to change it from settings.
+  const factory CreateTeamState.success(
+    TeamDetailModel team, {
+    @Default(true) bool settingsSaved,
+  }) = CreateTeamSuccess;
   const factory CreateTeamState.error(String message) = CreateTeamError;
 }

@@ -21,7 +21,12 @@ class CreateTeamCubit extends Cubit<CreateTeamState>
     emitIfOpen(const CreateTeamState.loading());
     final result = await createTeamUseCase(body, isPublic: isPublic);
     result.when(
-      success: (team) => emitIfOpen(CreateTeamState.success(team)),
+      success: (created) => emitIfOpen(
+        CreateTeamState.success(
+          created.team,
+          settingsSaved: created.settingsSaved,
+        ),
+      ),
       failure: (failure) => emitIfOpen(CreateTeamState.error(failure.message)),
     );
   }

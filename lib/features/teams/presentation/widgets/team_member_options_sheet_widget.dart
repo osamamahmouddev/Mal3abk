@@ -4,22 +4,26 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
-import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
-import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_dialog_widget.dart';
 import '../../data/models/team_member_model.dart';
 import '../cubit/team_action_cubit.dart';
+import 'team_member_option_button_widget.dart';
 
+/// What a leader can do to one member. The captain can hand over captaincy,
+/// appoint or drop a vice-captain and remove anyone; a vice-captain can only
+/// remove plain members (the server enforces the same rules).
 class TeamMemberOptionsSheetWidget extends StatelessWidget {
   const TeamMemberOptionsSheetWidget({
     required this.teamId,
     required this.member,
+    required this.callerIsCaptain,
     super.key,
   });
 
   final String teamId;
   final TeamMemberModel member;
+  final bool callerIsCaptain;
 
   @override
   Widget build(BuildContext context) {
@@ -56,30 +60,39 @@ class TeamMemberOptionsSheetWidget extends StatelessWidget {
           children: [
             Text(name, style: AppTextStyles.font16Bold),
             hSpace(14),
-            CustomButton(
-              text: t('make_captain'),
-              type: CustomButtonType.outline,
-              height: 50.h,
-              borderRadius: 12,
-              textStyle: AppTextStyles.font15SemiBold.copyWith(
-                color: AppColors.brandNavy,
+            if (callerIsCaptain) ...[
+              TeamMemberOptionButtonWidget(
+                text: t('make_captain'),
+                onTap: () => confirm(
+                  t('make_captain'),
+                  t('make_captain_desc'),
+                  () => cubit.transferCaptaincy(teamId, member.playerId),
+                ),
               ),
-              onTap: () => confirm(
-                t('make_captain'),
-                t('make_captain_desc'),
-                () => cubit.transferCaptaincy(teamId, member.playerId),
-              ),
-            ),
-            hSpace(10),
-            CustomButton(
+              hSpace(10),
+              if (member.isViceCaptain)
+                TeamMemberOptionButtonWidget(
+                  text: t('make_member'),
+                  onTap: () => confirm(
+                    t('make_member'),
+                    t('make_member_desc'),
+                    () => cubit.makeMember(teamId, member.playerId),
+                  ),
+                )
+              else
+                TeamMemberOptionButtonWidget(
+                  text: t('make_vice'),
+                  onTap: () => confirm(
+                    t('make_vice'),
+                    t('make_vice_desc'),
+                    () => cubit.makeViceCaptain(teamId, member.playerId),
+                  ),
+                ),
+              hSpace(10),
+            ],
+            TeamMemberOptionButtonWidget(
               text: t('remove'),
-              type: CustomButtonType.outline,
-              height: 50.h,
-              borderRadius: 12,
-              borderColor: AppColors.redBorder,
-              textStyle: AppTextStyles.font15SemiBold.copyWith(
-                color: AppColors.redText,
-              ),
+              isDestructive: true,
               onTap: () => confirm(
                 t('remove'),
                 t('remove_desc'),

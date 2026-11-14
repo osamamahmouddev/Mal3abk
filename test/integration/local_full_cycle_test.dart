@@ -323,7 +323,8 @@ void main() {
       'create team',
     );
     final myTeams = unwrap(await sl<TeamsRepo>().getMyTeams(), 'my teams');
-    expect(myTeams.map((t) => t.id), contains(team.id));
+    expect(myTeams.map((t) => t.id), contains(team.team.id));
+    expect(team.settingsSaved, isTrue);
   }, timeout: const Timeout(Duration(minutes: 3)));
 }
 

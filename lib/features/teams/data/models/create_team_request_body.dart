@@ -11,6 +11,9 @@ class CreateTeamRequestBody {
     required this.governorate,
     this.district,
     this.logoUrl,
+    this.isPublic,
+    this.isRecruiting,
+    this.isOpenForChallenges,
   });
 
   final String name;
@@ -19,6 +22,11 @@ class CreateTeamRequestBody {
   final String governorate;
   final String? district;
   final String? logoUrl;
+
+  /// Applied by the server at creation; null keeps its default (true).
+  final bool? isPublic;
+  final bool? isRecruiting;
+  final bool? isOpenForChallenges;
 
   factory CreateTeamRequestBody.fromJson(Map<String, dynamic> json) =>
       _$CreateTeamRequestBodyFromJson(json);

@@ -459,7 +459,7 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => BlocProvider<TeamInviteCubit>(
-            create: (_) => sl<TeamInviteCubit>()..createCode(teamId),
+            create: (_) => sl<TeamInviteCubit>()..load(teamId),
             child: InvitePlayersScreen(teamId: teamId),
           ),
         );

@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/network/api_result.dart';
 import '../../../../core/utils/safe_emit_cubit_mixin.dart';
+import '../../data/models/update_member_role_request_body.dart';
 import '../../data/models/update_team_settings_request_body.dart';
 import '../../domain/repos/teams_repo.dart';
 import 'team_action_state.dart';
@@ -34,8 +35,30 @@ class TeamActionCubit extends Cubit<TeamActionState>
     () => teamsRepo.transferCaptaincy(teamId, playerId),
   );
 
+  Future<void> makeViceCaptain(String teamId, String playerId) => run(
+    TeamActionType.makeViceCaptain,
+    () => teamsRepo.updateMemberRole(
+      teamId,
+      playerId,
+      UpdateMemberRoleRequestBody.viceCaptain,
+    ),
+  );
+
+  Future<void> makeMember(String teamId, String playerId) => run(
+    TeamActionType.makeMember,
+    () => teamsRepo.updateMemberRole(
+      teamId,
+      playerId,
+      UpdateMemberRoleRequestBody.member,
+    ),
+  );
+
   Future<void> leaveTeam(String teamId) =>
       run(TeamActionType.leaveTeam, () => teamsRepo.leaveTeam(teamId));
+
+  /// A captain who is the team's only member leaving closes the team.
+  Future<void> disbandTeam(String teamId) =>
+      run(TeamActionType.disbandTeam, () => teamsRepo.leaveTeam(teamId));
 
   Future<void> updateSettings(
     String teamId,
