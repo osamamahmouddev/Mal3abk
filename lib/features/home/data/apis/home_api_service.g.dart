@@ -21,9 +21,19 @@ class _HomeApiService implements HomeApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<HomeFeedModel> getHomeFeed({String? city, String? area}) async {
+  Future<HomeFeedModel> getHomeFeed({
+    String? city,
+    String? area,
+    double? lat,
+    double? lng,
+  }) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'city': city, r'area': area};
+    final queryParameters = <String, dynamic>{
+      r'city': city,
+      r'area': area,
+      r'lat': lat,
+      r'lng': lng,
+    };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;

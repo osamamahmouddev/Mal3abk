@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../animations/app_animations.dart';
+import '../app/app_spaces.dart';
 
 /// Fades and slides [child] up once when it first appears.
 /// [index] staggers siblings. Driven by transitions, so it never rebuilds.
@@ -48,4 +49,17 @@ class FadeSlideInWidget extends HookWidget {
       child: SlideTransition(position: slide, child: child),
     );
   }
+}
+
+/// Wraps each section of a page in a [FadeSlideInWidget] so they enter one
+/// after another. Gaps (`hSpace`, `SizedBox`) are passed through unchanged.
+List<Widget> staggeredEntrance(List<Widget> sections) {
+  var index = 0;
+  return [
+    for (final section in sections)
+      if (section is SizedBox || isAppSpacer(section))
+        section
+      else
+        FadeSlideInWidget(index: index++, child: section),
+  ];
 }

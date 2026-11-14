@@ -19,7 +19,8 @@
 settings.json
 
 # VS Code
-.vscode/
+.vscode/*
+!.vscode/launch.json
 
 # Flutter/Dart/Pub related
 **/doc/api/

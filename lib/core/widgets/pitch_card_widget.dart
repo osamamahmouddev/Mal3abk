@@ -2,12 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
+import '../animations/favorite_heart_widget.dart';
 import '../extensions/app_display_extensions.dart';
-import '../styles/app_assets.dart';
 import '../styles/app_colors.dart';
-import '../styles/app_motion.dart';
 import '../styles/app_text_styles.dart';
 import 'custom_card_widget.dart';
 import 'pitch_placeholder_widget.dart';
@@ -149,19 +147,9 @@ class PitchCardWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20.r),
                       child: Padding(
                         padding: EdgeInsets.all(4.r),
-                        child: AnimatedSwitcher(
-                          duration: AppMotion.medium,
-                          switchInCurve: AppMotion.emphasized,
-                          transitionBuilder: (child, animation) =>
-                              ScaleTransition(scale: animation, child: child),
-                          child: SvgPicture.asset(
-                            isFavorite
-                                ? AppAssets.icHeartFilled
-                                : AppAssets.icHeartOutline,
-                            key: ValueKey(isFavorite),
-                            width: 20.r,
-                            height: 20.r,
-                          ),
+                        child: FavoriteHeartWidget(
+                          isFavorite: isFavorite,
+                          size: 20.r,
                         ),
                       ),
                     ),

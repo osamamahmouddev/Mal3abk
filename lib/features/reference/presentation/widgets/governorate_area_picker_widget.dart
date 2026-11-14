@@ -38,7 +38,10 @@ class GovernorateAreaPickerWidget extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(isRequired ? '$label *' : label, style: AppTextStyles.font14SemiBold),
+            Text(
+              isRequired ? '$label *' : label,
+              style: AppTextStyles.font14SemiBold,
+            ),
             hSpace(10),
             DropdownButtonFormField<GovernorateModel>(
               initialValue: selected,

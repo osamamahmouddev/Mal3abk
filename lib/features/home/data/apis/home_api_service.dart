@@ -14,5 +14,7 @@ abstract class HomeApiService {
   Future<HomeFeedModel> getHomeFeed({
     @Query('city') String? city,
     @Query('area') String? area,
+    @Query('lat') double? lat,
+    @Query('lng') double? lng,
   });
 }

@@ -9,6 +9,7 @@ import '../../../../core/app/app_spaces.dart';
 import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
+import '../../../../core/widgets/app_top_snack_bar.dart';
 import '../../../reference/presentation/cubit/governorates_cubit.dart';
 import '../cubit/home_feed_cubit.dart';
 import '../cubit/home_feed_state.dart';
@@ -34,7 +35,15 @@ class HomeLocationHeaderWidget extends StatelessWidget {
         initialCity: current?.city,
       );
       if (picked == null) return;
-      if (picked.city == null) {
+      if (picked.nearMe) {
+        final found = await feed.showNearMe();
+        if (!found && context.mounted) {
+          AppTopSnackBar.showError(
+            context,
+            'home.location_unavailable'.tr(context: context),
+          );
+        }
+      } else if (picked.city == null) {
         await feed.showAllEgypt();
       } else {
         await feed.fetchFeed(city: picked.city, area: picked.area);

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/animations/tab_content_switcher_widget.dart';
 import '../../../../core/extensions/app_display_extensions.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
@@ -113,18 +114,21 @@ class VenueProfileBlocBuilder extends StatelessWidget {
                           ),
                           Padding(
                             padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 0),
-                            child: switch (selectedTab) {
-                              1 => VenueAmenitiesTabWidget(
-                                facilities: venue.facilities,
-                              ),
-                              2 => VenuePoliciesTabWidget(
-                                policy: venue.depositPolicy,
-                              ),
-                              _ => VenuePitchesTabWidget(
-                                pitches: pitches,
-                                onPitchTap: book,
-                              ),
-                            },
+                            child: TabContentSwitcherWidget(
+                              index: selectedTab,
+                              child: switch (selectedTab) {
+                                1 => VenueAmenitiesTabWidget(
+                                  facilities: venue.facilities,
+                                ),
+                                2 => VenuePoliciesTabWidget(
+                                  policy: venue.depositPolicy,
+                                ),
+                                _ => VenuePitchesTabWidget(
+                                  pitches: pitches,
+                                  onPitchTap: book,
+                                ),
+                              },
+                            ),
                           ),
                         ],
                       ),

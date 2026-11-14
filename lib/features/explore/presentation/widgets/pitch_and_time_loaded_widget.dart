@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/widgets/fade_slide_in_widget.dart';
+import '../../../../core/animations/app_animations.dart';
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/extensions/app_display_extensions.dart';
 import '../../../../core/routes/routes.dart';
@@ -130,51 +132,106 @@ class PitchAndTimeLoadedWidget extends StatelessWidget {
             ),
             hSpace(16),
           ],
-          Text(
-            t('section', [CairoTime.shortDate(CairoTime.toUtc(day, 12), lang)]),
-            style: AppTextStyles.font15Bold,
+          AnimatedSwitcher(
+            duration: AppAnimations.duration(context, AppAnimations.base),
+            transitionBuilder: (child, animation) => FadeTransition(
+              opacity: animation,
+              child: SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(0, 0.3),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              ),
+            ),
+            layoutBuilder: (current, previous) => Stack(
+              alignment: AlignmentDirectional.centerStart,
+              children: [...previous, ?current],
+            ),
+            child: Text(
+              t('section', [
+                CairoTime.shortDate(CairoTime.toUtc(day, 12), lang),
+              ]),
+              key: ValueKey(state.selectedDayIndex),
+              style: AppTextStyles.font15Bold,
+            ),
           ),
           hSpace(14),
-          if (state.isSlotsLoading)
-            const ShimmerListSkeletonWidget(
-              itemHeight: 52,
-              itemCount: 3,
-              padding: EdgeInsets.zero,
-            )
-          else if (slots.isEmpty)
-            EmptyNoteBoxWidget(text: t('no_slots'))
-          else if (visibleSlots.isEmpty)
-            EmptyNoteBoxWidget(text: t('no_filtered_slots'))
-          else
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                mainAxisSpacing: 10.h,
-                crossAxisSpacing: 8.w,
-                childAspectRatio: 1.8,
+          AnimatedSwitcher(
+            duration: AppAnimations.duration(context, AppAnimations.slow),
+            switchInCurve: AppAnimations.standard,
+            switchOutCurve: AppAnimations.exit,
+            layoutBuilder: (current, previous) => Stack(
+              alignment: Alignment.topCenter,
+              children: [...previous, ?current],
+            ),
+            transitionBuilder: (child, animation) => FadeTransition(
+              opacity: animation,
+              child: ScaleTransition(
+                scale: Tween<double>(begin: 0.97, end: 1).animate(animation),
+                child: child,
               ),
-              itemCount: visibleSlots.length,
-              itemBuilder: (context, i) {
-                final slot = visibleSlots[i];
-                final start = CairoTime.fromUtc(DateTime.parse(slot.startUtc));
-                return PitchTimeSlotTileWidget(
-                  time: CairoTime.time(DateTime.parse(slot.startUtc), lang),
-                  isBooked: !slot.isAvailable,
-                  isSelected: selected?.startUtc == slot.startUtc,
-                  isNextDay: DateTime(
-                    start.year,
-                    start.month,
-                    start.day,
-                  ).isAfter(day),
-                  onTap: () {
-                    HapticFeedback.selectionClick();
-                    cubit.selectSlot(slot);
+            ),
+            child: KeyedSubtree(
+              key: ValueKey(
+                '${state.selectedDayIndex}-${state.selectedPitchIndex}-'
+                '${state.slotFilter}-${state.isSlotsLoading}',
+              ),
+              child: () {
+                if (state.isSlotsLoading) {
+                  return const ShimmerListSkeletonWidget(
+                    itemHeight: 52,
+                    itemCount: 3,
+                    padding: EdgeInsets.zero,
+                  );
+                }
+                if (slots.isEmpty) {
+                  return EmptyNoteBoxWidget(text: t('no_slots'));
+                }
+                if (visibleSlots.isEmpty) {
+                  return EmptyNoteBoxWidget(text: t('no_filtered_slots'));
+                }
+                return GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    mainAxisSpacing: 10.h,
+                    crossAxisSpacing: 8.w,
+                    childAspectRatio: 1.8,
+                  ),
+                  itemCount: visibleSlots.length,
+                  itemBuilder: (context, i) {
+                    final slot = visibleSlots[i];
+                    final start = CairoTime.fromUtc(
+                      DateTime.parse(slot.startUtc),
+                    );
+                    return FadeSlideInWidget(
+                      // A wave across the grid: row plus column.
+                      index: i ~/ 3 + i % 3,
+                      child: PitchTimeSlotTileWidget(
+                        time: CairoTime.time(
+                          DateTime.parse(slot.startUtc),
+                          lang,
+                        ),
+                        isBooked: !slot.isAvailable,
+                        isSelected: selected?.startUtc == slot.startUtc,
+                        isNextDay: DateTime(
+                          start.year,
+                          start.month,
+                          start.day,
+                        ).isAfter(day),
+                        onTap: () {
+                          HapticFeedback.selectionClick();
+                          cubit.selectSlot(slot);
+                        },
+                      ),
+                    );
                   },
                 );
-              },
+              }(),
             ),
+          ),
           hSpace(16),
           PitchSlotLegendWidget(
             activeFilter: state.slotFilter,

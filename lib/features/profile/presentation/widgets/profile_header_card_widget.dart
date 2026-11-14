@@ -8,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/extensions/app_display_extensions.dart';
+import '../../../../core/extensions/place_name_extension.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_colors.dart';
@@ -28,8 +29,7 @@ class ProfileHeaderCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final profile = overview.profile;
     final subtitle = [
-      ?profile.area,
-      ?profile.city,
+      context.placeName(city: profile.city, area: profile.area),
       for (final p in profile.playerPositions)
         ProfileSetupPositionSelectorWidget.labelKey(p).tr(context: context),
     ].where((part) => part.isNotEmpty).join(' · ');

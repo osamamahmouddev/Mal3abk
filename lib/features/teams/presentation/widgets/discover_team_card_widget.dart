@@ -4,6 +4,7 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/extensions/app_display_extensions.dart';
+import '../../../../core/extensions/place_name_extension.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_shadows.dart';
@@ -53,7 +54,10 @@ class DiscoverTeamCardWidget extends StatelessWidget {
                       'teams.common.meta_members'.tr(
                         context: context,
                         args: [
-                          team.district ?? team.city,
+                          context.placeName(
+                            city: team.city,
+                            area: team.district,
+                          ),
                           team.memberCount.toLocalizedDigits(lang),
                         ],
                       ),

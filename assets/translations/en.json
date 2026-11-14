@@ -285,7 +285,10 @@
     "change_area_title": "Choose your area",
     "change_area_subtitle": "We'll show pitches near this area.",
     "apply_area": "Apply",
-    "show_all_egypt": "Show all of Egypt"
+    "show_all_egypt": "Show all of Egypt",
+    "use_my_location": "Use my current location",
+    "near_me": "Near you",
+    "location_unavailable": "We couldn't find your location. Turn location on and allow access."
   },
   "explore": {
     "list_title": "Explore Pitches",
@@ -685,7 +688,9 @@
       "empty_title": "You're not in a team yet",
       "open_challenges": "Open to challenges",
       "recruiting": "Recruiting",
-      "search_hint": "Search by team name"
+      "search_hint": "Search by team name",
+      "new_team_hint": "Build your squad and invite friends",
+      "join_code_hint": "Got a code from a captain? Use it here"
     },
     "profile": {
       "goals_for": "Goals for",

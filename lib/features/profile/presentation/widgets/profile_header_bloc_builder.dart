@@ -2,11 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/widgets/custom_skeleton_widget.dart';
 import '../../../../core/widgets/custom_state_widget.dart';
 import '../cubit/profile_cubit.dart';
 import '../cubit/profile_state.dart';
 import 'profile_header_card_widget.dart';
+import 'profile_header_skeleton_widget.dart';
 
 class ProfileHeaderBlocBuilder extends StatelessWidget {
   const ProfileHeaderBlocBuilder({super.key});
@@ -24,7 +24,7 @@ class ProfileHeaderBlocBuilder extends StatelessWidget {
           actionText: 'common.retry'.tr(context: context),
           onActionTap: context.read<ProfileCubit>().fetchProfile,
         ),
-        _ => const CustomSkeletonWidget(height: 190, borderRadius: 24),
+        _ => const ProfileHeaderSkeletonWidget(),
       },
     );
   }

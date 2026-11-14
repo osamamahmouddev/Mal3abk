@@ -181,11 +181,12 @@ dart run build_runner build --delete-conflicting-outputs --force-jit
 ### 4. Running the Application
 * **Development Environment:**
   ```bash
-  flutter run -t lib/main_dev.dart
+  flutter run --flavor dev -t lib/main_dev.dart   # Android (iOS: drop --flavor)
   ```
+  In VS Code / Android Studio pick **Dev - local API** from the run list (`.vscode/launch.json`, `.run/`); a physical phone needs `--dart-define=BASE_URL=http://<your-pc-ip>:5000`.
 * **Production Environment:**
   ```bash
-  flutter run -t lib/main_prod.dart
+  flutter run --flavor prod -t lib/main_prod.dart  # Android (iOS: drop --flavor)
   ```
 
 ---
