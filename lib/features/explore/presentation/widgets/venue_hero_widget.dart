@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../../core/animations/double_tap_heart_widget.dart';
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/config/env_config.dart';
 import '../../../../core/di/service_locator.dart';
@@ -21,11 +22,15 @@ class VenueHeroWidget extends HookWidget {
   const VenueHeroWidget({
     required this.venueId,
     required this.photos,
+    this.onDoubleTapLike,
     super.key,
   });
 
   final String venueId;
   final List<String> photos;
+
+  /// Double tapping a photo likes the venue (never un-likes it).
+  final VoidCallback? onDoubleTapLike;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +44,10 @@ class VenueHeroWidget extends HookWidget {
     Future<void> openGallery(int index) async {
       final lastShown = await Navigator.of(context).pushNamed<int>(
         AppRoutes.photoGallery,
-        arguments: PhotoGalleryArgs(photos: resolvedPhotos, initialIndex: index),
+        arguments: PhotoGalleryArgs(
+          photos: resolvedPhotos,
+          initialIndex: index,
+        ),
       );
       if (lastShown != null && controller.hasClients) {
         controller.jumpToPage(lastShown);
@@ -56,24 +64,27 @@ class VenueHeroWidget extends HookWidget {
       child: Stack(
         children: [
           Positioned.fill(
-            child: Hero(
-              tag: 'venue-$venueId',
-              child: resolvedPhotos.isEmpty
-                  ? placeholder
-                  : PageView.builder(
-                      controller: controller,
-                      itemCount: resolvedPhotos.length,
-                      onPageChanged: (index) => page.value = index,
-                      itemBuilder: (_, index) => GestureDetector(
-                        onTap: () => openGallery(index),
-                        child: CachedNetworkImage(
-                          imageUrl: resolvedPhotos[index],
-                          fit: BoxFit.cover,
-                          placeholder: (_, _) => placeholder,
-                          errorWidget: (_, _, _) => placeholder,
+            child: DoubleTapHeartWidget(
+              onDoubleTap: () => onDoubleTapLike?.call(),
+              child: Hero(
+                tag: 'venue-$venueId',
+                child: resolvedPhotos.isEmpty
+                    ? placeholder
+                    : PageView.builder(
+                        controller: controller,
+                        itemCount: resolvedPhotos.length,
+                        onPageChanged: (index) => page.value = index,
+                        itemBuilder: (_, index) => GestureDetector(
+                          onTap: () => openGallery(index),
+                          child: CachedNetworkImage(
+                            imageUrl: resolvedPhotos[index],
+                            fit: BoxFit.cover,
+                            placeholder: (_, _) => placeholder,
+                            errorWidget: (_, _, _) => placeholder,
+                          ),
                         ),
                       ),
-                    ),
+              ),
             ),
           ),
           if (resolvedPhotos.length > 1)
@@ -113,7 +124,9 @@ class VenueHeroWidget extends HookWidget {
                 ),
                 child: Text(
                   'explore.venue.facility_photos_badge'.tr(context: context),
-                  style: AppTextStyles.font10Regular.copyWith(color: Colors.white),
+                  style: AppTextStyles.font10Regular.copyWith(
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),

@@ -93,6 +93,16 @@ class VenueProfileBlocBuilder extends StatelessWidget {
                           VenueHeroWidget(
                             venueId: venue.venueId,
                             photos: venue.photos,
+                            onDoubleTapLike: () {
+                              final favorites = context
+                                  .read<FavoriteToggleCubit>();
+                              if (!favorites.isFavorite(
+                                venueId,
+                                loaded: isFavorite,
+                              )) {
+                                favorites.toggle(venueId, loaded: isFavorite);
+                              }
+                            },
                           ),
                           VenueInfoHeaderWidget(
                             name: venue.name,

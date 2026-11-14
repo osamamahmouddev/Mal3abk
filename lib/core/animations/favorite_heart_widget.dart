@@ -1,4 +1,6 @@
-import 'package:flutter/widgets.dart';
+import 'dart:math' as math;
+
+import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -6,8 +8,8 @@ import '../styles/app_assets.dart';
 import '../styles/app_colors.dart';
 import 'app_animations.dart';
 
-/// The favourite heart. Turning it on pops the heart and sends a ring out
-/// from it; turning it off just shrinks back to the outline.
+/// The favourite heart. Turning it on pops the heart, sends a ring out and
+/// bursts small hearts around it; turning it off just shrinks back.
 class FavoriteHeartWidget extends HookWidget {
   const FavoriteHeartWidget({
     required this.isFavorite,
@@ -23,7 +25,7 @@ class FavoriteHeartWidget extends HookWidget {
     final controller = useAnimationController(
       duration: AppAnimations.duration(
         context,
-        const Duration(milliseconds: 520),
+        const Duration(milliseconds: 650),
       ),
       initialValue: 1,
     );
@@ -62,7 +64,26 @@ class FavoriteHeartWidget extends HookWidget {
           dimension: size * 1.6,
           child: Stack(
             alignment: Alignment.center,
+            clipBehavior: Clip.none,
             children: [
+              if (isFavorite && t < 1)
+                for (var i = 0; i < 7; i++)
+                  Transform.translate(
+                    offset: Offset.fromDirection(
+                      -math.pi / 2 + (i - 3) * 0.55,
+                      size * (0.5 + 1.1 * Curves.easeOut.transform(t)),
+                    ),
+                    child: Opacity(
+                      opacity: (1 - t).clamp(0, 1),
+                      child: Icon(
+                        Icons.favorite,
+                        size: size * (i.isEven ? 0.42 : 0.3),
+                        color: i % 3 == 0
+                            ? AppColors.brandRed
+                            : AppColors.brandRed.withValues(alpha: 0.6),
+                      ),
+                    ),
+                  ),
               if (ring < 1)
                 Container(
                   width: size * (0.8 + ring),

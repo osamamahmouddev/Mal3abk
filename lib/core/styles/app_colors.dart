@@ -37,7 +37,7 @@ class AppColors {
   static const Color redSoft = Color(0xFFE8574A);
   static const Color white10 = Color(0x1AFFFFFF);
   static const Color white30 = Color(0x4DFFFFFF);
-  static const Color redShadow = Color(0xA6D63B2F);
+  static const Color redShadow = Color(0x40D63B2F);
 
   static const Color navyShadow = Color(0x1A0F1B3D);
   static const Color navyShadow30 = Color(0x4D0F1B3D);

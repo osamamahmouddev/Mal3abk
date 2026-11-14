@@ -63,9 +63,10 @@ class TeamsActionCardWidget extends HookWidget {
             boxShadow: filled
                 ? [
                     BoxShadow(
-                      color: AppColors.brandRed.withValues(alpha: 0.35),
-                      blurRadius: 18.r,
-                      offset: Offset(0, 8.h),
+                      color: AppColors.brandRed.withValues(alpha: 0.18),
+                      blurRadius: 14.r,
+                      offset: Offset(0, 6.h),
+                      spreadRadius: -6.r,
                     ),
                   ]
                 : const [],
