@@ -52,7 +52,10 @@ class HomeScreen extends StatelessWidget {
                     physics: const AlwaysScrollableScrollPhysics(
                       parent: BouncingScrollPhysics(),
                     ),
-                    padding: EdgeInsets.only(top: 14.h, bottom: 16.h),
+                    padding: EdgeInsets.only(
+                      top: 14.h,
+                      bottom: 16.h + MediaQuery.paddingOf(context).bottom,
+                    ),
                     children: [
                       FadeSlideInWidget(
                         child: Padding(

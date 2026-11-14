@@ -12,7 +12,9 @@ class AppVersionChecker {
     final parts1 = clean1.split('.').map((p) => int.tryParse(p) ?? 0).toList();
     final parts2 = clean2.split('.').map((p) => int.tryParse(p) ?? 0).toList();
 
-    final maxLen = parts1.length > parts2.length ? parts1.length : parts2.length;
+    final maxLen = parts1.length > parts2.length
+        ? parts1.length
+        : parts2.length;
     for (var i = 0; i < maxLen; i++) {
       final num1 = i < parts1.length ? parts1[i] : 0;
       final num2 = i < parts2.length ? parts2[i] : 0;

@@ -2,12 +2,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import '../../../../core/animations/fade_indexed_stack_widget.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/widgets/custom_tab_bar_widget.dart';
 import '../../../../core/widgets/page_title_header_widget.dart';
 import '../widgets/discover_teams_tab_widget.dart';
 import '../widgets/my_teams_bloc_builder.dart';
 import '../widgets/my_teams_header_actions_widget.dart';
+import '../widgets/teams_quick_actions_widget.dart';
 
 class MyTeamsScreen extends HookWidget {
   const MyTeamsScreen({super.key});
@@ -23,20 +25,26 @@ class MyTeamsScreen extends HookWidget {
           PageTitleHeaderWidget(
             title: 'teams.my_teams_title'.tr(context: context),
             trailing: const MyTeamsHeaderActionsWidget(),
-            bottom: CustomTabBarWidget(
-              tabs: [
-                'teams.list.tab_mine'.tr(context: context),
-                'teams.list.tab_discover'.tr(context: context),
+            bottom: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const TeamsQuickActionsWidget(),
+                CustomTabBarWidget(
+                  tabs: [
+                    'teams.list.tab_mine'.tr(context: context),
+                    'teams.list.tab_discover'.tr(context: context),
+                  ],
+                  selectedIndex: selectedTab.value,
+                  indicatorColor: AppColors.brandNavy,
+                  showTopBorder: false,
+                  large: true,
+                  onTabSelected: (index) => selectedTab.value = index,
+                ),
               ],
-              selectedIndex: selectedTab.value,
-              indicatorColor: AppColors.brandNavy,
-              showTopBorder: false,
-              large: true,
-              onTabSelected: (index) => selectedTab.value = index,
             ),
           ),
           Expanded(
-            child: IndexedStack(
+            child: FadeIndexedStackWidget(
               index: selectedTab.value,
               children: const [MyTeamsBlocBuilder(), DiscoverTeamsTabWidget()],
             ),

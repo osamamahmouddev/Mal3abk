@@ -13,8 +13,9 @@ import '../../../reference/presentation/cubit/governorates_cubit.dart';
 import '../../../reference/presentation/widgets/governorate_area_picker_bloc_builder.dart';
 
 /// The place the player picked: a governorate code and, optionally, an area.
-/// A null city means all of Egypt.
-typedef PickedArea = ({String? city, String? area});
+/// A null city means all of Egypt, unless [nearMe] asks for the player's own
+/// location.
+typedef PickedArea = ({String? city, String? area, bool nearMe});
 
 /// Bottom sheet for choosing the area the home feed shows.
 class HomeAreaSheetWidget extends HookWidget {
@@ -83,7 +84,23 @@ class HomeAreaSheetWidget extends HookWidget {
                   color: AppColors.textSecondary,
                 ),
               ),
-              hSpace(20),
+              hSpace(16),
+              OutlinedButton.icon(
+                onPressed: () => Navigator.of(
+                  context,
+                ).pop((city: null, area: null, nearMe: true)),
+                icon: const Icon(Icons.my_location),
+                label: Text('home.use_my_location'.tr(context: context)),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: AppColors.brandNavy,
+                  minimumSize: Size.fromHeight(48.h),
+                  side: const BorderSide(color: AppColors.borderInput),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14.r),
+                  ),
+                ),
+              ),
+              hSpace(16),
               GovernorateAreaPickerBlocBuilder(
                 label: 'onboarding.profile_setup.area_label'.tr(
                   context: context,
@@ -98,14 +115,17 @@ class HomeAreaSheetWidget extends HookWidget {
                 text: 'home.apply_area'.tr(context: context),
                 height: 52.h,
                 borderRadius: 14,
-                onTap: () => Navigator.of(
-                  context,
-                ).pop((city: governorate.value?.code, area: area.value)),
+                onTap: () => Navigator.of(context).pop((
+                  city: governorate.value?.code,
+                  area: area.value,
+                  nearMe: false,
+                )),
               ),
               hSpace(8),
               TextButton(
-                onPressed: () =>
-                    Navigator.of(context).pop((city: null, area: null)),
+                onPressed: () => Navigator.of(
+                  context,
+                ).pop((city: null, area: null, nearMe: false)),
                 child: Text(
                   'home.show_all_egypt'.tr(context: context),
                   style: AppTextStyles.font14SemiBold.copyWith(

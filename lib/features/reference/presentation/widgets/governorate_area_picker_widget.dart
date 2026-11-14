@@ -6,8 +6,8 @@ import '../../../../core/app/app_spaces.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
-import '../../../../core/widgets/pill_choice_wrap_widget.dart';
 import '../../data/models/governorate_model.dart';
+import 'area_choice_widget.dart';
 
 /// Governorate dropdown plus its areas; governorates without a curated list
 /// take a typed area name, as the server accepts.
@@ -38,7 +38,10 @@ class GovernorateAreaPickerWidget extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(isRequired ? '$label *' : label, style: AppTextStyles.font14SemiBold),
+            Text(
+              isRequired ? '$label *' : label,
+              style: AppTextStyles.font14SemiBold,
+            ),
             hSpace(10),
             DropdownButtonFormField<GovernorateModel>(
               initialValue: selected,
@@ -69,15 +72,10 @@ class GovernorateAreaPickerWidget extends StatelessWidget {
             if (selected != null) ...[
               hSpace(12),
               if (areas.isNotEmpty)
-                ValueListenableBuilder<String?>(
-                  valueListenable: area,
-                  builder: (context, selectedArea, _) => PillChoiceWrapWidget(
-                    labels: [for (final a in areas) a.nameFor(lang)],
-                    selectedIndex: areas.indexWhere(
-                      (a) => a.nameAr == selectedArea,
-                    ),
-                    onSelect: (index) => area.value = areas[index].nameAr,
-                  ),
+                AreaChoiceWidget(
+                  key: ValueKey(selected.code),
+                  areas: areas,
+                  area: area,
                 )
               else
                 CustomTextFormField(

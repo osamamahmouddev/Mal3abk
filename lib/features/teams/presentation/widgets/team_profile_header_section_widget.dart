@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/extensions/app_display_extensions.dart';
+import '../../../../core/extensions/place_name_extension.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../data/models/team_profile_model.dart';
 import 'team_profile_hero_widget.dart';
@@ -34,7 +35,7 @@ class TeamProfileHeaderSectionWidget extends StatelessWidget {
           meta: 'teams.profile.meta'.tr(
             context: context,
             args: [
-              profile.district ?? profile.city,
+              context.placeName(city: profile.city, area: profile.district),
               captain?.playerName ?? '—',
               profile.roster.length.toLocalizedDigits(lang),
             ],

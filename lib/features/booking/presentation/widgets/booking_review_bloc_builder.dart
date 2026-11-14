@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/widgets/fade_slide_in_widget.dart';
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/extensions/app_display_extensions.dart';
 import '../../../../core/routes/routes.dart';
@@ -114,7 +115,7 @@ class BookingReviewBlocBuilder extends StatelessWidget {
           body: ListView(
             physics: const BouncingScrollPhysics(),
             padding: EdgeInsets.fromLTRB(16.w, 14.h, 16.w, 16.h),
-            children: [
+            children: staggeredEntrance([
               CustomCardWidget(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
                 child: Column(
@@ -223,7 +224,7 @@ class BookingReviewBlocBuilder extends StatelessWidget {
                 agreedToPolicy: agreedToPolicy,
                 onChanged: onAgreedChanged,
               ),
-            ],
+            ]),
           ),
         );
       },

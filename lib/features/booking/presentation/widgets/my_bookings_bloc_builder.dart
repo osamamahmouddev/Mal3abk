@@ -115,7 +115,12 @@ class MyBookingsBlocBuilder extends StatelessWidget {
                     physics: const AlwaysScrollableScrollPhysics(
                       parent: BouncingScrollPhysics(),
                     ),
-                    padding: EdgeInsets.all(16.r),
+                    padding: EdgeInsets.fromLTRB(
+                      16.r,
+                      16.r,
+                      16.r,
+                      16.r + MediaQuery.paddingOf(context).bottom,
+                    ),
                     itemCount: items.length + (hasMore ? 1 : 0),
                     separatorBuilder: (_, _) => hSpace(12),
                     itemBuilder: (context, index) => index == items.length

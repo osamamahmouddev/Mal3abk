@@ -78,10 +78,7 @@ class VenuePitchOptionCardWidget extends StatelessWidget {
                         ),
                       )
                     else
-                      Image.asset(
-                        AppAssets.pitchPhoto,
-                        fit: BoxFit.cover,
-                      ),
+                      Image.asset(AppAssets.pitchPhoto, fit: BoxFit.cover),
                     if (resolvedPhotos.length > 1)
                       Positioned(
                         bottom: 3.h,

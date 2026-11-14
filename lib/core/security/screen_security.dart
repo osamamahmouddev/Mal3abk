@@ -5,8 +5,7 @@ import 'package:flutter/services.dart';
 /// via Android FLAG_SECURE and iOS privacy controls.
 class ScreenSecurity {
   const ScreenSecurity({MethodChannel? channel})
-    : _channel =
-          channel ?? const MethodChannel('com.example.mal3abk/security');
+    : _channel = channel ?? const MethodChannel('com.example.mal3abk/security');
 
   final MethodChannel _channel;
 

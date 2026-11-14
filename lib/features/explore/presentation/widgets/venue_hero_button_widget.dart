@@ -6,13 +6,17 @@ import '../../../../core/styles/app_colors.dart';
 
 class VenueHeroButtonWidget extends StatelessWidget {
   const VenueHeroButtonWidget({
-    required this.iconAsset,
     required this.onTap,
+    this.iconAsset,
+    this.icon,
     super.key,
     this.mirrorInLtr = false,
   });
 
-  final String iconAsset;
+  final String? iconAsset;
+
+  /// Drawn instead of [iconAsset] when the icon animates by itself.
+  final Widget? icon;
   final VoidCallback onTap;
   final bool mirrorInLtr;
 
@@ -36,13 +40,19 @@ class VenueHeroButtonWidget extends StatelessWidget {
           onTap: onTap,
           customBorder: const CircleBorder(),
           child: Padding(
-            padding: EdgeInsets.all(12.r),
-            child: Transform.flip(
-              flipX:
-                  mirrorInLtr &&
-                  Directionality.of(context) == TextDirection.ltr,
-              child: SvgPicture.asset(iconAsset, width: 20.r, height: 20.r),
-            ),
+            padding: EdgeInsets.all(icon == null ? 12.r : 6.r),
+            child:
+                icon ??
+                Transform.flip(
+                  flipX:
+                      mirrorInLtr &&
+                      Directionality.of(context) == TextDirection.ltr,
+                  child: SvgPicture.asset(
+                    iconAsset!,
+                    width: 20.r,
+                    height: 20.r,
+                  ),
+                ),
           ),
         ),
       ),

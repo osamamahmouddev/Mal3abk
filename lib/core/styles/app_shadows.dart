@@ -25,9 +25,9 @@ class AppShadows {
   static List<BoxShadow> get redGlow => [
     BoxShadow(
       color: AppColors.redShadow,
-      offset: Offset(0, 10.h),
-      blurRadius: 22.r,
-      spreadRadius: -11.r,
+      offset: Offset(0, 6.h),
+      blurRadius: 16.r,
+      spreadRadius: -8.r,
     ),
   ];
 

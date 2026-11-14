@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/widgets/fade_slide_in_widget.dart';
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/widgets/custom_state_widget.dart';
 import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
@@ -33,12 +34,20 @@ class DiscoverTeamsBlocBuilder extends StatelessWidget {
               },
               child: ListView.separated(
                 physics: const BouncingScrollPhysics(),
-                padding: EdgeInsets.fromLTRB(16.w, 4.h, 16.w, 16.h),
+                padding: EdgeInsets.fromLTRB(
+                  16.w,
+                  4.h,
+                  16.w,
+                  16.h + MediaQuery.paddingOf(context).bottom,
+                ),
                 itemCount: teams.length + (hasMore ? 1 : 0),
                 separatorBuilder: (_, _) => hSpace(10),
                 itemBuilder: (_, index) => index == teams.length
                     ? const Center(child: CircularProgressIndicator.adaptive())
-                    : DiscoverTeamCardWidget(team: teams[index]),
+                    : FadeSlideInWidget(
+                        index: index,
+                        child: DiscoverTeamCardWidget(team: teams[index]),
+                      ),
               ),
             ),
           DiscoverTeamsError(:final message) => CustomStateWidget(

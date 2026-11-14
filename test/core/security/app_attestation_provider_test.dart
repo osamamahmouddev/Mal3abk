@@ -11,11 +11,14 @@ void main() {
     expect(token, equals('dev-app-integrity-token'));
   });
 
-  test('returns null in production until native store attestation is configured', () async {
-    const prodEnv = ProdEnvConfig();
-    const provider = AppAttestationProvider(envConfig: prodEnv);
+  test(
+    'returns null in production until native store attestation is configured',
+    () async {
+      const prodEnv = ProdEnvConfig();
+      const provider = AppAttestationProvider(envConfig: prodEnv);
 
-    final token = await provider.getAttestationToken();
-    expect(token, isNull);
-  });
+      final token = await provider.getAttestationToken();
+      expect(token, isNull);
+    },
+  );
 }

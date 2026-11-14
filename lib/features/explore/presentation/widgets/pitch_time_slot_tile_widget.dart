@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/animations/app_animations.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 
@@ -31,46 +32,68 @@ class PitchTimeSlotTileWidget extends StatelessWidget {
         ? AppColors.textDisabled
         : (isSelected ? AppColors.white : AppColors.textPrimary);
 
-    return Material(
-      color: background,
-      shape: RoundedRectangleBorder(
-        borderRadius: radius,
-        side: isBooked || isSelected
-            ? BorderSide.none
-            : const BorderSide(color: AppColors.border),
-      ),
-      child: InkWell(
-        onTap: isBooked ? null : onTap,
-        borderRadius: radius,
-        child: Container(
-          height: 58.h,
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                time,
-                style: AppTextStyles.font15Bold.copyWith(
-                  color: timeColor,
-                  decoration: isBooked ? TextDecoration.lineThrough : null,
-                  decorationColor: AppColors.textDisabled,
-                ),
+    final duration = AppAnimations.duration(context, AppAnimations.base);
+    return AnimatedScale(
+      duration: duration,
+      curve: AppAnimations.spring,
+      scale: isSelected ? 1.04 : 1,
+      child: AnimatedContainer(
+        duration: duration,
+        curve: AppAnimations.standard,
+        decoration: BoxDecoration(
+          color: background,
+          borderRadius: radius,
+          border: Border.all(
+            color: isBooked || isSelected ? background : AppColors.border,
+          ),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: AppColors.brandNavy.withValues(alpha: 0.28),
+                    blurRadius: 14.r,
+                    offset: Offset(0, 6.h),
+                  ),
+                ]
+              : const [],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: isBooked ? null : onTap,
+            borderRadius: radius,
+            child: Container(
+              height: 58.h,
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    time,
+                    style: AppTextStyles.font15Bold.copyWith(
+                      color: timeColor,
+                      decoration: isBooked ? TextDecoration.lineThrough : null,
+                      decorationColor: AppColors.textDisabled,
+                    ),
+                  ),
+                  if (isBooked)
+                    Text(
+                      'explore.slots.booked'.tr(context: context),
+                      style: AppTextStyles.font10Regular.copyWith(
+                        color: AppColors.textDisabled,
+                      ),
+                    )
+                  else if (isNextDay)
+                    Text(
+                      'explore.slots.next_day'.tr(context: context),
+                      style: AppTextStyles.font10Bold.copyWith(
+                        color: isSelected
+                            ? AppColors.white
+                            : AppColors.brandRed,
+                      ),
+                    ),
+                ],
               ),
-              if (isBooked)
-                Text(
-                  'explore.slots.booked'.tr(context: context),
-                  style: AppTextStyles.font10Regular.copyWith(
-                    color: AppColors.textDisabled,
-                  ),
-                )
-              else if (isNextDay)
-                Text(
-                  'explore.slots.next_day'.tr(context: context),
-                  style: AppTextStyles.font10Bold.copyWith(
-                    color: isSelected ? AppColors.white : AppColors.brandRed,
-                  ),
-                ),
-            ],
+            ),
           ),
         ),
       ),

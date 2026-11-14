@@ -16,6 +16,9 @@ Widget hSpace(double height) => _AppSpacer(size: height, isHeight: true);
 /// ensuring that layout spacing is never collapsed to zero.
 Widget vSpace(double width) => _AppSpacer(size: width, isHeight: false);
 
+/// Whether [widget] is one of the [hSpace] / [vSpace] gaps.
+bool isAppSpacer(Widget widget) => widget is _AppSpacer;
+
 class _AppSpacer extends LeafRenderObjectWidget {
   const _AppSpacer({required this.size, required this.isHeight});
 

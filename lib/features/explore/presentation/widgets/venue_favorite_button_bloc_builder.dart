@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/styles/app_assets.dart';
+import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
+
+import '../../../../core/animations/favorite_heart_widget.dart';
 import '../cubit/favorite_toggle_cubit.dart';
 import '../cubit/favorite_toggle_state.dart';
 import 'venue_hero_button_widget.dart';
@@ -29,9 +31,7 @@ class VenueFavoriteButtonBlocBuilder extends StatelessWidget {
           loaded: loadedIsFavorite,
         );
         return VenueHeroButtonWidget(
-          iconAsset: isFavorite
-              ? AppAssets.icHeartFilled
-              : AppAssets.icHeartOutline,
+          icon: FavoriteHeartWidget(isFavorite: isFavorite, size: 20.r),
           onTap: () {
             HapticFeedback.lightImpact();
             favorites.toggle(venueId, loaded: loadedIsFavorite);

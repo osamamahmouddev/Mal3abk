@@ -10,11 +10,15 @@ class CustomSkeletonWidget extends HookWidget {
     this.width,
     this.height,
     this.borderRadius,
+    this.color = AppColors.border,
   });
 
   final double? width;
   final double? height;
   final double? borderRadius;
+
+  /// Pick a lighter or darker tone for use on a dark surface.
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +45,7 @@ class CustomSkeletonWidget extends HookWidget {
           width: width,
           height: height,
           decoration: BoxDecoration(
-            color: AppColors.border,
+            color: color,
             borderRadius: BorderRadius.circular((borderRadius ?? 8).r),
           ),
         ),
