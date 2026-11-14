@@ -24,18 +24,21 @@ class FadeIndexedStackWidget extends StatelessWidget {
         for (final (i, child) in children.indexed)
           IgnorePointer(
             ignoring: i != index,
-            child: TickerMode(
-              enabled: i == index,
-              child: AnimatedOpacity(
+            child: AnimatedOpacity(
+              duration: duration,
+              curve: AppAnimations.standard,
+              opacity: i == index ? 1 : 0,
+              child: AnimatedSlide(
                 duration: duration,
                 curve: AppAnimations.standard,
-                opacity: i == index ? 1 : 0,
-                child: AnimatedSlide(
-                  duration: duration,
-                  curve: AppAnimations.standard,
-                  offset: i == index
-                      ? Offset.zero
-                      : Offset((i < index ? -0.06 : 0.06) * (rtl ? -1 : 1), 0),
+                offset: i == index
+                    ? Offset.zero
+                    : Offset((i < index ? -0.06 : 0.06) * (rtl ? -1 : 1), 0),
+                // Only the hidden child's own animations pause. Wrapping the
+                // fade too would freeze it at full opacity, and the old tab
+                // would keep showing through the new one.
+                child: TickerMode(
+                  enabled: i == index,
                   child: ExcludeSemantics(excluding: i != index, child: child),
                 ),
               ),
