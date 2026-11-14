@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -8,15 +9,33 @@ import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_shadows.dart';
 import '../../../../core/styles/app_text_styles.dart';
+import '../../../../core/utils/cairo_time.dart';
 import '../../../../core/widgets/custom_button.dart';
+import '../../../explore/data/models/explore_filter_model.dart';
 import '../../../main_shell/presentation/widgets/main_shell_scope_widget.dart';
+import '../../data/models/play_time_model.dart';
 import 'home_hero_pill_widget.dart';
+import 'home_play_time_sheet_widget.dart';
 
-class HomeHeroSearchCardWidget extends StatelessWidget {
+/// "When do you want to play?": the player picks a day this week and a
+/// kick-off hour, and the search opens Explore with venues free then.
+class HomeHeroSearchCardWidget extends HookWidget {
   const HomeHeroSearchCardWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final lang = context.locale.languageCode;
+    final choice = useState(PlayTimeModel.suggest(CairoTime.now()));
+    final day = choice.value.dayFrom(CairoTime.today());
+
+    Future<void> pickTime() async {
+      final picked = await HomePlayTimeSheetWidget.show(
+        context,
+        initial: choice.value,
+      );
+      if (picked != null) choice.value = picked;
+    }
+
     return Container(
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
@@ -48,14 +67,21 @@ class HomeHeroSearchCardWidget extends StatelessWidget {
                     Expanded(
                       child: HomeHeroPillWidget(
                         iconAsset: AppAssets.icCalendarWhite,
-                        label: 'home.today'.tr(context: context),
+                        label: CairoTime.dayLabel(
+                          day,
+                          lang,
+                          today: 'home.today'.tr(context: context),
+                          tomorrow: 'home.tomorrow'.tr(context: context),
+                        ),
+                        onTap: pickTime,
                       ),
                     ),
                     vSpace(8),
                     Expanded(
                       child: HomeHeroPillWidget(
                         iconAsset: AppAssets.icClockWhite,
-                        label: 'home.default_time'.tr(context: context),
+                        label: CairoTime.clockLabel(choice.value.hour, lang),
+                        onTap: pickTime,
                       ),
                     ),
                   ],
@@ -74,10 +100,23 @@ class HomeHeroSearchCardWidget extends StatelessWidget {
                   textStyle: AppTextStyles.font16Bold.copyWith(
                     color: AppColors.white,
                   ),
-                  onTap: () => MainShellScopeWidget.switchTab(
-                    context,
-                    MainShellScopeWidget.exploreTab,
-                  ),
+                  onTap: () {
+                    // The card may have been on screen for hours: an hour
+                    // that has passed moves to the next one still ahead.
+                    final now = CairoTime.now();
+                    final current = choice.value.onDay(
+                      choice.value.dayOffset,
+                      now,
+                    );
+                    choice.value = current;
+                    MainShellScopeWidget.openExplore(
+                      context,
+                      ExploreFilterModel(
+                        day: current.dayFrom(CairoTime.today()),
+                        startHour: current.hour,
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
