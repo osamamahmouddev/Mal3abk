@@ -11,8 +11,9 @@ class MyTeamsCubit extends Cubit<MyTeamsState>
 
   final TeamsRepo teamsRepo;
 
+  /// A reload keeps the current list on screen until the new one arrives.
   Future<void> load() async {
-    emitIfOpen(const MyTeamsState.loading());
+    if (state is! MyTeamsSuccess) emitIfOpen(const MyTeamsState.loading());
     final result = await teamsRepo.getMyTeams();
     result.when(
       success: (teams) => emitIfOpen(MyTeamsState.success(teams)),
