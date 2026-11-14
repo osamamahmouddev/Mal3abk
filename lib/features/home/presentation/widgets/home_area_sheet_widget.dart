@@ -19,14 +19,17 @@ typedef PickedArea = ({String? city, String? area, bool nearMe});
 
 /// Bottom sheet for choosing the area the home feed shows.
 class HomeAreaSheetWidget extends HookWidget {
-  const HomeAreaSheetWidget({this.initialCity, super.key});
+  const HomeAreaSheetWidget({this.initialCity, this.initialArea, super.key});
 
+  /// The area the feed shows now, preselected so the player sees it.
   final String? initialCity;
+  final String? initialArea;
 
   static Future<PickedArea?> show(
     BuildContext context, {
     required GovernoratesCubit governorates,
     String? initialCity,
+    String? initialArea,
   }) {
     return showModalBottomSheet<PickedArea>(
       context: context,
@@ -34,7 +37,10 @@ class HomeAreaSheetWidget extends HookWidget {
       backgroundColor: AppColors.transparent,
       builder: (_) => BlocProvider<GovernoratesCubit>.value(
         value: governorates,
-        child: HomeAreaSheetWidget(initialCity: initialCity),
+        child: HomeAreaSheetWidget(
+          initialCity: initialCity,
+          initialArea: initialArea,
+        ),
       ),
     );
   }
@@ -109,6 +115,7 @@ class HomeAreaSheetWidget extends HookWidget {
                 area: area,
                 isRequired: false,
                 initialCity: initialCity,
+                initialArea: initialArea,
               ),
               hSpace(24),
               CustomButton(

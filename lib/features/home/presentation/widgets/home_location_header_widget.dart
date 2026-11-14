@@ -33,6 +33,7 @@ class HomeLocationHeaderWidget extends StatelessWidget {
         context,
         governorates: context.read<GovernoratesCubit>(),
         initialCity: current?.city,
+        initialArea: current?.area,
       );
       if (picked == null) return;
       if (picked.nearMe) {
