@@ -27,44 +27,71 @@ class LeaderboardBlocBuilder extends StatelessWidget {
             :final myTeamIds,
             :final hasMore,
           ) =>
-            NotificationListener<ScrollEndNotification>(
-              onNotification: (notification) {
-                if (hasMore && notification.metrics.extentAfter < 300) {
-                  context.read<LeaderboardCubit>().loadMore();
-                }
-                return false;
-              },
-              child: ListView(
-                physics: const BouncingScrollPhysics(),
-                padding: EdgeInsets.only(bottom: 96.h),
-                children: [
-                  RankingsHeaderWidget(
-                    podium: entries.take(3).toList(),
-                    governorate: governorate,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        if (entries.isEmpty)
-                          EmptyNoteBoxWidget(
-                            text: 'teams.rankings.empty'.tr(context: context),
+            // The title, region filters and podium stay put; only the
+            // table under them scrolls (and pages in more teams).
+            Column(
+              children: [
+                RankingsHeaderWidget(
+                  podium: entries.take(3).toList(),
+                  governorate: governorate,
+                ),
+                Expanded(
+                  child: NotificationListener<ScrollEndNotification>(
+                    onNotification: (notification) {
+                      if (hasMore && notification.metrics.extentAfter < 300) {
+                        context.read<LeaderboardCubit>().loadMore();
+                      }
+                      return false;
+                    },
+                    child: entries.length > 3
+                        // Column titles stay pinned; only the rows scroll.
+                        ? Padding(
+                            padding: EdgeInsets.fromLTRB(
+                              16.w,
+                              12.h,
+                              16.w,
+                              16.h,
+                            ),
+                            child: Align(
+                              alignment: Alignment.topCenter,
+                              child: RankingsTableWidget(
+                                entries: entries.skip(3).toList(),
+                                myTeamIds: myTeamIds,
+                                footer: PlainNoteBoxWidget(
+                                  text: 'teams.rankings.note'.tr(
+                                    context: context,
+                                  ),
+                                ),
+                              ),
+                            ),
                           )
-                        else if (entries.length > 3)
-                          RankingsTableWidget(
-                            entries: entries.skip(3).toList(),
-                            myTeamIds: myTeamIds,
+                        : ListView(
+                            physics: const BouncingScrollPhysics(),
+                            padding: EdgeInsets.fromLTRB(
+                              16.w,
+                              12.h,
+                              16.w,
+                              16.h,
+                            ),
+                            children: [
+                              if (entries.isEmpty) ...[
+                                EmptyNoteBoxWidget(
+                                  text: 'teams.rankings.empty'.tr(
+                                    context: context,
+                                  ),
+                                ),
+                                hSpace(10),
+                              ],
+                              PlainNoteBoxWidget(
+                                text: 'teams.rankings.note'.tr(
+                                  context: context,
+                                ),
+                              ),
+                            ],
                           ),
-                        hSpace(10),
-                        PlainNoteBoxWidget(
-                          text: 'teams.rankings.note'.tr(context: context),
-                        ),
-                      ],
-                    ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           LeaderboardError(:final message) => CustomStateWidget(
             title: message.tr(context: context),

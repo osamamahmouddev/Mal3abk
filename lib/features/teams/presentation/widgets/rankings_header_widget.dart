@@ -11,6 +11,7 @@ import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/theme/app_system_ui.dart';
 import '../../../../core/widgets/app_on_dark_back_button_widget.dart';
+import '../../../../core/routes/routes.dart';
 import '../../data/models/team_leaderboard_entry_model.dart';
 import 'leaderboard_filter_bloc_builder.dart';
 import 'rankings_podium_column_widget.dart';
@@ -87,6 +88,10 @@ class RankingsHeaderWidget extends StatelessWidget {
                                 points: pts(entry),
                                 blockHeight: heights[index],
                                 isWinner: index == 0,
+                                onTap: () => Navigator.of(context).pushNamed(
+                                  AppRoutes.teamProfile,
+                                  arguments: entry.teamId,
+                                ),
                               ),
                               null => const SizedBox.shrink(),
                             },
