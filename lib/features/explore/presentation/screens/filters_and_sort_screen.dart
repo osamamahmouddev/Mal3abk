@@ -86,6 +86,7 @@ class FiltersAndSortScreen extends HookWidget {
               timeWindow: () => current.timeWindow?.name == name
                   ? null
                   : ExploreTimeWindow.values.byName(name),
+              startHour: () => null,
             ),
           ),
           FilterSectionWidget(

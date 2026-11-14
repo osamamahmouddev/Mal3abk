@@ -18,12 +18,26 @@ class ExploreRepoImpl implements ExploreRepo {
 
   final ExploreApiService exploreApiService;
 
-  /// Today's Cairo date for a kick-off window, as the API expects it.
+  /// The Cairo date to search, as the API expects it: the chosen day, or
+  /// today when only a time is set. The API needs a date for any time.
   static String? _dateFor(ExploreFilterModel filter) {
-    if (filter.timeWindow == null) return null;
-    final today = CairoTime.today();
-    return '${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}';
+    final hasTime = filter.timeWindow != null || filter.startHour != null;
+    if (filter.day == null && !hasTime) return null;
+    final day = filter.day ?? CairoTime.today();
+    return '${day.year}-${_two(day.month)}-${_two(day.day)}';
   }
+
+  /// An exact hour is a slot starting any minute within it (8:00-8:59), so
+  /// half-hour kick-offs are found too; otherwise the window's bounds.
+  static String? _fromFor(ExploreFilterModel filter) => filter.startHour != null
+      ? '${_two(filter.startHour!)}:00'
+      : filter.timeWindow?.from;
+
+  static String? _toFor(ExploreFilterModel filter) => filter.startHour != null
+      ? '${_two(filter.startHour!)}:59'
+      : filter.timeWindow?.to;
+
+  static String _two(int value) => value.toString().padLeft(2, '0');
 
   static String? _facilities(ExploreFilterModel filter) =>
       filter.facilities.isEmpty ? null : filter.facilities.join(',');
@@ -43,8 +57,8 @@ class ExploreRepoImpl implements ExploreRepo {
       city: city,
       area: area,
       date: _dateFor(filter),
-      from: filter.timeWindow?.from,
-      to: filter.timeWindow?.to,
+      from: _fromFor(filter),
+      to: _toFor(filter),
       maxPrice: filter.maxPrice,
       pitchType: filter.pitchType,
       surface: filter.surface,
@@ -68,8 +82,8 @@ class ExploreRepoImpl implements ExploreRepo {
       north: bounds.north,
       east: bounds.east,
       date: _dateFor(filter),
-      from: filter.timeWindow?.from,
-      to: filter.timeWindow?.to,
+      from: _fromFor(filter),
+      to: _toFor(filter),
       maxPrice: filter.maxPrice,
       pitchType: filter.pitchType,
       surface: filter.surface,

@@ -13,6 +13,7 @@ import '../../../../core/widgets/selectable_tile_widget.dart';
 import '../../data/models/explore_filter_model.dart';
 import '../cubit/explore_list_cubit.dart';
 import '../cubit/explore_list_state.dart';
+import 'explore_filter_when_label_extension.dart';
 
 /// One-tap shortcuts over the same filters as the filters screen.
 class ExploreQuickFiltersBlocBuilder extends StatelessWidget {
@@ -27,7 +28,19 @@ class ExploreQuickFiltersBlocBuilder extends StatelessWidget {
       builder: (context, _) {
         final cubit = context.read<ExploreListCubit>();
         final f = cubit.filter;
+        final when = f.hasPickedWhen ? f.whenLabel(context) : null;
         final chips = [
+          // The day and hour picked on the home card; tapping clears them.
+          if (when != null)
+            (
+              when,
+              true,
+              () => f.copyWith(
+                day: () => null,
+                startHour: () => null,
+                timeWindow: () => null,
+              ),
+            ),
           (
             'explore.quick.near_me'.tr(context: context),
             cubit.near != null && f.sort == ExploreSortOption.distance,
@@ -40,6 +53,9 @@ class ExploreQuickFiltersBlocBuilder extends StatelessWidget {
               timeWindow: () => f.timeWindow == ExploreTimeWindow.evening
                   ? null
                   : ExploreTimeWindow.evening,
+              // "Tonight" is today, whatever day was picked before.
+              day: () => null,
+              startHour: () => null,
             ),
           ),
           (

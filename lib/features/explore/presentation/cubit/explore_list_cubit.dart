@@ -41,6 +41,16 @@ class ExploreListCubit extends Cubit<ExploreListState>
     return true;
   }
 
+  /// A search asked for from another tab: its day and kick-off hour replace
+  /// the current "when", and the other filters the player set are kept.
+  Future<void> applyRequest(ExploreFilterModel request) => applyFilter(
+    filter.copyWith(
+      day: () => request.day,
+      startHour: () => request.startHour,
+      timeWindow: () => request.startHour == null ? request.timeWindow : null,
+    ),
+  );
+
   Future<void> applyFilter(ExploreFilterModel next) {
     filter = next;
     emitIfOpen(const ExploreListState.loading());

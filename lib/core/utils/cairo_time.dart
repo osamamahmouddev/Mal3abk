@@ -35,6 +35,27 @@ class CairoTime {
   static String hourLabel(int hour, String languageCode) =>
       DateFormat('h a', languageCode).format(DateTime(2000, 1, 1, hour));
 
+  /// "٨:٠٠ م" for [hour] o'clock.
+  static String clockLabel(int hour, String languageCode) =>
+      DateFormat('h:mm a', languageCode).format(DateTime(2000, 1, 1, hour));
+
+  /// [today] or [tomorrow] (already translated) for those dates, otherwise
+  /// the weekday and day number: "الخميس ٢٠".
+  static String dayLabel(
+    DateTime day,
+    String languageCode, {
+    required String today,
+    required String tomorrow,
+  }) {
+    final start = CairoTime.today();
+    final date = DateTime(day.year, day.month, day.day);
+    if (date == start) return today;
+    if (date == DateTime(start.year, start.month, start.day + 1)) {
+      return tomorrow;
+    }
+    return DateFormat('EEEE d', languageCode).format(date);
+  }
+
   /// "السبت ٢ أغسطس · ٩:٠٠ م"
   static String dayAndTime(DateTime utc, String languageCode) {
     final local = fromUtc(utc);

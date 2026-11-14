@@ -15,6 +15,7 @@ class ExploreSearchSummaryWidget extends StatelessWidget {
     this.floating = false,
     this.titleKey = 'explore.summary_all',
     this.subtitleKey = 'explore.summary_when_any',
+    this.subtitle,
     this.activeFilters = 0,
     this.onOpenFilters,
   });
@@ -25,6 +26,9 @@ class ExploreSearchSummaryWidget extends StatelessWidget {
   /// Where the list is from: the whole country or around the player.
   final String titleKey;
   final String subtitleKey;
+
+  /// The search's day and time, shown instead of [subtitleKey] when given.
+  final String? subtitle;
   final int activeFilters;
 
   /// Hidden when null.
@@ -77,7 +81,7 @@ class ExploreSearchSummaryWidget extends StatelessWidget {
                             style: AppTextStyles.font14Bold,
                           ),
                           Text(
-                            subtitleKey.tr(context: context),
+                            subtitle ?? subtitleKey.tr(context: context),
                             style: AppTextStyles.font11Regular,
                           ),
                         ],

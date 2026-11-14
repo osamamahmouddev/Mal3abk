@@ -7,6 +7,7 @@ import '../../../../core/routes/tab_root_observer.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/animations/app_animations.dart';
 import '../../../../core/widgets/main_nav_bar_widget.dart';
+import '../../../explore/data/models/explore_filter_model.dart';
 import '../widgets/main_shell_scope_widget.dart';
 import '../widgets/main_tab_navigator_widget.dart';
 
@@ -20,6 +21,7 @@ class MainShellScreen extends HookWidget {
   Widget build(BuildContext context) {
     const tabs = MainNavBarWidget.tabRoutes;
     final currentIndex = useState(MainShellScopeWidget.homeTab);
+    final exploreRequest = useValueNotifier<ExploreFilterModel?>(null);
     final visitedTabs = useRef(<int>{MainShellScopeWidget.homeTab});
     final navigatorKeys = useMemoized(
       () => List.generate(tabs.length, (_) => GlobalKey<NavigatorState>()),
@@ -81,6 +83,7 @@ class MainShellScreen extends HookWidget {
       },
       child: MainShellScopeWidget(
         onSwitchTab: switchTab,
+        exploreRequest: exploreRequest,
         child: Scaffold(
           backgroundColor: AppColors.pageBackground,
           // The nav bar floats over the page: content scrolls behind its

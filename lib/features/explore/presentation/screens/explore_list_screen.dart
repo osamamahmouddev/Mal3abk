@@ -4,6 +4,7 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../data/models/explore_venue_card_model.dart';
+import '../widgets/explore_request_listener_widget.dart';
 import '../widgets/explore_list_bloc_builder.dart';
 import 'pitch_and_time_screen.dart';
 import '../widgets/explore_results_count_bloc_builder.dart';
@@ -25,31 +26,33 @@ class ExploreListScreen extends StatelessWidget {
           ),
         );
 
-    return Scaffold(
-      backgroundColor: AppColors.pageBackground,
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(16.w, 14.h, 16.w, 10.h),
-              child: const ExploreSearchSummaryBlocBuilder(),
-            ),
-            const ExploreQuickFiltersBlocBuilder(),
-            Padding(
-              padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 0),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ExploreResultsCountBlocBuilder(),
-                  ExploreViewToggleWidget(isMap: false),
-                ],
+    return ExploreRequestListenerWidget(
+      child: Scaffold(
+        backgroundColor: AppColors.pageBackground,
+        body: SafeArea(
+          bottom: false,
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(16.w, 14.h, 16.w, 10.h),
+                child: const ExploreSearchSummaryBlocBuilder(),
               ),
-            ),
-            Expanded(
-              child: ExploreListBlocBuilder(onSlotTap: openPitchAndTime),
-            ),
-          ],
+              const ExploreQuickFiltersBlocBuilder(),
+              Padding(
+                padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 0),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ExploreResultsCountBlocBuilder(),
+                    ExploreViewToggleWidget(isMap: false),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: ExploreListBlocBuilder(onSlotTap: openPitchAndTime),
+              ),
+            ],
+          ),
         ),
       ),
     );
