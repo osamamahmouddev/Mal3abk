@@ -23,7 +23,10 @@ class RefreshOnReturnWidget extends HookWidget {
     // of its navigator, and the shell muting tickers of hidden tabs.
     final visible =
         (ModalRoute.of(context)?.isCurrent ?? true) &&
-        TickerMode.valuesOf(context).enabled;
+        // `of` works on every Flutter we build with: the TestFlight workflow
+        // pins 3.38, which has no `valuesOf`, and newer SDKs only deprecate it.
+        // ignore: deprecated_member_use
+        TickerMode.of(context);
     final wasVisible = useRef(visible);
 
     useEffect(() {
