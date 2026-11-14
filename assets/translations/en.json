@@ -216,6 +216,7 @@
       "name_hint": "Ahmed Samy",
       "area_label": "Area you play in",
       "area_hint": "Nasr City, Cairo",
+    "other_area": "Another area",
       "pos_label": "Where do you play?",
       "pos_gk": "Goalkeeper",
       "pos_def": "Defender",
