@@ -71,7 +71,12 @@ class ExploreListBlocBuilder extends StatelessWidget {
                       physics: const AlwaysScrollableScrollPhysics(
                         parent: BouncingScrollPhysics(),
                       ),
-                      padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
+                      padding: EdgeInsets.fromLTRB(
+                        16.w,
+                        16.h,
+                        16.w,
+                        16.h + MediaQuery.paddingOf(context).bottom,
+                      ),
                       itemCount: result.items.length,
                       separatorBuilder: (_, _) => hSpace(12),
                       itemBuilder: (context, index) {

@@ -37,7 +37,12 @@ class MyTeamsBlocBuilder extends StatelessWidget {
                 physics: const AlwaysScrollableScrollPhysics(
                   parent: BouncingScrollPhysics(),
                 ),
-                padding: EdgeInsets.all(16.r),
+                padding: EdgeInsets.fromLTRB(
+                  16.r,
+                  16.r,
+                  16.r,
+                  16.r + MediaQuery.paddingOf(context).bottom,
+                ),
                 itemCount: teams.length,
                 separatorBuilder: (_, _) => hSpace(12),
                 itemBuilder: (_, index) => FadeSlideInWidget(

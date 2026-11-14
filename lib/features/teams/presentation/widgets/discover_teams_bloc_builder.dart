@@ -34,7 +34,12 @@ class DiscoverTeamsBlocBuilder extends StatelessWidget {
               },
               child: ListView.separated(
                 physics: const BouncingScrollPhysics(),
-                padding: EdgeInsets.fromLTRB(16.w, 4.h, 16.w, 16.h),
+                padding: EdgeInsets.fromLTRB(
+                  16.w,
+                  4.h,
+                  16.w,
+                  16.h + MediaQuery.paddingOf(context).bottom,
+                ),
                 itemCount: teams.length + (hasMore ? 1 : 0),
                 separatorBuilder: (_, _) => hSpace(10),
                 itemBuilder: (_, index) => index == teams.length

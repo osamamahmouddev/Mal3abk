@@ -83,6 +83,9 @@ class MainShellScreen extends HookWidget {
         onSwitchTab: switchTab,
         child: Scaffold(
           backgroundColor: AppColors.pageBackground,
+          // The nav bar floats over the page: content scrolls behind its
+          // frosted glass, and lists add its height as bottom padding.
+          extendBody: true,
           bottomNavigationBar: isAtTabRoot
               ? MainNavBarWidget(
                   currentIndex: currentIndex.value,
