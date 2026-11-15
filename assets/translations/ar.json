@@ -500,6 +500,9 @@
     "sample_time": "السبت ٢٦ يوليو · ٨:٠٠ – ٩:٠٠ م",
     "sample_manager": "أحمد سامي · ٠١٠١٢٣٤٥٦٧٨",
     "amount_0": "٠ ج.م",
+    "amount_50": "٥٠ ج.م",
+    "amount_100": "١٠٠ ج.م",
+    "amount_150": "١٥٠ ج.م",
     "agree_policy_required": "لازم توافق على سياسة الحجز الأول",
     "deposit": {
       "title": "دفع العربون",
@@ -1092,7 +1095,8 @@
   },
   "reference": {
     "governorate_hint": "اختار المحافظة",
-    "area_hint": "اكتب اسم منطقتك"
+    "area_hint": "اكتب اسم منطقتك",
+    "other_area": "منطقة تانية"
   },
   "force_update": {
     "title": "تحديث إجباري مطلوب",

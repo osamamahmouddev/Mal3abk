@@ -43,4 +43,31 @@ void main() {
       expect(text, isNot(contains('"summary_area"')));
     }
   });
+
+  test('all static translation keys in lib/ exist in ar.json and en.json', () {
+    final ar = _keys(
+      jsonDecode(File('assets/translations/ar.json').readAsStringSync())
+          as Map<String, dynamic>,
+    );
+    final keyPattern = RegExp(r"'([a-zA-Z0-9_]+(?:\.[a-zA-Z0-9_]+)+)'\.tr\(");
+    final missingInAr = <String>{};
+
+    for (final file in Directory('lib').listSync(recursive: true)) {
+      if (file is File && file.path.endsWith('.dart')) {
+        final content = file.readAsStringSync();
+        for (final match in keyPattern.allMatches(content)) {
+          final key = match.group(1)!;
+          if (!ar.contains(key)) {
+            missingInAr.add('$key (in ${file.path})');
+          }
+        }
+      }
+    }
+
+    expect(
+      missingInAr,
+      isEmpty,
+      reason: 'Keys used in code but missing in translations',
+    );
+  });
 }

@@ -491,6 +491,9 @@
     "sample_time": "Sat, Jul 26 · 8:00 – 9:00 PM",
     "sample_manager": "Ahmed Samy · 01012345678",
     "amount_0": "0 EGP",
+    "amount_50": "50 EGP",
+    "amount_100": "100 EGP",
+    "amount_150": "150 EGP",
     "agree_policy_required": "Please agree to the booking policy first",
     "deposit": {
       "title": "Pay deposit",
@@ -1083,7 +1086,8 @@
   },
   "reference": {
     "governorate_hint": "Choose a governorate",
-    "area_hint": "Type your area"
+    "area_hint": "Type your area",
+    "other_area": "Another area"
   },
   "force_update": {
     "title": "Update Required",
