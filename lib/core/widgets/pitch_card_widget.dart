@@ -7,6 +7,7 @@ import '../animations/favorite_heart_widget.dart';
 import '../extensions/app_display_extensions.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
+import '../utils/media_url.dart';
 import 'custom_card_widget.dart';
 import 'pitch_placeholder_widget.dart';
 import 'slot_chip_widget.dart';
@@ -44,6 +45,7 @@ class PitchCardWidget extends StatelessWidget {
         .replaceAll('/ ساعة', '')
         .replaceAll('/', '')
         .trim();
+    final resolvedUrl = MediaUrl.resolve(imageUrl);
 
     return CustomCardWidget(
       onTap: onTap,
@@ -60,9 +62,9 @@ class PitchCardWidget extends StatelessWidget {
                   width: 72.r,
                   height: 72.r,
                   color: AppColors.pitchGreenLight,
-                  child: imageUrl != null && imageUrl!.isNotEmpty
+                  child: resolvedUrl != null && resolvedUrl.isNotEmpty
                       ? CachedNetworkImage(
-                          imageUrl: imageUrl!,
+                          imageUrl: resolvedUrl,
                           fit: BoxFit.cover,
                           memCacheWidth: 228,
                           placeholder: (_, _) => const PitchPlaceholderWidget(),

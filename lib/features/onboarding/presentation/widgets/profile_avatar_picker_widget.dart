@@ -6,6 +6,7 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
+import '../../../../core/utils/media_url.dart';
 
 class ProfileAvatarPickerWidget extends StatelessWidget {
   const ProfileAvatarPickerWidget({
@@ -48,7 +49,7 @@ class ProfileAvatarPickerWidget extends StatelessWidget {
                 fit: StackFit.expand,
                 alignment: Alignment.center,
                 children: [
-                  if (avatarUrl case final url?)
+                  if (MediaUrl.resolve(avatarUrl) case final url?)
                     CachedNetworkImage(
                       imageUrl: url,
                       fit: BoxFit.cover,

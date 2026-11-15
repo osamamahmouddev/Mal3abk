@@ -4,6 +4,7 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../styles/app_assets.dart';
+import '../utils/media_url.dart';
 
 /// A small square of the venue's cover photo. The built-in pitch pattern
 /// shows until the photo loads, if it fails, or when the venue has none.
@@ -27,7 +28,7 @@ class VenueThumbnailWidget extends StatelessWidget {
       height: size.r,
       fit: BoxFit.cover,
     );
-    final url = imageUrl;
+    final url = MediaUrl.resolve(imageUrl);
     return ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius.r),
       child: SizedBox.square(

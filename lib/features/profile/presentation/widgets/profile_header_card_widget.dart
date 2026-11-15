@@ -14,6 +14,7 @@ import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/theme/app_system_ui.dart';
+import '../../../../core/utils/media_url.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../onboarding/presentation/widgets/profile_setup_position_selector_widget.dart';
 import '../../data/models/profile_overview_model.dart';
@@ -59,11 +60,12 @@ class ProfileHeaderCardWidget extends StatelessWidget {
                           child: CircleAvatar(
                             radius: 36.r,
                             backgroundColor: AppColors.brandRed,
-                            foregroundImage: overview.avatarUrl == null
-                                ? null
-                                : CachedNetworkImageProvider(
-                                    overview.avatarUrl!,
-                                  ),
+                            foregroundImage:
+                                MediaUrl.resolve(overview.avatarUrl) == null
+                                    ? null
+                                    : CachedNetworkImageProvider(
+                                        MediaUrl.resolve(overview.avatarUrl)!,
+                                      ),
                             child: Text(
                               profile.fullName.initials,
                               style: AppTextStyles.font24Bold.copyWith(

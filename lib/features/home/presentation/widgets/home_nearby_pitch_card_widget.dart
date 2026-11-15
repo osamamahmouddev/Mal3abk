@@ -8,6 +8,7 @@ import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_shadows.dart';
 import '../../../../core/styles/app_text_styles.dart';
+import '../../../../core/utils/media_url.dart';
 
 class HomeNearbyPitchCardWidget extends StatelessWidget {
   const HomeNearbyPitchCardWidget({
@@ -38,6 +39,7 @@ class HomeNearbyPitchCardWidget extends StatelessWidget {
       height: 96.h,
       fit: BoxFit.cover,
     );
+    final resolvedUrl = MediaUrl.resolve(imageUrl);
 
     return Container(
       width: 222.w,
@@ -59,10 +61,10 @@ class HomeNearbyPitchCardWidget extends StatelessWidget {
             children: [
               SizedBox(
                 height: 96.h,
-                child: imageUrl == null || imageUrl!.isEmpty
+                child: resolvedUrl == null || resolvedUrl.isEmpty
                     ? placeholder
                     : CachedNetworkImage(
-                        imageUrl: imageUrl!,
+                        imageUrl: resolvedUrl,
                         fit: BoxFit.cover,
                         memCacheWidth: 700,
                         placeholder: (_, _) => placeholder,

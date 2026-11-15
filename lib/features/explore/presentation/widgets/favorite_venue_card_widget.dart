@@ -10,6 +10,7 @@ import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_shadows.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/utils/cairo_time.dart';
+import '../../../../core/utils/media_url.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../data/models/explore_venue_card_model.dart';
 import 'favorite_remove_button_widget.dart';
@@ -36,6 +37,7 @@ class FavoriteVenueCardWidget extends StatelessWidget {
       fit: BoxFit.cover,
     );
     final next = venue.nextAvailableStartUtc;
+    final resolvedUrl = MediaUrl.resolve(venue.coverPhotoUrl);
 
     return Container(
       clipBehavior: Clip.antiAlias,
@@ -52,10 +54,10 @@ class FavoriteVenueCardWidget extends StatelessWidget {
             children: [
               Hero(
                 tag: 'venue-${venue.venueId}',
-                child: venue.coverPhotoUrl == null
+                child: resolvedUrl == null
                     ? banner
                     : CachedNetworkImage(
-                        imageUrl: venue.coverPhotoUrl!,
+                        imageUrl: resolvedUrl,
                         height: 120.h,
                         width: double.infinity,
                         fit: BoxFit.cover,
