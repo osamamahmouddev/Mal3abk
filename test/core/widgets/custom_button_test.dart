@@ -28,4 +28,30 @@ void main() {
 
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('displays SpinningBallWidget when isLoading is true', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      ScreenUtilPlusInit(
+        designSize: const Size(390, 844),
+        builder: (_, _) => MaterialApp(
+          home: Scaffold(
+            body: Center(
+              child: CustomButton(
+                text: 'حفظ',
+                isLoading: true,
+                onTap: () {},
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(find.byType(CustomButton), findsOneWidget);
+    expect(find.byKey(const ValueKey('loading')), findsOneWidget);
+    expect(find.text('حفظ'), findsNothing);
+  });
 }

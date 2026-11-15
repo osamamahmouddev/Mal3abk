@@ -6,6 +6,7 @@ import '../styles/app_colors.dart';
 import '../styles/app_motion.dart';
 import '../styles/app_text_styles.dart';
 import 'press_scale_widget.dart';
+import 'spinning_ball_widget.dart';
 
 enum CustomButtonType { primary, secondary, outline, ghost }
 
@@ -27,6 +28,8 @@ class CustomButton extends StatelessWidget {
     this.padding,
     this.icon,
     this.boxShadow,
+    this.loadingBallColor,
+    this.loadingPatternColor,
   });
 
   final String text;
@@ -44,6 +47,8 @@ class CustomButton extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final Widget? icon;
   final List<BoxShadow>? boxShadow;
+  final Color? loadingBallColor;
+  final Color? loadingPatternColor;
 
   @override
   Widget build(BuildContext context) {
@@ -104,11 +109,15 @@ class CustomButton extends StatelessWidget {
               child: isLoading
                   ? RSizedBox(
                       key: const ValueKey('loading'),
-                      width: 22.w,
-                      height: 22.h,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2.2,
-                        valueColor: AlwaysStoppedAnimation<Color>(fg),
+                      width: 24.w,
+                      height: 24.h,
+                      child: SpinningBallWidget(
+                        size: 24.r,
+                        ballColor:
+                            loadingBallColor ?? _resolveBallColor(type, bg),
+                        patternColor:
+                            loadingPatternColor ??
+                            _resolvePatternColor(type, bg),
                       ),
                     )
                   : Row(
@@ -139,5 +148,25 @@ class CustomButton extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  static Color _resolveBallColor(CustomButtonType type, Color bg) {
+    if (type == CustomButtonType.outline || type == CustomButtonType.ghost) {
+      return AppColors.brandRed;
+    }
+    if (bg.computeLuminance() > 0.6) {
+      return AppColors.brandRed;
+    }
+    return AppColors.white;
+  }
+
+  static Color _resolvePatternColor(CustomButtonType type, Color bg) {
+    if (type == CustomButtonType.outline || type == CustomButtonType.ghost) {
+      return AppColors.white;
+    }
+    if (bg.computeLuminance() > 0.6) {
+      return AppColors.white;
+    }
+    return AppColors.brandRed;
   }
 }
