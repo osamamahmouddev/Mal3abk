@@ -14,6 +14,7 @@ class CustomCardWidget extends StatelessWidget {
     this.borderRadius,
     this.backgroundColor = AppColors.white,
     this.borderColor = AppColors.borderCard,
+    this.width,
     this.onTap,
   });
 
@@ -23,6 +24,7 @@ class CustomCardWidget extends StatelessWidget {
   final double? borderRadius;
   final Color backgroundColor;
   final Color borderColor;
+  final double? width;
   final VoidCallback? onTap;
 
   @override
@@ -33,6 +35,7 @@ class CustomCardWidget extends StatelessWidget {
       enabled: onTap != null,
       scale: 0.98,
       child: Container(
+        width: width,
         margin: margin,
         decoration: BoxDecoration(
           borderRadius: effectiveRadius,
