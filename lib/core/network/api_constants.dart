@@ -104,6 +104,8 @@ class ApiConstants {
       '/api/v1/me/notification-preferences';
   static const String notificationPreference =
       '/api/v1/me/notification-preferences/{category}';
+  static const String registerPushToken = '/api/v1/me/devices/push-token';
+  static const String unregisterPushToken = '/api/v1/me/devices/push-token';
 
   static const String challenges = '/api/v1/matches/challenges';
   static const String challengeDetails = '/api/v1/matches/challenges/{id}';

@@ -44,6 +44,7 @@ import '../location/location_service.dart';
 import '../security/app_attestation_provider.dart';
 import '../security/biometric_lock.dart';
 import '../security/screen_security.dart';
+import '../services/push_notification_service.dart';
 import '../../features/explore/presentation/cubit/explore_map_cubit.dart';
 import '../../features/auth/data/apis/auth_api_service.dart';
 import '../../features/auth/data/repos/auth_repo_impl.dart';
@@ -208,6 +209,7 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
       authApiService: sl<AuthApiService>(),
       tokenStorage: sl<AuthTokenStorage>(),
       turnstileTokenProvider: sl<TurnstileTokenProvider>(),
+      pushNotificationService: sl<PushNotificationService>(),
     ),
   );
   sl.registerLazySingleton<NormalizePhoneNumberUseCase>(
@@ -502,6 +504,12 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
   sl.registerLazySingleton<NotificationsRepo>(
     () => NotificationsRepoImpl(
       notificationsApiService: sl<NotificationsApiService>(),
+    ),
+  );
+  sl.registerLazySingleton<PushNotificationService>(
+    () => PushNotificationService(
+      notificationsApiService: sl<NotificationsApiService>(),
+      tokenStorage: sl<AuthTokenStorage>(),
     ),
   );
   sl.registerFactory<NotificationsCubit>(

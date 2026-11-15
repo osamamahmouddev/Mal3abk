@@ -46,4 +46,10 @@ abstract class NotificationsApiService {
     @Path('category') String category,
     @Body() UpdateNotificationPreferenceRequestBody body,
   );
+
+  @POST(ApiConstants.registerPushToken)
+  Future<void> registerPushToken(@Body() Map<String, dynamic> body);
+
+  @DELETE(ApiConstants.unregisterPushToken)
+  Future<void> unregisterPushToken(@Body() Map<String, dynamic> body);
 }
