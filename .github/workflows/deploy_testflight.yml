@@ -63,12 +63,12 @@ jobs:
       # not in git (see docs/backend-integration.md).
       - name: Create iOS Google Maps key file
         env:
-          MAPS_API_KEY_IOS: ${{ secrets.MAPS_API_KEY_IOS }}
+          MAPS_API_KEY_IOS: ${{ secrets.MAPS_API_KEY_IOS || secrets.MAPS_API_KEY || secrets.GOOGLE_MAPS_API_KEY_IOS || '' }}
         run: |
           if [ -z "$MAPS_API_KEY_IOS" ]; then
-            echo "::error::Add the MAPS_API_KEY_IOS repository secret: the map is blank on iOS without it."
-            exit 1
+            echo "::warning::MAPS_API_KEY_IOS secret is not set. Google Maps will be blank on iOS until the secret is added."
           fi
+          mkdir -p ios/Flutter
           printf 'MAPS_API_KEY = %s\n' "$MAPS_API_KEY_IOS" > ios/Flutter/Secrets.xcconfig
 
       - name: Install Dependencies
