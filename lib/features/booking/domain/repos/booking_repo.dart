@@ -5,6 +5,7 @@ import '../../data/models/booking_quote_request_body.dart';
 import '../../data/models/booking_quote_response_model.dart';
 import '../../data/models/create_booking_request_body.dart';
 import '../../data/models/create_booking_response_model.dart';
+import '../../data/models/paymob_checkout_response_model.dart';
 import '../../data/models/player_booking_detail_model.dart';
 import '../../data/models/player_booking_summary_model.dart';
 import '../../data/models/upload_ticket_model.dart';
@@ -18,6 +19,8 @@ abstract class BookingRepo {
     required CreateBookingRequestBody body,
     required String idempotencyKey,
   });
+
+  Future<ApiResult<PaymobCheckoutResponseModel>> payCommission(String id);
 
   Future<ApiResult<PlayerBookingsPagedListModel>> getMyBookings({
     String? tab,

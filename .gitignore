@@ -30,23 +30,23 @@ settings.json
 .pub-cache/
 .pub/
 /build/
-/coverage/
 
-# Symbolication related
+# Symbol processing
 app.*.symbols
 
 # Obfuscation related
 app.*.map.json
 
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
+# Android Studio will create this file on sync of Gradle projects.
+.gradle/
+.project
+.settings/
 
-# Local environment
-.env
-.env.dev
-.env.prod
+# Flutter repo-specific consider removing
+/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+/packages/flutter_tools/test/data/dart_dependencies_test/**/.dart_tool/
+
+# Envied files
 lib/core/config/dev_env.g.dart
 lib/core/config/prod_env.g.dart
 
@@ -61,3 +61,10 @@ android/app/key.properties
 
 # iOS local secrets
 ios/Flutter/Secrets.xcconfig
+
+# Store submission assets (screenshots, SVGs)
+store-assets/*.png
+store-assets/AppStore/
+store-assets/GooglePlay/
+store-assets/source/
+store-assets/prep/

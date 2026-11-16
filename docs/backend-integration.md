@@ -6,8 +6,8 @@ How the player app talks to the Malabak API, and what is still waiting on the ba
 
 | Flavor | Entry point | API | Android app id |
 |---|---|---|---|
-| `dev` | `lib/main_dev.dart` | the API on your machine (port 5000) | `com.example.mal3abk.dev`, named "mal3abk dev" |
-| `prod` | `lib/main_prod.dart` (also `lib/main.dart`, so release builds and TestFlight get prod) | the live server | `com.example.mal3abk` |
+| `dev` | `lib/main_dev.dart` | the API on your machine (port 5000) | `com.malabak.app.dev`, named "mal3abk dev" |
+| `prod` | `lib/main_prod.dart` (also `lib/main.dart`, so release builds and TestFlight get prod) | the live server | `com.malabak.app` |
 
 ```bash
 fvm flutter run   --flavor dev  -t lib/main_dev.dart     # local API

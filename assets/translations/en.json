@@ -439,6 +439,13 @@
     }
   },
   "booking": {
+    "pay_online_paymob": "Online Payment via Paymob",
+    "paymob_instructions": "Pay the platform fee directly with bank card or mobile wallet to confirm your slot immediately.",
+    "platform_fee": "Platform Fee & Confirmation",
+    "remaining_at_venue": "Due at Venue (Cash or InstaPay)",
+    "pay_with_paymob_btn": "Pay Fee with Card or Wallet",
+    "or_pay_manual": "Or Transfer Manually & Upload Proof",
+    "paymob_launch_error": "Could not open online payment page. Please try again.",
     "back_to_home": "Back to Home",
     "review_title": "Booking Review",
     "details_title": "Booking Details",

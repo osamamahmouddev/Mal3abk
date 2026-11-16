@@ -12,8 +12,7 @@
 }
 
 # Keep the application activity and classes
--keep class com.example.mal3abk.** { *; }
--keep class com.systmgulf.mal3abk.** { *; }
+-keep class com.malabak.app.** { *; }
 
 # Keep attributes needed for reflection and annotations
 -keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod
@@ -33,3 +32,8 @@
 # Flutter Secure Storage
 -keep class androidx.security.crypto.** { *; }
 -keep class com.it_nomads.fluttersecurestorage.** { *; }
+
+# Flutter deferred components / play store splitcompat
+-dontwarn com.google.android.play.core.splitcompat.**
+-dontwarn com.google.android.play.core.splitinstall.**
+-dontwarn com.google.android.play.core.tasks.**

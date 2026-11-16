@@ -25,6 +25,12 @@ CreateBookingResponseModel _$CreateBookingResponseModelFromJson(
   ),
   holdExpiresAtUtc: json['holdExpiresAtUtc'] as String,
   paymentInstructions: json['paymentInstructions'] as String?,
+  pitchName: json['pitchName'] as String?,
+  venueName: json['venueName'] as String?,
+  platformCommission: (json['platformCommission'] as num?)?.toDouble() ?? 0.0,
+  venueNetAmount: (json['venueNetAmount'] as num?)?.toDouble() ?? 0.0,
+  onlineDepositAmount: (json['onlineDepositAmount'] as num?)?.toDouble() ?? 0.0,
+  venuePayAmount: (json['venuePayAmount'] as num?)?.toDouble() ?? 0.0,
 );
 
 Map<String, dynamic> _$CreateBookingResponseModelToJson(
@@ -42,6 +48,12 @@ Map<String, dynamic> _$CreateBookingResponseModelToJson(
   'status': _$BookingStatusEnumMap[instance.status]!,
   'holdExpiresAtUtc': instance.holdExpiresAtUtc,
   'paymentInstructions': instance.paymentInstructions,
+  'pitchName': instance.pitchName,
+  'venueName': instance.venueName,
+  'platformCommission': instance.platformCommission,
+  'venueNetAmount': instance.venueNetAmount,
+  'onlineDepositAmount': instance.onlineDepositAmount,
+  'venuePayAmount': instance.venuePayAmount,
 };
 
 const _$BookingStatusEnumMap = {

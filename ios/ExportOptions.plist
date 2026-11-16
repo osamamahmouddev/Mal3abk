@@ -12,7 +12,7 @@
 	<string>Apple Distribution</string>
 	<key>provisioningProfiles</key>
 	<dict>
-		<key>com.systmgulf.mal3abk</key>
+		<key>com.malabak.app</key>
 		<string>Mal3abk AppStore Distribution</string>
 	</dict>
 	<key>stripSwiftSymbols</key>

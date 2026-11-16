@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:811427553075:android:2c91b8dc5972aff20c2846",
+        "mobilesdk_app_id": "1:811427553075:android:38ecb8b6c936a9f90c2846",
         "android_client_info": {
-          "package_name": "com.example.mal3abk"
+          "package_name": "com.malabak.app"
         }
       },
       "oauth_client": [],
@@ -28,7 +28,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:811427553075:android:38ecb8b6c936a9f90c2846",
         "android_client_info": {
-          "package_name": "com.systmgulf.mal3abk"
+          "package_name": "com.malabak.app.dev"
         }
       },
       "oauth_client": [],

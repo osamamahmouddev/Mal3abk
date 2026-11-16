@@ -12,7 +12,7 @@ void main() {
     calls = <MethodCall>[];
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(
-          const MethodChannel('com.example.mal3abk/security'),
+          const MethodChannel('com.malabak.app/security'),
           (call) async {
             calls.add(call);
             if (call.method == 'setSecure') {
@@ -27,7 +27,7 @@ void main() {
   tearDown(() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(
-          const MethodChannel('com.example.mal3abk/security'),
+          const MethodChannel('com.malabak.app/security'),
           null,
         );
   });
@@ -52,7 +52,7 @@ void main() {
   test('handles missing channel gracefully without throwing', () async {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(
-          const MethodChannel('com.example.mal3abk/security'),
+          const MethodChannel('com.malabak.app/security'),
           null,
         );
 

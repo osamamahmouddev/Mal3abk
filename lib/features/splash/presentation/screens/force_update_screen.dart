@@ -21,7 +21,7 @@ class ForceUpdateScreen extends StatelessWidget {
   final String? storeUrlOverride;
 
   static const String _playStoreUrl =
-      'https://play.google.com/store/apps/details?id=com.example.mal3abk';
+      'https://play.google.com/store/apps/details?id=com.malabak.app';
   static const String _appStoreUrl =
       'https://apps.apple.com/app/id6470000000';
 

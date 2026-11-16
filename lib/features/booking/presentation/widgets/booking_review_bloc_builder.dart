@@ -61,9 +61,12 @@ class BookingReviewBlocBuilder extends StatelessWidget {
           AppTopSnackBar.showError(context, error.tr(context: context));
         } else if (state.createdBooking case final booking?) {
           HapticFeedback.mediumImpact();
+          final bookingWithPitch = booking.copyWith(
+            pitchName: state.currentPitch?.name,
+          );
           Navigator.of(context).pushReplacementNamed(
             AppRoutes.depositInstructions,
-            arguments: booking,
+            arguments: bookingWithPitch,
           );
         }
       },

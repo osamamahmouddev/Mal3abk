@@ -3,6 +3,7 @@ class ApiConstants {
 
   static const String sendOtp = '/api/v1/auth/otp/send';
   static const String verifyOtp = '/api/v1/auth/otp/verify';
+  static const String firebaseAuth = '/api/v1/auth/firebase';
   static const String refreshToken = '/api/v1/auth/refresh';
   static const String logout = '/api/v1/auth/logout';
   static const String logoutAll = '/api/v1/auth/logout-all';
@@ -19,6 +20,7 @@ class ApiConstants {
   static const List<String> anonymousPaths = [
     sendOtp,
     verifyOtp,
+    firebaseAuth,
     refreshToken,
     logout,
     recoverPhone,
@@ -50,6 +52,8 @@ class ApiConstants {
   static const String cancelPreview = '/api/v1/bookings/{id}/cancel/preview';
   static const String bookingPaymentMethods =
       '/api/v1/bookings/{id}/payment-methods';
+  static const String payBookingCommission =
+      '/api/v1/bookings/{id}/pay-commission';
   static const String idempotencyKeyHeader = 'Idempotency-Key';
   static const String proofUploadUrl = '/api/v1/bookings/{id}/proof/upload-url';
   static const String submitBookingProof = '/api/v1/bookings/{id}/proof/submit';

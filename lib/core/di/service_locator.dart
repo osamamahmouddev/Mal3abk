@@ -49,6 +49,7 @@ import '../../features/explore/presentation/cubit/explore_map_cubit.dart';
 import '../../features/auth/data/apis/auth_api_service.dart';
 import '../../features/auth/data/repos/auth_repo_impl.dart';
 import '../../features/auth/domain/repos/auth_repo.dart';
+import '../../features/auth/domain/use_cases/authenticate_with_firebase_use_case.dart';
 import '../../features/auth/domain/use_cases/logout_all_use_case.dart';
 import '../../features/auth/domain/use_cases/logout_use_case.dart';
 import '../../features/auth/domain/use_cases/normalize_phone_number_use_case.dart';
@@ -64,6 +65,8 @@ import '../../features/booking/domain/repos/booking_repo.dart';
 import '../../features/booking/domain/use_cases/create_booking_use_case.dart';
 import '../../features/booking/domain/use_cases/get_booking_quote_use_case.dart';
 import '../../features/booking/domain/use_cases/get_my_bookings_use_case.dart';
+import '../../features/booking/domain/use_cases/pay_booking_commission_use_case.dart';
+import '../services/firebase_phone_auth_service.dart';
 import '../../features/booking/presentation/cubit/my_bookings_cubit.dart';
 import '../../features/explore/data/apis/explore_api_service.dart';
 import '../../features/explore/data/repos/explore_repo_impl.dart';
@@ -228,6 +231,12 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
       validateOtpCodeUseCase: sl<ValidateOtpCodeUseCase>(),
     ),
   );
+  sl.registerLazySingleton<FirebasePhoneAuthService>(
+    () => FirebasePhoneAuthService(),
+  );
+  sl.registerLazySingleton<AuthenticateWithFirebaseUseCase>(
+    () => AuthenticateWithFirebaseUseCase(authRepo: sl<AuthRepo>()),
+  );
   sl.registerLazySingleton<LogoutUseCase>(
     () => LogoutUseCase(authRepo: sl<AuthRepo>()),
   );
@@ -238,7 +247,11 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
     () => SendOtpCubit(sendOtpUseCase: sl<SendOtpUseCase>()),
   );
   sl.registerFactory<VerifyOtpCubit>(
-    () => VerifyOtpCubit(verifyOtpUseCase: sl<VerifyOtpUseCase>()),
+    () => VerifyOtpCubit(
+      verifyOtpUseCase: sl<VerifyOtpUseCase>(),
+      authenticateWithFirebaseUseCase: sl<AuthenticateWithFirebaseUseCase>(),
+      firebasePhoneAuthService: sl<FirebasePhoneAuthService>(),
+    ),
   );
   sl.registerFactory<LogoutCubit>(
     () => LogoutCubit(
@@ -407,6 +420,9 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
   );
   sl.registerLazySingleton<CreateBookingUseCase>(
     () => CreateBookingUseCase(bookingRepo: sl<BookingRepo>()),
+  );
+  sl.registerLazySingleton<PayBookingCommissionUseCase>(
+    () => PayBookingCommissionUseCase(bookingRepo: sl<BookingRepo>()),
   );
   sl.registerLazySingleton<GetMyBookingsUseCase>(
     () => GetMyBookingsUseCase(bookingRepo: sl<BookingRepo>()),

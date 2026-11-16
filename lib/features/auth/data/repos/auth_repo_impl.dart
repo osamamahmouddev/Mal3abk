@@ -5,6 +5,7 @@ import '../../../../core/network/turnstile_token_provider.dart';
 import '../../../../core/services/push_notification_service.dart';
 import '../../domain/repos/auth_repo.dart';
 import '../apis/auth_api_service.dart';
+import '../models/firebase_auth_request_body.dart';
 import '../models/logout_request_body.dart';
 import '../models/send_otp_request_body.dart';
 import '../models/send_otp_response_model.dart';
@@ -46,6 +47,26 @@ class AuthRepoImpl implements AuthRepo {
   ) async {
     try {
       final response = await authApiService.verifyOtp(body);
+      return ApiResult.success(response);
+    } catch (e, st) {
+      return ApiResult.failure(ApiFailureMapper.map(e, st));
+    }
+  }
+
+  @override
+  Future<ApiResult<VerifyOtpResponseModel>> authenticateWithFirebase({
+    required String idToken,
+    String? fullName,
+    bool restoreAccount = false,
+  }) async {
+    try {
+      final response = await authApiService.firebaseAuth(
+        FirebaseAuthRequestBody(
+          idToken: idToken,
+          fullName: fullName,
+          restoreAccount: restoreAccount,
+        ),
+      );
       return ApiResult.success(response);
     } catch (e, st) {
       return ApiResult.failure(ApiFailureMapper.map(e, st));

@@ -8,6 +8,11 @@ abstract class AuthRepo {
   Future<ApiResult<VerifyOtpResponseModel>> verifyOtp(
     VerifyOtpRequestBody body,
   );
+  Future<ApiResult<VerifyOtpResponseModel>> authenticateWithFirebase({
+    required String idToken,
+    String? fullName,
+    bool restoreAccount = false,
+  });
   Future<ApiResult<void>> saveSession({
     required String accessToken,
     required String refreshToken,

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_font_family.dart';
 import '../../../../core/styles/app_text_styles.dart';
 
 class TeamStatBoxWidget extends StatelessWidget {
@@ -19,6 +20,7 @@ class TeamStatBoxWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isZero = value == '٠' || value == '0';
     return Container(
       height: 69.h,
       alignment: Alignment.center,
@@ -32,7 +34,11 @@ class TeamStatBoxWidget extends StatelessWidget {
         children: [
           Text(
             value,
-            style: AppTextStyles.font20Bold.copyWith(color: valueColor),
+            style: AppTextStyles.font20Bold.copyWith(
+              color: valueColor,
+              fontFamily: AppFontFamily.fustat,
+              fontSize: isZero ? 24.sp : 20.sp,
+            ),
           ),
           hSpace(2),
           Text(label, style: AppTextStyles.font11Regular),

@@ -15,6 +15,8 @@ class DepositSummaryCardWidget extends StatelessWidget {
     required this.slotLabel,
     required this.totalPrice,
     required this.depositAmount,
+    this.platformCommission,
+    this.venuePayAmount,
     this.pitchName,
     super.key,
   });
@@ -24,6 +26,8 @@ class DepositSummaryCardWidget extends StatelessWidget {
   final String slotLabel;
   final double totalPrice;
   final double depositAmount;
+  final double? platformCommission;
+  final double? venuePayAmount;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +40,7 @@ class DepositSummaryCardWidget extends StatelessWidget {
     final pitch = pitchName ?? '';
     final slot = slotLabel;
     final total = egp(totalPrice);
-    final remaining = egp(totalPrice - depositAmount);
+    final remaining = egp(venuePayAmount ?? (totalPrice - depositAmount));
     final deposit = egp(depositAmount);
 
     return CustomCardWidget(
@@ -54,8 +58,10 @@ class DepositSummaryCardWidget extends StatelessWidget {
               Text(ref, style: AppTextStyles.font13SemiBold),
             ],
           ),
-          hSpace(10),
-          Text(pitch, style: AppTextStyles.font16Bold),
+          if (pitch.isNotEmpty) ...[
+            hSpace(10),
+            Text(pitch, style: AppTextStyles.font16Bold),
+          ],
           hSpace(12),
           Text(slot, style: AppTextStyles.font13Regular),
           hSpace(14),
@@ -65,8 +71,13 @@ class DepositSummaryCardWidget extends StatelessWidget {
             label: 'booking.total_price'.tr(context: context),
             value: total,
           ),
+          if (platformCommission != null && platformCommission! > 0)
+            BookingDetailRowWidget(
+              label: 'booking.platform_fee'.tr(context: context),
+              value: egp(platformCommission!),
+            ),
           BookingDetailRowWidget(
-            label: 'booking.remaining_price'.tr(context: context),
+            label: 'booking.remaining_at_venue'.tr(context: context),
             value: remaining,
           ),
           hSpace(8),
