@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import '../../../../core/routes/app_navigator.dart';
 import '../../../../core/routes/navigation_logger_observer.dart';
 import '../../../../core/routes/tab_root_observer.dart';
 import '../../../../core/styles/app_colors.dart';
@@ -40,6 +41,13 @@ class MainShellScreen extends HookWidget {
       },
       const [],
     );
+    // A push tapped before sign-in or the app lock opens once the shell shows.
+    useEffect(() {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => AppNavigator.onShellReady(),
+      );
+      return AppNavigator.onShellClosed;
+    }, const []);
     // Figma shows the nav bar only on tab roots; pushed screens go full height.
     final isAtTabRoot = useValueListenable(
       rootObservers[currentIndex.value].isAtRoot,

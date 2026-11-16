@@ -5,6 +5,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../../features/notifications/data/apis/notifications_api_service.dart';
 import '../local_storage/auth_token_storage.dart';
+import '../routes/app_navigator.dart';
+import '../routes/deep_link_resolver.dart';
 import '../utils/app_logger.dart';
 
 @pragma('vm:entry-point')
@@ -33,7 +35,9 @@ class PushNotificationService {
     _initialized = true;
 
     try {
-      FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+      FirebaseMessaging.onBackgroundMessage(
+        _firebaseMessagingBackgroundHandler,
+      );
 
       final settings = await FirebaseMessaging.instance.requestPermission(
         alert: true,
@@ -43,11 +47,12 @@ class PushNotificationService {
 
       AppLogger.d('FCM permission: ${settings.authorizationStatus.name}');
 
-      await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-        alert: true,
-        badge: true,
-        sound: true,
-      );
+      await FirebaseMessaging.instance
+          .setForegroundNotificationPresentationOptions(
+            alert: true,
+            badge: true,
+            sound: true,
+          );
 
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
         AppLogger.d('Foreground push received');
@@ -55,11 +60,14 @@ class PushNotificationService {
 
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
         AppLogger.d('App opened from a push');
+        openFromPush(message.data);
       });
 
-      final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+      final initialMessage = await FirebaseMessaging.instance
+          .getInitialMessage();
       if (initialMessage != null) {
         AppLogger.d('App launched from a push');
+        openFromPush(initialMessage.data);
       }
 
       FirebaseMessaging.instance.onRegistered.listen((newToken) {
@@ -73,6 +81,14 @@ class PushNotificationService {
     }
   }
 
+  /// Opens the screen a tapped push points to. The link is checked by
+  /// [DeepLinkResolver]: unknown or foreign links open nothing.
+  static void openFromPush(Map<String, dynamic> data) {
+    final link = data['deepLink'] ?? data['deep_link'] ?? data['link'];
+    final target = DeepLinkResolver.resolve(link is String ? link : null);
+    if (target != null) AppNavigator.openDeepLink(target);
+  }
+
   Future<void> syncPushToken({String? forcedToken}) async {
     try {
       final hasSession = await tokenStorage.hasSession();
@@ -83,9 +99,13 @@ class PushNotificationService {
         // ignore: deprecated_member_use
         token = await FirebaseMessaging.instance.getToken();
       }
-      if (token == null || token.isEmpty || token == _lastRegisteredToken) return;
+      if (token == null || token.isEmpty || token == _lastRegisteredToken) {
+        return;
+      }
 
-      final platform = Platform.isAndroid ? 'Android' : (Platform.isIOS ? 'Ios' : 'Web');
+      final platform = Platform.isAndroid
+          ? 'Android'
+          : (Platform.isIOS ? 'Ios' : 'Web');
       await notificationsApiService.registerPushToken({
         'token': token,
         'platform': platform,
@@ -99,8 +119,10 @@ class PushNotificationService {
 
   Future<void> unregisterPushToken() async {
     try {
-      // ignore: deprecated_member_use
-      final token = _lastRegisteredToken ?? await FirebaseMessaging.instance.getToken();
+      final token =
+          _lastRegisteredToken ??
+          // ignore: deprecated_member_use
+          await FirebaseMessaging.instance.getToken();
       if (token != null && token.isNotEmpty) {
         await notificationsApiService.unregisterPushToken({'token': token});
         // ignore: deprecated_member_use
