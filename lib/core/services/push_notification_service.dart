@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -10,6 +11,7 @@ import '../local_storage/secure_storage.dart';
 import '../routes/app_navigator.dart';
 import '../routes/deep_link_resolver.dart';
 import '../utils/app_logger.dart';
+import '../widgets/app_top_snack_bar.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -54,9 +56,9 @@ class PushNotificationService {
             sound: true,
           );
 
-      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-        AppLogger.d('Foreground push received');
-      });
+      // Android shows nothing for a push while the app is open, so the
+      // app shows it itself and refreshes the bell.
+      FirebaseMessaging.onMessage.listen(showForegroundPush);
 
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
         AppLogger.d('App opened from a push');
@@ -130,11 +132,40 @@ class PushNotificationService {
     await requestPermission();
   }
 
+  /// Fires once per push that arrives while the app is open, so unread
+  /// badges can refresh.
+  static Stream<void> get received => _received.stream;
+  static final StreamController<void> _received =
+      StreamController<void>.broadcast();
+
+  /// Shows a push that arrived while the app is open as a banner, with a
+  /// "view" action when it points to a screen.
+  static void showForegroundPush(RemoteMessage message) {
+    AppLogger.d('Foreground push received');
+    _received.add(null);
+
+    final title = message.notification?.title;
+    final context = AppNavigator.navigatorKey.currentContext;
+    if (title == null || title.isEmpty || context == null) return;
+
+    final hasLink = DeepLinkResolver.resolve(_linkOf(message.data)) != null;
+    AppTopSnackBar.showInfo(
+      context,
+      title,
+      actionLabel: hasLink ? 'notifications.view'.tr(context: context) : null,
+      onAction: hasLink ? () => openFromPush(message.data) : null,
+    );
+  }
+
+  static String? _linkOf(Map<String, dynamic> data) {
+    final link = data['deepLink'] ?? data['deep_link'] ?? data['link'];
+    return link is String ? link : null;
+  }
+
   /// Opens the screen a tapped push points to. The link is checked by
   /// [DeepLinkResolver]: unknown or foreign links open nothing.
   static void openFromPush(Map<String, dynamic> data) {
-    final link = data['deepLink'] ?? data['deep_link'] ?? data['link'];
-    final target = DeepLinkResolver.resolve(link is String ? link : null);
+    final target = DeepLinkResolver.resolve(_linkOf(data));
     if (target != null) AppNavigator.openDeepLink(target);
   }
 

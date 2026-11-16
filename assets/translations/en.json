@@ -976,7 +976,8 @@
     "mark_all_read": "Mark all as read",
     "detail_title": "Notification Details",
     "empty_title": "No notifications",
-    "empty_desc": "Bookings, challenges and match results will show up here."
+    "empty_desc": "Bookings, challenges and match results will show up here.",
+    "view": "View"
   },
   "settings": {
     "title": "Settings",
