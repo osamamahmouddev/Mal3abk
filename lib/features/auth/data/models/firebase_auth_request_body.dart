@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'firebase_auth_request_body.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false)
 class FirebaseAuthRequestBody {
   const FirebaseAuthRequestBody({
     required this.idToken,

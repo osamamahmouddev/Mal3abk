@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mal3abk/core/network/api_failure_mapper.dart';
 import 'package:mal3abk/core/network/app_api_failure.dart';
@@ -103,6 +104,24 @@ void main() {
       final failure = ApiFailureMapper.map(StateError('boom'));
 
       expect(failure.message, ApiFailureMapper.unexpectedErrorKey);
+    });
+    group('Firebase phone sign-in errors', () {
+      for (final entry in {
+        'invalid-verification-code': 'errors.identity.invalid_otp',
+        'session-expired': 'errors.identity.otp_expired',
+        'too-many-requests': 'common.too_many_requests',
+        'network-request-failed': 'errors.network',
+        'internal-error': ApiFailureMapper.unexpectedErrorKey,
+      }.entries) {
+        test('maps ${entry.key} to ${entry.value}', () {
+          final failure = ApiFailureMapper.map(
+            FirebaseAuthException(code: entry.key, message: 'raw English text'),
+          );
+
+          expect(failure.message, entry.value);
+          expect(failure.code, 'firebase.${entry.key}');
+        });
+      }
     });
   });
 }

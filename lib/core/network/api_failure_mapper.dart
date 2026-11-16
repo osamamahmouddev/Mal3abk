@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'app_api_failure.dart';
 
@@ -126,6 +127,9 @@ class ApiFailureMapper {
     if (error is AppApiFailure) {
       return error;
     }
+    if (error is FirebaseAuthException) {
+      return fromFirebaseAuthException(error);
+    }
     return const AppApiFailure(
       message: unexpectedErrorKey,
       code: 'unexpected.error',
@@ -177,6 +181,23 @@ class ApiFailureMapper {
       fieldErrors: _fieldErrors(problem['errors']),
       extraData: extraData,
     );
+  }
+
+  /// Firebase phone sign-in errors. Their text is English and technical, so
+  /// only the code is kept.
+  static AppApiFailure fromFirebaseAuthException(
+    FirebaseAuthException exception,
+  ) {
+    final message = switch (exception.code) {
+      'invalid-verification-code' ||
+      'invalid-verification-id' => 'errors.identity.invalid_otp',
+      'session-expired' || 'code-expired' => 'errors.identity.otp_expired',
+      'too-many-requests' || 'quota-exceeded' => 'common.too_many_requests',
+      'network-request-failed' => 'errors.network',
+      'invalid-phone-number' => 'errors.identity.invalid_phone',
+      _ => unexpectedErrorKey,
+    };
+    return AppApiFailure(message: message, code: 'firebase.${exception.code}');
   }
 
   static Map<String, dynamic>? _decodeProblem(Object? data) {

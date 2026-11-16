@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/network/api_failure_mapper.dart';
 import '../../../../core/network/api_result.dart';
 import '../../../../core/services/firebase_phone_auth_service.dart';
 import '../../../../core/utils/safe_emit_cubit_mixin.dart';
@@ -50,7 +51,8 @@ class VerifyOtpCubit extends Cubit<VerifyOtpState>
 
     if (_verificationId != null && authenticateWithFirebaseUseCase != null) {
       try {
-        final phoneAuth = firebasePhoneAuthService ?? FirebasePhoneAuthService();
+        final phoneAuth =
+            firebasePhoneAuthService ?? FirebasePhoneAuthService();
         final idToken = await phoneAuth.getIdTokenForCode(
           verificationId: _verificationId!,
           smsCode: code,
@@ -70,7 +72,8 @@ class VerifyOtpCubit extends Cubit<VerifyOtpState>
             },
             failure: (failure) {
               if (failure.code == 'Identity.AccountPendingDeletion' ||
-                  failure.message == 'errors.identity.account_pending_deletion') {
+                  failure.message ==
+                      'errors.identity.account_pending_deletion') {
                 emitIfOpen(const VerifyOtpState.accountPendingDeletion());
               } else {
                 emitIfOpen(VerifyOtpState.error(failure.message));
@@ -79,8 +82,11 @@ class VerifyOtpCubit extends Cubit<VerifyOtpState>
           );
           return;
         }
-      } catch (e) {
-        emitIfOpen(VerifyOtpState.error(e.toString()));
+      } catch (error, stackTrace) {
+        // Never show the raw exception text: map it to a translation key.
+        emitIfOpen(
+          VerifyOtpState.error(ApiFailureMapper.map(error, stackTrace).message),
+        );
         return;
       }
     }

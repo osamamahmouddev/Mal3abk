@@ -7,17 +7,17 @@ part of 'firebase_auth_request_body.dart';
 // **************************************************************************
 
 FirebaseAuthRequestBody _$FirebaseAuthRequestBodyFromJson(
-        Map<String, dynamic> json) =>
-    FirebaseAuthRequestBody(
-      idToken: json['idToken'] as String,
-      fullName: json['fullName'] as String?,
-      restoreAccount: json['restoreAccount'] as bool? ?? false,
-    );
+  Map<String, dynamic> json,
+) => FirebaseAuthRequestBody(
+  idToken: json['idToken'] as String,
+  fullName: json['fullName'] as String?,
+  restoreAccount: json['restoreAccount'] as bool? ?? false,
+);
 
 Map<String, dynamic> _$FirebaseAuthRequestBodyToJson(
-        FirebaseAuthRequestBody instance) =>
-    <String, dynamic>{
-      'idToken': instance.idToken,
-      if (instance.fullName != null) 'fullName': instance.fullName,
-      'restoreAccount': instance.restoreAccount,
-    };
+  FirebaseAuthRequestBody instance,
+) => <String, dynamic>{
+  'idToken': instance.idToken,
+  'fullName': ?instance.fullName,
+  'restoreAccount': instance.restoreAccount,
+};
