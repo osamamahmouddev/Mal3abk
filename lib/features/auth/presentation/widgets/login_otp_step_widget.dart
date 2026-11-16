@@ -19,6 +19,7 @@ class LoginOtpStepWidget extends HookWidget {
     required this.sendCount,
     required this.isResending,
     this.resendBlockedUntil,
+    this.verificationId,
     super.key,
   });
 
@@ -26,6 +27,9 @@ class LoginOtpStepWidget extends HookWidget {
   final String phoneNumber;
   final int sendCount;
   final bool isResending;
+
+  /// Set when Firebase texted the code: the code is checked against it.
+  final String? verificationId;
 
   /// Set after too many codes: the resend countdown runs until then instead
   /// of the usual minute.
@@ -63,6 +67,7 @@ class LoginOtpStepWidget extends HookWidget {
           onCompleted: (code) => context.read<VerifyOtpCubit>().verifyOtp(
             phoneNumber: phoneNumber,
             code: code,
+            verificationId: verificationId,
           ),
         ),
         hSpace(12),
@@ -84,6 +89,7 @@ class LoginOtpStepWidget extends HookWidget {
         VerifyOtpButtonBlocBuilder(
           phoneNumber: phoneNumber,
           codeController: codeController,
+          verificationId: verificationId,
         ),
         hSpace(12),
         CustomButton(

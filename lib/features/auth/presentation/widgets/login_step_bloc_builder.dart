@@ -22,12 +22,14 @@ class LoginStepBlocBuilder extends StatelessWidget {
             :final sendCount,
             :final resending,
             :final resendBlockedUntil,
+            :final verificationId,
           ) =>
             LoginOtpStepWidget(
               phoneNumber: data.normalizedPhoneNumber,
               sendCount: sendCount,
               isResending: resending,
               resendBlockedUntil: resendBlockedUntil,
+              verificationId: verificationId,
             ),
           SendOtpLoading() => LoginPhoneStepWidget(
             controller: phoneController,

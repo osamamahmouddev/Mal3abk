@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../features/booking/presentation/cubit/booking_details_cubit.dart';
@@ -247,7 +248,14 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
     () => LogoutAllUseCase(authRepo: sl<AuthRepo>()),
   );
   sl.registerFactory<SendOtpCubit>(
-    () => SendOtpCubit(sendOtpUseCase: sl<SendOtpUseCase>()),
+    () => SendOtpCubit(
+      sendOtpUseCase: sl<SendOtpUseCase>(),
+      normalizePhoneNumberUseCase: sl<NormalizePhoneNumberUseCase>(),
+      firebasePhoneAuth:
+          sl<EnvConfig>().useFirebasePhoneAuth && _firebaseReady()
+          ? sl<FirebasePhoneAuthService>()
+          : null,
+    ),
   );
   sl.registerFactory<VerifyOtpCubit>(
     () => VerifyOtpCubit(
@@ -667,4 +675,14 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
   sl.registerFactory<TeamActionCubit>(
     () => TeamActionCubit(teamsRepo: sl<TeamsRepo>()),
   );
+}
+
+/// Firebase started (it is skipped on hosts without Google services and in
+/// tests), so its phone sign-in can be used.
+bool _firebaseReady() {
+  try {
+    return Firebase.apps.isNotEmpty;
+  } on Object {
+    return false;
+  }
 }

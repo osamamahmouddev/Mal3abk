@@ -14,6 +14,8 @@ class _FakeEnvConfig implements EnvConfig {
   bool get isDebug => true;
   @override
   String get turnstileToken => '';
+  @override
+  bool get useFirebasePhoneAuth => false;
 }
 
 void main() {
@@ -44,15 +46,24 @@ void main() {
 
     test('resolves relative path using explicit baseUrl', () {
       expect(
-        MediaUrl.resolve('/api/v1/media/123/medium', baseUrl: 'http://10.0.2.2:5000'),
+        MediaUrl.resolve(
+          '/api/v1/media/123/medium',
+          baseUrl: 'http://10.0.2.2:5000',
+        ),
         'http://10.0.2.2:5000/api/v1/media/123/medium',
       );
       expect(
-        MediaUrl.resolve('/api/v1/media/123/medium', baseUrl: 'http://10.0.2.2:5000/'),
+        MediaUrl.resolve(
+          '/api/v1/media/123/medium',
+          baseUrl: 'http://10.0.2.2:5000/',
+        ),
         'http://10.0.2.2:5000/api/v1/media/123/medium',
       );
       expect(
-        MediaUrl.resolve('api/v1/media/123/medium', baseUrl: 'http://10.0.2.2:5000'),
+        MediaUrl.resolve(
+          'api/v1/media/123/medium',
+          baseUrl: 'http://10.0.2.2:5000',
+        ),
         'http://10.0.2.2:5000/api/v1/media/123/medium',
       );
     });

@@ -8,6 +8,10 @@ abstract class EnvConfig {
   /// Turnstile token sent with `POST /auth/otp/send` until the mobile
   /// Turnstile challenge is integrated (see `TurnstileTokenProvider`).
   String get turnstileToken;
+
+  /// Whether Firebase texts the sign-in code (the API sends its own code when
+  /// Firebase cannot). Override with `--dart-define=FIREBASE_PHONE_AUTH=...`.
+  bool get useFirebasePhoneAuth;
 }
 
 /// The `dev` flavor: the API running on the developer's machine.
@@ -40,6 +44,12 @@ class DevEnvConfig implements EnvConfig {
     'TURNSTILE_TOKEN',
     defaultValue: 'dev-mobile-turnstile',
   );
+
+  /// Off by default: local sign-in reads the API's code from Mailpit and
+  /// sends no real SMS.
+  @override
+  bool get useFirebasePhoneAuth =>
+      const bool.fromEnvironment('FIREBASE_PHONE_AUTH');
 }
 
 /// The `prod` flavor: the live server.
@@ -67,4 +77,8 @@ class ProdEnvConfig implements EnvConfig {
     'TURNSTILE_TOKEN',
     defaultValue: 'dev-mobile-turnstile',
   );
+
+  @override
+  bool get useFirebasePhoneAuth =>
+      const bool.fromEnvironment('FIREBASE_PHONE_AUTH', defaultValue: true);
 }

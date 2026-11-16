@@ -128,12 +128,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( SendOtpResponseModel data,  int sendCount,  bool resending,  String? resendError,  DateTime? resendBlockedUntil)?  success,TResult Function( String message,  DateTime? retryAt)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( SendOtpResponseModel data,  int sendCount,  bool resending,  String? resendError,  DateTime? resendBlockedUntil,  String? verificationId,  int? resendToken,  PhoneAuthCredential? autoCredential)?  success,TResult Function( String message,  DateTime? retryAt)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case SendOtpInitial() when initial != null:
 return initial();case SendOtpLoading() when loading != null:
 return loading();case SendOtpSuccess() when success != null:
-return success(_that.data,_that.sendCount,_that.resending,_that.resendError,_that.resendBlockedUntil);case SendOtpError() when error != null:
+return success(_that.data,_that.sendCount,_that.resending,_that.resendError,_that.resendBlockedUntil,_that.verificationId,_that.resendToken,_that.autoCredential);case SendOtpError() when error != null:
 return error(_that.message,_that.retryAt);case _:
   return orElse();
 
@@ -152,12 +152,12 @@ return error(_that.message,_that.retryAt);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( SendOtpResponseModel data,  int sendCount,  bool resending,  String? resendError,  DateTime? resendBlockedUntil)  success,required TResult Function( String message,  DateTime? retryAt)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( SendOtpResponseModel data,  int sendCount,  bool resending,  String? resendError,  DateTime? resendBlockedUntil,  String? verificationId,  int? resendToken,  PhoneAuthCredential? autoCredential)  success,required TResult Function( String message,  DateTime? retryAt)  error,}) {final _that = this;
 switch (_that) {
 case SendOtpInitial():
 return initial();case SendOtpLoading():
 return loading();case SendOtpSuccess():
-return success(_that.data,_that.sendCount,_that.resending,_that.resendError,_that.resendBlockedUntil);case SendOtpError():
+return success(_that.data,_that.sendCount,_that.resending,_that.resendError,_that.resendBlockedUntil,_that.verificationId,_that.resendToken,_that.autoCredential);case SendOtpError():
 return error(_that.message,_that.retryAt);case _:
   throw StateError('Unexpected subclass');
 
@@ -175,12 +175,12 @@ return error(_that.message,_that.retryAt);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( SendOtpResponseModel data,  int sendCount,  bool resending,  String? resendError,  DateTime? resendBlockedUntil)?  success,TResult? Function( String message,  DateTime? retryAt)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( SendOtpResponseModel data,  int sendCount,  bool resending,  String? resendError,  DateTime? resendBlockedUntil,  String? verificationId,  int? resendToken,  PhoneAuthCredential? autoCredential)?  success,TResult? Function( String message,  DateTime? retryAt)?  error,}) {final _that = this;
 switch (_that) {
 case SendOtpInitial() when initial != null:
 return initial();case SendOtpLoading() when loading != null:
 return loading();case SendOtpSuccess() when success != null:
-return success(_that.data,_that.sendCount,_that.resending,_that.resendError,_that.resendBlockedUntil);case SendOtpError() when error != null:
+return success(_that.data,_that.sendCount,_that.resending,_that.resendError,_that.resendBlockedUntil,_that.verificationId,_that.resendToken,_that.autoCredential);case SendOtpError() when error != null:
 return error(_that.message,_that.retryAt);case _:
   return null;
 
@@ -257,7 +257,7 @@ String toString() {
 
 
 class SendOtpSuccess implements SendOtpState {
-  const SendOtpSuccess(this.data, {this.sendCount = 1, this.resending = false, this.resendError, this.resendBlockedUntil});
+  const SendOtpSuccess(this.data, {this.sendCount = 1, this.resending = false, this.resendError, this.resendBlockedUntil, this.verificationId, this.resendToken, this.autoCredential});
   
 
  final  SendOtpResponseModel data;
@@ -265,6 +265,9 @@ class SendOtpSuccess implements SendOtpState {
 @JsonKey() final  bool resending;
  final  String? resendError;
  final  DateTime? resendBlockedUntil;
+ final  String? verificationId;
+ final  int? resendToken;
+ final  PhoneAuthCredential? autoCredential;
 
 /// Create a copy of SendOtpState
 /// with the given fields replaced by the non-null parameter values.
@@ -276,16 +279,16 @@ $SendOtpSuccessCopyWith<SendOtpSuccess> get copyWith => _$SendOtpSuccessCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SendOtpSuccess&&(identical(other.data, data) || other.data == data)&&(identical(other.sendCount, sendCount) || other.sendCount == sendCount)&&(identical(other.resending, resending) || other.resending == resending)&&(identical(other.resendError, resendError) || other.resendError == resendError)&&(identical(other.resendBlockedUntil, resendBlockedUntil) || other.resendBlockedUntil == resendBlockedUntil));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SendOtpSuccess&&(identical(other.data, data) || other.data == data)&&(identical(other.sendCount, sendCount) || other.sendCount == sendCount)&&(identical(other.resending, resending) || other.resending == resending)&&(identical(other.resendError, resendError) || other.resendError == resendError)&&(identical(other.resendBlockedUntil, resendBlockedUntil) || other.resendBlockedUntil == resendBlockedUntil)&&(identical(other.verificationId, verificationId) || other.verificationId == verificationId)&&(identical(other.resendToken, resendToken) || other.resendToken == resendToken)&&(identical(other.autoCredential, autoCredential) || other.autoCredential == autoCredential));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,data,sendCount,resending,resendError,resendBlockedUntil);
+int get hashCode => Object.hash(runtimeType,data,sendCount,resending,resendError,resendBlockedUntil,verificationId,resendToken,autoCredential);
 
 @override
 String toString() {
-  return 'SendOtpState.success(data: $data, sendCount: $sendCount, resending: $resending, resendError: $resendError, resendBlockedUntil: $resendBlockedUntil)';
+  return 'SendOtpState.success(data: $data, sendCount: $sendCount, resending: $resending, resendError: $resendError, resendBlockedUntil: $resendBlockedUntil, verificationId: $verificationId, resendToken: $resendToken, autoCredential: $autoCredential)';
 }
 
 
@@ -296,7 +299,7 @@ abstract mixin class $SendOtpSuccessCopyWith<$Res> implements $SendOtpStateCopyW
   factory $SendOtpSuccessCopyWith(SendOtpSuccess value, $Res Function(SendOtpSuccess) _then) = _$SendOtpSuccessCopyWithImpl;
 @useResult
 $Res call({
- SendOtpResponseModel data, int sendCount, bool resending, String? resendError, DateTime? resendBlockedUntil
+ SendOtpResponseModel data, int sendCount, bool resending, String? resendError, DateTime? resendBlockedUntil, String? verificationId, int? resendToken, PhoneAuthCredential? autoCredential
 });
 
 
@@ -313,14 +316,17 @@ class _$SendOtpSuccessCopyWithImpl<$Res>
 
 /// Create a copy of SendOtpState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? data = null,Object? sendCount = null,Object? resending = null,Object? resendError = freezed,Object? resendBlockedUntil = freezed,}) {
+@pragma('vm:prefer-inline') $Res call({Object? data = null,Object? sendCount = null,Object? resending = null,Object? resendError = freezed,Object? resendBlockedUntil = freezed,Object? verificationId = freezed,Object? resendToken = freezed,Object? autoCredential = freezed,}) {
   return _then(SendOtpSuccess(
 null == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
 as SendOtpResponseModel,sendCount: null == sendCount ? _self.sendCount : sendCount // ignore: cast_nullable_to_non_nullable
 as int,resending: null == resending ? _self.resending : resending // ignore: cast_nullable_to_non_nullable
 as bool,resendError: freezed == resendError ? _self.resendError : resendError // ignore: cast_nullable_to_non_nullable
 as String?,resendBlockedUntil: freezed == resendBlockedUntil ? _self.resendBlockedUntil : resendBlockedUntil // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as DateTime?,verificationId: freezed == verificationId ? _self.verificationId : verificationId // ignore: cast_nullable_to_non_nullable
+as String?,resendToken: freezed == resendToken ? _self.resendToken : resendToken // ignore: cast_nullable_to_non_nullable
+as int?,autoCredential: freezed == autoCredential ? _self.autoCredential : autoCredential // ignore: cast_nullable_to_non_nullable
+as PhoneAuthCredential?,
   ));
 }
 

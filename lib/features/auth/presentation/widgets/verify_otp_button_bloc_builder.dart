@@ -13,11 +13,15 @@ class VerifyOtpButtonBlocBuilder extends StatelessWidget {
   const VerifyOtpButtonBlocBuilder({
     required this.phoneNumber,
     required this.codeController,
+    this.verificationId,
     super.key,
   });
 
   final String phoneNumber;
   final TextEditingController codeController;
+
+  /// Set when Firebase texted the code.
+  final String? verificationId;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +39,7 @@ class VerifyOtpButtonBlocBuilder extends StatelessWidget {
           onTap: () => context.read<VerifyOtpCubit>().verifyOtp(
             phoneNumber: phoneNumber,
             code: codeController.text,
+            verificationId: verificationId,
           ),
         );
       },
