@@ -20,6 +20,12 @@ Future<void> mainCommon(EnvConfig envConfig) async {
   WidgetsFlutterBinding.ensureInitialized();
   CairoTime.initialize();
 
+  // A release build must never send tokens, phone numbers or OTP codes in
+  // clear text. Fail at startup instead of shipping an insecure build.
+  if (!envConfig.isDebug && !envConfig.baseUrl.startsWith('https://')) {
+    throw StateError('Release builds need an HTTPS API address.');
+  }
+
   // Global uncaught error hooks for production safety
   Bloc.observer = const AppBlocObserver();
   FlutterError.onError = (details) {

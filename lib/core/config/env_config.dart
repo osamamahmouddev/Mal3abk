@@ -48,12 +48,12 @@ class ProdEnvConfig implements EnvConfig {
 
   static const String _baseUrlOverride = String.fromEnvironment('BASE_URL');
 
-  /// MonsterASP live API server. Can be overridden with
-  /// `--dart-define=BASE_URL=...`.
+  /// MonsterASP live API server, HTTPS only. Can be overridden with
+  /// `--dart-define=BASE_URL=https://...`.
   @override
   String get baseUrl {
     if (_baseUrlOverride.isNotEmpty) return _baseUrlOverride;
-    return 'http://mal3abk.runasp.net';
+    return 'https://mal3abk.runasp.net';
   }
 
   @override

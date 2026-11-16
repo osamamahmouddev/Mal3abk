@@ -26,9 +26,13 @@ void main() {
 
   group('ProdEnvConfig (the live server)', () {
     test('points at the live server, never at the local API', () {
-      expect(const ProdEnvConfig().baseUrl, 'http://mal3abk.runasp.net');
+      expect(const ProdEnvConfig().baseUrl, 'https://mal3abk.runasp.net');
       expect(const ProdEnvConfig().baseUrl, isNot(contains('10.0.2.2')));
       expect(const ProdEnvConfig().baseUrl, isNot(contains('127.0.0.1')));
+    });
+
+    test('only talks to the server over HTTPS', () {
+      expect(const ProdEnvConfig().baseUrl, startsWith('https://'));
     });
 
     test('is not a debug environment and is named prod', () {

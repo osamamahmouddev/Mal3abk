@@ -1,4 +1,3 @@
-export 'app/app_config.dart';
 export 'app/app_locale.dart';
 export 'app/app_regex.dart';
 export 'app/app_spaces.dart';
