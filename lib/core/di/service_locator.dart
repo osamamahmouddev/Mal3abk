@@ -172,6 +172,7 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
         envConfig: sl<EnvConfig>(),
         deviceIdStorage: sl<DeviceIdStorage>(),
         deviceIdentityProvider: sl<DeviceIdentityProvider>(),
+        attestationProvider: sl<AppAttestationProvider>(),
       ),
     ),
   );
@@ -180,6 +181,7 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
       envConfig: sl<EnvConfig>(),
       deviceIdStorage: sl<DeviceIdStorage>(),
       deviceIdentityProvider: sl<DeviceIdentityProvider>(),
+      attestationProvider: sl<AppAttestationProvider>(),
     );
     dio.interceptors.add(
       AuthInterceptor(

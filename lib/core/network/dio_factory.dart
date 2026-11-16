@@ -4,7 +4,9 @@ import 'package:flutter/foundation.dart';
 import '../config/env_config.dart';
 import '../device/device_identity_provider.dart';
 import '../local_storage/device_id_storage.dart';
+import '../security/app_attestation_provider.dart';
 import 'api_logging_interceptor.dart';
+import 'app_check_interceptor.dart';
 import 'request_headers_interceptor.dart';
 
 class DioFactory {
@@ -12,12 +14,14 @@ class DioFactory {
 
   static const Duration _timeout = Duration(seconds: 30);
 
-  /// Base client: JSON, timeouts, locale + device headers and safe logging.
+  /// Base client: JSON, timeouts, locale + device headers, App Check token
+  /// and safe logging.
   /// `AuthInterceptor` is added on top in the service locator.
   static Dio createDio({
     required EnvConfig envConfig,
     required DeviceIdStorage deviceIdStorage,
     DeviceIdentityProvider? deviceIdentityProvider,
+    AppAttestationProvider? attestationProvider,
   }) {
     final dio = Dio(
       BaseOptions(
@@ -38,6 +42,11 @@ class DioFactory {
         deviceIdentityProvider: deviceIdentityProvider,
       ),
     );
+    if (attestationProvider != null) {
+      dio.interceptors.add(
+        AppCheckInterceptor(attestationProvider: attestationProvider),
+      );
+    }
     if (kDebugMode) {
       dio.interceptors.add(ApiLoggingInterceptor());
     }

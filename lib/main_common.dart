@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'core/config/env_config.dart';
 import 'core/di/service_locator.dart';
+import 'core/security/app_attestation_provider.dart';
 import 'core/services/crash_reporter.dart';
 import 'core/services/push_notification_service.dart';
 import 'core/styles/app_colors.dart';
@@ -95,6 +96,7 @@ Future<void> mainCommon(EnvConfig envConfig) async {
 
   await EasyLocalization.ensureInitialized();
   await setupServiceLocator(envConfig);
+  await sl<AppAttestationProvider>().activate();
 
   // Push setup asks for permission and talks to the network; it must not
   // hold the first frame back. It reports its own failures.
