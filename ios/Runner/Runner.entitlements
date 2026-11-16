@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Push notifications (FCM over APNs). Export with the App Store
+	     profile switches this to production. -->
+	<key>aps-environment</key>
+	<string>development</string>
+	<!-- Universal link for the phone recovery SMS:
+	     https://malabak.app/recover-phone?token=…
+	     Needs /.well-known/apple-app-site-association on malabak.app. -->
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:malabak.app</string>
+	</array>
+	<!-- App Attest, used by Firebase App Check. -->
+	<key>com.apple.developer.devicecheck.appattest-environment</key>
+	<string>production</string>
+</dict>
+</plist>
