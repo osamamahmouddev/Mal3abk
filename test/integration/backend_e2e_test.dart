@@ -62,6 +62,7 @@ void main() {
     test(
       '1. GET /api/v1/home returns feed model with valid sections',
       () async {
+        if (!apiIsUp) return;
         final feed = await homeApi.getHomeFeed();
         expect(feed, isNotNull);
         expect(feed.generatedAtUtc, isNotEmpty);
@@ -71,6 +72,7 @@ void main() {
     );
 
     test('2. GET /api/v1/venues/explore returns seeded venue list', () async {
+      if (!apiIsUp) return;
       final result = await exploreApi.exploreVenues();
       expect(result, isNotNull);
       expect(result.items, isNotEmpty);
@@ -84,6 +86,7 @@ void main() {
     test(
       '3. GET /api/v1/venues/{id} & pitches returns venue details and pitch list',
       () async {
+        if (!apiIsUp) return;
         final result = await exploreApi.exploreVenues();
         final venueId = result.items.first.venueId;
 
@@ -99,6 +102,7 @@ void main() {
     );
 
     test('4. Full Auth flow -> Profile -> Bookings end-to-end', () async {
+      if (!apiIsUp) return;
       // Check if local mailpit is available before running flow
       final mailpitDio = Dio(
         BaseOptions(

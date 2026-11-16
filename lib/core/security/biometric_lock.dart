@@ -17,21 +17,30 @@ class BiometricLock {
     try {
       return await _auth.isDeviceSupported() &&
           (await _auth.getAvailableBiometrics()).isNotEmpty;
-    } on Exception {
+    } catch (_) {
       return false;
     }
   }
 
-  Future<bool> isEnabled() => SharedPrefHelper.getBool(_enabledKey);
+  Future<bool> isEnabled() async {
+    try {
+      return await SharedPrefHelper.getBool(_enabledKey);
+    } catch (_) {
+      return false;
+    }
+  }
 
-  Future<void> setEnabled({required bool enabled}) =>
-      SharedPrefHelper.setData(_enabledKey, enabled);
+  Future<void> setEnabled({required bool enabled}) async {
+    try {
+      await SharedPrefHelper.setData(_enabledKey, enabled);
+    } catch (_) {}
+  }
 
   /// False when the check fails, is cancelled or can't run.
   Future<bool> authenticate(String reason) async {
     try {
       return await _auth.authenticate(localizedReason: reason);
-    } on Exception {
+    } catch (_) {
       return false;
     }
   }

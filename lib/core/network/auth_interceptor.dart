@@ -33,7 +33,7 @@ class AuthInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    if (!_isAnonymous(options)) {
+    if (!_isAnonymous(options) && _isOwnApi(options)) {
       final accessToken = await tokenStorage.readAccessToken();
       if (accessToken.isNotEmpty) {
         options.headers[_authorizationHeader] = 'Bearer $accessToken';
@@ -51,6 +51,7 @@ class AuthInterceptor extends Interceptor {
     final canRefresh =
         err.response?.statusCode == 401 &&
         !_isAnonymous(options) &&
+        _isOwnApi(options) &&
         options.extra[_retriedKey] != true;
     if (!canRefresh) {
       handler.next(err);
@@ -71,7 +72,20 @@ class AuthInterceptor extends Interceptor {
       handler.resolve(await dio.fetch<dynamic>(options));
     } on DioException catch (retryError) {
       handler.next(retryError);
+    } catch (e) {
+      handler.reject(DioException(requestOptions: options, error: e));
     }
+  }
+
+  /// The session token only ever goes to the API itself. Upload tickets can
+  /// point at another host (object storage); that host must never see it.
+  bool _isOwnApi(RequestOptions options) {
+    final base = Uri.tryParse(options.baseUrl);
+    final target = options.uri;
+    return base != null &&
+        target.scheme == base.scheme &&
+        target.host == base.host &&
+        target.port == base.port;
   }
 
   bool _isAnonymous(RequestOptions options) {

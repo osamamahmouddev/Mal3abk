@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 
 import '../../features/notifications/data/apis/notifications_api_service.dart';
 import '../local_storage/auth_token_storage.dart';
+import '../utils/app_logger.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -14,7 +14,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   } catch (_) {
     // Already initialized or platform default
   }
-  debugPrint('Handling background FCM message: ${message.messageId}');
 }
 
 class PushNotificationService {
@@ -42,7 +41,7 @@ class PushNotificationService {
         sound: true,
       );
 
-      debugPrint('FCM AuthorizationStatus: ${settings.authorizationStatus}');
+      AppLogger.d('FCM permission: ${settings.authorizationStatus.name}');
 
       await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
         alert: true,
@@ -51,16 +50,16 @@ class PushNotificationService {
       );
 
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-        debugPrint('Received foreground FCM message: ${message.notification?.title}');
+        AppLogger.d('Foreground push received');
       });
 
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-        debugPrint('App opened from notification: ${message.data}');
+        AppLogger.d('App opened from a push');
       });
 
       final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
       if (initialMessage != null) {
-        debugPrint('App launched via initial notification: ${initialMessage.data}');
+        AppLogger.d('App launched from a push');
       }
 
       FirebaseMessaging.instance.onRegistered.listen((newToken) {
@@ -70,7 +69,7 @@ class PushNotificationService {
 
       await syncPushToken();
     } catch (e) {
-      debugPrint('PushNotificationService initialization error: $e');
+      AppLogger.w('Push setup failed: ${e.runtimeType}');
     }
   }
 
@@ -92,9 +91,9 @@ class PushNotificationService {
         'platform': platform,
       });
       _lastRegisteredToken = token;
-      debugPrint('Registered FCM token with backend successfully.');
+      AppLogger.d('Push token registered');
     } catch (e) {
-      debugPrint('Failed to register FCM token with backend: $e');
+      AppLogger.w('Push token registration failed: ${e.runtimeType}');
     }
   }
 
@@ -108,9 +107,9 @@ class PushNotificationService {
         await FirebaseMessaging.instance.deleteToken();
       }
       _lastRegisteredToken = null;
-      debugPrint('Unregistered FCM token successfully.');
+      AppLogger.d('Push token unregistered');
     } catch (e) {
-      debugPrint('Failed to unregister FCM token: $e');
+      AppLogger.w('Push token unregistration failed: ${e.runtimeType}');
     }
   }
 }

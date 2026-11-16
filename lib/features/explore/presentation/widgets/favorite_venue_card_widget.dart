@@ -61,6 +61,7 @@ class FavoriteVenueCardWidget extends StatelessWidget {
                         height: 120.h,
                         width: double.infinity,
                         fit: BoxFit.cover,
+                        memCacheWidth: 900,
                         errorWidget: (_, _, _) => banner,
                       ),
               ),

@@ -15,10 +15,10 @@ class TacticsRepoImpl implements TacticsRepo {
     final raw = await SharedPrefHelper.getString(keyFor(teamId));
     if (raw.isEmpty) return null;
     try {
-      return TacticsBoardModel.fromJson(
-        jsonDecode(raw) as Map<String, dynamic>,
-      );
-    } on FormatException {
+      final dynamic decoded = jsonDecode(raw);
+      if (decoded is! Map<String, dynamic>) return null;
+      return TacticsBoardModel.fromJson(decoded);
+    } catch (_) {
       return null;
     }
   }

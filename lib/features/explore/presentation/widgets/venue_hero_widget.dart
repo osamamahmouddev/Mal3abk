@@ -79,6 +79,7 @@ class VenueHeroWidget extends HookWidget {
                           child: CachedNetworkImage(
                             imageUrl: resolvedPhotos[index],
                             fit: BoxFit.cover,
+                            memCacheWidth: 1200,
                             placeholder: (_, _) => placeholder,
                             errorWidget: (_, _, _) => placeholder,
                           ),

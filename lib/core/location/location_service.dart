@@ -21,20 +21,28 @@ class LocationService {
   static const Duration timeout = Duration(seconds: 8);
 
   Future<bool> hasPermission() async {
-    final permission = await Geolocator.checkPermission();
-    return permission == LocationPermission.always ||
-        permission == LocationPermission.whileInUse;
+    try {
+      final permission = await Geolocator.checkPermission();
+      return permission == LocationPermission.always ||
+          permission == LocationPermission.whileInUse;
+    } catch (_) {
+      return false;
+    }
   }
 
   /// Shows the system prompt if the player hasn't answered it yet.
   Future<bool> requestPermission() async {
-    if (!await Geolocator.isLocationServiceEnabled()) return false;
-    var permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
+    try {
+      if (!await Geolocator.isLocationServiceEnabled()) return false;
+      var permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
+      return permission == LocationPermission.always ||
+          permission == LocationPermission.whileInUse;
+    } catch (_) {
+      return false;
     }
-    return permission == LocationPermission.always ||
-        permission == LocationPermission.whileInUse;
   }
 
   /// A fresh fix, or the device's last known one when no fresh fix arrives in
@@ -55,11 +63,11 @@ class LocationService {
           timeLimit: timeout,
         ),
       );
-    } on Exception catch (e) {
+    } catch (e) {
       AppLogger.w('No fresh location fix, using the last known one: $e');
       try {
         position = await Geolocator.getLastKnownPosition();
-      } on Exception catch (e, st) {
+      } catch (e, st) {
         AppLogger.e('Reading location failed', error: e, stackTrace: st);
       }
     }

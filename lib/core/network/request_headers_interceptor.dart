@@ -26,16 +26,20 @@ class RequestHeadersInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    final language = AppLocale.currentLanguage;
-    options.headers[localeHeader] = language;
-    options.headers['Accept-Language'] = language;
-    options.headers[deviceIdHeader] = await deviceIdStorage.readDeviceId();
-    final identity = await deviceIdentityProvider?.read();
-    if (identity != null) {
-      options.headers[userAgentHeader] = identity.userAgent;
-      if (identity.name != null) {
-        options.headers[deviceNameHeader] = identity.name;
+    try {
+      final language = AppLocale.currentLanguage;
+      options.headers[localeHeader] = language;
+      options.headers['Accept-Language'] = language;
+      options.headers[deviceIdHeader] = await deviceIdStorage.readDeviceId();
+      final identity = await deviceIdentityProvider?.read();
+      if (identity != null) {
+        options.headers[userAgentHeader] = identity.userAgent;
+        if (identity.name != null) {
+          options.headers[deviceNameHeader] = identity.name;
+        }
       }
+    } catch (_) {
+      // Proceed safely even if reading local device info/storage encounters an error
     }
     handler.next(options);
   }

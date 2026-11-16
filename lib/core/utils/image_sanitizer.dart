@@ -44,14 +44,18 @@ class ImageSanitizer {
   }
 
   static Uint8List? _reencode(Uint8List bytes) {
-    final decoded = img.decodeImage(bytes);
-    if (decoded == null) return null;
-    var image = img.bakeOrientation(decoded)..exif = img.ExifData();
-    if (image.width > maxDimension || image.height > maxDimension) {
-      image = image.width >= image.height
-          ? img.copyResize(image, width: maxDimension)
-          : img.copyResize(image, height: maxDimension);
+    try {
+      final decoded = img.decodeImage(bytes);
+      if (decoded == null) return null;
+      var image = img.bakeOrientation(decoded)..exif = img.ExifData();
+      if (image.width > maxDimension || image.height > maxDimension) {
+        image = image.width >= image.height
+            ? img.copyResize(image, width: maxDimension)
+            : img.copyResize(image, height: maxDimension);
+      }
+      return img.encodeJpg(image, quality: jpegQuality);
+    } catch (_) {
+      return null;
     }
-    return img.encodeJpg(image, quality: jpegQuality);
   }
 }

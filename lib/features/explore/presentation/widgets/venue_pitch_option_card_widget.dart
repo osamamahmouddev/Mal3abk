@@ -72,6 +72,7 @@ class VenuePitchOptionCardWidget extends StatelessWidget {
                       CachedNetworkImage(
                         imageUrl: resolvedPhotos.first,
                         fit: BoxFit.cover,
+                        memCacheWidth: 900,
                         errorWidget: (_, _, _) => Image.asset(
                           AppAssets.pitchPhoto,
                           fit: BoxFit.cover,

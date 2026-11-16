@@ -185,7 +185,7 @@ class ApiFailureMapper {
       try {
         final decoded = jsonDecode(data);
         if (decoded is Map<String, dynamic>) return decoded;
-      } on FormatException {
+      } catch (_) {
         return null;
       }
     }

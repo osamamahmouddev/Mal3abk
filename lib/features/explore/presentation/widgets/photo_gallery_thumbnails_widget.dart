@@ -49,6 +49,7 @@ class PhotoGalleryThumbnailsWidget extends StatelessWidget {
                   child: CachedNetworkImage(
                     imageUrl: photos[index],
                     fit: BoxFit.cover,
+                    memCacheWidth: 200,
                     errorWidget: (_, _, _) =>
                         const ColoredBox(color: AppColors.white10),
                   ),

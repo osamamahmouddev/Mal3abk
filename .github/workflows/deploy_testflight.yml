@@ -84,7 +84,7 @@ jobs:
             BUILD_NUM=$((1 + ${{ github.run_number }}))
           fi
           echo "build_num=$BUILD_NUM" >> $GITHUB_OUTPUT
-          flutter build ipa --release --build-number="$BUILD_NUM" --export-options-plist=ios/ExportOptions.plist
+          flutter build ipa --release -t lib/main_prod.dart --build-number="$BUILD_NUM" --export-options-plist=ios/ExportOptions.plist --obfuscate --split-debug-info=build/symbols
 
       - name: Upload IPA to TestFlight
         env:
@@ -109,3 +109,11 @@ jobs:
           name: mal3abk-build-${{ steps.build_ipa.outputs.build_num }}-ipa
           path: build/ios/ipa/*.ipa
           retention-days: 7
+
+      # Needed to read crash stack traces of this obfuscated build.
+      - name: Upload debug symbols
+        uses: actions/upload-artifact@v4
+        with:
+          name: mal3abk-build-${{ steps.build_ipa.outputs.build_num }}-symbols
+          path: build/symbols
+          retention-days: 90

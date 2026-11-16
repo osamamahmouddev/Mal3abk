@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/network/api_result.dart';
 import '../../../../core/utils/cairo_time.dart';
 import '../../../../core/utils/idempotency_keys.dart';
+import '../../../../core/utils/safe_emit_cubit_mixin.dart';
 import '../../../booking/data/models/booking_quote_request_body.dart';
 import '../../../booking/data/models/create_booking_request_body.dart';
 import '../../../booking/domain/use_cases/create_booking_use_case.dart';
@@ -12,7 +13,8 @@ import '../../domain/use_cases/get_venue_availability_use_case.dart';
 import 'pitch_booking_state.dart';
 import 'pitch_slot_filter.dart';
 
-class PitchBookingCubit extends Cubit<PitchBookingState> {
+class PitchBookingCubit extends Cubit<PitchBookingState>
+    with SafeEmitCubitMixin<PitchBookingState> {
   PitchBookingCubit({
     required this.getVenueAvailabilityUseCase,
     required this.getBookingQuoteUseCase,
@@ -39,7 +41,7 @@ class PitchBookingCubit extends Cubit<PitchBookingState> {
     int pitchIndex = 0,
   }) async {
     _currentVenueId = venueId;
-    emit(const PitchBookingLoading());
+    emitIfOpen(const PitchBookingLoading());
 
     final targetDate = CairoTime.today().add(Duration(days: dayIndex));
     final dateStr = _formatDate(targetDate);
@@ -68,14 +70,14 @@ class PitchBookingCubit extends Cubit<PitchBookingState> {
           selectedDayIndex: dayIndex,
           selectedSlot: initialSlot,
         );
-        emit(loadedState);
+        emitIfOpen(loadedState);
 
         if (initialSlot != null) {
           await fetchQuoteForSlot(initialSlot);
         }
       },
       failure: (failure) {
-        emit(PitchBookingError(failure.message));
+        emitIfOpen(PitchBookingError(failure.message));
       },
     );
   }
@@ -88,7 +90,7 @@ class PitchBookingCubit extends Cubit<PitchBookingState> {
       return;
     }
 
-    emit(
+    emitIfOpen(
       current.copyWith(
         selectedDayIndex: dayIndex,
         isSlotsLoading: true,
@@ -123,7 +125,7 @@ class PitchBookingCubit extends Cubit<PitchBookingState> {
           }
         }
 
-        emit(
+        emitIfOpen(
           current.copyWith(
             availability: availability,
             selectedPitchIndex: validPitchIndex,
@@ -138,7 +140,7 @@ class PitchBookingCubit extends Cubit<PitchBookingState> {
         }
       },
       failure: (failure) {
-        emit(
+        emitIfOpen(
           current.copyWith(
             isSlotsLoading: false,
             bookingError: failure.message,
@@ -162,7 +164,7 @@ class PitchBookingCubit extends Cubit<PitchBookingState> {
       }
     }
 
-    emit(
+    emitIfOpen(
       current.copyWith(
         selectedPitchIndex: pitchIndex,
         selectedSlot: nextSlot,
@@ -180,7 +182,7 @@ class PitchBookingCubit extends Cubit<PitchBookingState> {
     final current = state;
     if (current is! PitchBookingLoaded) return;
 
-    emit(
+    emitIfOpen(
       current.copyWith(
         selectedSlot: slot,
         clearQuote: true,
@@ -196,7 +198,7 @@ class PitchBookingCubit extends Cubit<PitchBookingState> {
   void toggleSlotFilter(PitchSlotFilter filter) {
     final current = state;
     if (current is! PitchBookingLoaded) return;
-    emit(
+    emitIfOpen(
       current.copyWith(
         slotFilter: current.slotFilter == filter ? PitchSlotFilter.all : filter,
       ),
@@ -209,7 +211,7 @@ class PitchBookingCubit extends Cubit<PitchBookingState> {
     final pitch = current.currentPitch;
     if (pitch == null) return;
 
-    emit(current.copyWith(isQuoting: true, clearQuoteError: true));
+    emitIfOpen(current.copyWith(isQuoting: true, clearQuoteError: true));
 
     final result = await getBookingQuoteUseCase(
       BookingQuoteRequestBody(
@@ -224,10 +226,10 @@ class PitchBookingCubit extends Cubit<PitchBookingState> {
 
     result.when(
       success: (quote) {
-        emit(updated.copyWith(quote: quote, isQuoting: false));
+        emitIfOpen(updated.copyWith(quote: quote, isQuoting: false));
       },
       failure: (failure) {
-        emit(updated.copyWith(isQuoting: false, quoteError: failure.message));
+        emitIfOpen(updated.copyWith(isQuoting: false, quoteError: failure.message));
       },
     );
   }
@@ -243,7 +245,7 @@ class PitchBookingCubit extends Cubit<PitchBookingState> {
 
     if (pitch == null || slot == null || quote == null) return false;
 
-    emit(current.copyWith(isBooking: true, clearBookingError: true));
+    emitIfOpen(current.copyWith(isBooking: true, clearBookingError: true));
 
     final operation =
         'create:${pitch.pitchId}:${slot.startUtc}:${quote.quoteToken}';
@@ -265,11 +267,11 @@ class PitchBookingCubit extends Cubit<PitchBookingState> {
     return result.when(
       success: (booking) {
         _idempotencyKeys.complete(operation);
-        emit(updated.copyWith(isBooking: false, createdBooking: booking));
+        emitIfOpen(updated.copyWith(isBooking: false, createdBooking: booking));
         return true;
       },
       failure: (failure) {
-        emit(updated.copyWith(isBooking: false, bookingError: failure.message));
+        emitIfOpen(updated.copyWith(isBooking: false, bookingError: failure.message));
         return false;
       },
     );

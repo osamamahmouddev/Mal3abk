@@ -73,6 +73,53 @@ void main() {
       );
     });
 
+    test('never sends the token to another host (upload storage)', () async {
+      adapter = FakeHttpAdapter((_) => FakeHttpAdapter.json(200, {}));
+      dio.httpClientAdapter = adapter;
+
+      await dio.put<dynamic>('https://storage.example.com/upload/abc?sig=1');
+
+      expect(adapter.requests.single.headers['Authorization'], isNull);
+    });
+
+    test(
+      'never sends the token to the same host on another scheme or port',
+      () async {
+        adapter = FakeHttpAdapter((_) => FakeHttpAdapter.json(200, {}));
+        dio.httpClientAdapter = adapter;
+
+        await dio.get<dynamic>('https://api.test/x');
+        await dio.get<dynamic>('http://api.test:8080/x');
+
+        for (final request in adapter.requests) {
+          expect(request.headers['Authorization'], isNull);
+        }
+      },
+    );
+
+    test('an absolute url on the api host still gets the token', () async {
+      adapter = FakeHttpAdapter((_) => FakeHttpAdapter.json(200, {}));
+      dio.httpClientAdapter = adapter;
+
+      await dio.put<dynamic>('http://api.test/api/v1/media/uploads/1');
+
+      expect(
+        adapter.requests.single.headers['Authorization'],
+        'Bearer access-1',
+      );
+    });
+
+    test('a 401 from another host does not trigger a token refresh', () async {
+      adapter = FakeHttpAdapter((_) => FakeHttpAdapter.json(401, {}));
+      dio.httpClientAdapter = adapter;
+
+      await expectLater(
+        dio.put<dynamic>('https://storage.example.com/upload/abc'),
+        throwsA(isA<DioException>()),
+      );
+      verifyNever(() => refreshApi.refresh(any()));
+    });
+
     test('does not attach a token to anonymous endpoints', () async {
       adapter = FakeHttpAdapter((_) => FakeHttpAdapter.json(200, {}));
       dio.httpClientAdapter = adapter;

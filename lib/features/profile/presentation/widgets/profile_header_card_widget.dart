@@ -65,6 +65,8 @@ class ProfileHeaderCardWidget extends StatelessWidget {
                                     ? null
                                     : CachedNetworkImageProvider(
                                         MediaUrl.resolve(overview.avatarUrl)!,
+                                        maxWidth: 250,
+                                        maxHeight: 250,
                                       ),
                             child: Text(
                               profile.fullName.initials,

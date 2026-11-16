@@ -56,6 +56,7 @@ class ZoomablePhotoWidget extends HookWidget {
           child: CachedNetworkImage(
             imageUrl: url,
             fit: BoxFit.contain,
+            memCacheWidth: 2048,
             placeholder: (_, _) => const Center(
               child: CircularProgressIndicator(color: AppColors.white),
             ),

@@ -1,10 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/network/api_result.dart';
+import '../../../../core/utils/safe_emit_cubit_mixin.dart';
 import '../../domain/use_cases/submit_booking_proof_use_case.dart';
 import 'proof_upload_state.dart';
 
-class ProofUploadCubit extends Cubit<ProofUploadState> {
+class ProofUploadCubit extends Cubit<ProofUploadState>
+    with SafeEmitCubitMixin<ProofUploadState> {
   ProofUploadCubit({required this.submitBookingProofUseCase})
     : super(const ProofUploadInitial());
 
@@ -15,7 +17,7 @@ class ProofUploadCubit extends Cubit<ProofUploadState> {
     required List<int> imageBytes,
     String? notes,
   }) async {
-    emit(const ProofUploadLoading());
+    emitIfOpen(const ProofUploadLoading());
 
     final result = await submitBookingProofUseCase(
       bookingId: bookingId,
@@ -25,7 +27,7 @@ class ProofUploadCubit extends Cubit<ProofUploadState> {
 
     return result.when(
       success: (_) {
-        emit(
+        emitIfOpen(
           ProofUploadSuccess(
             bookingId: bookingId,
             message: 'booking.upload.sent',
@@ -34,7 +36,7 @@ class ProofUploadCubit extends Cubit<ProofUploadState> {
         return true;
       },
       failure: (failure) {
-        emit(ProofUploadError(failure.message));
+        emitIfOpen(ProofUploadError(failure.message));
         return false;
       },
     );

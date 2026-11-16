@@ -52,3 +52,12 @@ lib/core/config/prod_env.g.dart
 
 # Git worktrees
 .worktrees/
+
+# Android release signing
+/android/key.properties
+android/app/key.properties
+*.jks
+*.keystore
+
+# iOS local secrets
+ios/Flutter/Secrets.xcconfig
