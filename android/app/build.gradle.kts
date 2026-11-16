@@ -53,12 +53,12 @@ android {
     productFlavors {
         create("dev") {
             dimension = "env"
-            applicationId = "com.example.mal3abk"
+            applicationId = "com.malabak.app.dev"
             versionNameSuffix = "-dev"
         }
         create("prod") {
             dimension = "env"
-            applicationId = "com.systmgulf.mal3abk"
+            applicationId = "com.malabak.app"
         }
     }
 
