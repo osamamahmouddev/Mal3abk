@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 
+import '../services/crash_reporter.dart';
+
 class AppLogger {
   const AppLogger._();
 
@@ -21,7 +23,14 @@ class AppLogger {
     }
   }
 
-  static void e(String message, {Object? error, StackTrace? stackTrace}) {
+  /// Prints in debug builds and reports to Crashlytics in release builds.
+  /// [fatal] marks an error that escaped every handler.
+  static void e(
+    String message, {
+    Object? error,
+    StackTrace? stackTrace,
+    bool fatal = false,
+  }) {
     if (kDebugMode) {
       debugPrint('[ERROR] $message');
       if (error != null) {
@@ -31,5 +40,11 @@ class AppLogger {
         debugPrint('StackTrace: $stackTrace');
       }
     }
+    CrashReporter.recordError(
+      error ?? message,
+      stackTrace,
+      reason: message,
+      fatal: fatal,
+    );
   }
 }

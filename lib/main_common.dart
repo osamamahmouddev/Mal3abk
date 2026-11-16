@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'core/config/env_config.dart';
 import 'core/di/service_locator.dart';
+import 'core/services/crash_reporter.dart';
 import 'core/services/push_notification_service.dart';
 import 'core/styles/app_colors.dart';
 import 'core/utils/app_bloc_observer.dart';
@@ -26,37 +27,58 @@ Future<void> mainCommon(EnvConfig envConfig) async {
     throw StateError('Release builds need an HTTPS API address.');
   }
 
-  // Global uncaught error hooks for production safety
+  // Global uncaught error hooks: printed in debug, sent to Crashlytics in
+  // release.
   Bloc.observer = const AppBlocObserver();
   FlutterError.onError = (details) {
     FlutterError.presentError(details);
-    AppLogger.e('FlutterError', error: details.exception, stackTrace: details.stack);
+    CrashReporter.recordFlutterError(details);
   };
   PlatformDispatcher.instance.onError = (error, stack) {
-    AppLogger.e('PlatformDispatcherError', error: error, stackTrace: stack);
+    AppLogger.e('Uncaught error', error: error, stackTrace: stack, fatal: true);
     return true;
   };
 
   if (!envConfig.isDebug) {
-    ErrorWidget.builder = (details) => const Material(
-      color: Colors.transparent,
-      child: Center(
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.error_outline, color: AppColors.brandRed, size: 36),
-              SizedBox(height: 8),
-              Text(
-                'حدث خطأ غير متوقع',
-                style: TextStyle(color: AppColors.textPrimary, fontSize: 14),
-              ),
-            ],
+    ErrorWidget.builder = (details) {
+      var message = 'common.unexpected_error';
+      try {
+        message = message.tr();
+      } catch (_) {
+        // Translations not loaded yet: the key is still better than a crash.
+      }
+      return Material(
+        color: Colors.transparent,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.error_outline,
+                  color: AppColors.brandRed,
+                  size: 36,
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(top: 8),
+                  child: Text(
+                    message,
+                    textAlign: TextAlign.center,
+                    // No ScreenUtil here: this must render even when the
+                    // failure happened before it was set up.
+                    style: const TextStyle(
+                      color: AppColors.textPrimary,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    };
   }
 
   try {
@@ -64,6 +86,7 @@ Future<void> mainCommon(EnvConfig envConfig) async {
   } on Exception catch (e) {
     AppLogger.w('Firebase is not available: ${e.runtimeType}');
   }
+  await CrashReporter.initialize(enabled: !envConfig.isDebug && !kDebugMode);
 
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
