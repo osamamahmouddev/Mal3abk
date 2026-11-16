@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mal3abk/core/location/location_service.dart';
 import 'package:mal3abk/core/network/api_result.dart';
 import 'package:mal3abk/core/network/app_api_failure.dart';
+import 'package:mal3abk/core/services/push_notification_service.dart';
 import 'package:mal3abk/features/onboarding/presentation/cubit/avatar_cubit.dart';
 import 'package:mal3abk/features/onboarding/presentation/cubit/avatar_state.dart';
 import 'package:mal3abk/features/onboarding/presentation/cubit/onboarding_consent_cubit.dart';
@@ -23,6 +24,8 @@ class MockUploadAvatarUseCase extends Mock implements UploadAvatarUseCase {}
 class MockProfileRepo extends Mock implements ProfileRepo {}
 class MockAccountRepo extends Mock implements AccountRepo {}
 class MockLocationService extends Mock implements LocationService {}
+class MockPushNotificationService extends Mock
+    implements PushNotificationService {}
 class MockSaveProfileUseCase extends Mock implements SaveProfileUseCase {}
 
 MyProfileModel _profile({String? avatarUrl}) => MyProfileModel(
@@ -174,12 +177,40 @@ void main() {
   group('OnboardingConsentCubit Tests', () {
     late MockAccountRepo mockRepo;
     late MockLocationService mockLocation;
+    late MockPushNotificationService mockPush;
     late OnboardingConsentCubit cubit;
 
     setUp(() {
       mockRepo = MockAccountRepo();
       mockLocation = MockLocationService();
-      cubit = OnboardingConsentCubit(accountRepo: mockRepo, locationService: mockLocation);
+      mockPush = MockPushNotificationService();
+      cubit = OnboardingConsentCubit(
+        accountRepo: mockRepo,
+        locationService: mockLocation,
+        pushNotificationService: mockPush,
+      );
+    });
+
+    test('allowNotifications asks the system and records the answer', () async {
+      when(() => mockPush.requestPermission()).thenAnswer((_) async => true);
+      when(() => mockRepo.recordConsent(ConsentType.notifications, granted: true))
+          .thenAnswer((_) async => const ApiResult.success(ConsentsModel()));
+
+      await cubit.allowNotifications();
+
+      expect(cubit.state, ConsentType.notifications);
+      verify(() => mockRepo.recordConsent(ConsentType.notifications, granted: true)).called(1);
+    });
+
+    test('declineNotifications records no and stops future prompts', () {
+      when(() => mockPush.declinePermission()).thenAnswer((_) async {});
+      when(() => mockRepo.recordConsent(ConsentType.notifications, granted: false))
+          .thenAnswer((_) async => const ApiResult.success(ConsentsModel()));
+
+      cubit.declineNotifications();
+
+      verify(() => mockPush.declinePermission()).called(1);
+      verify(() => mockRepo.recordConsent(ConsentType.notifications, granted: false)).called(1);
     });
 
     tearDown(() => cubit.close());

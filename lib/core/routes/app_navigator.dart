@@ -14,11 +14,14 @@ class AppNavigator {
   static DeepLinkTarget? _pendingLink;
   static bool _shellReady = false;
 
+  /// True while the signed-in shell is on screen.
+  static final ValueNotifier<bool> shellShown = ValueNotifier<bool>(false);
+
   /// The link waiting for the signed-in shell, if any.
   static DeepLinkTarget? get pendingLink => _pendingLink;
 
   static void openLogin() {
-    _shellReady = false;
+    onShellClosed();
     navigatorKey.currentState?.pushNamedAndRemoveUntil(
       AppRoutes.login,
       (_) => false,
@@ -39,16 +42,21 @@ class AppNavigator {
 
   static void onShellReady() {
     _shellReady = true;
+    shellShown.value = true;
     final pending = _pendingLink;
     _pendingLink = null;
     if (pending != null) openDeepLink(pending);
   }
 
-  static void onShellClosed() => _shellReady = false;
+  static void onShellClosed() {
+    _shellReady = false;
+    shellShown.value = false;
+  }
 
   @visibleForTesting
   static void reset() {
     _pendingLink = null;
     _shellReady = false;
+    shellShown.value = false;
   }
 }

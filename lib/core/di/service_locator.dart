@@ -584,6 +584,7 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
     () => OnboardingConsentCubit(
       accountRepo: sl<AccountRepo>(),
       locationService: sl<LocationService>(),
+      pushNotificationService: sl<PushNotificationService>(),
     ),
   );
   sl.registerFactory<ConsentsCubit>(

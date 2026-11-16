@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -5,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../../features/notifications/data/apis/notifications_api_service.dart';
 import '../local_storage/auth_token_storage.dart';
+import '../local_storage/secure_storage.dart';
 import '../routes/app_navigator.dart';
 import '../routes/deep_link_resolver.dart';
 import '../utils/app_logger.dart';
@@ -27,6 +29,8 @@ class PushNotificationService {
   final NotificationsApiService notificationsApiService;
   final AuthTokenStorage tokenStorage;
 
+  static const String permissionAskedKey = 'push_permission_asked';
+
   bool _initialized = false;
   String? _lastRegisteredToken;
 
@@ -39,13 +43,9 @@ class PushNotificationService {
         _firebaseMessagingBackgroundHandler,
       );
 
-      final settings = await FirebaseMessaging.instance.requestPermission(
-        alert: true,
-        badge: true,
-        sound: true,
-      );
-
-      AppLogger.d('FCM permission: ${settings.authorizationStatus.name}');
+      // No permission prompt at launch: it is asked in context, on the
+      // onboarding notifications step or once the signed-in shell shows.
+      AppNavigator.shellShown.addListener(_askWhenShellShows);
 
       await FirebaseMessaging.instance
           .setForegroundNotificationPresentationOptions(
@@ -79,6 +79,55 @@ class PushNotificationService {
     } catch (e) {
       AppLogger.w('Push setup failed: ${e.runtimeType}');
     }
+  }
+
+  void _askWhenShellShows() {
+    if (AppNavigator.shellShown.value) {
+      unawaited(requestPermissionIfNeverAsked());
+    }
+  }
+
+  /// Shows the system prompt (Android 13+ / iOS) and registers the push
+  /// token when allowed. True when notifications may be shown.
+  Future<bool> requestPermission() async {
+    try {
+      await SharedPrefHelper.setData(permissionAskedKey, true);
+      final settings = await FirebaseMessaging.instance.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+      final status = settings.authorizationStatus;
+      AppLogger.d('FCM permission: ${status.name}');
+      final granted =
+          status == AuthorizationStatus.authorized ||
+          status == AuthorizationStatus.provisional;
+      if (granted) await syncPushToken();
+      return granted;
+    } catch (e) {
+      AppLogger.w('Push permission request failed: ${e.runtimeType}');
+      return false;
+    }
+  }
+
+  /// The player chose "not now": don't ask again on their own.
+  Future<void> declinePermission() async {
+    try {
+      await SharedPrefHelper.setData(permissionAskedKey, true);
+    } catch (_) {
+      // Worst case they are asked once more.
+    }
+  }
+
+  /// Players who skipped onboarding (an existing account on a new phone)
+  /// are asked once, when the shell first shows.
+  Future<void> requestPermissionIfNeverAsked() async {
+    try {
+      if (await SharedPrefHelper.getBool(permissionAskedKey)) return;
+    } catch (_) {
+      return;
+    }
+    await requestPermission();
   }
 
   /// Opens the screen a tapped push points to. The link is checked by

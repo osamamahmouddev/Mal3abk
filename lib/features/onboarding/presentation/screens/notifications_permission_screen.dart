@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
-import '../../../settings/data/models/record_consent_request_body.dart';
 import '../cubit/onboarding_consent_cubit.dart';
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/extensions/context_extensions.dart';
@@ -18,12 +17,14 @@ class NotificationsPermissionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void finish({required bool granted}) {
-      context.read<OnboardingConsentCubit>().record(
-        ConsentType.notifications,
-        granted: granted,
-      );
-      context.openMainShell();
+    Future<void> finish({required bool allow}) async {
+      final cubit = context.read<OnboardingConsentCubit>();
+      if (allow) {
+        await cubit.allowNotifications();
+      } else {
+        cubit.declineNotifications();
+      }
+      if (context.mounted) context.openMainShell();
     }
 
     return Scaffold(
@@ -96,7 +97,7 @@ class NotificationsPermissionScreen extends StatelessWidget {
               PrimaryCtaButtonWidget(
                 text: 'onboarding.notifications.enable'.tr(context: context),
                 height: 54,
-                onTap: () => finish(granted: true),
+                onTap: () => finish(allow: true),
               ),
               hSpace(8),
               CustomButton(
@@ -106,7 +107,7 @@ class NotificationsPermissionScreen extends StatelessWidget {
                 textStyle: AppTextStyles.font15SemiBold.copyWith(
                   color: AppColors.brandNavy,
                 ),
-                onTap: () => finish(granted: false),
+                onTap: () => finish(allow: false),
               ),
             ],
           ),
