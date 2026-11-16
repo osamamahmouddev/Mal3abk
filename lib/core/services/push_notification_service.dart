@@ -152,9 +152,9 @@ class PushNotificationService {
         return;
       }
 
-      final platform = Platform.isAndroid
-          ? 'Android'
-          : (Platform.isIOS ? 'Ios' : 'Web');
+      // The API's DevicePlatform enum is sent as its number:
+      // Android = 0, Ios = 1, Web = 2. A name is rejected with 400.
+      final platform = Platform.isAndroid ? 0 : (Platform.isIOS ? 1 : 2);
       await notificationsApiService.registerPushToken({
         'token': token,
         'platform': platform,
