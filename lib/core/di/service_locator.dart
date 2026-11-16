@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import '../../features/booking/presentation/cubit/booking_details_cubit.dart';
 import '../../features/booking/presentation/cubit/cancel_booking_cubit.dart';
 import '../../features/booking/presentation/cubit/deposit_methods_cubit.dart';
+import '../../features/booking/presentation/cubit/pay_commission_cubit.dart';
 import '../../features/explore/presentation/cubit/favorite_toggle_cubit.dart';
 import '../../features/reference/presentation/cubit/filter_options_cubit.dart';
 import '../../features/explore/presentation/cubit/favorites_cubit.dart';
@@ -443,6 +444,11 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
   );
   sl.registerFactory<CancelBookingCubit>(
     () => CancelBookingCubit(bookingRepo: sl<BookingRepo>()),
+  );
+  sl.registerFactory<PayCommissionCubit>(
+    () => PayCommissionCubit(
+      payBookingCommissionUseCase: sl<PayBookingCommissionUseCase>(),
+    ),
   );
   sl.registerFactory<MyBookingsCubit>(
     () => MyBookingsCubit(getMyBookingsUseCase: sl<GetMyBookingsUseCase>()),

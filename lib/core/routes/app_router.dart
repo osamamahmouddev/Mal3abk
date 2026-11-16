@@ -36,6 +36,7 @@ import '../../features/home/presentation/cubit/recently_viewed_cubit.dart';
 import '../../features/booking/presentation/cubit/booking_details_cubit.dart';
 import '../../features/booking/presentation/cubit/cancel_booking_cubit.dart';
 import '../../features/booking/presentation/cubit/deposit_methods_cubit.dart';
+import '../../features/booking/presentation/cubit/pay_commission_cubit.dart';
 import '../../features/booking/presentation/cubit/my_bookings_tab.dart';
 import '../../features/booking/presentation/cubit/proof_upload_cubit.dart';
 import '../../features/matches/data/models/match_details_model.dart';
@@ -348,8 +349,16 @@ class AppRouter {
         }
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => BlocProvider<DepositMethodsCubit>(
-            create: (_) => sl<DepositMethodsCubit>()..load(booking.bookingId),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<DepositMethodsCubit>(
+                create: (_) =>
+                    sl<DepositMethodsCubit>()..load(booking.bookingId),
+              ),
+              BlocProvider<PayCommissionCubit>(
+                create: (_) => sl<PayCommissionCubit>(),
+              ),
+            ],
             child: DepositInstructionsScreen(booking: booking),
           ),
         );
