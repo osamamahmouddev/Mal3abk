@@ -42,6 +42,9 @@ void main() {
     when(
       () => location.current(ask: any(named: 'ask')),
     ).thenAnswer((_) async => null);
+    when(
+      () => location.lastKnown(ask: any(named: 'ask')),
+    ).thenAnswer((_) async => null);
     cubit = ExploreMapCubit(exploreRepo: repo, locationService: location);
   });
 
@@ -53,6 +56,34 @@ void main() {
     final state = cubit.state as ExploreMapReady;
     expect(state.center, GeoPoint.cairo);
     expect(state.hasMyLocation, isFalse);
+  });
+
+  test('opens at once on the last known position, without a GPS wait', () async {
+    const known = GeoPoint(latitude: 31.2, longitude: 29.9);
+    when(
+      () => location.lastKnown(ask: any(named: 'ask')),
+    ).thenAnswer((_) async => known);
+
+    await cubit.start();
+
+    final state = cubit.state as ExploreMapReady;
+    expect(state.center, known);
+    expect(state.hasMyLocation, isTrue);
+    verifyNever(() => location.current(ask: any(named: 'ask')));
+  });
+
+  test('recenters when a fresh fix arrives after opening on Cairo', () async {
+    const fresh = GeoPoint(latitude: 30.1, longitude: 31.3);
+    when(
+      () => location.current(ask: any(named: 'ask')),
+    ).thenAnswer((_) async => fresh);
+
+    await cubit.start();
+    await Future<void>.delayed(Duration.zero);
+
+    final state = cubit.state as ExploreMapReady;
+    expect(state.center, fresh);
+    expect(state.hasMyLocation, isTrue);
   });
 
   test('asks the player to zoom in instead of searching a huge area', () async {

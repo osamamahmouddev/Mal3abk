@@ -45,6 +45,23 @@ class LocationService {
     }
   }
 
+  /// The device's last known position, read instantly (no GPS wait). Null
+  /// when permission is missing or nothing is cached yet.
+  Future<GeoPoint?> lastKnown({bool ask = false}) async {
+    try {
+      final allowed = ask ? await requestPermission() : await hasPermission();
+      if (!allowed) return null;
+      final position = await Geolocator.getLastKnownPosition();
+      if (position == null) return null;
+      return GeoPoint(
+        latitude: position.latitude,
+        longitude: position.longitude,
+      );
+    } catch (_) {
+      return null;
+    }
+  }
+
   /// A fresh fix, or the device's last known one when no fresh fix arrives in
   /// [timeout] (indoors, or an emulator that only reports when moved). Null
   /// when permission is missing, location is off or nothing is known.

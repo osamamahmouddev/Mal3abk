@@ -28,15 +28,26 @@ class ExploreMapCubit extends Cubit<ExploreMapState>
   /// Half the side of the area searched once when the opening view is empty.
   static const double _widerSearchRadius = 0.9;
 
-  /// Opens on the player when they allowed location, otherwise on Cairo.
+  /// Opens at once: on the player's last known position when they allowed
+  /// location, otherwise on Cairo. Without a cached position the map
+  /// recenters when a fresh GPS fix arrives, instead of waiting for it.
   Future<void> start({bool ask = false}) async {
-    final point = await locationService.current(ask: ask);
+    final point = await locationService.lastKnown(ask: ask);
     emitIfOpen(
       ExploreMapState.ready(
         center: point ?? GeoPoint.cairo,
         hasMyLocation: point != null,
       ),
     );
+    if (point == null) unawaited(_recenterOnFreshFix());
+  }
+
+  Future<void> _recenterOnFreshFix() async {
+    final point = await locationService.current();
+    final current = state;
+    if (point != null && current is ExploreMapReady) {
+      emitIfOpen(current.copyWith(center: point, hasMyLocation: true));
+    }
   }
 
   /// Searches the visible area; older answers are dropped if the player has
