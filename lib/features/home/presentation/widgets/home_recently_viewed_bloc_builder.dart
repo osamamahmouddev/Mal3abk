@@ -78,7 +78,7 @@ class HomeRecentlyViewedBlocBuilder extends StatelessWidget {
                               context: context,
                               args: [
                                 CairoTime.dayAndTime(
-                                  DateTime.parse(next),
+                                  CairoTime.parseUtc(next),
                                   lang,
                                 ),
                               ],

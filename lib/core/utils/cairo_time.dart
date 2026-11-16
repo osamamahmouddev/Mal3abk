@@ -2,6 +2,8 @@ import 'package:intl/intl.dart';
 import 'package:timezone/data/latest_10y.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
 
+import 'app_logger.dart';
+
 /// Every slot, booking and match time is shown in Egyptian local time, whatever the
 /// device's own time zone. Uses the IANA database, so DST changes are handled.
 class CairoTime {
@@ -12,6 +14,16 @@ class CairoTime {
   static void initialize() {
     tz_data.initializeTimeZones();
     _cairo = tz.getLocation('Africa/Cairo');
+  }
+
+  /// Parses an ISO-8601 time from the API without ever throwing inside
+  /// `build()`. A malformed value is reported and read as the Unix epoch, so
+  /// the screen still renders (and a hold reads as expired, never as open).
+  static DateTime parseUtc(String value) {
+    final parsed = DateTime.tryParse(value);
+    if (parsed != null) return parsed.toUtc();
+    AppLogger.e('Malformed API date', error: FormatException(value));
+    return DateTime.fromMillisecondsSinceEpoch(0, isUtc: true);
   }
 
   static tz.TZDateTime fromUtc(DateTime utc) =>

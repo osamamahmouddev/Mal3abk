@@ -130,7 +130,7 @@ class BookingReviewBlocBuilder extends StatelessWidget {
                       BookingDetailRowWidget(
                         label: t('when'),
                         value:
-                            '${CairoTime.dayAndTime(DateTime.parse(slot.startUtc), lang)} – ${CairoTime.time(DateTime.parse(slot.endUtc), lang)}',
+                            '${CairoTime.dayAndTime(CairoTime.parseUtc(slot.startUtc), lang)} – ${CairoTime.time(CairoTime.parseUtc(slot.endUtc), lang)}',
                       ),
                     if (pitch != null)
                       BookingDetailRowWidget(

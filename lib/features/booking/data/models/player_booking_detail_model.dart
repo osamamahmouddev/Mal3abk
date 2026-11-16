@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'booking_status.dart';
 import 'player_booking_summary_model.dart';
+import '../../../../core/utils/cairo_time.dart';
 
 part 'player_booking_detail_model.g.dart';
 
@@ -122,8 +123,8 @@ class PlayerBookingDetailModel {
   final String? pitchName;
   final String? venueCoverPhotoUrl;
 
-  DateTime get startAt => DateTime.parse(startUtc);
-  DateTime get endAt => DateTime.parse(endUtc);
+  DateTime get startAt => CairoTime.parseUtc(startUtc);
+  DateTime get endAt => CairoTime.parseUtc(endUtc);
 
   factory PlayerBookingDetailModel.fromJson(Map<String, dynamic> json) =>
       _$PlayerBookingDetailModelFromJson(json);

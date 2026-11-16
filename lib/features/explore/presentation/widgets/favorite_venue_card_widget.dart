@@ -88,7 +88,7 @@ class FavoriteVenueCardWidget extends StatelessWidget {
                   Text(
                     'explore.next_available'.tr(
                       context: context,
-                      args: [CairoTime.dayAndTime(DateTime.parse(next), lang)],
+                      args: [CairoTime.dayAndTime(CairoTime.parseUtc(next), lang)],
                     ),
                     style: AppTextStyles.font12Medium.copyWith(
                       color: AppColors.successGreen,

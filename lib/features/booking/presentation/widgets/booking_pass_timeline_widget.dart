@@ -26,7 +26,7 @@ class BookingPassTimelineWidget extends StatelessWidget {
               BookingStatusStyle.labelKey(entry.status).tr(context: context),
               ?entry.reason,
             ].join(' — '),
-            CairoTime.dayAndTime(DateTime.parse(entry.changedAtUtc), lang),
+            CairoTime.dayAndTime(CairoTime.parseUtc(entry.changedAtUtc), lang),
             entry.status == BookingStatus.confirmed
                 ? AppColors.successGreen
                 : entry.status.isClosed

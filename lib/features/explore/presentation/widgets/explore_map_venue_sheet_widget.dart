@@ -76,7 +76,7 @@ class ExploreMapVenueSheetWidget extends StatelessWidget {
                 ? 'home.no_slots_soon'.tr(context: context)
                 : 'explore.next_available'.tr(
                     context: context,
-                    args: [CairoTime.dayAndTime(DateTime.parse(next), lang)],
+                    args: [CairoTime.dayAndTime(CairoTime.parseUtc(next), lang)],
                   ),
             style: AppTextStyles.font12Regular,
           ),

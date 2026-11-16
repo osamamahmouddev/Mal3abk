@@ -72,7 +72,7 @@ class PitchAndTimeLoadedWidget extends StatelessWidget {
             ? t('pick_slot')
             : [
                 pitch.name,
-                CairoTime.time(DateTime.parse(selected.startUtc), lang),
+                CairoTime.time(CairoTime.parseUtc(selected.startUtc), lang),
                 'matches.minutes'.tr(
                   context: context,
                   args: [pitch.slotMinutes.toLocalizedDigits(lang)],
@@ -204,14 +204,14 @@ class PitchAndTimeLoadedWidget extends StatelessWidget {
                   itemBuilder: (context, i) {
                     final slot = visibleSlots[i];
                     final start = CairoTime.fromUtc(
-                      DateTime.parse(slot.startUtc),
+                      CairoTime.parseUtc(slot.startUtc),
                     );
                     return FadeSlideInWidget(
                       // A wave across the grid: row plus column.
                       index: i ~/ 3 + i % 3,
                       child: PitchTimeSlotTileWidget(
                         time: CairoTime.time(
-                          DateTime.parse(slot.startUtc),
+                          CairoTime.parseUtc(slot.startUtc),
                           lang,
                         ),
                         isBooked: !slot.isAvailable,

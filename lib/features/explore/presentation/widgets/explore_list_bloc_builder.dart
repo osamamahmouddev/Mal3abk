@@ -112,7 +112,7 @@ class ExploreListBlocBuilder extends StatelessWidget {
                             availableSlots: [
                               if (next != null)
                                 CairoTime.dayAndTime(
-                                  DateTime.parse(next),
+                                  CairoTime.parseUtc(next),
                                   lang,
                                 ),
                             ],

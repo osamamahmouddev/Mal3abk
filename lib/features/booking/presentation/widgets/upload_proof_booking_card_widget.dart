@@ -22,7 +22,7 @@ class UploadProofBookingCardWidget extends StatelessWidget {
     final lang = context.locale.languageCode;
     final hold = booking.holdExpiresAtUtc == null
         ? null
-        : DateTime.parse(booking.holdExpiresAtUtc!);
+        : CairoTime.parseUtc(booking.holdExpiresAtUtc!);
 
     return CustomCardWidget(
       borderRadius: 18,
