@@ -25,6 +25,10 @@ BookingQuoteResponseModel _$BookingQuoteResponseModelFromJson(
           ?.map((e) => e as String)
           .toList() ??
       const [],
+  netPitchPrice: (json['netPitchPrice'] as num?)?.toDouble() ?? 0,
+  platformCommission: (json['platformCommission'] as num?)?.toDouble() ?? 0,
+  onlineDepositAmount: (json['onlineDepositAmount'] as num?)?.toDouble() ?? 0,
+  venuePayAmount: (json['venuePayAmount'] as num?)?.toDouble() ?? 0,
 );
 
 Map<String, dynamic> _$BookingQuoteResponseModelToJson(
@@ -42,4 +46,8 @@ Map<String, dynamic> _$BookingQuoteResponseModelToJson(
   'subjectToConfirmation': instance.subjectToConfirmation,
   'confirmationNote': instance.confirmationNote,
   'policySummary': instance.policySummary,
+  'netPitchPrice': instance.netPitchPrice,
+  'platformCommission': instance.platformCommission,
+  'onlineDepositAmount': instance.onlineDepositAmount,
+  'venuePayAmount': instance.venuePayAmount,
 };

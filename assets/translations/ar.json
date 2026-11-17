@@ -713,10 +713,15 @@
       "duration": "مدة الحجز",
       "price_summary": "ملخص السعر",
       "subtotal": "سعر الحجز",
+      "original_pitch_price": "سعر الملعب قبل الخصم",
       "discount": "خصم",
+      "net_pitch_price": "صافي إيجار الملعب",
+      "platform_commission": "عمولة منصة ملعبك",
       "fees": "رسوم الخدمة",
       "total": "الإجمالي",
       "deposit_now": "العربون المطلوب دلوقتي",
+      "pay_online_now": "المطلوب سداده الآن أونلاين",
+      "pay_at_venue": "المتبقي في الملعب — كاش أو إنستاباي",
       "at_venue": "الباقي — بيتدفع في الملعب"
     },
     "sign_in_to_book": "سجّل دخول برقم موبايلك عشان تحجز."

@@ -189,7 +189,7 @@ class BookingReviewBlocBuilder extends StatelessWidget {
                       Text(t('price_summary'), style: AppTextStyles.font16Bold),
                       hSpace(14),
                       BookingDetailRowWidget(
-                        label: t('subtotal'),
+                        label: t('original_pitch_price'),
                         value: egp(quote.subtotal),
                       ),
                       if (quote.discount > 0)
@@ -197,10 +197,22 @@ class BookingReviewBlocBuilder extends StatelessWidget {
                           label: t('discount'),
                           value: '− ${egp(quote.discount)}',
                         ),
-                      if (quote.fees > 0)
+                      BookingDetailRowWidget(
+                        label: t('net_pitch_price'),
+                        value: egp(
+                          quote.netPitchPrice > 0
+                              ? quote.netPitchPrice
+                              : quote.subtotal - quote.discount,
+                        ),
+                      ),
+                      if (quote.platformCommission > 0 || quote.fees > 0)
                         BookingDetailRowWidget(
-                          label: t('fees'),
-                          value: egp(quote.fees),
+                          label: t('platform_commission'),
+                          value: egp(
+                            quote.platformCommission > 0
+                                ? quote.platformCommission
+                                : quote.fees,
+                          ),
                         ),
                       hSpace(8),
                       Container(height: 1, color: AppColors.border),
@@ -224,14 +236,18 @@ class BookingReviewBlocBuilder extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                t('deposit_now'),
+                                t('pay_online_now'),
                                 style: AppTextStyles.font14SemiBold.copyWith(
                                   color: AppColors.goldDark,
                                 ),
                               ),
                             ),
                             Text(
-                              egp(quote.deposit),
+                              egp(
+                                quote.onlineDepositAmount > 0
+                                    ? quote.onlineDepositAmount
+                                    : quote.deposit,
+                              ),
                               style: AppTextStyles.font16Bold.copyWith(
                                 color: AppColors.goldDark,
                               ),
@@ -241,8 +257,12 @@ class BookingReviewBlocBuilder extends StatelessWidget {
                       ),
                       hSpace(8),
                       BookingDetailRowWidget(
-                        label: t('at_venue'),
-                        value: egp(quote.remainingBalance),
+                        label: t('pay_at_venue'),
+                        value: egp(
+                          quote.venuePayAmount > 0
+                              ? quote.venuePayAmount
+                              : quote.remainingBalance,
+                        ),
                       ),
                     ],
                   ),

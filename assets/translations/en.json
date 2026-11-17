@@ -704,10 +704,15 @@
       "duration": "Length",
       "price_summary": "Price summary",
       "subtotal": "Booking price",
+      "original_pitch_price": "Pitch price before discount",
       "discount": "Discount",
+      "net_pitch_price": "Net pitch rent",
+      "platform_commission": "Malabak platform commission",
       "fees": "Service fee",
       "total": "Total",
       "deposit_now": "Deposit due now",
+      "pay_online_now": "Pay online now",
+      "pay_at_venue": "Remaining at venue — cash or InstaPay",
       "at_venue": "Balance — paid at the venue"
     },
     "sign_in_to_book": "Sign in with your phone number to book."
