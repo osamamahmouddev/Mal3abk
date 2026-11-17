@@ -19,6 +19,7 @@ import '../cubit/explore_list_cubit.dart';
 import '../cubit/explore_list_state.dart';
 import '../cubit/favorite_toggle_cubit.dart';
 import '../cubit/favorite_toggle_state.dart';
+import 'explore_suggestions_widget.dart';
 
 class ExploreListBlocBuilder extends StatelessWidget {
   const ExploreListBlocBuilder({required this.onSlotTap, super.key});
@@ -60,6 +61,9 @@ class ExploreListBlocBuilder extends StatelessWidget {
                 icon: const Icon(Icons.search_off_rounded, size: 48),
                 title: 'explore.no_results_title'.tr(context: context),
                 description: 'explore.no_results_desc'.tr(context: context),
+                footer: ExploreSuggestionsWidget(
+                  suggestions: result.suggestions,
+                ),
               ),
             ExploreListSuccess(:final result) =>
               BlocBuilder<FavoriteToggleCubit, FavoriteToggleState>(

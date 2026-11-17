@@ -15,6 +15,14 @@ ExploreResultModel _$ExploreResultModelFromJson(Map<String, dynamic> json) =>
       pageSize: (json['pageSize'] as num).toInt(),
       totalCount: (json['totalCount'] as num).toInt(),
       hasMore: json['hasMore'] as bool,
+      suggestions:
+          (json['suggestions'] as List<dynamic>?)
+              ?.map(
+                (e) =>
+                    ExploreSuggestionModel.fromJson(e as Map<String, dynamic>),
+              )
+              .toList() ??
+          [],
     );
 
 Map<String, dynamic> _$ExploreResultModelToJson(ExploreResultModel instance) =>
@@ -24,4 +32,19 @@ Map<String, dynamic> _$ExploreResultModelToJson(ExploreResultModel instance) =>
       'pageSize': instance.pageSize,
       'totalCount': instance.totalCount,
       'hasMore': instance.hasMore,
+      'suggestions': instance.suggestions,
     };
+
+ExploreSuggestionModel _$ExploreSuggestionModelFromJson(
+  Map<String, dynamic> json,
+) => ExploreSuggestionModel(
+  code: json['code'] as String,
+  matchCount: (json['matchCount'] as num).toInt(),
+);
+
+Map<String, dynamic> _$ExploreSuggestionModelToJson(
+  ExploreSuggestionModel instance,
+) => <String, dynamic>{
+  'code': instance.code,
+  'matchCount': instance.matchCount,
+};

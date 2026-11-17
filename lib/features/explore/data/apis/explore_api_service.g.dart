@@ -24,6 +24,7 @@ class _ExploreApiService implements ExploreApiService {
   Future<ExploreResultModel> exploreVenues({
     double? lat,
     double? lng,
+    int? radiusKm,
     String? city,
     String? area,
     String? date,
@@ -41,6 +42,7 @@ class _ExploreApiService implements ExploreApiService {
     final queryParameters = <String, dynamic>{
       r'lat': lat,
       r'lng': lng,
+      r'radiusKm': radiusKm,
       r'city': city,
       r'area': area,
       r'date': date,

@@ -33,9 +33,13 @@ class ExploreFilterModel {
     this.facilities = const {},
     this.day,
     this.startHour,
+    this.radiusKm,
   });
 
   static const List<int> priceCaps = [150, 200, 250, 300];
+
+  /// The widest "near me" search the API allows.
+  static const int maxRadiusKm = 100;
 
   final ExploreSortOption sort;
   final ExploreTimeWindow? timeWindow;
@@ -51,6 +55,9 @@ class ExploreFilterModel {
   /// within that hour. Replaces [timeWindow] when set.
   final int? startHour;
 
+  /// How far "near me" looks; null is the API default (25 km).
+  final int? radiusKm;
+
   /// Nullable fields take a function so they can be cleared.
   ExploreFilterModel copyWith({
     ExploreSortOption? sort,
@@ -61,6 +68,7 @@ class ExploreFilterModel {
     Set<String>? facilities,
     DateTime? Function()? day,
     int? Function()? startHour,
+    int? Function()? radiusKm,
   }) => ExploreFilterModel(
     sort: sort ?? this.sort,
     timeWindow: timeWindow == null ? this.timeWindow : timeWindow(),
@@ -70,7 +78,24 @@ class ExploreFilterModel {
     facilities: facilities ?? this.facilities,
     day: day == null ? this.day : day(),
     startHour: startHour == null ? this.startHour : startHour(),
+    radiusKm: radiusKm == null ? this.radiusKm : radiusKm(),
   );
+
+  /// The same search with the one filter [code] names relaxed, as the API
+  /// suggested it after an empty result. Unknown codes change nothing.
+  ExploreFilterModel relaxedFor(String code) => switch (code) {
+    'widen_radius' => copyWith(radiusKm: () => maxRadiusKm),
+    'any_time' => copyWith(startHour: () => null, timeWindow: () => null),
+    'any_date' => copyWith(
+      day: () => null,
+      startHour: () => null,
+      timeWindow: () => null,
+    ),
+    'any_budget' => copyWith(maxPrice: () => null),
+    'any_pitch' => copyWith(pitchType: () => null, surface: () => null),
+    'fewer_facilities' => copyWith(facilities: const {}),
+    _ => this,
+  };
 
   int get activeCount =>
       (sort == ExploreSortOption.popularity ||

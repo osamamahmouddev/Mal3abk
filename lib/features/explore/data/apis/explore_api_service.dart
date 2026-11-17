@@ -19,6 +19,7 @@ abstract class ExploreApiService {
   Future<ExploreResultModel> exploreVenues({
     @Query('lat') double? lat,
     @Query('lng') double? lng,
+    @Query('radiusKm') int? radiusKm,
     @Query('city') String? city,
     @Query('area') String? area,
     @Query('date') String? date,

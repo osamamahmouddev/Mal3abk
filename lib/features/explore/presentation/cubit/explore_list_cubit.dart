@@ -41,6 +41,24 @@ class ExploreListCubit extends Cubit<ExploreListState>
     return true;
   }
 
+  /// "Near me" off: every area again, most popular first. The location is
+  /// only used once more when the player turns it back on.
+  Future<void> stopUsingLocation() {
+    near = null;
+    return applyFilter(
+      filter.copyWith(
+        sort: filter.sort == ExploreSortOption.distance
+            ? ExploreSortOption.popularity
+            : filter.sort,
+        radiusKm: () => null,
+      ),
+    );
+  }
+
+  /// Takes one of the API's suggestions after an empty search.
+  Future<void> applySuggestion(String code) =>
+      applyFilter(filter.relaxedFor(code));
+
   /// A search asked for from another tab: its day and kick-off hour replace
   /// the current "when", and the other filters the player set are kept.
   Future<void> applyRequest(ExploreFilterModel request) => applyFilter(

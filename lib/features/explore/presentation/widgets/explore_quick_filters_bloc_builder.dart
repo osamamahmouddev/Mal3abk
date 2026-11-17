@@ -29,6 +29,8 @@ class ExploreQuickFiltersBlocBuilder extends StatelessWidget {
         final cubit = context.read<ExploreListCubit>();
         final f = cubit.filter;
         final when = f.hasPickedWhen ? f.whenLabel(context) : null;
+        final nearMeOn =
+            cubit.near != null && f.sort == ExploreSortOption.distance;
         final chips = [
           // The day and hour picked on the home card; tapping clears them.
           if (when != null)
@@ -41,11 +43,7 @@ class ExploreQuickFiltersBlocBuilder extends StatelessWidget {
                 timeWindow: () => null,
               ),
             ),
-          (
-            'explore.quick.near_me'.tr(context: context),
-            cubit.near != null && f.sort == ExploreSortOption.distance,
-            null,
-          ),
+          ('explore.quick.near_me'.tr(context: context), nearMeOn, null),
           (
             'explore.quick.tonight'.tr(context: context),
             f.timeWindow == ExploreTimeWindow.evening,
@@ -98,6 +96,9 @@ class ExploreQuickFiltersBlocBuilder extends StatelessWidget {
                   HapticFeedback.selectionClick();
                   if (next != null) {
                     await cubit.applyFilter(next());
+                  } else if (nearMeOn) {
+                    // "Near me" toggles like the other chips.
+                    await cubit.stopUsingLocation();
                   } else if (!await cubit.useMyLocation() && context.mounted) {
                     AppTopSnackBar.showError(
                       context,

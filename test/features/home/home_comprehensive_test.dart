@@ -25,10 +25,16 @@ import '../../helpers/matches_fixtures.dart';
 import '../../helpers/teams_fixtures.dart';
 
 class MockHomeRepo extends Mock implements HomeRepo {}
+
 class MockGetHomeFeedUseCase extends Mock implements GetHomeFeedUseCase {}
-class MockGetHomeTeamActivityUseCase extends Mock implements GetHomeTeamActivityUseCase {}
+
+class MockGetHomeTeamActivityUseCase extends Mock
+    implements GetHomeTeamActivityUseCase {}
+
 class MockExploreRepo extends Mock implements ExploreRepo {}
+
 class MockTeamsRepo extends Mock implements TeamsRepo {}
+
 class MockMatchesRepo extends Mock implements MatchesRepo {}
 
 class FakeLocation extends LocationService {
@@ -56,7 +62,7 @@ void main() {
             'city': 'Cairo',
             'area': 'Maadi',
             'isFavorite': true,
-          }
+          },
         ],
       };
       final section = HomeSectionModel.fromJson(json);
@@ -91,8 +97,8 @@ void main() {
               'slug': 'n1',
               'city': 'Cairo',
               'area': 'Nasr City',
-            }
-          ]
+            },
+          ],
         },
         'popularNearYou': {
           'status': 'ok',
@@ -103,13 +109,10 @@ void main() {
               'slug': 'p1',
               'city': 'Cairo',
               'area': 'Heliopolis',
-            }
-          ]
+            },
+          ],
         },
-        'recentlyViewed': {
-          'status': 'ok',
-          'items': [],
-        },
+        'recentlyViewed': {'status': 'ok', 'items': []},
         'generatedAtUtc': '2026-05-01T12:00:00Z',
       };
 
@@ -156,11 +159,14 @@ void main() {
   });
 
   group('HomeTeamActivityModel Tests', () {
-    test('7. isQuiet is true when no challenge, no match awaiting, no next match', () {
-      const activity = HomeTeamActivityModel(hasTeams: true);
-      expect(activity.hasTeams, isTrue);
-      expect(activity.isQuiet, isTrue);
-    });
+    test(
+      '7. isQuiet is true when no challenge, no match awaiting, no next match',
+      () {
+        const activity = HomeTeamActivityModel(hasTeams: true);
+        expect(activity.hasTeams, isTrue);
+        expect(activity.isQuiet, isTrue);
+      },
+    );
 
     test('8. isQuiet is false when has challengeAwaitingReply', () {
       final challenge = testChallenge(isMyTurn: true);
@@ -198,7 +204,8 @@ void main() {
   group('PlayTimeModel Comprehensive Tests', () {
     test('12. PlayTimeModel constants', () {
       expect(PlayTimeModel.days, 7);
-      expect(PlayTimeModel.eveningHour, 20);
+      expect(PlayTimeModel.quietFrom, 2);
+      expect(PlayTimeModel.quietUntil, 9);
     });
 
     test('13. Equality and hashCode for same dayOffset and hour', () {
@@ -242,18 +249,18 @@ void main() {
       expect(hours.last, 23);
     });
 
-    test('19. suggest at midnight suggests 20:00 today', () {
+    test('19. suggest just after midnight suggests 1 AM today', () {
       final midnight = DateTime(2026, 5, 1, 0, 5);
       final s = PlayTimeModel.suggest(midnight);
       expect(s.dayOffset, 0);
-      expect(s.hour, 20);
+      expect(s.hour, 1);
     });
 
-    test('20. suggest at 10 AM suggests 20:00 today', () {
+    test('20. suggest at 10 AM suggests the next hour', () {
       final morning = DateTime(2026, 5, 1, 10, 0);
       final s = PlayTimeModel.suggest(morning);
       expect(s.dayOffset, 0);
-      expect(s.hour, 20);
+      expect(s.hour, 11);
     });
 
     test('21. suggest at 19:15 suggests 20:00 today', () {
@@ -284,11 +291,11 @@ void main() {
       expect(s.hour, 23);
     });
 
-    test('25. suggest at 23:15 suggests 20:00 tomorrow', () {
+    test('25. suggest at 23:15 suggests 9 AM tomorrow', () {
       final veryLate = DateTime(2026, 5, 1, 23, 15);
       final s = PlayTimeModel.suggest(veryLate);
       expect(s.dayOffset, 1);
-      expect(s.hour, 20);
+      expect(s.hour, 9);
     });
 
     test('26. onDay preserves hour if available on target day', () {
@@ -299,22 +306,28 @@ void main() {
       expect(onTomorrow.hour, 18);
     });
 
-    test('27. onDay picks first available hour if original hour passed today', () {
-      const choice = PlayTimeModel(dayOffset: 1, hour: 12);
-      final now15 = DateTime(2026, 5, 1, 15, 0);
-      // switching back to today where 12 has already passed
-      final onToday = choice.onDay(0, now15);
-      expect(onToday.dayOffset, 0);
-      expect(onToday.hour, 16);
-    });
+    test(
+      '27. onDay picks first available hour if original hour passed today',
+      () {
+        const choice = PlayTimeModel(dayOffset: 1, hour: 12);
+        final now15 = DateTime(2026, 5, 1, 15, 0);
+        // switching back to today where 12 has already passed
+        final onToday = choice.onDay(0, now15);
+        expect(onToday.dayOffset, 0);
+        expect(onToday.hour, 16);
+      },
+    );
 
-    test('28. onDay falls back to suggest when target day has no hours left', () {
-      const choice = PlayTimeModel(dayOffset: 2, hour: 18);
-      final lateNow = DateTime(2026, 5, 1, 23, 30);
-      final onToday = choice.onDay(0, lateNow);
-      expect(onToday.dayOffset, 1);
-      expect(onToday.hour, 20);
-    });
+    test(
+      '28. onDay falls back to suggest when target day has no hours left',
+      () {
+        const choice = PlayTimeModel(dayOffset: 2, hour: 18);
+        final lateNow = DateTime(2026, 5, 1, 23, 30);
+        final onToday = choice.onDay(0, lateNow);
+        expect(onToday.dayOffset, 1);
+        expect(onToday.hour, PlayTimeModel.quietUntil);
+      },
+    );
 
     test('29. dayFrom calculates exact date across month end', () {
       const model = PlayTimeModel(dayOffset: 3, hour: 20);
@@ -352,8 +365,9 @@ void main() {
     });
 
     test('31. calls repo without arguments for All of Egypt', () async {
-      when(() => mockHomeRepo.getHomeFeed(city: null, area: null))
-          .thenAnswer((_) async => const ApiResult.success(mockFeed));
+      when(
+        () => mockHomeRepo.getHomeFeed(city: null, area: null),
+      ).thenAnswer((_) async => const ApiResult.success(mockFeed));
 
       final res = await useCase();
       expect(res, isA<Success<LocatedHomeFeedModel>>());
@@ -365,42 +379,65 @@ void main() {
     });
 
     test('32. calls repo with city and area when provided', () async {
-      when(() => mockHomeRepo.getHomeFeed(city: 'Cairo', area: 'Zamalek'))
-          .thenAnswer((_) async => const ApiResult.success(mockFeed));
+      when(
+        () => mockHomeRepo.getHomeFeed(city: 'Cairo', area: 'Zamalek'),
+      ).thenAnswer((_) async => const ApiResult.success(mockFeed));
 
       final res = await useCase(city: 'Cairo', area: 'Zamalek');
       expect(res, isA<Success<LocatedHomeFeedModel>>());
       final data = (res as Success<LocatedHomeFeedModel>).data;
       expect(data.city, 'Cairo');
       expect(data.area, 'Zamalek');
-      verify(() => mockHomeRepo.getHomeFeed(city: 'Cairo', area: 'Zamalek')).called(1);
+      verify(
+        () => mockHomeRepo.getHomeFeed(city: 'Cairo', area: 'Zamalek'),
+      ).called(1);
     });
 
-    test('33. calls repo with lat and lng when near GeoPoint is provided', () async {
-      const point = GeoPoint(latitude: 30.05, longitude: 31.25);
-      when(() => mockHomeRepo.getHomeFeed(lat: 30.05, lng: 31.25))
-          .thenAnswer((_) async => const ApiResult.success(mockFeed));
+    test(
+      '33. calls repo with lat and lng when near GeoPoint is provided',
+      () async {
+        const point = GeoPoint(latitude: 30.05, longitude: 31.25);
+        when(
+          () => mockHomeRepo.getHomeFeed(lat: 30.05, lng: 31.25),
+        ).thenAnswer((_) async => const ApiResult.success(mockFeed));
 
-      final res = await useCase(near: point);
-      expect(res, isA<Success<LocatedHomeFeedModel>>());
-      final data = (res as Success<LocatedHomeFeedModel>).data;
-      expect(data.near, point);
-      expect(data.city, isNull);
-      expect(data.area, isNull);
-      verify(() => mockHomeRepo.getHomeFeed(lat: 30.05, lng: 31.25)).called(1);
-    });
+        final res = await useCase(near: point);
+        expect(res, isA<Success<LocatedHomeFeedModel>>());
+        final data = (res as Success<LocatedHomeFeedModel>).data;
+        expect(data.near, point);
+        expect(data.city, isNull);
+        expect(data.area, isNull);
+        verify(
+          () => mockHomeRepo.getHomeFeed(lat: 30.05, lng: 31.25),
+        ).called(1);
+      },
+    );
 
     test('34. propagates server error failure from repo', () async {
-      when(() => mockHomeRepo.getHomeFeed(city: any(named: 'city'), area: any(named: 'area')))
-          .thenAnswer((_) async => const ApiResult.failure(AppApiFailure(message: 'errors.server')));
+      when(
+        () => mockHomeRepo.getHomeFeed(
+          city: any(named: 'city'),
+          area: any(named: 'area'),
+        ),
+      ).thenAnswer(
+        (_) async =>
+            const ApiResult.failure(AppApiFailure(message: 'errors.server')),
+      );
 
       final res = await useCase();
       expect(res, isA<ApiFailure>());
     });
 
     test('35. propagates network timeout failure from repo', () async {
-      when(() => mockHomeRepo.getHomeFeed(city: any(named: 'city'), area: any(named: 'area')))
-          .thenAnswer((_) async => const ApiResult.failure(AppApiFailure(message: 'errors.timeout')));
+      when(
+        () => mockHomeRepo.getHomeFeed(
+          city: any(named: 'city'),
+          area: any(named: 'area'),
+        ),
+      ).thenAnswer(
+        (_) async =>
+            const ApiResult.failure(AppApiFailure(message: 'errors.timeout')),
+      );
 
       final res = await useCase();
       expect(res, isA<ApiFailure>());
@@ -435,8 +472,9 @@ void main() {
 
     test('37. fetchFeed emits [loading, success]', () async {
       final cubit = HomeFeedCubit(getHomeFeedUseCase: mockUseCase);
-      when(() => mockUseCase(city: 'Cairo', area: 'Nasr City', near: null))
-          .thenAnswer((_) async => const ApiResult.success(testLocated));
+      when(
+        () => mockUseCase(city: 'Cairo', area: 'Nasr City', near: null),
+      ).thenAnswer((_) async => const ApiResult.success(testLocated));
 
       expectLater(
         cubit.stream,
@@ -450,66 +488,110 @@ void main() {
       cubit.close();
     });
 
-    test('38. subsequent fetchFeed() without parameters reuses previously picked area', () async {
-      final cubit = HomeFeedCubit(getHomeFeedUseCase: mockUseCase);
-      when(() => mockUseCase(city: 'Alexandria', area: 'Smouha', near: null))
-          .thenAnswer((_) async => const ApiResult.success(LocatedHomeFeedModel(
-                feed: testFeed,
-                city: 'Alexandria',
-                area: 'Smouha',
-              )));
+    test(
+      '38. subsequent fetchFeed() without parameters reuses previously picked area',
+      () async {
+        final cubit = HomeFeedCubit(getHomeFeedUseCase: mockUseCase);
+        when(
+          () => mockUseCase(city: 'Alexandria', area: 'Smouha', near: null),
+        ).thenAnswer(
+          (_) async => const ApiResult.success(
+            LocatedHomeFeedModel(
+              feed: testFeed,
+              city: 'Alexandria',
+              area: 'Smouha',
+            ),
+          ),
+        );
 
-      await cubit.fetchFeed(city: 'Alexandria', area: 'Smouha');
-      await cubit.fetchFeed();
+        await cubit.fetchFeed(city: 'Alexandria', area: 'Smouha');
+        await cubit.fetchFeed();
 
-      verify(() => mockUseCase(city: 'Alexandria', area: 'Smouha', near: null)).called(2);
-      cubit.close();
-    });
+        verify(
+          () => mockUseCase(city: 'Alexandria', area: 'Smouha', near: null),
+        ).called(2);
+        cubit.close();
+      },
+    );
 
-    test('39. showAllEgypt resets chosen area and loads feed for all Egypt', () async {
-      final cubit = HomeFeedCubit(getHomeFeedUseCase: mockUseCase);
-      when(() => mockUseCase(city: any(named: 'city'), area: any(named: 'area'), near: any(named: 'near')))
-          .thenAnswer((_) async => const ApiResult.success(LocatedHomeFeedModel(feed: testFeed)));
+    test(
+      '39. showAllEgypt resets chosen area and loads feed for all Egypt',
+      () async {
+        final cubit = HomeFeedCubit(getHomeFeedUseCase: mockUseCase);
+        when(
+          () => mockUseCase(
+            city: any(named: 'city'),
+            area: any(named: 'area'),
+            near: any(named: 'near'),
+          ),
+        ).thenAnswer(
+          (_) async =>
+              const ApiResult.success(LocatedHomeFeedModel(feed: testFeed)),
+        );
 
-      await cubit.fetchFeed(city: 'Cairo', area: 'Maadi');
-      await cubit.showAllEgypt();
+        await cubit.fetchFeed(city: 'Cairo', area: 'Maadi');
+        await cubit.showAllEgypt();
 
-      verify(() => mockUseCase(city: null, area: null, near: null)).called(1);
-      cubit.close();
-    });
+        verify(() => mockUseCase(city: null, area: null, near: null)).called(1);
+        cubit.close();
+      },
+    );
 
-    test('40. showNearMe fetches location and queries feed with near GeoPoint', () async {
-      const geo = GeoPoint(latitude: 30.0, longitude: 31.0);
-      final cubit = HomeFeedCubit(
-        getHomeFeedUseCase: mockUseCase,
-        locationService: const FakeLocation(geo),
-      );
+    test(
+      '40. showNearMe fetches location and queries feed with near GeoPoint',
+      () async {
+        const geo = GeoPoint(latitude: 30.0, longitude: 31.0);
+        final cubit = HomeFeedCubit(
+          getHomeFeedUseCase: mockUseCase,
+          locationService: const FakeLocation(geo),
+        );
 
-      when(() => mockUseCase(city: null, area: null, near: geo))
-          .thenAnswer((_) async => const ApiResult.success(LocatedHomeFeedModel(feed: testFeed, near: geo)));
+        when(() => mockUseCase(city: null, area: null, near: geo)).thenAnswer(
+          (_) async => const ApiResult.success(
+            LocatedHomeFeedModel(feed: testFeed, near: geo),
+          ),
+        );
 
-      final success = await cubit.showNearMe();
-      expect(success, isTrue);
-      verify(() => mockUseCase(city: null, area: null, near: geo)).called(1);
-      cubit.close();
-    });
+        final success = await cubit.showNearMe();
+        expect(success, isTrue);
+        verify(() => mockUseCase(city: null, area: null, near: geo)).called(1);
+        cubit.close();
+      },
+    );
 
-    test('41. showNearMe returns false and leaves feed untouched when location is null', () async {
-      final cubit = HomeFeedCubit(
-        getHomeFeedUseCase: mockUseCase,
-        locationService: const FakeLocation(null),
-      );
+    test(
+      '41. showNearMe returns false and leaves feed untouched when location is null',
+      () async {
+        final cubit = HomeFeedCubit(
+          getHomeFeedUseCase: mockUseCase,
+          locationService: const FakeLocation(null),
+        );
 
-      final success = await cubit.showNearMe();
-      expect(success, isFalse);
-      verifyNever(() => mockUseCase(city: any(named: 'city'), area: any(named: 'area'), near: any(named: 'near')));
-      cubit.close();
-    });
+        final success = await cubit.showNearMe();
+        expect(success, isFalse);
+        verifyNever(
+          () => mockUseCase(
+            city: any(named: 'city'),
+            area: any(named: 'area'),
+            near: any(named: 'near'),
+          ),
+        );
+        cubit.close();
+      },
+    );
 
     test('42. fetchFeed emits [loading, error] on use case failure', () async {
       final cubit = HomeFeedCubit(getHomeFeedUseCase: mockUseCase);
-      when(() => mockUseCase(city: any(named: 'city'), area: any(named: 'area'), near: any(named: 'near')))
-          .thenAnswer((_) async => const ApiResult.failure(AppApiFailure(message: 'errors.offline')));
+      when(
+        () => mockUseCase(
+          city: any(named: 'city'),
+          area: any(named: 'area'),
+          near: any(named: 'near'),
+        ),
+      ).thenAnswer(
+        (_) async =>
+            const ApiResult.failure(AppApiFailure(message: 'errors.offline')),
+      );
 
       expectLater(
         cubit.stream,
@@ -523,22 +605,30 @@ void main() {
       cubit.close();
     });
 
-    test('43. subsequent fetchFeed does not emit loading if state is already success', () async {
-      final cubit = HomeFeedCubit(getHomeFeedUseCase: mockUseCase);
-      when(() => mockUseCase(city: any(named: 'city'), area: any(named: 'area'), near: any(named: 'near')))
-          .thenAnswer((_) async => const ApiResult.success(testLocated));
+    test(
+      '43. subsequent fetchFeed does not emit loading if state is already success',
+      () async {
+        final cubit = HomeFeedCubit(getHomeFeedUseCase: mockUseCase);
+        when(
+          () => mockUseCase(
+            city: any(named: 'city'),
+            area: any(named: 'area'),
+            near: any(named: 'near'),
+          ),
+        ).thenAnswer((_) async => const ApiResult.success(testLocated));
 
-      await cubit.fetchFeed();
-      expect(cubit.state, isA<HomeFeedSuccess>());
+        await cubit.fetchFeed();
+        expect(cubit.state, isA<HomeFeedSuccess>());
 
-      final states = <HomeFeedState>[];
-      final sub = cubit.stream.listen(states.add);
+        final states = <HomeFeedState>[];
+        final sub = cubit.stream.listen(states.add);
 
-      await cubit.fetchFeed();
-      expect(states.whereType<HomeFeedLoading>(), isEmpty);
-      await sub.cancel();
-      cubit.close();
-    });
+        await cubit.fetchFeed();
+        expect(states.whereType<HomeFeedLoading>(), isEmpty);
+        await sub.cancel();
+        cubit.close();
+      },
+    );
   });
 
   group('HomeTeamActivityCubit Tests', () {
@@ -549,15 +639,21 @@ void main() {
     });
 
     test('44. Initial state is HomeTeamActivityState.initial()', () {
-      final cubit = HomeTeamActivityCubit(getHomeTeamActivityUseCase: mockUseCase);
+      final cubit = HomeTeamActivityCubit(
+        getHomeTeamActivityUseCase: mockUseCase,
+      );
       expect(cubit.state, const HomeTeamActivityState.initial());
       cubit.close();
     });
 
     test('45. load emits [loading, success]', () async {
-      final cubit = HomeTeamActivityCubit(getHomeTeamActivityUseCase: mockUseCase);
+      final cubit = HomeTeamActivityCubit(
+        getHomeTeamActivityUseCase: mockUseCase,
+      );
       const activity = HomeTeamActivityModel(hasTeams: false);
-      when(() => mockUseCase()).thenAnswer((_) async => const ApiResult.success(activity));
+      when(
+        () => mockUseCase(),
+      ).thenAnswer((_) async => const ApiResult.success(activity));
 
       expectLater(
         cubit.stream,
@@ -572,9 +668,14 @@ void main() {
     });
 
     test('46. load emits [loading, error] on failure', () async {
-      final cubit = HomeTeamActivityCubit(getHomeTeamActivityUseCase: mockUseCase);
-      when(() => mockUseCase())
-          .thenAnswer((_) async => const ApiResult.failure(AppApiFailure(message: 'errors.team_fetch_failed')));
+      final cubit = HomeTeamActivityCubit(
+        getHomeTeamActivityUseCase: mockUseCase,
+      );
+      when(() => mockUseCase()).thenAnswer(
+        (_) async => const ApiResult.failure(
+          AppApiFailure(message: 'errors.team_fetch_failed'),
+        ),
+      );
 
       expectLater(
         cubit.stream,
@@ -588,22 +689,29 @@ void main() {
       cubit.close();
     });
 
-    test('47. subsequent load when already success does not emit loading again', () async {
-      final cubit = HomeTeamActivityCubit(getHomeTeamActivityUseCase: mockUseCase);
-      const activity = HomeTeamActivityModel(hasTeams: true);
-      when(() => mockUseCase()).thenAnswer((_) async => const ApiResult.success(activity));
+    test(
+      '47. subsequent load when already success does not emit loading again',
+      () async {
+        final cubit = HomeTeamActivityCubit(
+          getHomeTeamActivityUseCase: mockUseCase,
+        );
+        const activity = HomeTeamActivityModel(hasTeams: true);
+        when(
+          () => mockUseCase(),
+        ).thenAnswer((_) async => const ApiResult.success(activity));
 
-      await cubit.load();
-      expect(cubit.state, isA<HomeTeamActivitySuccess>());
+        await cubit.load();
+        expect(cubit.state, isA<HomeTeamActivitySuccess>());
 
-      final states = <HomeTeamActivityState>[];
-      final sub = cubit.stream.listen(states.add);
+        final states = <HomeTeamActivityState>[];
+        final sub = cubit.stream.listen(states.add);
 
-      await cubit.load();
-      expect(states.whereType<HomeTeamActivityLoading>(), isEmpty);
-      await sub.cancel();
-      cubit.close();
-    });
+        await cubit.load();
+        expect(states.whereType<HomeTeamActivityLoading>(), isEmpty);
+        await sub.cancel();
+        cubit.close();
+      },
+    );
   });
 
   group('RecentlyViewedCubit Comprehensive Tests', () {
@@ -629,27 +737,38 @@ void main() {
 
     test('49. load updates state with recently viewed venues', () async {
       final cubit = RecentlyViewedCubit(exploreRepo: mockRepo);
-      when(() => mockRepo.getRecentlyViewed()).thenAnswer((_) async => const ApiResult.success([venue]));
+      when(
+        () => mockRepo.getRecentlyViewed(),
+      ).thenAnswer((_) async => const ApiResult.success([venue]));
 
       await cubit.load();
       expect(cubit.state, [venue]);
       cubit.close();
     });
 
-    test('50. load keeps state untouched when getRecentlyViewed fails', () async {
-      final cubit = RecentlyViewedCubit(exploreRepo: mockRepo);
-      when(() => mockRepo.getRecentlyViewed())
-          .thenAnswer((_) async => const ApiResult.failure(AppApiFailure(message: 'errors.network')));
+    test(
+      '50. load keeps state untouched when getRecentlyViewed fails',
+      () async {
+        final cubit = RecentlyViewedCubit(exploreRepo: mockRepo);
+        when(() => mockRepo.getRecentlyViewed()).thenAnswer(
+          (_) async =>
+              const ApiResult.failure(AppApiFailure(message: 'errors.network')),
+        );
 
-      await cubit.load();
-      expect(cubit.state, isEmpty);
-      cubit.close();
-    });
+        await cubit.load();
+        expect(cubit.state, isEmpty);
+        cubit.close();
+      },
+    );
 
     test('51. clear optimistically sets state to empty', () async {
       final cubit = RecentlyViewedCubit(exploreRepo: mockRepo);
-      when(() => mockRepo.getRecentlyViewed()).thenAnswer((_) async => const ApiResult.success([venue]));
-      when(() => mockRepo.clearRecentlyViewed()).thenAnswer((_) async => const ApiResult.success(null));
+      when(
+        () => mockRepo.getRecentlyViewed(),
+      ).thenAnswer((_) async => const ApiResult.success([venue]));
+      when(
+        () => mockRepo.clearRecentlyViewed(),
+      ).thenAnswer((_) async => const ApiResult.success(null));
 
       await cubit.load();
       expect(cubit.state, [venue]);
@@ -660,19 +779,26 @@ void main() {
       cubit.close();
     });
 
-    test('52. clear restores previous state if clearRecentlyViewed fails', () async {
-      final cubit = RecentlyViewedCubit(exploreRepo: mockRepo);
-      when(() => mockRepo.getRecentlyViewed()).thenAnswer((_) async => const ApiResult.success([venue]));
-      when(() => mockRepo.clearRecentlyViewed())
-          .thenAnswer((_) async => const ApiResult.failure(AppApiFailure(message: 'errors.server')));
+    test(
+      '52. clear restores previous state if clearRecentlyViewed fails',
+      () async {
+        final cubit = RecentlyViewedCubit(exploreRepo: mockRepo);
+        when(
+          () => mockRepo.getRecentlyViewed(),
+        ).thenAnswer((_) async => const ApiResult.success([venue]));
+        when(() => mockRepo.clearRecentlyViewed()).thenAnswer(
+          (_) async =>
+              const ApiResult.failure(AppApiFailure(message: 'errors.server')),
+        );
 
-      await cubit.load();
-      expect(cubit.state, [venue]);
+        await cubit.load();
+        expect(cubit.state, [venue]);
 
-      await cubit.clear();
-      expect(cubit.state, [venue]);
-      cubit.close();
-    });
+        await cubit.clear();
+        expect(cubit.state, [venue]);
+        cubit.close();
+      },
+    );
   });
 
   group('Home Edge Cases & Time Transitions Tests', () {
@@ -688,18 +814,21 @@ void main() {
       expect(hours, isEmpty);
     });
 
-    test('55. PlayTimeModel suggest at 01:00 suggests 20:00 today', () {
-      final dt = DateTime(2026, 5, 1, 1, 0);
-      final s = PlayTimeModel.suggest(dt);
-      expect(s.dayOffset, 0);
-      expect(s.hour, 20);
-    });
+    test(
+      '55. PlayTimeModel suggest at 01:00 skips the quiet hours to 9 AM',
+      () {
+        final dt = DateTime(2026, 5, 1, 1, 0);
+        final s = PlayTimeModel.suggest(dt);
+        expect(s.dayOffset, 0);
+        expect(s.hour, 9);
+      },
+    );
 
-    test('56. PlayTimeModel suggest at 18:59 suggests 20:00 today', () {
+    test('56. PlayTimeModel suggest at 18:59 suggests 19:00 today', () {
       final dt = DateTime(2026, 5, 1, 18, 59);
       final s = PlayTimeModel.suggest(dt);
       expect(s.dayOffset, 0);
-      expect(s.hour, 20);
+      expect(s.hour, 19);
     });
 
     test('57. PlayTimeModel onDay across 6 days offset preserves hour', () {
@@ -725,9 +854,21 @@ void main() {
         'popularNearYou': {
           'status': 'ok',
           'items': [
-            {'venueId': 'p1', 'name': 'Popular 1', 'slug': 'p1', 'city': 'C', 'area': 'A'},
-            {'venueId': 'p2', 'name': 'Popular 2', 'slug': 'p2', 'city': 'C', 'area': 'A'},
-          ]
+            {
+              'venueId': 'p1',
+              'name': 'Popular 1',
+              'slug': 'p1',
+              'city': 'C',
+              'area': 'A',
+            },
+            {
+              'venueId': 'p2',
+              'name': 'Popular 2',
+              'slug': 'p2',
+              'city': 'C',
+              'area': 'A',
+            },
+          ],
         },
         'recentlyViewed': {'status': 'ok', 'items': <dynamic>[]},
         'generatedAtUtc': '2026-05-01',
@@ -740,9 +881,23 @@ void main() {
       final json = {
         'status': 'ok',
         'items': [
-          {'venueId': 'v1', 'name': 'V1', 'slug': 'v1', 'city': 'C', 'area': 'A', 'isFavorite': true},
-          {'venueId': 'v2', 'name': 'V2', 'slug': 'v2', 'city': 'C', 'area': 'A', 'isFavorite': false},
-        ]
+          {
+            'venueId': 'v1',
+            'name': 'V1',
+            'slug': 'v1',
+            'city': 'C',
+            'area': 'A',
+            'isFavorite': true,
+          },
+          {
+            'venueId': 'v2',
+            'name': 'V2',
+            'slug': 'v2',
+            'city': 'C',
+            'area': 'A',
+            'isFavorite': false,
+          },
+        ],
       };
       final section = HomeSectionModel.fromJson(json);
       expect(section.items[0].isFavorite, isTrue);
@@ -767,66 +922,85 @@ void main() {
       expect(activity.hasTeams, isFalse);
     });
 
-    test('63. HomeFeedCubit nearMe preserved on subsequent fetchFeed() when location enabled', () async {
-      const geo = GeoPoint(latitude: 30.0, longitude: 31.0);
-      final mockUseCase = MockGetHomeFeedUseCase();
-      const testFeed = HomeFeedModel(
-        nearby: HomeSectionModel(status: 'ok', items: []),
-        popularNearYou: HomeSectionModel(status: 'ok', items: []),
-        recentlyViewed: HomeSectionModel(status: 'ok', items: []),
-        generatedAtUtc: '2026-05-01',
-      );
-      final cubit = HomeFeedCubit(
-        getHomeFeedUseCase: mockUseCase,
-        locationService: const FakeLocation(geo),
-      );
+    test(
+      '63. HomeFeedCubit nearMe preserved on subsequent fetchFeed() when location enabled',
+      () async {
+        const geo = GeoPoint(latitude: 30.0, longitude: 31.0);
+        final mockUseCase = MockGetHomeFeedUseCase();
+        const testFeed = HomeFeedModel(
+          nearby: HomeSectionModel(status: 'ok', items: []),
+          popularNearYou: HomeSectionModel(status: 'ok', items: []),
+          recentlyViewed: HomeSectionModel(status: 'ok', items: []),
+          generatedAtUtc: '2026-05-01',
+        );
+        final cubit = HomeFeedCubit(
+          getHomeFeedUseCase: mockUseCase,
+          locationService: const FakeLocation(geo),
+        );
 
-      when(() => mockUseCase(city: null, area: null, near: geo))
-          .thenAnswer((_) async => const ApiResult.success(LocatedHomeFeedModel(
-                feed: testFeed,
-                near: geo,
-              )));
+        when(() => mockUseCase(city: null, area: null, near: geo)).thenAnswer(
+          (_) async => const ApiResult.success(
+            LocatedHomeFeedModel(feed: testFeed, near: geo),
+          ),
+        );
 
-      await cubit.showNearMe();
-      await cubit.fetchFeed();
+        await cubit.showNearMe();
+        await cubit.fetchFeed();
 
-      verify(() => mockUseCase(city: null, area: null, near: geo)).called(2);
-      cubit.close();
-    });
+        verify(() => mockUseCase(city: null, area: null, near: geo)).called(2);
+        cubit.close();
+      },
+    );
 
-    test('64. HomeFeedCubit switching from nearMe to specific city resets nearMe', () async {
-      const geo = GeoPoint(latitude: 30.0, longitude: 31.0);
-      final mockUseCase = MockGetHomeFeedUseCase();
-      const testFeed = HomeFeedModel(
-        nearby: HomeSectionModel(status: 'ok', items: []),
-        popularNearYou: HomeSectionModel(status: 'ok', items: []),
-        recentlyViewed: HomeSectionModel(status: 'ok', items: []),
-        generatedAtUtc: '2026-05-01',
-      );
-      final cubit = HomeFeedCubit(
-        getHomeFeedUseCase: mockUseCase,
-        locationService: const FakeLocation(geo),
-      );
+    test(
+      '64. HomeFeedCubit switching from nearMe to specific city resets nearMe',
+      () async {
+        const geo = GeoPoint(latitude: 30.0, longitude: 31.0);
+        final mockUseCase = MockGetHomeFeedUseCase();
+        const testFeed = HomeFeedModel(
+          nearby: HomeSectionModel(status: 'ok', items: []),
+          popularNearYou: HomeSectionModel(status: 'ok', items: []),
+          recentlyViewed: HomeSectionModel(status: 'ok', items: []),
+          generatedAtUtc: '2026-05-01',
+        );
+        final cubit = HomeFeedCubit(
+          getHomeFeedUseCase: mockUseCase,
+          locationService: const FakeLocation(geo),
+        );
 
-      when(() => mockUseCase(city: null, area: null, near: geo))
-          .thenAnswer((_) async => const ApiResult.success(LocatedHomeFeedModel(feed: testFeed, near: geo)));
-      when(() => mockUseCase(city: 'Suez', area: 'Arbaeen', near: null))
-          .thenAnswer((_) async => const ApiResult.success(LocatedHomeFeedModel(feed: testFeed, city: 'Suez', area: 'Arbaeen')));
+        when(() => mockUseCase(city: null, area: null, near: geo)).thenAnswer(
+          (_) async => const ApiResult.success(
+            LocatedHomeFeedModel(feed: testFeed, near: geo),
+          ),
+        );
+        when(
+          () => mockUseCase(city: 'Suez', area: 'Arbaeen', near: null),
+        ).thenAnswer(
+          (_) async => const ApiResult.success(
+            LocatedHomeFeedModel(feed: testFeed, city: 'Suez', area: 'Arbaeen'),
+          ),
+        );
 
-      await cubit.showNearMe();
-      await cubit.fetchFeed(city: 'Suez', area: 'Arbaeen');
+        await cubit.showNearMe();
+        await cubit.fetchFeed(city: 'Suez', area: 'Arbaeen');
 
-      verify(() => mockUseCase(city: 'Suez', area: 'Arbaeen', near: null)).called(1);
-      cubit.close();
-    });
+        verify(
+          () => mockUseCase(city: 'Suez', area: 'Arbaeen', near: null),
+        ).called(1);
+        cubit.close();
+      },
+    );
 
-    test('65. PlayTimeModel onDay 0 from day 3 keeps hour if still available', () {
-      const choice = PlayTimeModel(dayOffset: 3, hour: 21);
-      final now18 = DateTime(2026, 5, 1, 18, 0);
-      final onToday = choice.onDay(0, now18);
-      expect(onToday.dayOffset, 0);
-      expect(onToday.hour, 21);
-    });
+    test(
+      '65. PlayTimeModel onDay 0 from day 3 keeps hour if still available',
+      () {
+        const choice = PlayTimeModel(dayOffset: 3, hour: 21);
+        final now18 = DateTime(2026, 5, 1, 18, 0);
+        final onToday = choice.onDay(0, now18);
+        expect(onToday.dayOffset, 0);
+        expect(onToday.hour, 21);
+      },
+    );
 
     test('66. PlayTimeModel suggest at 20:00 exact suggests 21:00', () {
       final now20 = DateTime(2026, 5, 1, 20, 0);
@@ -849,19 +1023,33 @@ void main() {
       expect(s.hour, 23);
     });
 
-    test('69. PlayTimeModel suggest at 23:00 exact suggests tomorrow 20:00', () {
+    test('69. PlayTimeModel suggest at 23:00 exact suggests tomorrow 9 AM', () {
       final now23 = DateTime(2026, 5, 1, 23, 0);
       final s = PlayTimeModel.suggest(now23);
       expect(s.dayOffset, 1);
-      expect(s.hour, 20);
+      expect(s.hour, 9);
     });
 
     test('70. RecentlyViewedCubit load multiple items', () async {
       final mockRepo = MockExploreRepo();
-      const v1 = ExploreVenueCardModel(venueId: 'v1', name: 'V1', slug: 'v1', city: 'C', area: 'A');
-      const v2 = ExploreVenueCardModel(venueId: 'v2', name: 'V2', slug: 'v2', city: 'C', area: 'A');
+      const v1 = ExploreVenueCardModel(
+        venueId: 'v1',
+        name: 'V1',
+        slug: 'v1',
+        city: 'C',
+        area: 'A',
+      );
+      const v2 = ExploreVenueCardModel(
+        venueId: 'v2',
+        name: 'V2',
+        slug: 'v2',
+        city: 'C',
+        area: 'A',
+      );
       final cubit = RecentlyViewedCubit(exploreRepo: mockRepo);
-      when(() => mockRepo.getRecentlyViewed()).thenAnswer((_) async => const ApiResult.success([v1, v2]));
+      when(
+        () => mockRepo.getRecentlyViewed(),
+      ).thenAnswer((_) async => const ApiResult.success([v1, v2]));
 
       await cubit.load();
       expect(cubit.state.length, 2);

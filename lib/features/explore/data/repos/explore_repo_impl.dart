@@ -54,6 +54,7 @@ class ExploreRepoImpl implements ExploreRepo {
     () => exploreApiService.exploreVenues(
       lat: near?.latitude,
       lng: near?.longitude,
+      radiusKm: near == null ? null : filter.radiusKm,
       city: city,
       area: area,
       date: _dateFor(filter),

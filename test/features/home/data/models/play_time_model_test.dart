@@ -4,14 +4,16 @@ import 'package:mal3abk/features/home/data/models/play_time_model.dart';
 DateTime at(int hour, [int minute = 0]) => DateTime(2026, 11, 14, hour, minute);
 
 void main() {
-  group('the suggested time', () {
+  group('the suggested time with nothing known: the next hour ahead', () {
     final cases = {
-      'early morning → 8 PM today': (at(6), 0, 20),
-      'afternoon → 8 PM today': (at(15, 40), 0, 20),
+      'afternoon → the next hour': (at(15, 40), 0, 16),
       '7:59 PM → 8 PM today': (at(19, 59), 0, 20),
-      '8:10 PM → 9 PM today': (at(20, 10), 0, 21),
       '10:30 PM → 11 PM today': (at(22, 30), 0, 23),
-      'after 11 PM → 8 PM tomorrow': (at(23, 5), 1, 20),
+      'just after midnight → 1 AM, still played': (at(0, 20), 0, 1),
+      'quiet hours (3 AM) → 9 AM today': (at(3), 0, 9),
+      'early morning (6 AM) → 9 AM today': (at(6), 0, 9),
+      '8:10 AM → 9 AM today': (at(8, 10), 0, 9),
+      'after 11 PM → 9 AM tomorrow': (at(23, 5), 1, 9),
     };
     cases.forEach((label, value) {
       final (now, day, hour) = value;
@@ -21,6 +23,54 @@ void main() {
           PlayTimeModel(dayOffset: day, hour: hour),
         );
       });
+    });
+  });
+
+  group('the suggested time follows the player and the venues', () {
+    test('the usual hour, today while it is still ahead', () {
+      expect(
+        PlayTimeModel.suggest(at(15), usualHour: 21),
+        const PlayTimeModel(dayOffset: 0, hour: 21),
+      );
+    });
+
+    test('the usual hour, tomorrow once it has started today', () {
+      expect(
+        PlayTimeModel.suggest(at(21, 10), usualHour: 21),
+        const PlayTimeModel(dayOffset: 1, hour: 21),
+      );
+    });
+
+    test('the usual hour wins over a free slot', () {
+      expect(
+        PlayTimeModel.suggest(
+          at(15),
+          usualHour: 22,
+          freeSlotCairo: DateTime(2026, 11, 14, 17),
+        ),
+        const PlayTimeModel(dayOffset: 0, hour: 22),
+      );
+    });
+
+    test('without a usual hour, the earliest free slot nearby', () {
+      expect(
+        PlayTimeModel.suggest(at(15), freeSlotCairo: DateTime(2026, 11, 16, 9)),
+        const PlayTimeModel(dayOffset: 2, hour: 9),
+      );
+    });
+
+    test('a free slot already started or past the week is ignored', () {
+      expect(
+        PlayTimeModel.suggest(at(15, 30), freeSlotCairo: at(15)),
+        const PlayTimeModel(dayOffset: 0, hour: 16),
+      );
+      expect(
+        PlayTimeModel.suggest(
+          at(15, 30),
+          freeSlotCairo: DateTime(2026, 11, 30, 20),
+        ),
+        const PlayTimeModel(dayOffset: 0, hour: 16),
+      );
     });
   });
 

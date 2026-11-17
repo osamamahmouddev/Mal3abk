@@ -19,7 +19,11 @@ class CustomStateWidget extends StatelessWidget {
     this.actionText,
     this.onActionTap,
     this.isLoading = false,
+    this.footer,
   });
+
+  /// Extra next steps under the action, e.g. ways out of an empty search.
+  final Widget? footer;
 
   final String title;
   final String description;
@@ -80,6 +84,7 @@ class CustomStateWidget extends StatelessWidget {
                     height: 48.h,
                   ),
                 ],
+                if (footer != null) ...[hSpace(20), footer!],
               ],
             ),
           ),
