@@ -1,4 +1,6 @@
 @Tags(['integration'])
+// A test never runs past its timeout into the next one's players.
+@Timeout(Duration(minutes: 2))
 library;
 
 import 'dart:io';
@@ -57,58 +59,17 @@ void main() {
     }
   });
 
-  Future<String> otpFor(String phone) async {
-    final digits = phone.replaceAll('+', '');
-    for (var i = 0; i < 40; i++) {
-      final list = await plain.get<Map<String, dynamic>>(
-        '$mailpitUrl/api/v1/search',
-        queryParameters: {'query': 'to:sms+$digits@malabak.local'},
-      );
-      final messages = (list.data!['messages'] as List)
-          .cast<Map<String, dynamic>>();
-      if (messages.isNotEmpty) {
-        final detail = await plain.get<Map<String, dynamic>>(
-          '$mailpitUrl/api/v1/message/${messages.first['ID']}',
-        );
-        final code = RegExp(
-          r'\b[0-9]{6}\b',
-        ).firstMatch(detail.data!['Text'] as String)?.group(0);
-        if (code != null) return code;
-      }
-      await Future<void>.delayed(const Duration(milliseconds: 250));
-    }
-    throw TestFailure('no OTP reached Mailpit for $phone');
-  }
-
-  /// A brand-new player signed in through the real OTP flow.
+  /// A brand-new player, signed in with the Development Firebase token.
+  ///
+  /// Not through OTP: sending codes is rate limited per IP, four players per
+  /// test hit that limit, and a test waiting on it ran past its timeout while
+  /// the next test's setUp replaced the shared players under it. The OTP flow
+  /// has its own suite (auth_sessions_cycle_test.dart).
   Future<_Player> newPlayer(String name) async {
     final phone = '+2010${10000000 + random.nextInt(89999999)}';
-    // Sending codes is rate limited per IP; wait as long as the API asks.
-    for (var attempt = 1; ; attempt++) {
-      try {
-        await plain.post<dynamic>(
-          '$apiUrl/api/v1/auth/otp/send',
-          data: {'phoneNumber': phone, 'turnstileToken': 'dev'},
-        );
-        break;
-      } on DioException catch (e) {
-        final wait = int.tryParse(
-          e.response?.headers.value('retry-after') ?? '',
-        );
-        if (e.response?.statusCode != 429 || wait == null || attempt > 5) {
-          rethrow;
-        }
-        await Future<void>.delayed(Duration(seconds: wait + 1));
-      }
-    }
     final verified = await plain.post<Map<String, dynamic>>(
-      '$apiUrl/api/v1/auth/otp/verify',
-      data: {
-        'phoneNumber': phone,
-        'code': await otpFor(phone),
-        'fullName': name,
-        'restoreAccount': false,
-      },
+      '$apiUrl/api/v1/auth/firebase',
+      data: {'idToken': 'dev:$phone', 'fullName': name},
     );
     final dio = _paced(
       Dio(
