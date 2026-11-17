@@ -144,7 +144,37 @@ class BookingReviewBlocBuilder extends StatelessWidget {
                 ),
               ),
               hSpace(14),
-              if (quote == null)
+              // The price could not be loaded: say why and offer a retry,
+              // never an endless skeleton.
+              if (quote == null && !state.isQuoting && state.quoteError != null)
+                CustomCardWidget(
+                  padding: EdgeInsets.all(16.r),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        state.quoteError!.tr(context: context),
+                        style: AppTextStyles.font14Medium,
+                        textAlign: TextAlign.center,
+                      ),
+                      hSpace(12),
+                      CustomButton(
+                        text: 'common.retry'.tr(context: context),
+                        type: CustomButtonType.outline,
+                        height: 44.h,
+                        enabled: slot != null,
+                        onTap: () {
+                          if (slot != null) {
+                            context.read<PitchBookingCubit>().fetchQuoteForSlot(
+                              slot,
+                            );
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                )
+              else if (quote == null)
                 const ShimmerListSkeletonWidget(
                   itemHeight: 180,
                   itemCount: 1,

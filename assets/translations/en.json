@@ -79,7 +79,8 @@
       "user_not_found": "Account not found.",
       "step_up_unavailable": "This verification isn't available for your account right now.",
       "otp_rate_limited": "You've requested several codes for this number. Wait for the timer, then request a new one.",
-      "account_pending_deletion": "This account is scheduled for deletion."
+      "account_pending_deletion": "This account is scheduled for deletion.",
+      "account_suspended": "This account is suspended. Contact support."
     },
     "teams": {
       "cannot_change_captain_role": "The captain's role can't be changed.",
@@ -126,7 +127,8 @@
       "result_already_submitted": "The result was already submitted.",
       "result_not_pending_verification": "The result isn't waiting for confirmation.",
       "schedule_conflict": "There's another match at that time.",
-      "invalid_scheduled_time": "Choose a future time."
+      "invalid_scheduled_time": "Choose a future time.",
+      "submission_expired": "The time to submit this match's result is over."
     },
     "profile": {
       "invalid_name": "Enter your name (at least 2 letters).",
@@ -138,6 +140,20 @@
       "invalid_image": "That file isn't a photo. Choose a JPG, PNG or WebP image.",
       "too_large": "The photo is too large (8 MB max).",
       "upload_expired": "The upload expired. Please try again."
+    },
+    "booking": {
+      "date_out_of_range": "Pick a day from today up to how far ahead this venue takes bookings.",
+      "account_locked": "Booking is paused on your account for a while because of too many unpaid holds.",
+      "cancellation_deadline_passed": "The venue's cancellation deadline has passed.",
+      "cannot_cancel": "This booking can't be cancelled in its current state.",
+      "cannot_cancel_past": "This booking has already started or ended, so it can't be cancelled.",
+      "duplicate_receipt": "This receipt was already sent for another booking.",
+      "hold_expired": "Your hold on this slot expired. Please book again.",
+      "invalid_receipt": "The receipt must be an image or PDF under 5 MB.",
+      "max_pending": "You have too many bookings waiting for payment. Pay or cancel one first.",
+      "price_changed": "The price changed. Check the new price before booking.",
+      "quote_expired": "This price expired. Open the slot again.",
+      "slot_taken": "Someone just took this slot. Pick another one."
     }
   },
   "auth": {
@@ -221,7 +237,7 @@
       "name_hint": "Ahmed Samy",
       "area_label": "Area you play in",
       "area_hint": "Nasr City, Cairo",
-    "other_area": "Another area",
+      "other_area": "Another area",
       "pos_label": "Where do you play?",
       "pos_gk": "Goalkeeper",
       "pos_def": "Defender",
@@ -436,6 +452,14 @@
       "searching": "Searching…",
       "zoom_in": "Zoom in a little to see pitches",
       "truncated": "More pitches match — zoom in to see them all"
+    },
+    "suggestions": {
+      "widen_radius": "Search a wider area ({} venues)",
+      "any_time": "Any time that day ({} venues)",
+      "any_date": "Any day ({} venues)",
+      "any_budget": "Remove the price limit ({} venues)",
+      "any_pitch": "Any pitch type ({} venues)",
+      "fewer_facilities": "Remove facility filters ({} venues)"
     }
   },
   "booking": {

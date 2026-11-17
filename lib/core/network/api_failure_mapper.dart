@@ -118,6 +118,30 @@ class ApiFailureMapper {
         'errors.matches.result_not_pending_verification',
     'Match.ScheduleConflict': 'errors.matches.schedule_conflict',
     'Match.InvalidScheduledTime': 'errors.matches.invalid_scheduled_time',
+    'Availability.DateOutOfRange': 'errors.booking.date_out_of_range',
+    'Booking.AccountLockedForHoarding': 'errors.booking.account_locked',
+    'Booking.CancellationDeadlinePassed':
+        'errors.booking.cancellation_deadline_passed',
+    'Booking.CannotCancel': 'errors.booking.cannot_cancel',
+    'Booking.CannotCancelPastBooking': 'errors.booking.cannot_cancel_past',
+    'Booking.DuplicateProof': 'errors.booking.duplicate_receipt',
+    'Proof.DuplicateReceipt': 'errors.booking.duplicate_receipt',
+    'Booking.HoldExpired': 'errors.booking.hold_expired',
+    'Booking.InvalidProofFile': 'errors.booking.invalid_receipt',
+    'Booking.VirusDetected': 'errors.booking.invalid_receipt',
+    'Booking.MaxPendingBookingsExceeded': 'errors.booking.max_pending',
+    'Booking.PriceMismatch': 'errors.booking.price_changed',
+    'Quote.PriceChanged': 'errors.booking.price_changed',
+    'Quote.Expired': 'errors.booking.quote_expired',
+    'Quote.InvalidToken': 'errors.booking.quote_expired',
+    'Booking.SlotOverlap': 'errors.booking.slot_taken',
+    'Quote.SlotUnavailable': 'errors.booking.slot_taken',
+    'Match.SubmissionExpired': 'errors.matches.submission_expired',
+    'Identity.AccountSuspended': 'errors.identity.account_suspended',
+    'Identity.InvalidFirebaseToken': 'errors.identity.session_expired',
+    'Identity.FirebasePhoneMissing': 'errors.identity.invalid_phone',
+    'Identity.FirebaseVerificationUnavailable':
+        'errors.identity.otp_delivery_failed',
   };
 
   static AppApiFailure map(Object error, [StackTrace? stackTrace]) {
