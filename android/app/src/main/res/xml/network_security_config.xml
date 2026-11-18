@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <!-- Cleartext HTTP only for the local API used by the dev flavor -->
+    <!-- Cleartext HTTP permitted for the staging server and local dev targets -->
     <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">runasp.net</domain>
+        <domain includeSubdomains="true">siteasp.net</domain>
         <domain includeSubdomains="true">10.0.2.2</domain>
         <domain includeSubdomains="true">127.0.0.1</domain>
         <domain includeSubdomains="true">localhost</domain>

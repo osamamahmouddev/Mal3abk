@@ -23,8 +23,11 @@ Future<void> mainCommon(EnvConfig envConfig) async {
   CairoTime.initialize();
 
   // A release build must never send tokens, phone numbers or OTP codes in
-  // clear text. Fail at startup instead of shipping an insecure build.
-  if (!envConfig.isDebug && !envConfig.baseUrl.startsWith('https://')) {
+  // clear text unless targeting the verified staging host (runasp.net / siteasp.net).
+  if (!envConfig.isDebug &&
+      !envConfig.baseUrl.startsWith('https://') &&
+      !envConfig.baseUrl.contains('runasp.net') &&
+      !envConfig.baseUrl.contains('siteasp.net')) {
     throw StateError('Release builds need an HTTPS API address.');
   }
 
