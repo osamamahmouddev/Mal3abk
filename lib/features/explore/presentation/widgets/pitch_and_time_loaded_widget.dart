@@ -213,6 +213,10 @@ class PitchAndTimeLoadedWidget extends StatelessWidget {
                       // A wave across the grid: row plus column.
                       index: i ~/ 3 + i % 3,
                       child: PitchTimeSlotTileWidget(
+                        // One state per slot of this pitch: a tile only
+                        // animates when its own slot changes, never when
+                        // the day, pitch or filter shows another slot.
+                        key: ValueKey('${pitch?.pitchId}|${slot.startUtc}'),
                         time: CairoTime.time(
                           CairoTime.parseUtc(slot.startUtc),
                           lang,
