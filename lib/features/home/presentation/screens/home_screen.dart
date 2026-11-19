@@ -19,6 +19,7 @@ import '../widgets/home_recently_viewed_bloc_builder.dart';
 import '../widgets/home_team_activity_bloc_builder.dart';
 import '../widgets/home_upcoming_booking_bloc_builder.dart';
 import '../../../main_shell/presentation/widgets/main_shell_scope_widget.dart';
+import '../../../../core/animations/ball_refresh_indicator.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -39,7 +40,7 @@ class HomeScreen extends StatelessWidget {
             children: [
               const HomeLocationHeaderWidget(),
               Expanded(
-                child: RefreshIndicator.adaptive(
+                child: BallRefreshIndicator(
                   onRefresh: () => Future.wait([
                     context.read<HomeFeedCubit>().fetchFeed(),
                     context.read<HomeTeamActivityCubit>().load(),

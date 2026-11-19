@@ -12,6 +12,7 @@ import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
 import '../cubit/my_teams_cubit.dart';
 import '../cubit/my_teams_state.dart';
 import 'my_team_card_widget.dart';
+import '../../../../core/animations/ball_refresh_indicator.dart';
 
 class MyTeamsBlocBuilder extends StatelessWidget {
   const MyTeamsBlocBuilder({super.key});
@@ -31,7 +32,7 @@ class MyTeamsBlocBuilder extends StatelessWidget {
                 onActionTap: () =>
                     Navigator.of(context).pushNamed(AppRoutes.createTeam),
               ),
-            MyTeamsSuccess(:final teams) => RefreshIndicator.adaptive(
+            MyTeamsSuccess(:final teams) => BallRefreshIndicator(
               onRefresh: () => context.read<MyTeamsCubit>().load(),
               child: ListView.separated(
                 physics: const AlwaysScrollableScrollPhysics(

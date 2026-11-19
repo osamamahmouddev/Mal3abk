@@ -15,6 +15,7 @@ import '../cubit/match_details_state.dart';
 import 'match_status_badge_widget.dart';
 import 'match_status_banner_widget.dart';
 import 'team_matchup_header_widget.dart';
+import '../../../../core/animations/ball_refresh_indicator.dart';
 
 class MatchDetailsBlocBuilder extends StatelessWidget {
   const MatchDetailsBlocBuilder({required this.matchId, super.key});
@@ -31,7 +32,7 @@ class MatchDetailsBlocBuilder extends StatelessWidget {
           MatchDetailsSuccess(:final details) => () {
             final match = details.match;
             String t(String key) => 'matches.match.$key'.tr(context: context);
-            return RefreshIndicator.adaptive(
+            return BallRefreshIndicator(
               onRefresh: () => cubit.load(matchId),
               child: ListView(
                 physics: const AlwaysScrollableScrollPhysics(

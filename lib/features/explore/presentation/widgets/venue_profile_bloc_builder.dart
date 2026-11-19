@@ -24,6 +24,7 @@ import 'venue_info_header_widget.dart';
 import 'venue_pitches_tab_widget.dart';
 import 'venue_policies_tab_widget.dart';
 import 'venue_price_footer_widget.dart';
+import '../../../../core/animations/ball_refresh_indicator.dart';
 
 class VenueProfileBlocBuilder extends StatelessWidget {
   const VenueProfileBlocBuilder({
@@ -81,7 +82,7 @@ class VenueProfileBlocBuilder extends StatelessWidget {
                 ),
                 body: Stack(
                   children: [
-                    RefreshIndicator.adaptive(
+                    BallRefreshIndicator(
                       onRefresh: () =>
                           context.read<VenueProfileCubit>().loadVenue(venueId),
                       child: ListView(

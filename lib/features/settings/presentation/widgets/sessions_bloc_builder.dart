@@ -15,6 +15,7 @@ import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
 import '../cubit/sessions_cubit.dart';
 import '../cubit/sessions_state.dart';
 import 'session_tile_widget.dart';
+import '../../../../core/animations/ball_refresh_indicator.dart';
 
 class SessionsBlocBuilder extends StatelessWidget {
   const SessionsBlocBuilder({super.key});
@@ -32,62 +33,61 @@ class SessionsBlocBuilder extends StatelessWidget {
       },
       builder: (context, state) {
         return switch (state) {
-          SessionsSuccess(:final sessions, :final busy) =>
-            RefreshIndicator.adaptive(
-              onRefresh: cubit.load,
-              child: ListView(
-                physics: const AlwaysScrollableScrollPhysics(
-                  parent: BouncingScrollPhysics(),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                children: [
-                  Text(
-                    'settings.sessions.description'.tr(context: context),
-                    style: AppTextStyles.font13Regular,
-                  ),
-                  hSpace(12),
-                  CustomCardWidget(
-                    padding: EdgeInsets.zero,
-                    child: Column(
-                      children: [
-                        for (final (i, session) in sessions.indexed) ...[
-                          if (i > 0)
-                            const Divider(height: 1, color: AppColors.border),
-                          SessionTileWidget(
-                            session: session,
-                            enabled: !busy,
-                            onRevoke: () {
-                              HapticFeedback.mediumImpact();
-                              cubit.revoke(session.sessionId);
-                            },
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                  if (sessions.any((s) => !s.isCurrent)) ...[
-                    hSpace(16),
-                    CustomButton(
-                      text: 'settings.sessions.revoke_others'.tr(
-                        context: context,
-                      ),
-                      type: CustomButtonType.outline,
-                      height: 50.h,
-                      borderRadius: 12,
-                      borderColor: AppColors.redBorder,
-                      isLoading: busy,
-                      textStyle: AppTextStyles.font15SemiBold.copyWith(
-                        color: AppColors.redText,
-                      ),
-                      onTap: () {
-                        HapticFeedback.mediumImpact();
-                        cubit.revokeOthers();
-                      },
-                    ),
-                  ],
-                ],
+          SessionsSuccess(:final sessions, :final busy) => BallRefreshIndicator(
+            onRefresh: cubit.load,
+            child: ListView(
+              physics: const AlwaysScrollableScrollPhysics(
+                parent: BouncingScrollPhysics(),
               ),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+              children: [
+                Text(
+                  'settings.sessions.description'.tr(context: context),
+                  style: AppTextStyles.font13Regular,
+                ),
+                hSpace(12),
+                CustomCardWidget(
+                  padding: EdgeInsets.zero,
+                  child: Column(
+                    children: [
+                      for (final (i, session) in sessions.indexed) ...[
+                        if (i > 0)
+                          const Divider(height: 1, color: AppColors.border),
+                        SessionTileWidget(
+                          session: session,
+                          enabled: !busy,
+                          onRevoke: () {
+                            HapticFeedback.mediumImpact();
+                            cubit.revoke(session.sessionId);
+                          },
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                if (sessions.any((s) => !s.isCurrent)) ...[
+                  hSpace(16),
+                  CustomButton(
+                    text: 'settings.sessions.revoke_others'.tr(
+                      context: context,
+                    ),
+                    type: CustomButtonType.outline,
+                    height: 50.h,
+                    borderRadius: 12,
+                    borderColor: AppColors.redBorder,
+                    isLoading: busy,
+                    textStyle: AppTextStyles.font15SemiBold.copyWith(
+                      color: AppColors.redText,
+                    ),
+                    onTap: () {
+                      HapticFeedback.mediumImpact();
+                      cubit.revokeOthers();
+                    },
+                  ),
+                ],
+              ],
             ),
+          ),
           SessionsError(:final message) => CustomStateWidget(
             title: message.tr(context: context),
             description: '',

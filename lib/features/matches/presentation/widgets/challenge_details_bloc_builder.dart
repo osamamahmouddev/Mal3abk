@@ -12,6 +12,7 @@ import '../cubit/challenge_details_cubit.dart';
 import '../cubit/challenge_details_state.dart';
 import 'challenge_info_card_widget.dart';
 import 'team_matchup_header_widget.dart';
+import '../../../../core/animations/ball_refresh_indicator.dart';
 
 class ChallengeDetailsBlocBuilder extends StatelessWidget {
   const ChallengeDetailsBlocBuilder({required this.challengeId, super.key});
@@ -24,7 +25,7 @@ class ChallengeDetailsBlocBuilder extends StatelessWidget {
     return BlocBuilder<ChallengeDetailsCubit, ChallengeDetailsState>(
       builder: (context, state) {
         return switch (state) {
-          ChallengeDetailsSuccess(:final details) => RefreshIndicator.adaptive(
+          ChallengeDetailsSuccess(:final details) => BallRefreshIndicator(
             onRefresh: () => cubit.load(challengeId),
             child: ListView(
               physics: const AlwaysScrollableScrollPhysics(

@@ -15,6 +15,7 @@ import 'booking_pass_hero_widget.dart';
 import 'booking_pass_payment_card_widget.dart';
 import 'booking_pass_qr_card_widget.dart';
 import 'booking_pass_timeline_widget.dart';
+import '../../../../core/animations/ball_refresh_indicator.dart';
 
 class BookingDetailsBlocBuilder extends StatelessWidget {
   const BookingDetailsBlocBuilder({required this.bookingId, super.key});
@@ -26,7 +27,7 @@ class BookingDetailsBlocBuilder extends StatelessWidget {
     final cubit = context.read<BookingDetailsCubit>();
     return BlocBuilder<BookingDetailsCubit, BookingDetailsState>(
       builder: (context, state) => switch (state) {
-        BookingDetailsSuccess(:final booking) => RefreshIndicator.adaptive(
+        BookingDetailsSuccess(:final booking) => BallRefreshIndicator(
           onRefresh: () => cubit.load(bookingId),
           child: ListView(
             physics: const AlwaysScrollableScrollPhysics(

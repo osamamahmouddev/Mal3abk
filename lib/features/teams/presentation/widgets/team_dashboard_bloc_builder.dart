@@ -13,6 +13,7 @@ import 'team_join_requests_section_widget.dart';
 import 'team_profile_header_section_widget.dart';
 import 'team_profile_matches_section_widget.dart';
 import 'team_profile_players_section_widget.dart';
+import '../../../../core/animations/ball_refresh_indicator.dart';
 
 class TeamDashboardBlocBuilder extends StatelessWidget {
   const TeamDashboardBlocBuilder({required this.teamId, super.key});
@@ -24,7 +25,7 @@ class TeamDashboardBlocBuilder extends StatelessWidget {
     return BlocBuilder<TeamDashboardCubit, TeamDashboardState>(
       builder: (context, state) {
         return switch (state) {
-          TeamDashboardSuccess(:final dashboard) => RefreshIndicator.adaptive(
+          TeamDashboardSuccess(:final dashboard) => BallRefreshIndicator(
             onRefresh: () => context.read<TeamDashboardCubit>().load(teamId),
             child: ListView(
               physics: const AlwaysScrollableScrollPhysics(

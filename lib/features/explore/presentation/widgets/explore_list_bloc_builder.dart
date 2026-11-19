@@ -20,6 +20,7 @@ import '../cubit/explore_list_state.dart';
 import '../cubit/favorite_toggle_cubit.dart';
 import '../cubit/favorite_toggle_state.dart';
 import 'explore_suggestions_widget.dart';
+import '../../../../core/animations/ball_refresh_indicator.dart';
 
 class ExploreListBlocBuilder extends StatelessWidget {
   const ExploreListBlocBuilder({required this.onSlotTap, super.key});
@@ -69,7 +70,7 @@ class ExploreListBlocBuilder extends StatelessWidget {
               BlocBuilder<FavoriteToggleCubit, FavoriteToggleState>(
                 builder: (context, _) {
                   final favorites = context.read<FavoriteToggleCubit>();
-                  return RefreshIndicator.adaptive(
+                  return BallRefreshIndicator(
                     onRefresh: context.read<ExploreListCubit>().fetchVenues,
                     child: ListView.separated(
                       physics: const AlwaysScrollableScrollPhysics(

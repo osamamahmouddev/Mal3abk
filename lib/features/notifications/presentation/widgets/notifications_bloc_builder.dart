@@ -14,6 +14,7 @@ import '../cubit/notifications_cubit.dart';
 import '../cubit/notifications_state.dart';
 import 'notification_category_icon.dart';
 import 'notification_item_card_widget.dart';
+import '../../../../core/animations/ball_refresh_indicator.dart';
 
 class NotificationsBlocBuilder extends StatelessWidget {
   const NotificationsBlocBuilder({super.key});
@@ -43,7 +44,7 @@ class NotificationsBlocBuilder extends StatelessWidget {
               description: 'notifications.empty_desc'.tr(context: context),
             ),
           NotificationsSuccess(:final items, :final hasMore) =>
-            RefreshIndicator.adaptive(
+            BallRefreshIndicator(
               onRefresh: cubit.load,
               child: NotificationListener<ScrollNotification>(
                 onNotification: (scroll) {

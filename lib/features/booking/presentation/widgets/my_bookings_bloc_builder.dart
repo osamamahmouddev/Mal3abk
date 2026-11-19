@@ -18,6 +18,7 @@ import '../cubit/my_bookings_cubit.dart';
 import '../cubit/my_bookings_state.dart';
 import '../cubit/my_bookings_tab.dart';
 import 'booking_status_style.dart';
+import '../../../../core/animations/ball_refresh_indicator.dart';
 
 class MyBookingsBlocBuilder extends StatelessWidget {
   const MyBookingsBlocBuilder({super.key});
@@ -102,7 +103,7 @@ class MyBookingsBlocBuilder extends StatelessWidget {
                 onActionTap: () => openExplore(context),
               ),
             MyBookingsSuccess(:final items, :final hasMore, :final tab) =>
-              RefreshIndicator.adaptive(
+              BallRefreshIndicator(
                 onRefresh: () => cubit.load(tab),
                 child: NotificationListener<ScrollNotification>(
                   onNotification: (scroll) {

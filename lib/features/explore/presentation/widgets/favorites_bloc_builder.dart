@@ -13,6 +13,7 @@ import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
 import '../cubit/favorites_cubit.dart';
 import '../cubit/favorites_state.dart';
 import 'favorite_venue_card_widget.dart';
+import '../../../../core/animations/ball_refresh_indicator.dart';
 
 class FavoritesBlocBuilder extends StatelessWidget {
   const FavoritesBlocBuilder({super.key});
@@ -35,7 +36,7 @@ class FavoritesBlocBuilder extends StatelessWidget {
             title: 'explore.favorites_empty_title'.tr(context: context),
             description: 'explore.favorites_empty_desc'.tr(context: context),
           ),
-        FavoritesSuccess(:final venues) => RefreshIndicator.adaptive(
+        FavoritesSuccess(:final venues) => BallRefreshIndicator(
           onRefresh: cubit.load,
           child: ListView.separated(
             physics: const AlwaysScrollableScrollPhysics(
