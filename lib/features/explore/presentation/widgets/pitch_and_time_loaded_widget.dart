@@ -81,8 +81,11 @@ class PitchAndTimeLoadedWidget extends StatelessWidget {
         price: price == null ? '—' : egp(price),
         ctaText: t('continue'),
         onTap: () {
-          if (selected == null) {
-            AppTopSnackBar.showError(context, t('pick_slot'));
+          if (selected == null || state.selectedSlotTaken) {
+            AppTopSnackBar.showError(
+              context,
+              state.selectedSlotTaken ? t('taken_live') : t('pick_slot'),
+            );
             return;
           }
           HapticFeedback.lightImpact();

@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/network/api_result.dart';
+import '../../../../core/services/realtime_service.dart';
 import '../../../../core/utils/cairo_time.dart';
 import '../../../../core/utils/idempotency_keys.dart';
 import '../../../../core/utils/safe_emit_cubit_mixin.dart';
@@ -19,14 +22,36 @@ class PitchBookingCubit extends Cubit<PitchBookingState>
     required this.getVenueAvailabilityUseCase,
     required this.getBookingQuoteUseCase,
     required this.createBookingUseCase,
-  }) : super(const PitchBookingInitial());
+    this.realtime,
+  }) : super(const PitchBookingInitial()) {
+    _subscriptions = [
+      ?realtime?.slotUpdates.listen(_onSlotUpdate),
+      ?realtime?.reconnected.listen((_) => refreshSlots()),
+    ];
+  }
 
   final GetVenueAvailabilityUseCase getVenueAvailabilityUseCase;
   final GetBookingQuoteUseCase getBookingQuoteUseCase;
   final CreateBookingUseCase createBookingUseCase;
 
+  /// Live slot changes; without it the screen still works, just not live.
+  final RealtimeService? realtime;
+
+  /// Booking errors meaning someone else got the slot first.
+  static const Set<String> slotTakenCodes = {
+    'Booking.SlotOverlap',
+    'Quote.SlotUnavailable',
+  };
+
   final IdempotencyKeys _idempotencyKeys = IdempotencyKeys();
   String? _currentVenueId;
+  late final List<StreamSubscription<Object?>> _subscriptions;
+
+  /// The venue day followed live (venue id, business date).
+  (String, String)? _watched;
+
+  /// Newest change seen per slot: a late, older update is ignored.
+  final Map<String, DateTime> _lastChange = {};
 
   String _formatDate(DateTime dt) {
     final y = dt.year.toString().padLeft(4, '0');
@@ -71,6 +96,7 @@ class PitchBookingCubit extends Cubit<PitchBookingState>
           selectedSlot: initialSlot,
         );
         emitIfOpen(loadedState);
+        _watch(venueId, dateStr);
 
         if (initialSlot != null) {
           await fetchQuoteForSlot(initialSlot);
@@ -131,9 +157,13 @@ class PitchBookingCubit extends Cubit<PitchBookingState>
             selectedPitchIndex: validPitchIndex,
             selectedDayIndex: dayIndex,
             selectedSlot: initialSlot,
+            // A day with nothing free must not keep the previous day's slot.
+            clearSelectedSlot: initialSlot == null,
+            clearQuote: true,
             isSlotsLoading: false,
           ),
         );
+        _watch(_currentVenueId!, dateStr);
 
         if (initialSlot != null) {
           await fetchQuoteForSlot(initialSlot);
@@ -229,7 +259,9 @@ class PitchBookingCubit extends Cubit<PitchBookingState>
         emitIfOpen(updated.copyWith(quote: quote, isQuoting: false));
       },
       failure: (failure) {
-        emitIfOpen(updated.copyWith(isQuoting: false, quoteError: failure.message));
+        emitIfOpen(
+          updated.copyWith(isQuoting: false, quoteError: failure.message),
+        );
       },
     );
   }
@@ -271,9 +303,163 @@ class PitchBookingCubit extends Cubit<PitchBookingState>
         return true;
       },
       failure: (failure) {
-        emitIfOpen(updated.copyWith(isBooking: false, bookingError: failure.message));
+        final taken = slotTakenCodes.contains(failure.code);
+        emitIfOpen(
+          updated.copyWith(
+            isBooking: false,
+            bookingError: failure.message,
+            selectedSlotTaken: taken ? true : null,
+          ),
+        );
+        // Someone booked it first: show the day as it is now.
+        if (taken) unawaited(refreshSlots());
         return false;
       },
     );
+  }
+
+  /// Reloads the shown day's slots in place, keeping the player's choices
+  /// (after a reconnect, or when the slot turned out to be taken).
+  Future<void> refreshSlots() async {
+    final venueId = _currentVenueId;
+    final current = state;
+    if (venueId == null || current is! PitchBookingLoaded) return;
+    final result = await getVenueAvailabilityUseCase(
+      venueId,
+      current.availability.businessDate,
+    );
+    final latest = state;
+    if (latest is! PitchBookingLoaded) return;
+    result.maybeWhen(
+      success: (availability) {
+        _lastChange.clear();
+        final selected = latest.selectedSlot;
+        final fresh = selected == null
+            ? null
+            : _findSlot(availability, latest.currentPitch?.pitchId, selected);
+        emitIfOpen(
+          latest.copyWith(
+            availability: availability,
+            selectedSlotTaken: _takenByOthers(latest, fresh),
+          ),
+        );
+      },
+      orElse: () {},
+    );
+  }
+
+  /// Applies a live slot change to the day on screen.
+  void _onSlotUpdate(SlotStatusUpdate update) {
+    final current = state;
+    if (current is! PitchBookingLoaded) return;
+    if (update.venueId.isNotEmpty && update.venueId != _currentVenueId) return;
+
+    final key = '${update.pitchId}|${update.startUtc.toIso8601String()}';
+    final last = _lastChange[key];
+    if (last != null && !update.changedAtUtc.isAfter(last)) return;
+
+    var changed = false;
+    final pitches = [
+      for (final pitch in current.availability.pitches)
+        if (pitch.pitchId != update.pitchId)
+          pitch
+        else
+          PitchSlotsModel(
+            pitchId: pitch.pitchId,
+            name: pitch.name,
+            slotMinutes: pitch.slotMinutes,
+            incrementMinutes: pitch.incrementMinutes,
+            slots: [
+              for (final slot in pitch.slots)
+                if (_sameStart(slot, update.startUtc) &&
+                    slot.state != update.slotState)
+                  (() {
+                    changed = true;
+                    return SlotModel(
+                      startUtc: slot.startUtc,
+                      endUtc: slot.endUtc,
+                      startLocal: slot.startLocal,
+                      endLocal: slot.endLocal,
+                      state: update.slotState,
+                      price: slot.price,
+                    );
+                  })()
+                else
+                  slot,
+            ],
+          ),
+    ];
+    _lastChange[key] = update.changedAtUtc;
+    if (!changed) return;
+
+    final availability = VenueAvailabilityModel(
+      venueId: current.availability.venueId,
+      businessDate: current.availability.businessDate,
+      currency: current.availability.currency,
+      pitches: pitches,
+      generatedAtUtc: current.availability.generatedAtUtc,
+      nextChangeUtc: current.availability.nextChangeUtc,
+    );
+    final selected = current.selectedSlot;
+    final fresh = selected == null
+        ? null
+        : _findSlot(availability, current.currentPitch?.pitchId, selected);
+    emitIfOpen(
+      current.copyWith(
+        availability: availability,
+        selectedSlotTaken: _takenByOthers(current, fresh),
+      ),
+    );
+  }
+
+  /// Whether the selected slot, as it stands now ([fresh]), was taken by
+  /// someone else. The player's own hold in flight or done does not count.
+  bool _takenByOthers(PitchBookingLoaded state, SlotModel? fresh) {
+    if (fresh == null || fresh.isAvailable) return false;
+    return !state.isBooking && state.createdBooking == null;
+  }
+
+  static SlotModel? _findSlot(
+    VenueAvailabilityModel availability,
+    String? pitchId,
+    SlotModel selected,
+  ) {
+    final start = DateTime.tryParse(selected.startUtc);
+    if (pitchId == null || start == null) return null;
+    for (final pitch in availability.pitches) {
+      if (pitch.pitchId != pitchId) continue;
+      for (final slot in pitch.slots) {
+        if (_sameStart(slot, start.toUtc())) return slot;
+      }
+    }
+    return null;
+  }
+
+  static bool _sameStart(SlotModel slot, DateTime startUtc) {
+    final start = DateTime.tryParse(slot.startUtc);
+    return start != null && start.toUtc().isAtSameMomentAs(startUtc);
+  }
+
+  /// Follows [date] at [venueId] live, leaving the day followed before.
+  void _watch(String venueId, String date) {
+    final live = realtime;
+    if (live == null || _watched == (venueId, date)) return;
+    final previous = _watched;
+    _watched = (venueId, date);
+    _lastChange.clear();
+    if (previous != null) unawaited(live.leaveVenue(previous.$1, previous.$2));
+    unawaited(live.watchVenue(venueId, date));
+  }
+
+  @override
+  Future<void> close() async {
+    for (final subscription in _subscriptions) {
+      await subscription.cancel();
+    }
+    final watched = _watched;
+    if (watched != null) {
+      unawaited(realtime?.leaveVenue(watched.$1, watched.$2));
+    }
+    return super.close();
   }
 }

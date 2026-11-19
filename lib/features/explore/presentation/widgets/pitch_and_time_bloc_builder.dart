@@ -9,6 +9,7 @@ import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
 import '../cubit/pitch_booking_cubit.dart';
 import '../cubit/pitch_booking_state.dart';
 import 'pitch_and_time_loaded_widget.dart';
+import 'slot_taken_listener_widget.dart';
 
 class PitchAndTimeBlocBuilder extends StatelessWidget {
   const PitchAndTimeBlocBuilder({
@@ -27,9 +28,8 @@ class PitchAndTimeBlocBuilder extends StatelessWidget {
     final title = 'explore.slots.title'.tr(context: context);
     return BlocBuilder<PitchBookingCubit, PitchBookingState>(
       builder: (context, state) => switch (state) {
-        PitchBookingLoaded() => PitchAndTimeLoadedWidget(
-          state: state,
-          venueName: venueName,
+        PitchBookingLoaded() => SlotTakenListenerWidget(
+          child: PitchAndTimeLoadedWidget(state: state, venueName: venueName),
         ),
         PitchBookingError(:final message) => Scaffold(
           backgroundColor: AppColors.pageBackground,

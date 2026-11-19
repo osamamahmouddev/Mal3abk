@@ -29,7 +29,12 @@ class PitchBookingLoaded extends PitchBookingState {
     this.bookingError,
     this.isSlotsLoading = false,
     this.slotFilter = PitchSlotFilter.all,
+    this.selectedSlotTaken = false,
   });
+
+  /// Someone else just held or booked [selectedSlot] (a live update): the
+  /// player has to pick another time.
+  final bool selectedSlotTaken;
 
   final VenueAvailabilityModel availability;
   final int selectedPitchIndex;
@@ -89,6 +94,7 @@ class PitchBookingLoaded extends PitchBookingState {
     bool clearBookingError = false,
     bool? isSlotsLoading,
     PitchSlotFilter? slotFilter,
+    bool? selectedSlotTaken,
   }) {
     return PitchBookingLoaded(
       availability: availability ?? this.availability,
@@ -107,6 +113,12 @@ class PitchBookingLoaded extends PitchBookingState {
           : (bookingError ?? this.bookingError),
       isSlotsLoading: isSlotsLoading ?? this.isSlotsLoading,
       slotFilter: slotFilter ?? this.slotFilter,
+      // A different slot starts with no warning.
+      selectedSlotTaken:
+          selectedSlotTaken ??
+          (clearSelectedSlot || selectedSlot != null
+              ? false
+              : this.selectedSlotTaken),
     );
   }
 }
