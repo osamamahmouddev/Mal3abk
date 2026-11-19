@@ -44,6 +44,8 @@ class UploadProofReadyReceiptWidget extends StatelessWidget {
                   color: AppColors.successGreen,
                   size: 34.r,
                   strokeWidth: 3,
+                  // A "ready" mark, not the success moment: no whistle.
+                  burst: false,
                 ),
                 hSpace(8),
                 Text(

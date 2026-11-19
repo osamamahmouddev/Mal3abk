@@ -65,3 +65,46 @@ class AnimatedCheckPainter extends CustomPainter {
       old.color != color ||
       old.strokeWidth != strokeWidth;
 }
+
+/// The "whistle" after a check: short chalk strokes, like pitch markings,
+/// fly out of the ring once and fade. [progress] 0 draws nothing, 1 is gone.
+/// Strokes alternate long and short and lean a little, so it reads drawn by
+/// hand rather than as a sun icon.
+class WhistleBurstPainter extends CustomPainter {
+  const WhistleBurstPainter({
+    required this.progress,
+    required this.color,
+    this.strokeWidth = 3,
+    this.count = 8,
+  });
+
+  final double progress;
+  final Color color;
+  final double strokeWidth;
+  final int count;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (progress <= 0 || progress >= 1) return;
+    final center = size.center(Offset.zero);
+    final ring = size.shortestSide / 2;
+    // Out fast, then hang and fade.
+    final travel = 1 - (1 - progress) * (1 - progress);
+    final paint = Paint()
+      ..color = color.withValues(alpha: 1 - progress)
+      ..strokeWidth = strokeWidth * (1 - 0.5 * progress)
+      ..strokeCap = StrokeCap.round;
+    for (var i = 0; i < count; i++) {
+      final angle = -1.5708 + i * 6.28318 / count + (i.isEven ? 0.06 : -0.06);
+      final long = i.isEven;
+      final inner = ring * (1.12 + 0.28 * travel);
+      final outer = inner + ring * (long ? 0.32 : 0.2) * (1 - 0.6 * progress);
+      final dir = Offset.fromDirection(angle);
+      canvas.drawLine(center + dir * inner, center + dir * outer, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(WhistleBurstPainter old) =>
+      old.progress != progress || old.color != color;
+}
