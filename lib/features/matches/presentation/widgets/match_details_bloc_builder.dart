@@ -43,9 +43,13 @@ class MatchDetailsBlocBuilder extends StatelessWidget {
                   TeamMatchupHeaderWidget(
                     homeName: match.homeTeamName,
                     awayName: match.awayTeamName,
-                    center: match.hasScore
-                        ? '${match.homeScore!.toLocalizedDigits(lang)} – ${match.awayScore!.toLocalizedDigits(lang)}'
-                        : 'common.vs'.tr(context: context),
+                    center: 'common.vs'.tr(context: context),
+                    score: match.hasScore
+                        ? (
+                            match.homeScore!.toLocalizedDigits(lang),
+                            match.awayScore!.toLocalizedDigits(lang),
+                          )
+                        : null,
                     homeCaption: details.myTeam?.id == match.homeTeamId
                         ? 'matches.challenge.your_team'.tr(context: context)
                         : null,
