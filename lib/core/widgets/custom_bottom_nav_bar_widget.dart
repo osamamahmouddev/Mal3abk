@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
-import '../animations/app_animations.dart';
+import '../animations/stretchy_pill_widget.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_shadows.dart';
 import 'custom_bottom_nav_bar_item_widget.dart';
@@ -57,16 +57,9 @@ class CustomBottomNavBarWidget extends StatelessWidget {
                     children: [
                       // One pill that glides to the selected tab instead of each tab
                       // fading its own background.
-                      AnimatedPositionedDirectional(
-                        duration: AppAnimations.duration(
-                          context,
-                          AppAnimations.slow,
-                        ),
-                        curve: AppAnimations.emphasized,
-                        start: currentIndex * itemWidth,
-                        top: 0,
-                        bottom: 0,
-                        width: itemWidth,
+                      StretchyPillWidget(
+                        index: currentIndex,
+                        itemWidth: itemWidth,
                         child: DecoratedBox(
                           decoration: BoxDecoration(
                             gradient: LinearGradient(

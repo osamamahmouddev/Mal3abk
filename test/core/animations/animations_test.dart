@@ -3,6 +3,7 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mal3abk/core/animations/animated_check_widget.dart';
 import 'package:mal3abk/core/animations/app_animations.dart';
+import 'package:mal3abk/core/animations/stretchy_pill_widget.dart';
 import 'package:mal3abk/core/animations/app_page_transitions_builder.dart';
 import 'package:mal3abk/core/animations/count_up_text_widget.dart';
 import 'package:mal3abk/core/animations/state_switcher_widget.dart';
@@ -259,8 +260,11 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      final pill = tester.widget<AnimatedPositionedDirectional>(
-        find.byType(AnimatedPositionedDirectional),
+      final pill = tester.widget<PositionedDirectional>(
+        find.descendant(
+          of: find.byType(StretchyPillWidget),
+          matching: find.byType(PositionedDirectional),
+        ),
       );
       return pill.start!;
     }
@@ -299,16 +303,18 @@ void main() {
       await tester.pumpWidget(bar(0));
       await tester.pumpAndSettle();
       final pill = find.descendant(
-        of: find.byType(AnimatedPositionedDirectional),
+        of: find.byType(StretchyPillWidget),
         matching: find.byType(DecoratedBox),
       );
-      final before = tester.getTopLeft(pill).dx;
+      // The leading edge moves first (the trailing one follows a beat
+      // later, which stretches the pill), so follow the leading edge.
+      final before = tester.getTopRight(pill).dx;
 
       await tester.pumpWidget(bar(2));
       await tester.pump(const Duration(milliseconds: 80));
-      final during = tester.getTopLeft(pill).dx;
+      final during = tester.getTopRight(pill).dx;
       await tester.pumpAndSettle();
-      final after = tester.getTopLeft(pill).dx;
+      final after = tester.getTopRight(pill).dx;
 
       expect(during, greaterThan(before));
       expect(during, lessThan(after));
@@ -319,7 +325,12 @@ void main() {
       await pillStart(tester, index: 0, direction: TextDirection.rtl);
       final screenWidth = tester.getSize(find.byType(Scaffold)).width;
       final pillCenter = tester
-          .getCenter(find.byType(AnimatedPositionedDirectional))
+          .getCenter(
+            find.descendant(
+              of: find.byType(StretchyPillWidget),
+              matching: find.byType(DecoratedBox),
+            ),
+          )
           .dx;
 
       expect(pillCenter, greaterThan(screenWidth / 2));
