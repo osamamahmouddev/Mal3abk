@@ -432,7 +432,8 @@
       "pick_slot": "Pick a time first",
       "from": "from {}",
       "no_slots": "No free times that day.",
-      "no_filtered_slots": "No times match this filter. Tap it again to see all times."
+      "no_filtered_slots": "No times match this filter. Tap it again to see all times.",
+      "taken_live": "Someone just booked this time. Pick another one."
     },
     "favorites_empty_title": "No favourite pitches",
     "favorites_empty_desc": "Tap the heart on any pitch to find it here quickly.",
@@ -711,9 +712,12 @@
       "fees": "Service fee",
       "total": "Total",
       "deposit_now": "Deposit due now",
-      "pay_online_now": "Pay online now",
+      "pay_online_now": "Due now",
       "pay_at_venue": "Remaining at venue — cash or InstaPay",
-      "at_venue": "Balance — paid at the venue"
+      "at_venue": "Balance — paid at the venue",
+      "pitch_price": "Pitch price",
+      "deposit": "Deposit (confirms the booking)",
+      "cash_at_venue": "Remaining, cash at the venue"
     },
     "sign_in_to_book": "Sign in with your phone number to book."
   },

@@ -106,7 +106,6 @@ class DepositInstructionsScreen extends StatelessWidget {
                     '${CairoTime.dayAndTime(start, lang)} – ${CairoTime.time(end, lang)}',
                 totalPrice: booking.totalPrice,
                 depositAmount: booking.depositAmount,
-                platformCommission: booking.platformCommission,
                 venuePayAmount: booking.venuePayAmount,
               ),
             ),

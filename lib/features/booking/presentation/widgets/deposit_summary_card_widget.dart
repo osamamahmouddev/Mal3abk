@@ -15,7 +15,6 @@ class DepositSummaryCardWidget extends StatelessWidget {
     required this.slotLabel,
     required this.totalPrice,
     required this.depositAmount,
-    this.platformCommission,
     this.venuePayAmount,
     this.pitchName,
     super.key,
@@ -26,7 +25,6 @@ class DepositSummaryCardWidget extends StatelessWidget {
   final String slotLabel;
   final double totalPrice;
   final double depositAmount;
-  final double? platformCommission;
   final double? venuePayAmount;
 
   @override
@@ -71,11 +69,6 @@ class DepositSummaryCardWidget extends StatelessWidget {
             label: 'booking.total_price'.tr(context: context),
             value: total,
           ),
-          if (platformCommission != null && platformCommission! > 0)
-            BookingDetailRowWidget(
-              label: 'booking.platform_fee'.tr(context: context),
-              value: egp(platformCommission!),
-            ),
           BookingDetailRowWidget(
             label: 'booking.remaining_at_venue'.tr(context: context),
             value: remaining,

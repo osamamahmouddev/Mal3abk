@@ -20,6 +20,7 @@ import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
 import '../../../../core/widgets/icon_note_widget.dart';
 import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
+import '../../../explore/presentation/widgets/slot_taken_listener_widget.dart';
 import '../../../explore/presentation/cubit/pitch_booking_cubit.dart';
 import '../../../explore/presentation/cubit/pitch_booking_state.dart';
 import 'booking_detail_row_widget.dart';
@@ -47,240 +48,247 @@ class BookingReviewBlocBuilder extends StatelessWidget {
     );
     String t(String key) => 'booking.review.$key'.tr(context: context);
 
-    return BlocConsumer<PitchBookingCubit, PitchBookingState>(
-      listener: (context, state) {
-        if (state is! PitchBookingLoaded) return;
-        if (state.bookingError == unauthorizedKey) {
-          AppTopSnackBar.showError(
-            context,
-            'booking.sign_in_to_book'.tr(context: context),
-          );
-          Navigator.of(context).pushNamed(AppRoutes.login);
-        } else if (state.bookingError case final error?) {
-          HapticFeedback.heavyImpact();
-          AppTopSnackBar.showError(context, error.tr(context: context));
-        } else if (state.createdBooking case final booking?) {
-          HapticFeedback.mediumImpact();
-          final bookingWithPitch = booking.copyWith(
-            pitchName: state.currentPitch?.name,
-          );
-          Navigator.of(context).pushReplacementNamed(
-            AppRoutes.depositInstructions,
-            arguments: bookingWithPitch,
-          );
-        }
-      },
-      builder: (context, state) {
-        final title = 'booking.review_title'.tr(context: context);
-        if (state is! PitchBookingLoaded) {
+    // Someone else took the slot: back to the slots to pick another.
+    return SlotTakenListenerWidget(
+      onTaken: () => Navigator.of(context).maybePop(),
+      child: BlocConsumer<PitchBookingCubit, PitchBookingState>(
+        listener: (context, state) {
+          if (state is! PitchBookingLoaded) return;
+          if (state.bookingError == unauthorizedKey) {
+            AppTopSnackBar.showError(
+              context,
+              'booking.sign_in_to_book'.tr(context: context),
+            );
+            Navigator.of(context).pushNamed(AppRoutes.login);
+          } else if (state.bookingError case final error?) {
+            HapticFeedback.heavyImpact();
+            AppTopSnackBar.showError(context, error.tr(context: context));
+          } else if (state.createdBooking case final booking?) {
+            HapticFeedback.mediumImpact();
+            final bookingWithPitch = booking.copyWith(
+              pitchName: state.currentPitch?.name,
+            );
+            Navigator.of(context).pushReplacementNamed(
+              AppRoutes.depositInstructions,
+              arguments: bookingWithPitch,
+            );
+          }
+        },
+        builder: (context, state) {
+          final title = 'booking.review_title'.tr(context: context);
+          if (state is! PitchBookingLoaded) {
+            return Scaffold(
+              backgroundColor: AppColors.pageBackground,
+              appBar: CustomAppBarWidget(title: title),
+              body: const ShimmerListSkeletonWidget(
+                itemHeight: 140,
+                itemCount: 3,
+              ),
+            );
+          }
+          final pitch = state.currentPitch;
+          final slot = state.selectedSlot;
+          final quote = state.quote;
+          final payNow = quote == null
+              ? 0.0
+              : (quote.onlineDepositAmount > 0
+                    ? quote.onlineDepositAmount
+                    : quote.deposit);
+          final payAtVenue = quote == null
+              ? 0.0
+              : (quote.venuePayAmount > 0
+                    ? quote.venuePayAmount
+                    : quote.remainingBalance);
+          final ready =
+              agreedToPolicy &&
+              quote != null &&
+              slot != null &&
+              !state.selectedSlotTaken;
+
           return Scaffold(
             backgroundColor: AppColors.pageBackground,
             appBar: CustomAppBarWidget(title: title),
-            body: const ShimmerListSkeletonWidget(
-              itemHeight: 140,
-              itemCount: 3,
-            ),
-          );
-        }
-        final pitch = state.currentPitch;
-        final slot = state.selectedSlot;
-        final quote = state.quote;
-        final ready = agreedToPolicy && quote != null && slot != null;
-
-        return Scaffold(
-          backgroundColor: AppColors.pageBackground,
-          appBar: CustomAppBarWidget(title: title),
-          bottomNavigationBar: BottomActionBarWidget(
-            child: CustomButton(
-              text: 'booking.submit_request'.tr(context: context),
-              height: 52.h,
-              borderRadius: 16,
-              isLoading: state.isBooking,
-              enabled: ready,
-              backgroundColor: ready ? AppColors.brandRed : AppColors.border,
-              boxShadow: ready ? AppShadows.redGlow : null,
-              textStyle: AppTextStyles.font16Bold.copyWith(
-                color: ready ? AppColors.white : AppColors.mapLabel,
-              ),
-              onTap: () {
-                if (!agreedToPolicy) {
-                  AppTopSnackBar.showError(
-                    context,
-                    'booking.agree_policy_required'.tr(context: context),
-                  );
-                  return;
-                }
-                HapticFeedback.lightImpact();
-                context.read<PitchBookingCubit>().createBookingHold();
-              },
-            ),
-          ),
-          body: ListView(
-            physics: const BouncingScrollPhysics(),
-            padding: EdgeInsets.fromLTRB(16.w, 14.h, 16.w, 16.h),
-            children: staggeredEntrance([
-              CustomCardWidget(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(pitch?.name ?? '', style: AppTextStyles.font16Bold),
-                    hSpace(12),
-                    if (slot != null)
-                      BookingDetailRowWidget(
-                        label: t('when'),
-                        value:
-                            '${CairoTime.dayAndTime(CairoTime.parseUtc(slot.startUtc), lang)} – ${CairoTime.time(CairoTime.parseUtc(slot.endUtc), lang)}',
-                      ),
-                    if (pitch != null)
-                      BookingDetailRowWidget(
-                        label: t('duration'),
-                        value: 'matches.minutes'.tr(
-                          context: context,
-                          args: [pitch.slotMinutes.toLocalizedDigits(lang)],
-                        ),
-                      ),
-                  ],
+            bottomNavigationBar: BottomActionBarWidget(
+              child: CustomButton(
+                text: 'booking.submit_request'.tr(context: context),
+                height: 52.h,
+                borderRadius: 16,
+                isLoading: state.isBooking,
+                enabled: ready,
+                backgroundColor: ready ? AppColors.brandRed : AppColors.border,
+                boxShadow: ready ? AppShadows.redGlow : null,
+                textStyle: AppTextStyles.font16Bold.copyWith(
+                  color: ready ? AppColors.white : AppColors.mapLabel,
                 ),
+                onTap: () {
+                  if (!agreedToPolicy) {
+                    AppTopSnackBar.showError(
+                      context,
+                      'booking.agree_policy_required'.tr(context: context),
+                    );
+                    return;
+                  }
+                  HapticFeedback.lightImpact();
+                  context.read<PitchBookingCubit>().createBookingHold();
+                },
               ),
-              hSpace(14),
-              // The price could not be loaded: say why and offer a retry,
-              // never an endless skeleton.
-              if (quote == null && !state.isQuoting && state.quoteError != null)
+            ),
+            body: ListView(
+              physics: const BouncingScrollPhysics(),
+              padding: EdgeInsets.fromLTRB(16.w, 14.h, 16.w, 16.h),
+              children: staggeredEntrance([
                 CustomCardWidget(
-                  padding: EdgeInsets.all(16.r),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        state.quoteError!.tr(context: context),
-                        style: AppTextStyles.font14Medium,
-                        textAlign: TextAlign.center,
-                      ),
-                      hSpace(12),
-                      CustomButton(
-                        text: 'common.retry'.tr(context: context),
-                        type: CustomButtonType.outline,
-                        height: 44.h,
-                        enabled: slot != null,
-                        onTap: () {
-                          if (slot != null) {
-                            context.read<PitchBookingCubit>().fetchQuoteForSlot(
-                              slot,
-                            );
-                          }
-                        },
-                      ),
-                    ],
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 14.h,
                   ),
-                )
-              else if (quote == null)
-                const ShimmerListSkeletonWidget(
-                  itemHeight: 180,
-                  itemCount: 1,
-                  padding: EdgeInsets.zero,
-                )
-              else
-                CustomCardWidget(
-                  padding: EdgeInsets.all(16.r),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(t('price_summary'), style: AppTextStyles.font16Bold),
-                      hSpace(14),
-                      BookingDetailRowWidget(
-                        label: t('original_pitch_price'),
-                        value: egp(quote.subtotal),
-                      ),
-                      if (quote.discount > 0)
+                      Text(pitch?.name ?? '', style: AppTextStyles.font16Bold),
+                      hSpace(12),
+                      if (slot != null)
                         BookingDetailRowWidget(
-                          label: t('discount'),
-                          value: '− ${egp(quote.discount)}',
+                          label: t('when'),
+                          value:
+                              '${CairoTime.dayAndTime(CairoTime.parseUtc(slot.startUtc), lang)} – ${CairoTime.time(CairoTime.parseUtc(slot.endUtc), lang)}',
                         ),
-                      BookingDetailRowWidget(
-                        label: t('net_pitch_price'),
-                        value: egp(
-                          quote.netPitchPrice > 0
-                              ? quote.netPitchPrice
-                              : quote.subtotal - quote.discount,
-                        ),
-                      ),
-                      if (quote.platformCommission > 0 || quote.fees > 0)
+                      if (pitch != null)
                         BookingDetailRowWidget(
-                          label: t('platform_commission'),
-                          value: egp(
-                            quote.platformCommission > 0
-                                ? quote.platformCommission
-                                : quote.fees,
+                          label: t('duration'),
+                          value: 'matches.minutes'.tr(
+                            context: context,
+                            args: [pitch.slotMinutes.toLocalizedDigits(lang)],
                           ),
                         ),
-                      hSpace(8),
-                      Container(height: 1, color: AppColors.border),
-                      hSpace(8),
-                      BookingDetailRowWidget(
-                        label: t('total'),
-                        value: egp(quote.total),
-                        isBold: true,
-                      ),
-                      hSpace(8),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12.w,
-                          vertical: 10.h,
+                    ],
+                  ),
+                ),
+                hSpace(14),
+                // The price could not be loaded: say why and offer a retry,
+                // never an endless skeleton.
+                if (quote == null &&
+                    !state.isQuoting &&
+                    state.quoteError != null)
+                  CustomCardWidget(
+                    padding: EdgeInsets.all(16.r),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          state.quoteError!.tr(context: context),
+                          style: AppTextStyles.font14Medium,
+                          textAlign: TextAlign.center,
                         ),
-                        decoration: BoxDecoration(
-                          color: AppColors.goldLight,
-                          borderRadius: BorderRadius.circular(10.r),
+                        hSpace(12),
+                        CustomButton(
+                          text: 'common.retry'.tr(context: context),
+                          type: CustomButtonType.outline,
+                          height: 44.h,
+                          enabled: slot != null,
+                          onTap: () {
+                            if (slot != null) {
+                              context
+                                  .read<PitchBookingCubit>()
+                                  .fetchQuoteForSlot(slot);
+                            }
+                          },
                         ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                t('pay_online_now'),
-                                style: AppTextStyles.font14SemiBold.copyWith(
+                      ],
+                    ),
+                  )
+                else if (quote == null)
+                  const ShimmerListSkeletonWidget(
+                    itemHeight: 180,
+                    itemCount: 1,
+                    padding: EdgeInsets.zero,
+                  )
+                else
+                  CustomCardWidget(
+                    padding: EdgeInsets.all(16.r),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          t('price_summary'),
+                          style: AppTextStyles.font16Bold,
+                        ),
+                        hSpace(14),
+                        // What the player sees: pitch price, deposit, cash
+                        // at the venue, total, then what is due now. The
+                        // platform commission is ours and never shown.
+                        BookingDetailRowWidget(
+                          label: t('pitch_price'),
+                          value: egp(quote.subtotal),
+                        ),
+                        if (quote.discount > 0)
+                          BookingDetailRowWidget(
+                            label: t('discount'),
+                            value: '− ${egp(quote.discount)}',
+                          ),
+                        BookingDetailRowWidget(
+                          label: t('deposit'),
+                          value: egp(payNow),
+                        ),
+                        BookingDetailRowWidget(
+                          label: t('cash_at_venue'),
+                          value: egp(payAtVenue),
+                        ),
+                        hSpace(8),
+                        Container(height: 1, color: AppColors.border),
+                        hSpace(8),
+                        BookingDetailRowWidget(
+                          label: t('total'),
+                          value: egp(quote.total),
+                          isBold: true,
+                        ),
+                        hSpace(8),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.w,
+                            vertical: 10.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.goldLight,
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  t('pay_online_now'),
+                                  style: AppTextStyles.font14SemiBold.copyWith(
+                                    color: AppColors.goldDark,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                egp(payNow),
+                                style: AppTextStyles.font16Bold.copyWith(
                                   color: AppColors.goldDark,
                                 ),
                               ),
-                            ),
-                            Text(
-                              egp(
-                                quote.onlineDepositAmount > 0
-                                    ? quote.onlineDepositAmount
-                                    : quote.deposit,
-                              ),
-                              style: AppTextStyles.font16Bold.copyWith(
-                                color: AppColors.goldDark,
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      hSpace(8),
-                      BookingDetailRowWidget(
-                        label: t('pay_at_venue'),
-                        value: egp(
-                          quote.venuePayAmount > 0
-                              ? quote.venuePayAmount
-                              : quote.remainingBalance,
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
+                hSpace(14),
+                IconNoteWidget(
+                  iconAsset: AppAssets.icClockGold,
+                  text: 'booking.hold_notice'.tr(context: context),
                 ),
-              hSpace(14),
-              IconNoteWidget(
-                iconAsset: AppAssets.icClockGold,
-                text: 'booking.hold_notice'.tr(context: context),
-              ),
-              hSpace(14),
-              BookingPolicyCardWidget(
-                agreedToPolicy: agreedToPolicy,
-                onChanged: onAgreedChanged,
-              ),
-            ]),
-          ),
-        );
-      },
+                hSpace(14),
+                BookingPolicyCardWidget(
+                  agreedToPolicy: agreedToPolicy,
+                  onChanged: onAgreedChanged,
+                ),
+              ]),
+            ),
+          );
+        },
+      ),
     );
   }
 }
