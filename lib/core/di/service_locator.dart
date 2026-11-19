@@ -69,6 +69,7 @@ import '../../features/booking/domain/use_cases/get_booking_quote_use_case.dart'
 import '../../features/booking/domain/use_cases/get_my_bookings_use_case.dart';
 import '../../features/booking/domain/use_cases/pay_booking_commission_use_case.dart';
 import '../services/firebase_phone_auth_service.dart';
+import '../services/realtime_service.dart';
 import '../../features/booking/presentation/cubit/my_bookings_cubit.dart';
 import '../../features/explore/data/apis/explore_api_service.dart';
 import '../../features/explore/data/repos/explore_repo_impl.dart';
@@ -195,6 +196,11 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
     return dio;
   });
 
+  // Live booking updates over the API's SignalR hub.
+  sl.registerLazySingleton<RealtimeService>(
+    () => SignalRRealtimeService(dio: sl<Dio>(), envConfig: sl<EnvConfig>()),
+  );
+
   // Splash Feature
   sl.registerLazySingleton<SplashRepo>(
     () => SplashRepoImpl(tokenStorage: sl<AuthTokenStorage>()),
@@ -217,6 +223,7 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
       tokenStorage: sl<AuthTokenStorage>(),
       turnstileTokenProvider: sl<TurnstileTokenProvider>(),
       pushNotificationService: sl<PushNotificationService>(),
+      realtimeService: sl<RealtimeService>(),
     ),
   );
   sl.registerLazySingleton<NormalizePhoneNumberUseCase>(
@@ -401,6 +408,7 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
       getVenueAvailabilityUseCase: sl<GetVenueAvailabilityUseCase>(),
       getBookingQuoteUseCase: sl<GetBookingQuoteUseCase>(),
       createBookingUseCase: sl<CreateBookingUseCase>(),
+      realtime: sl<RealtimeService>(),
     ),
   );
 
@@ -447,6 +455,7 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
   sl.registerFactory<BookingDetailsCubit>(
     () => BookingDetailsCubit(
       getBookingDetailUseCase: sl<GetBookingDetailUseCase>(),
+      realtime: sl<RealtimeService>(),
     ),
   );
   sl.registerFactory<DepositMethodsCubit>(
@@ -461,7 +470,10 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
     ),
   );
   sl.registerFactory<MyBookingsCubit>(
-    () => MyBookingsCubit(getMyBookingsUseCase: sl<GetMyBookingsUseCase>()),
+    () => MyBookingsCubit(
+      getMyBookingsUseCase: sl<GetMyBookingsUseCase>(),
+      realtime: sl<RealtimeService>(),
+    ),
   );
   sl.registerFactory<ProofUploadCubit>(
     () => ProofUploadCubit(

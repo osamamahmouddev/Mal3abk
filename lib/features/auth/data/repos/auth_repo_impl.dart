@@ -3,6 +3,7 @@ import '../../../../core/network/api_failure_mapper.dart';
 import '../../../../core/network/api_result.dart';
 import '../../../../core/network/turnstile_token_provider.dart';
 import '../../../../core/services/push_notification_service.dart';
+import '../../../../core/services/realtime_service.dart';
 import '../../domain/repos/auth_repo.dart';
 import '../apis/auth_api_service.dart';
 import '../models/firebase_auth_request_body.dart';
@@ -18,12 +19,17 @@ class AuthRepoImpl implements AuthRepo {
     required this.tokenStorage,
     required this.turnstileTokenProvider,
     this.pushNotificationService,
+    this.realtimeService,
   });
 
   final AuthApiService authApiService;
   final AuthTokenStorage tokenStorage;
   final TurnstileTokenProvider turnstileTokenProvider;
   final PushNotificationService? pushNotificationService;
+
+  /// Dropped whenever the signed-in player changes, so live updates never
+  /// reach the next player with the previous one's identity.
+  final RealtimeService? realtimeService;
 
   @override
   Future<ApiResult<SendOtpResponseModel>> sendOtp(String phoneNumber) async {
@@ -86,6 +92,9 @@ class AuthRepoImpl implements AuthRepo {
       try {
         await pushNotificationService?.syncPushToken();
       } catch (_) {}
+      try {
+        await realtimeService?.disconnect();
+      } catch (_) {}
       return const ApiResult.success(null);
     } catch (e, st) {
       return ApiResult.failure(ApiFailureMapper.map(e, st));
@@ -97,6 +106,9 @@ class AuthRepoImpl implements AuthRepo {
     try {
       try {
         await pushNotificationService?.unregisterPushToken();
+      } catch (_) {}
+      try {
+        await realtimeService?.disconnect();
       } catch (_) {}
       final refreshToken = await tokenStorage.readRefreshToken();
       if (refreshToken.isNotEmpty) {
@@ -116,6 +128,9 @@ class AuthRepoImpl implements AuthRepo {
       try {
         await pushNotificationService?.unregisterPushToken();
       } catch (_) {}
+      try {
+        await realtimeService?.disconnect();
+      } catch (_) {}
       await authApiService.logoutAll();
       return const ApiResult.success(null);
     } catch (e, st) {
@@ -128,6 +143,9 @@ class AuthRepoImpl implements AuthRepo {
     try {
       try {
         await pushNotificationService?.unregisterPushToken();
+      } catch (_) {}
+      try {
+        await realtimeService?.disconnect();
       } catch (_) {}
       await tokenStorage.clear();
       return const ApiResult.success(null);
