@@ -19,4 +19,10 @@ void main() {
   test('stops at eleven digits', () {
     expect(format('010123456789999'), '010 1234 5678');
   });
+
+  test('strips +20 or 0020 prefix when pasted', () {
+    expect(format('+201000000999'), '010 0000 0999');
+    expect(format('00201000000999'), '010 0000 0999');
+    expect(format('201000000999'), '010 0000 0999');
+  });
 }

@@ -41,21 +41,28 @@ class SendOtpCubit extends Cubit<SendOtpState>
         emitIfOpen(SendOtpState.error(failure.message));
         return;
       }
-      final sent = await _sendWithFirebase(
-        (normalized as Success<String>).data,
-      );
-      if (sent != null) {
-        emitIfOpen(sent);
-        return;
+      final normalizedPhone = (normalized as Success<String>).data;
+      // Apple review test account bypasses Firebase SMS entirely and hits the backend directly
+      if (normalizedPhone != '+201000000999') {
+        final sent = await _sendWithFirebase(normalizedPhone);
+        if (sent != null) {
+          emitIfOpen(sent);
+          return;
+        }
       }
     }
 
     final result = await sendOtpUseCase(phoneNumber);
     result.when(
       success: (data) => emitIfOpen(SendOtpState.success(data)),
-      failure: (failure) => emitIfOpen(
-        SendOtpState.error(failure.message, retryAt: _retryAt(failure)),
-      ),
+      failure: (failure) {
+        AppLogger.e(
+          'Send OTP failed: HTTP ${failure.statusCode} | Code: ${failure.code} | Message: ${failure.message}',
+        );
+        emitIfOpen(
+          SendOtpState.error(failure.message, retryAt: _retryAt(failure)),
+        );
+      },
     );
   }
 

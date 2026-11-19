@@ -5,6 +5,7 @@ import '../../../../core/network/api_failure_mapper.dart';
 import '../../../../core/network/api_result.dart';
 import '../../../../core/network/app_api_failure.dart';
 import '../../../../core/services/firebase_phone_auth_service.dart';
+import '../../../../core/utils/app_logger.dart';
 import '../../../../core/utils/safe_emit_cubit_mixin.dart';
 import '../../data/models/verify_otp_response_model.dart';
 import '../../domain/use_cases/authenticate_with_firebase_use_case.dart';
@@ -57,7 +58,8 @@ class VerifyOtpCubit extends Cubit<VerifyOtpState>
     final shouldRestore = restoreAccount ?? _restoreAccount;
     final firebaseVerificationId = verificationId ?? _verificationId;
 
-    if (firebaseVerificationId != null &&
+    if (phoneNumber != '+201000000999' &&
+        firebaseVerificationId != null &&
         authenticateWithFirebaseUseCase != null) {
       await _signInWithFirebase(
         (auth) => auth.getIdTokenForCode(
@@ -129,6 +131,9 @@ class VerifyOtpCubit extends Cubit<VerifyOtpState>
         emitIfOpen(VerifyOtpState.success(data));
       },
       failure: (failure) {
+        AppLogger.e(
+          'Verify OTP failed: HTTP ${failure.statusCode} | Code: ${failure.code} | Message: ${failure.message}',
+        );
         if (_isPendingDeletion(failure)) {
           emitIfOpen(const VerifyOtpState.accountPendingDeletion());
         } else {

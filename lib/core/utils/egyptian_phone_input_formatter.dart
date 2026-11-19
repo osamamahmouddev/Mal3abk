@@ -14,7 +14,20 @@ class EgyptianPhoneInputFormatter extends TextInputFormatter {
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) {
-    final digits = newValue.text.toLatinDigits().replaceAll(RegExp(r'\D'), '');
+    var digits = newValue.text.toLatinDigits().replaceAll(RegExp(r'\D'), '');
+
+    // Strip Egyptian international prefixes if pasted (+20 / 0020 / 20)
+    if (digits.startsWith('0020')) {
+      digits = digits.substring(4);
+    } else if (digits.startsWith('20') && digits.length >= 12) {
+      digits = digits.substring(2);
+    }
+
+    // Ensure leading 0 for national format (e.g. if 1000000999 was passed)
+    if (digits.startsWith('1') && digits.length == 10) {
+      digits = '0$digits';
+    }
+
     final trimmed = digits.length > maxDigits
         ? digits.substring(0, maxDigits)
         : digits;
