@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
-import 'package:shimmer/shimmer.dart';
 
+import '../animations/turf_shimmer_widget.dart';
 import '../app/app_spaces.dart';
 import '../styles/app_colors.dart';
 
@@ -47,9 +47,7 @@ class ShimmerListSkeletonWidget extends StatelessWidget {
       ),
     );
 
-    return Shimmer.fromColors(
-      baseColor: AppColors.lightSurface,
-      highlightColor: AppColors.white,
+    return TurfShimmerWidget(
       child: LayoutBuilder(
         builder: (context, constraints) => constraints.hasBoundedHeight
             ? SingleChildScrollView(
