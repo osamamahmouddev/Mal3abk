@@ -186,6 +186,22 @@ void main() {
     );
     expect(area.value, 'روض الفرج');
 
+    // 4b. An area the screen pre-filled with its code (`maadi`, as profile
+    // edit does) is shown by its Arabic name, not as a typed "other area".
+    governorate = ValueNotifier<GovernorateModel?>(null);
+    area = ValueNotifier<String?>('maadi');
+    await pump(
+      tester,
+      app(
+        _FakeGovernoratesCubit(_loaded),
+        governorate: governorate,
+        area: area,
+        initialCity: 'cairo',
+        key: const ValueKey(41),
+      ),
+    );
+    expect(area.value, 'المعادي');
+
     // 5. A choice already made is never replaced.
     governorate = ValueNotifier<GovernorateModel?>(_giza);
     area = ValueNotifier<String?>('الدقي');

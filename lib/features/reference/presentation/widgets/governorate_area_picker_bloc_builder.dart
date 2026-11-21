@@ -41,15 +41,20 @@ class GovernorateAreaPickerBlocBuilder extends HookWidget {
       if (match == null) return;
       governorate.value = match;
 
-      final wanted = initialArea?.trim();
-      if (area.value != null || wanted == null || wanted.isEmpty) return;
-      // Areas are kept by their Arabic name; one saved in English is mapped
-      // back, and one not in the list stays as typed ("another area").
+      // The area may already be filled in by the screen (profile edit) or
+      // given here; either way it is normalized once, with the governorate.
+      final wanted = (area.value ?? initialArea)?.trim();
+      if (wanted == null || wanted.isEmpty) return;
+      // Areas are kept by their Arabic name; one saved in English or as its
+      // code (`badr_city`) is mapped back, and one not in the list stays as
+      // typed ("another area").
+      final key = wanted.toLowerCase();
       final listed = match.areas
           .where(
             (a) =>
                 a.nameAr == wanted ||
-                a.nameEn.toLowerCase() == wanted.toLowerCase(),
+                a.nameEn.toLowerCase() == key ||
+                a.code.toLowerCase() == key,
           )
           .firstOrNull;
       area.value = listed?.nameAr ?? wanted;

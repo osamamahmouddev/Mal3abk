@@ -1,16 +1,16 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
-import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
+import '../../../../core/widgets/picker_field_widget.dart';
+import '../../../../core/widgets/searchable_picker_sheet_widget.dart';
 import '../../data/models/governorate_model.dart';
-import 'area_choice_widget.dart';
+import 'area_picker_widget.dart';
 
-/// Governorate dropdown plus its areas; governorates without a curated list
-/// take a typed area name, as the server accepts.
+/// Governorate and area, each picked from a searchable sheet. Governorates
+/// without a curated area list take a typed area name, as the server accepts.
 class GovernorateAreaPickerWidget extends StatelessWidget {
   const GovernorateAreaPickerWidget({
     required this.label,
@@ -31,6 +31,23 @@ class GovernorateAreaPickerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final lang = context.locale.languageCode;
 
+    Future<void> pickGovernorate() async {
+      final current = governorate.value;
+      final picked = await SearchablePickerSheetWidget.show(
+        context,
+        title: 'reference.governorate_label'.tr(context: context),
+        options: [for (final g in governorates) g.nameFor(lang)],
+        selectedIndex: current == null
+            ? null
+            : governorates.indexWhere((g) => g.code == current.code),
+        searchHint: 'reference.search_governorate'.tr(context: context),
+        emptyText: 'reference.no_results'.tr(context: context),
+      );
+      if (picked == null || governorates[picked].code == current?.code) return;
+      governorate.value = governorates[picked];
+      area.value = null;
+    }
+
     return ValueListenableBuilder<GovernorateModel?>(
       valueListenable: governorate,
       builder: (context, selected, _) {
@@ -43,36 +60,16 @@ class GovernorateAreaPickerWidget extends StatelessWidget {
               style: AppTextStyles.font14SemiBold,
             ),
             hSpace(10),
-            DropdownButtonFormField<GovernorateModel>(
-              initialValue: selected,
-              isExpanded: true,
-              hint: Text('reference.governorate_hint'.tr(context: context)),
-              borderRadius: BorderRadius.circular(14.r),
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: AppColors.white,
-                contentPadding: EdgeInsets.symmetric(horizontal: 14.w),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.r),
-                  borderSide: const BorderSide(color: AppColors.borderInput),
-                ),
-              ),
-              items: [
-                for (final item in governorates)
-                  DropdownMenuItem(
-                    value: item,
-                    child: Text(item.nameFor(lang)),
-                  ),
-              ],
-              onChanged: (value) {
-                governorate.value = value;
-                area.value = null;
-              },
+            PickerFieldWidget(
+              hint: 'reference.governorate_hint'.tr(context: context),
+              icon: Icons.map_outlined,
+              value: selected?.nameFor(lang),
+              onTap: pickGovernorate,
             ),
             if (selected != null) ...[
-              hSpace(12),
+              hSpace(10),
               if (areas.isNotEmpty)
-                AreaChoiceWidget(
+                AreaPickerWidget(
                   key: ValueKey(selected.code),
                   areas: areas,
                   area: area,
