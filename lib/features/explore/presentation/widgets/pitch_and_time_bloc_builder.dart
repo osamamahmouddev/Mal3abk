@@ -5,10 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_state_widget.dart';
-import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
 import '../cubit/pitch_booking_cubit.dart';
 import '../cubit/pitch_booking_state.dart';
 import 'pitch_and_time_loaded_widget.dart';
+import 'pitch_and_time_skeleton_widget.dart';
 import 'slot_taken_listener_widget.dart';
 
 class PitchAndTimeBlocBuilder extends StatelessWidget {
@@ -46,7 +46,7 @@ class PitchAndTimeBlocBuilder extends StatelessWidget {
         _ => Scaffold(
           backgroundColor: AppColors.pageBackground,
           appBar: CustomAppBarWidget(title: title, subtitle: venueName),
-          body: const ShimmerListSkeletonWidget(itemHeight: 64, itemCount: 5),
+          body: const PitchAndTimeSkeletonWidget(),
         ),
       },
     );
