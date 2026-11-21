@@ -9,6 +9,7 @@ import '../models/join_team_request_body.dart';
 import '../models/team_detail_model.dart';
 import '../models/team_discovery_page_model.dart';
 import '../models/team_invitation_model.dart';
+import '../models/team_invite_preview_model.dart';
 import '../models/team_join_request_model.dart';
 import '../models/team_leaderboard_page_model.dart';
 import '../models/team_profile_model.dart';
@@ -49,6 +50,9 @@ abstract class TeamsApiService {
   Future<TeamDetailModel> acceptInvitation(
     @Body() AcceptTeamInvitationRequestBody body,
   );
+
+  @GET(ApiConstants.teamInvitationPreview)
+  Future<TeamInvitePreviewModel> previewInvitation(@Path('code') String code);
 
   @POST(ApiConstants.teamInvitations)
   Future<TeamInvitationModel> createInvitation(

@@ -68,6 +68,8 @@ class ApiConstants {
   static const String teamDetail = '/api/v1/teams/{id}';
   static const String teamProfile = '/api/v1/teams/{id}/profile';
   static const String acceptTeamInvitation = '/api/v1/teams/invitations/accept';
+  static const String teamInvitationPreview =
+      '/api/v1/teams/invitations/{code}';
   static const String teamInvitations = '/api/v1/teams/{id}/invitations';
   static const String teamJoinRequests = '/api/v1/teams/{id}/join-requests';
   static const String approveJoinRequest =

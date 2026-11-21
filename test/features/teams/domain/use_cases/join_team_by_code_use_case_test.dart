@@ -29,9 +29,9 @@ void main() {
       'AbC234': 'ABC234',
       '  ABC234  ': 'ABC234',
       '\tabc234\n': 'ABC234',
-      '123456': '123456',
+      '234567': '234567',
       'ZZZZZZ': 'ZZZZZZ',
-      'A1B2C3': 'A1B2C3',
+      'A2B3C4': 'A2B3C4',
     };
 
     validCodes.forEach((typed, sent) {
@@ -58,6 +58,10 @@ void main() {
       'dash inside': 'ABC-234',
       'symbol': 'ABC23!',
       'arabic letters': 'ابجدهو',
+      'a 1 (never in a code)': 'ABC231',
+      'a 0 (never in a code)': 'ABC230',
+      'an I (never in a code)': 'ABCI23',
+      'an O (never in a code)': 'ABCO23',
       'arabic digits': '١٢٣٤٥٦',
       'emoji': 'ABC23⚽',
       'invite link instead of code': 'https://malabak.app/t/ABC234',

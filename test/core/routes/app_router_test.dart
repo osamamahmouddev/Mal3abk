@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mal3abk/core/routes/app_navigator.dart';
 import 'package:mal3abk/core/routes/app_router.dart';
 import 'package:mal3abk/core/routes/routes.dart';
 
@@ -24,6 +25,18 @@ void main() {
       final routes = AppRouter.onGenerateInitialRoutes('/unknown?x=1');
 
       expect(routes.single.settings.name, AppRoutes.splash);
+    });
+
+    test('a team invite link starts at splash and waits for the shell', () {
+      TestWidgetsFlutterBinding.ensureInitialized();
+      AppNavigator.reset();
+      addTearDown(AppNavigator.reset);
+
+      final routes = AppRouter.onGenerateInitialRoutes('/join/BJYFLU');
+
+      expect(routes.single.settings.name, AppRoutes.splash);
+      expect(AppNavigator.pendingLink?.route, AppRoutes.joinTeamByCode);
+      expect(AppNavigator.pendingLink?.arguments, 'BJYFLU');
     });
   });
 

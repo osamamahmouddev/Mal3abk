@@ -88,6 +88,7 @@ import '../../features/teams/data/models/team_profile_model.dart';
 import '../../features/teams/presentation/cubit/create_team_cubit.dart';
 import '../../features/teams/presentation/cubit/discover_teams_cubit.dart';
 import '../../features/teams/presentation/cubit/join_team_cubit.dart';
+import '../../features/teams/presentation/cubit/team_invite_preview_cubit.dart';
 import '../../features/teams/presentation/cubit/leaderboard_cubit.dart';
 import '../../features/teams/presentation/cubit/my_teams_cubit.dart';
 import '../../features/teams/presentation/cubit/tactical_board_cubit.dart';
@@ -103,16 +104,27 @@ import '../../features/teams/presentation/screens/manage_members_screen.dart';
 import '../../features/teams/presentation/screens/my_teams_screen.dart';
 import '../../features/teams/presentation/screens/rankings_screen.dart';
 import '../../features/teams/presentation/screens/team_profile_screen.dart';
+import '../config/env_config.dart';
 import '../di/service_locator.dart';
+import 'app_navigator.dart';
+import 'invite_link_observer.dart';
 import 'routes.dart';
 
 class AppRouter {
   const AppRouter._();
 
   /// A cold start from the recovery link opens only that screen; any other
-  /// launch starts at the splash screen.
+  /// launch starts at the splash screen. A team invite link waits there for
+  /// sign-in and opens the join screen once the shell is shown.
   static List<Route<dynamic>> onGenerateInitialRoutes(String initialRoute) {
-    final path = Uri.parse(initialRoute).path;
+    final invite = InviteLinkObserver.targetFor(
+      initialRoute,
+      webHosts: sl.isRegistered<EnvConfig>()
+          ? {Uri.parse(sl<EnvConfig>().baseUrl).host}
+          : const {},
+    );
+    if (invite != null) AppNavigator.openDeepLink(invite);
+    final path = Uri.tryParse(initialRoute)?.path ?? '';
     final name = path == AppRoutes.recoverPhone
         ? initialRoute
         : AppRoutes.splash;
@@ -477,8 +489,13 @@ class AppRouter {
         final code = settings.arguments;
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => BlocProvider<JoinTeamCubit>(
-            create: (_) => sl<JoinTeamCubit>(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<JoinTeamCubit>(create: (_) => sl<JoinTeamCubit>()),
+              BlocProvider<TeamInvitePreviewCubit>(
+                create: (_) => sl<TeamInvitePreviewCubit>(),
+              ),
+            ],
             child: JoinTeamByCodeScreen(
               initialCode: code is String ? code : null,
             ),

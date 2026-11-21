@@ -3,6 +3,7 @@ import '../../data/models/create_team_request_body.dart';
 import '../../data/models/team_detail_model.dart';
 import '../../data/models/team_discovery_page_model.dart';
 import '../../data/models/team_invitation_model.dart';
+import '../../data/models/team_invite_preview_model.dart';
 import '../../data/models/team_join_request_model.dart';
 import '../../data/models/team_leaderboard_page_model.dart';
 import '../../data/models/team_profile_model.dart';
@@ -22,6 +23,7 @@ abstract class TeamsRepo {
   Future<ApiResult<TeamProfileModel>> getTeamProfile(String teamId);
   Future<ApiResult<TeamDetailModel>> createTeam(CreateTeamRequestBody body);
   Future<ApiResult<TeamDetailModel>> acceptInvitation(String inviteCode);
+  Future<ApiResult<TeamInvitePreviewModel>> previewInvitation(String code);
   Future<ApiResult<TeamInvitationModel>> createInvitation(String teamId);
   Future<ApiResult<TeamJoinRequestModel>> requestToJoin(
     String teamId, {

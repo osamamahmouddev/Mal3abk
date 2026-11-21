@@ -6,6 +6,9 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/app/app_spaces.dart';
+import '../../../../core/config/env_config.dart';
+import '../../../../core/di/service_locator.dart';
+import '../../../../core/routes/invite_link.dart';
 import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
@@ -19,8 +22,9 @@ class InviteCodeCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void copy() {
-      Clipboard.setData(ClipboardData(text: code));
+    final link = InviteLink.share(sl<EnvConfig>().baseUrl, code);
+    void copy(String text) {
+      Clipboard.setData(ClipboardData(text: text));
       AppTopSnackBar.showSuccess(
         context,
         'teams.invite.copied'.tr(context: context),
@@ -83,7 +87,7 @@ class InviteCodeCardWidget extends StatelessWidget {
                       textStyle: AppTextStyles.font13SemiBold.copyWith(
                         color: AppColors.white,
                       ),
-                      onTap: copy,
+                      onTap: () => copy(code),
                     ),
                   ],
                 ),
@@ -108,7 +112,7 @@ class InviteCodeCardWidget extends StatelessWidget {
                           ShareParams(
                             text: 'teams.invite.share_message'.tr(
                               context: context,
-                              args: [code],
+                              args: [link, code],
                             ),
                           ),
                         ),
@@ -123,7 +127,7 @@ class InviteCodeCardWidget extends StatelessWidget {
                         borderRadius: 10,
                         borderColor: AppColors.white35,
                         textStyle: ghostStyle,
-                        onTap: copy,
+                        onTap: () => copy(link),
                       ),
                     ),
                   ],

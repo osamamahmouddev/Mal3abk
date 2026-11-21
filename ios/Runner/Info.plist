@@ -96,5 +96,16 @@
 		<string>$(MAPS_API_KEY)</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
 		<string>Malabak uses your location to show pitches near you.</string>
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleURLName</key>
+				<string>com.malabak.app.invite</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>malabak</string>
+				</array>
+			</dict>
+		</array>
 	</dict>
 </plist>

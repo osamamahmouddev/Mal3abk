@@ -9,6 +9,7 @@ import '../models/join_team_request_body.dart';
 import '../models/team_detail_model.dart';
 import '../models/team_discovery_page_model.dart';
 import '../models/team_invitation_model.dart';
+import '../models/team_invite_preview_model.dart';
 import '../models/team_join_request_model.dart';
 import '../models/team_leaderboard_page_model.dart';
 import '../models/team_profile_model.dart';
@@ -93,6 +94,17 @@ class TeamsRepoImpl implements TeamsRepo {
           AcceptTeamInvitationRequestBody(inviteCode: inviteCode),
         ),
       );
+    } catch (e, st) {
+      return ApiResult.failure(ApiFailureMapper.map(e, st));
+    }
+  }
+
+  @override
+  Future<ApiResult<TeamInvitePreviewModel>> previewInvitation(
+    String code,
+  ) async {
+    try {
+      return ApiResult.success(await teamsApiService.previewInvitation(code));
     } catch (e, st) {
       return ApiResult.failure(ApiFailureMapper.map(e, st));
     }
