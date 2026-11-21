@@ -153,7 +153,8 @@
       "max_pending": "You have too many bookings waiting for payment. Pay or cancel one first.",
       "price_changed": "The price changed. Check the new price before booking.",
       "quote_expired": "This price expired. Open the slot again.",
-      "slot_taken": "Someone just took this slot. Pick another one."
+      "slot_taken": "Someone just took this slot. Pick another one.",
+      "no_price": "This pitch has no price for this time yet. Try another time or pitch."
     }
   },
   "auth": {
@@ -433,7 +434,8 @@
       "from": "from {}",
       "no_slots": "No free times that day.",
       "no_filtered_slots": "No times match this filter. Tap it again to see all times.",
-      "taken_live": "Someone just booked this time. Pick another one."
+      "taken_live": "Someone just booked this time. Pick another one.",
+      "no_price": "This time has no price yet. Pick another time or pitch."
     },
     "favorites_empty_title": "No favourite pitches",
     "favorites_empty_desc": "Tap the heart on any pitch to find it here quickly.",
@@ -461,6 +463,13 @@
       "any_budget": "Remove the price limit ({} venues)",
       "any_pitch": "Any pitch type ({} venues)",
       "fewer_facilities": "Remove facility filters ({} venues)"
+    },
+    "offer": {
+      "percent": "{}% off",
+      "amount": "{} off a booking",
+      "until": "until {}",
+      "selected_times": "on selected times",
+      "price_on_booking": "Price shows when you pick a time"
     }
   },
   "booking": {
@@ -806,7 +815,7 @@
       "new_code_desc": "The old code stops working right away, and nobody can join with it.",
       "done": "Done — view members",
       "join_note": "Players open \"Join with code\" on My teams and enter it.",
-      "share_message": "Join my team on Malabak! Open the app → My teams → Join with code, and enter: {}"
+      "share_message": "Join my team on Malabak! Tap the link: {}\nOr open the app → My teams → Join with code, and enter: {}"
     },
     "join": {
       "title": "Join a team",
@@ -814,7 +823,8 @@
       "code_desc": "The captain finds it on the \"Invite players\" page. If you got a link, the code fills in automatically.",
       "privacy_note": "When you join, the captain and members will see your name and position. Your number stays hidden unless you enable it in settings.",
       "joined": "You joined {}.",
-      "submit_code": "Join the team"
+      "submit_code": "Join the team",
+      "members_count": "{} of {} players"
     },
     "manage": {
       "title": "Team members",
@@ -1128,7 +1138,13 @@
   "reference": {
     "governorate_hint": "Choose a governorate",
     "area_hint": "Type your area",
-    "other_area": "Another area"
+    "other_area": "Another area",
+    "governorate_label": "Governorate",
+    "area_label": "Area",
+    "area_pick_hint": "Choose the area",
+    "search_governorate": "Search governorates",
+    "search_area": "Search areas",
+    "no_results": "Nothing matches that name."
   },
   "force_update": {
     "title": "Update Required",
