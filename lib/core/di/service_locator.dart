@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
@@ -192,7 +194,12 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
         dio: dio,
         tokenStorage: sl<AuthTokenStorage>(),
         tokenRefreshApiService: sl<TokenRefreshApiService>(),
-        onSessionExpired: AppNavigator.openLogin,
+        onSessionExpired: () {
+          if (sl.isRegistered<RealtimeService>()) {
+            unawaited(sl<RealtimeService>().disconnect());
+          }
+          AppNavigator.openLogin();
+        },
       ),
     );
     return dio;

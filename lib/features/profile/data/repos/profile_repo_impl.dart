@@ -54,7 +54,7 @@ class ProfileRepoImpl implements ProfileRepo {
     );
     await dio.put<void>(
       ticket.uploadUrl,
-      data: Stream.fromIterable([jpeg]),
+      data: jpeg,
       options: Options(
         headers: {
           Headers.contentTypeHeader: contentType,

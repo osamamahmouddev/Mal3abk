@@ -46,13 +46,29 @@ class UploadProofBlocBuilder extends HookWidget {
         _ => null,
       };
       if (source == null) return;
-      final file = await ImagePicker().pickImage(
-        source: source,
-        requestFullMetadata: false,
-      );
-      if (file == null) return;
-      fileBytes.value = await file.readAsBytes();
-      HapticFeedback.selectionClick();
+      try {
+        final file = await ImagePicker().pickImage(
+          source: source,
+          requestFullMetadata: false,
+        );
+        if (file == null) return;
+        fileBytes.value = await file.readAsBytes();
+        HapticFeedback.selectionClick();
+      } on PlatformException catch (_) {
+        if (context.mounted) {
+          AppTopSnackBar.showError(
+            context,
+            'errors.unknown'.tr(context: context),
+          );
+        }
+      } catch (_) {
+        if (context.mounted) {
+          AppTopSnackBar.showError(
+            context,
+            'errors.unknown'.tr(context: context),
+          );
+        }
+      }
     }
 
     return BlocConsumer<ProofUploadCubit, ProofUploadState>(

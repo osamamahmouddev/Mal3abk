@@ -34,16 +34,21 @@ class BookingDetailRowWidget extends StatelessWidget {
                 ? AppTextStyles.font15Bold
                 : AppTextStyles.font14Regular,
           ),
-          const Spacer(),
-          Text(
-            value,
-            style:
-                valueStyle ??
-                (isBold
-                    ? AppTextStyles.font15Bold
-                    : AppTextStyles.font14Regular.copyWith(
-                        color: AppColors.textPrimary,
-                      )),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style:
+                  valueStyle ??
+                  (isBold
+                      ? AppTextStyles.font15Bold
+                      : AppTextStyles.font14Regular.copyWith(
+                          color: AppColors.textPrimary,
+                        )),
+            ),
           ),
         ],
       ),

@@ -54,15 +54,19 @@ class DepositMethodsBlocBuilder extends HookWidget {
               ),
             ],
             hSpace(12),
-            DepositWalletCardWidget(
-              accountNumber: methods[selected.value].accountDetails,
-              recipientName: methods[selected.value].recipientName,
-              instructions: methods[selected.value].instructions,
-              bookingNo: bookingReference,
-              label: methods[selected.value].isInstaPay
-                  ? t('instapay_address')
-                  : t('wallet_number'),
-            ),
+            () {
+              final selectedMethod =
+                  methods[selected.value.clamp(0, methods.length - 1)];
+              return DepositWalletCardWidget(
+                accountNumber: selectedMethod.accountDetails,
+                recipientName: selectedMethod.recipientName,
+                instructions: selectedMethod.instructions,
+                bookingNo: bookingReference,
+                label: selectedMethod.isInstaPay
+                    ? t('instapay_address')
+                    : t('wallet_number'),
+              );
+            }(),
           ],
         ),
         DepositMethodsError(:final message) => AlertBannerWidget(

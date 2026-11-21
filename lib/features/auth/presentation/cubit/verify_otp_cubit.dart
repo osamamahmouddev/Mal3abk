@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/config/env_config.dart';
 import '../../../../core/network/api_failure_mapper.dart';
 import '../../../../core/network/api_result.dart';
 import '../../../../core/network/app_api_failure.dart';
@@ -58,7 +59,7 @@ class VerifyOtpCubit extends Cubit<VerifyOtpState>
     final shouldRestore = restoreAccount ?? _restoreAccount;
     final firebaseVerificationId = verificationId ?? _verificationId;
 
-    if (phoneNumber != '+201000000999' &&
+    if (phoneNumber != EnvConfig.reviewTestPhoneNumber &&
         firebaseVerificationId != null &&
         authenticateWithFirebaseUseCase != null) {
       await _signInWithFirebase(

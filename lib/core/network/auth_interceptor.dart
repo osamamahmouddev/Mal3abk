@@ -34,6 +34,9 @@ class AuthInterceptor extends Interceptor {
     RequestInterceptorHandler handler,
   ) async {
     if (!_isAnonymous(options) && _isOwnApi(options)) {
+      if (_refreshInFlight != null) {
+        await _refreshInFlight;
+      }
       final accessToken = await tokenStorage.readAccessToken();
       if (accessToken.isNotEmpty) {
         options.headers[_authorizationHeader] = 'Bearer $accessToken';

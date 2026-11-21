@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/config/env_config.dart';
 import '../../../../core/network/api_result.dart';
 import '../../../../core/network/app_api_failure.dart';
 import '../../../../core/services/firebase_phone_auth_service.dart';
@@ -43,7 +44,7 @@ class SendOtpCubit extends Cubit<SendOtpState>
       }
       final normalizedPhone = (normalized as Success<String>).data;
       // Apple review test account bypasses Firebase SMS entirely and hits the backend directly
-      if (normalizedPhone != '+201000000999') {
+      if (normalizedPhone != EnvConfig.reviewTestPhoneNumber) {
         final sent = await _sendWithFirebase(normalizedPhone);
         if (sent != null) {
           emitIfOpen(sent);

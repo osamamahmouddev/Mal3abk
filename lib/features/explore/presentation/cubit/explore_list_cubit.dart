@@ -19,6 +19,8 @@ class ExploreListCubit extends Cubit<ExploreListState>
 
   ExploreFilterModel filter = const ExploreFilterModel();
 
+  int _requestId = 0;
+
   /// Where the player is, when they allowed it; enables "nearest first".
   GeoPoint? near;
 
@@ -81,6 +83,7 @@ class ExploreListCubit extends Cubit<ExploreListState>
     int? page,
     int? pageSize,
   }) async {
+    final requestId = ++_requestId;
     if (state is! ExploreListSuccess) {
       emitIfOpen(const ExploreListState.loading());
     }
@@ -92,6 +95,7 @@ class ExploreListCubit extends Cubit<ExploreListState>
       page: page,
       pageSize: pageSize,
     );
+    if (requestId != _requestId) return;
     result.when(
       success: (data) => emitIfOpen(ExploreListState.success(data)),
       failure: (failure) => emitIfOpen(ExploreListState.error(failure.message)),

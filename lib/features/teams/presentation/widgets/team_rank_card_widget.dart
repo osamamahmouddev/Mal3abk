@@ -46,9 +46,19 @@ class TeamRankCardWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(teamName, style: AppTextStyles.font14Bold),
+                Text(
+                  teamName,
+                  style: AppTextStyles.font14Bold,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
                 hSpace(2),
-                Text(trend, style: AppTextStyles.font11Regular),
+                Text(
+                  trend,
+                  style: AppTextStyles.font11Regular,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ],
             ),
           ),

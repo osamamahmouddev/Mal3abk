@@ -748,6 +748,37 @@ class AppRouter {
   }
 
   static Route _errorRoute(String message) => MaterialPageRoute(
-    builder: (_) => Scaffold(body: Center(child: Text(message))),
+    builder: (context) => Scaffold(
+      appBar: AppBar(
+        leading: BackButton(
+          onPressed: () {
+            if (Navigator.of(context).canPop()) {
+              Navigator.of(context).pop();
+            } else {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                AppRoutes.main,
+                (_) => false,
+              );
+            }
+          },
+        ),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(message),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
+                AppRoutes.main,
+                (_) => false,
+              ),
+              child: const Text('العودة للرئيسية'),
+            ),
+          ],
+        ),
+      ),
+    ),
   );
 }

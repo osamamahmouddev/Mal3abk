@@ -34,14 +34,30 @@ class ProfileAvatarBlocBuilder extends StatelessWidget {
         case ImageSourceChoice.remove:
           await cubit.remove();
         case ImageSourceChoice.gallery || ImageSourceChoice.camera:
-          final file = await ImagePicker().pickImage(
-            source: choice == ImageSourceChoice.camera
-                ? ImageSource.camera
-                : ImageSource.gallery,
-            requestFullMetadata: false,
-          );
-          if (file == null) return;
-          await cubit.upload(await file.readAsBytes());
+          try {
+            final file = await ImagePicker().pickImage(
+              source: choice == ImageSourceChoice.camera
+                  ? ImageSource.camera
+                  : ImageSource.gallery,
+              requestFullMetadata: false,
+            );
+            if (file == null) return;
+            await cubit.upload(await file.readAsBytes());
+          } on PlatformException catch (_) {
+            if (context.mounted) {
+              AppTopSnackBar.showError(
+                context,
+                'errors.unknown'.tr(context: context),
+              );
+            }
+          } catch (_) {
+            if (context.mounted) {
+              AppTopSnackBar.showError(
+                context,
+                'errors.unknown'.tr(context: context),
+              );
+            }
+          }
       }
     }
 

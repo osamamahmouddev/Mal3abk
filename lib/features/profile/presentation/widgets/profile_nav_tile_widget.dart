@@ -32,7 +32,9 @@ class ProfileNavTileWidget extends StatelessWidget {
             vSpace(6),
           ],
           Icon(
-            Icons.arrow_forward_ios_rounded,
+            Directionality.of(context) == TextDirection.rtl
+                ? Icons.arrow_back_ios_new_rounded
+                : Icons.arrow_forward_ios_rounded,
             size: 14.sp,
             color: AppColors.textSecondary,
           ),

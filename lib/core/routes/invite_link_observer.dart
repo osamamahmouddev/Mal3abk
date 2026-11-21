@@ -20,9 +20,10 @@ class InviteLinkObserver with WidgetsBindingObserver {
     required Set<String> webHosts,
   }) {
     final code = InviteLink.codeFrom(location, webHosts: webHosts);
-    return code == null
-        ? null
-        : DeepLinkTarget(route: AppRoutes.joinTeamByCode, arguments: code);
+    if (code != null) {
+      return DeepLinkTarget(route: AppRoutes.joinTeamByCode, arguments: code);
+    }
+    return DeepLinkResolver.resolve(location);
   }
 
   @override

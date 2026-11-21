@@ -1,6 +1,9 @@
 import 'package:flutter/foundation.dart';
 
 abstract class EnvConfig {
+  /// Test phone number reserved for Apple App Store / test review that bypasses Firebase SMS.
+  static const String reviewTestPhoneNumber = '+201000000999';
+
   String get baseUrl;
   String get envName;
   bool get isDebug;
@@ -38,7 +41,6 @@ class DevEnvConfig implements EnvConfig {
   @override
   bool get isDebug => true;
 
-  /// The Development API accepts any non-empty Turnstile token.
   @override
   String get turnstileToken => const String.fromEnvironment(
     'TURNSTILE_TOKEN',
