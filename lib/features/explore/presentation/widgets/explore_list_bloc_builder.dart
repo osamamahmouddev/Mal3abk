@@ -20,6 +20,7 @@ import '../cubit/explore_list_state.dart';
 import '../cubit/favorite_toggle_cubit.dart';
 import '../cubit/favorite_toggle_state.dart';
 import 'explore_suggestions_widget.dart';
+import 'venue_offer_text.dart';
 import '../../../../core/animations/ball_refresh_indicator.dart';
 
 class ExploreListBlocBuilder extends StatelessWidget {
@@ -87,6 +88,12 @@ class ExploreListBlocBuilder extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final item = result.items[index];
                         final next = item.nextAvailableStartUtc;
+                        final offer = item.offer;
+                        final after = offer?.fromHourlyPriceAfter;
+                        String egp(double v) => 'common.price_egp'.tr(
+                          context: context,
+                          args: [v.round().toLocalizedDigits(lang)],
+                        );
                         return FadeSlideInWidget(
                           index: index,
                           child: PitchCardWidget(
@@ -94,14 +101,17 @@ class ExploreListBlocBuilder extends StatelessWidget {
                             specs: specs(item),
                             pricePerHour: item.fromHourlyPrice == null
                                 ? ''
-                                : 'common.price_egp'.tr(
-                                    context: context,
-                                    args: [
-                                      item.fromHourlyPrice!
-                                          .round()
-                                          .toLocalizedDigits(lang),
-                                    ],
-                                  ),
+                                : egp(after ?? item.fromHourlyPrice!),
+                            oldPricePerHour:
+                                after != null &&
+                                    item.fromHourlyPrice != null &&
+                                    after < item.fromHourlyPrice!
+                                ? egp(item.fromHourlyPrice!)
+                                : null,
+                            offerLabel: offer?.label(context),
+                            noPriceText: 'explore.offer.price_on_booking'.tr(
+                              context: context,
+                            ),
                             imageUrl: item.coverPhotoUrl,
                             isFavorite: favorites.isFavorite(
                               item.venueId,

@@ -45,6 +45,9 @@ VenueDetailsModel _$VenueDetailsModelFromJson(
           .toList() ??
       const [],
   favoritesCount: (json['favoritesCount'] as num?)?.toInt() ?? 0,
+  offer: json['offer'] == null
+      ? null
+      : VenueOfferModel.fromJson(json['offer'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$VenueDetailsModelToJson(VenueDetailsModel instance) =>
@@ -67,4 +70,5 @@ Map<String, dynamic> _$VenueDetailsModelToJson(VenueDetailsModel instance) =>
       'pitchCount': instance.pitchCount,
       'pitchTypes': instance.pitchTypes,
       'favoritesCount': instance.favoritesCount,
+      'offer': instance.offer,
     };

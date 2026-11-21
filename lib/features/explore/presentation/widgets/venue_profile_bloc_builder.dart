@@ -21,6 +21,7 @@ import 'venue_amenities_tab_widget.dart';
 import 'venue_hero_actions_widget.dart';
 import 'venue_hero_widget.dart';
 import 'venue_info_header_widget.dart';
+import 'venue_offer_banner_widget.dart';
 import 'venue_pitches_tab_widget.dart';
 import 'venue_policies_tab_widget.dart';
 import 'venue_price_footer_widget.dart';
@@ -73,9 +74,10 @@ class VenueProfileBlocBuilder extends StatelessWidget {
                       : 'common.price_egp'.tr(
                           context: context,
                           args: [
-                            venue.fromHourlyPrice!.round().toLocalizedDigits(
-                              lang,
-                            ),
+                            (venue.offer?.fromHourlyPriceAfter ??
+                                    venue.fromHourlyPrice!)
+                                .round()
+                                .toLocalizedDigits(lang),
                           ],
                         ),
                   onTap: book,
@@ -112,6 +114,14 @@ class VenueProfileBlocBuilder extends StatelessWidget {
                               venue.area,
                             ].where((p) => p.isNotEmpty).join('، '),
                           ),
+                          if (venue.offer case final offer?)
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 12.h),
+                              child: VenueOfferBannerWidget(
+                                offer: offer,
+                                fromHourlyPrice: venue.fromHourlyPrice,
+                              ),
+                            ),
                           CustomTabBarWidget(
                             tabs: [
                               'explore.venue.tab_pitches'.tr(context: context),

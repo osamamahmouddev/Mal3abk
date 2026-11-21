@@ -1,7 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
+
 import 'localized_item_model.dart';
 import 'opening_hours_day_model.dart';
 import 'public_deposit_policy_model.dart';
+import 'venue_offer_model.dart';
 
 part 'venue_details_model.g.dart';
 
@@ -26,6 +28,7 @@ class VenueDetailsModel {
     this.pitchCount = 0,
     this.pitchTypes = const [],
     this.favoritesCount = 0,
+    this.offer,
   });
 
   final String venueId;
@@ -46,6 +49,7 @@ class VenueDetailsModel {
   final int pitchCount;
   final List<String> pitchTypes;
   final int favoritesCount;
+  final VenueOfferModel? offer;
 
   factory VenueDetailsModel.fromJson(Map<String, dynamic> json) =>
       _$VenueDetailsModelFromJson(json);

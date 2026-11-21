@@ -36,6 +36,9 @@ ExploreVenueCardModel _$ExploreVenueCardModelFromJson(
   favoritesCount: (json['favoritesCount'] as num?)?.toInt() ?? 0,
   nextAvailableStartUtc: json['nextAvailableStartUtc'] as String?,
   isFavorite: json['isFavorite'] as bool? ?? false,
+  offer: json['offer'] == null
+      ? null
+      : VenueOfferModel.fromJson(json['offer'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$ExploreVenueCardModelToJson(
@@ -58,4 +61,5 @@ Map<String, dynamic> _$ExploreVenueCardModelToJson(
   'favoritesCount': instance.favoritesCount,
   'nextAvailableStartUtc': instance.nextAvailableStartUtc,
   'isFavorite': instance.isFavorite,
+  'offer': instance.offer,
 };

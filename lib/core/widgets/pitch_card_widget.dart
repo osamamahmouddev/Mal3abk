@@ -9,6 +9,7 @@ import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 import '../utils/media_url.dart';
 import 'custom_card_widget.dart';
+import 'offer_badge_widget.dart';
 import 'pitch_placeholder_widget.dart';
 import 'slot_chip_widget.dart';
 
@@ -25,6 +26,9 @@ class PitchCardWidget extends StatelessWidget {
     this.onFavoriteTap,
     this.onTap,
     this.onSlotTap,
+    this.oldPricePerHour,
+    this.offerLabel,
+    this.noPriceText,
   });
 
   final String name;
@@ -37,6 +41,15 @@ class PitchCardWidget extends StatelessWidget {
   final VoidCallback? onFavoriteTap;
   final VoidCallback? onTap;
   final ValueChanged<String>? onSlotTap;
+
+  /// The price before a running offer, shown struck through.
+  final String? oldPricePerHour;
+
+  /// The running offer ("20% off · until 27 November").
+  final String? offerLabel;
+
+  /// Shown instead of the price when the venue has none yet.
+  final String? noPriceText;
 
   @override
   Widget build(BuildContext context) {
@@ -98,22 +111,46 @@ class PitchCardWidget extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: 6.h),
-                    Text.rich(
-                      TextSpan(
-                        text: cleanedPrice,
-                        style: AppTextStyles.font16Bold.copyWith(
-                          color: AppColors.textPrimary,
+                    if (cleanedPrice.isEmpty)
+                      Text(
+                        noPriceText ?? '',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTextStyles.font12Regular.copyWith(
+                          color: AppColors.textSecondary,
                         ),
-                        children: [
-                          TextSpan(
-                            text: ' ${'common.per_hour'.tr(context: context)}',
-                            style: AppTextStyles.font13Regular.copyWith(
-                              color: AppColors.textSecondary,
-                            ),
+                      )
+                    else
+                      Text.rich(
+                        TextSpan(
+                          text: cleanedPrice,
+                          style: AppTextStyles.font16Bold.copyWith(
+                            color: AppColors.textPrimary,
                           ),
-                        ],
+                          children: [
+                            TextSpan(
+                              text:
+                                  ' ${'common.per_hour'.tr(context: context)}',
+                              style: AppTextStyles.font13Regular.copyWith(
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                            if (oldPricePerHour case final old?
+                                when old.isNotEmpty)
+                              TextSpan(
+                                text: '  $old',
+                                style: AppTextStyles.font12Regular.copyWith(
+                                  color: AppColors.textSecondary,
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
-                    ),
+                    if (offerLabel case final offer? when offer.isNotEmpty) ...[
+                      SizedBox(height: 6.h),
+                      OfferBadgeWidget(label: offer),
+                    ],
                   ],
                 ),
               ),

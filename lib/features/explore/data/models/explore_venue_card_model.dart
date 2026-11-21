@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'venue_offer_model.dart';
+
 part 'explore_venue_card_model.g.dart';
 
 @JsonSerializable()
@@ -22,6 +24,7 @@ class ExploreVenueCardModel {
     this.favoritesCount = 0,
     this.nextAvailableStartUtc,
     this.isFavorite = false,
+    this.offer,
   });
 
   final String venueId;
@@ -41,6 +44,7 @@ class ExploreVenueCardModel {
   final int favoritesCount;
   final String? nextAvailableStartUtc;
   final bool isFavorite;
+  final VenueOfferModel? offer;
 
   factory ExploreVenueCardModel.fromJson(Map<String, dynamic> json) =>
       _$ExploreVenueCardModelFromJson(json);
