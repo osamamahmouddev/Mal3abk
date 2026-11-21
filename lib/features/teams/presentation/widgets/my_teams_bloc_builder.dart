@@ -8,10 +8,10 @@ import '../../../../core/app/app_spaces.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/widgets/custom_state_widget.dart';
 import '../../../../core/widgets/fade_slide_in_widget.dart';
-import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
 import '../cubit/my_teams_cubit.dart';
 import '../cubit/my_teams_state.dart';
 import 'my_team_card_widget.dart';
+import 'my_teams_skeleton_widget.dart';
 import '../../../../core/animations/ball_refresh_indicator.dart';
 
 class MyTeamsBlocBuilder extends StatelessWidget {
@@ -58,7 +58,7 @@ class MyTeamsBlocBuilder extends StatelessWidget {
               actionText: 'common.retry'.tr(context: context),
               onActionTap: () => context.read<MyTeamsCubit>().load(),
             ),
-            _ => const ShimmerListSkeletonWidget(itemHeight: 196, itemCount: 2),
+            _ => const MyTeamsSkeletonWidget(),
           },
         );
       },

@@ -27,6 +27,7 @@ class AppHeaderIconButtonWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: radius,
+        border: Border.all(color: AppColors.borderCard),
         boxShadow: [
           BoxShadow(
             color: AppColors.navyShadow,

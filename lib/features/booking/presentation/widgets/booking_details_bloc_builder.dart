@@ -6,10 +6,10 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/widgets/alert_banner_widget.dart';
 import '../../../../core/widgets/custom_state_widget.dart';
-import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
 import '../../data/models/booking_status.dart';
 import '../cubit/booking_details_cubit.dart';
 import '../cubit/booking_details_state.dart';
+import 'booking_details_skeleton_widget.dart';
 import 'booking_pass_actions_widget.dart';
 import 'booking_pass_hero_widget.dart';
 import 'booking_pass_payment_card_widget.dart';
@@ -68,7 +68,7 @@ class BookingDetailsBlocBuilder extends StatelessWidget {
           actionText: 'common.retry'.tr(context: context),
           onActionTap: () => cubit.load(bookingId),
         ),
-        _ => const ShimmerListSkeletonWidget(itemHeight: 180, itemCount: 3),
+        _ => const BookingDetailsSkeletonWidget(),
       },
     );
   }

@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/widgets/custom_state_widget.dart';
-import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
 import '../cubit/booking_details_cubit.dart';
 import '../cubit/booking_details_state.dart';
 import 'upload_proof_bloc_builder.dart';
+import 'upload_proof_skeleton_widget.dart';
 
 class UploadProofBookingBlocBuilder extends StatelessWidget {
   const UploadProofBookingBlocBuilder({required this.bookingId, super.key});
@@ -31,7 +31,7 @@ class UploadProofBookingBlocBuilder extends StatelessWidget {
           onActionTap: () =>
               context.read<BookingDetailsCubit>().load(bookingId),
         ),
-        _ => const ShimmerListSkeletonWidget(itemHeight: 120, itemCount: 3),
+        _ => const UploadProofSkeletonWidget(),
       },
     );
   }

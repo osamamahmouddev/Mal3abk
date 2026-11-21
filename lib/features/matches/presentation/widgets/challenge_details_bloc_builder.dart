@@ -6,11 +6,11 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/widgets/alert_banner_widget.dart';
 import '../../../../core/widgets/custom_state_widget.dart';
-import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
 import '../../data/models/team_challenge_model.dart';
 import '../cubit/challenge_details_cubit.dart';
 import '../cubit/challenge_details_state.dart';
 import 'challenge_info_card_widget.dart';
+import 'match_details_skeleton_widget.dart';
 import 'team_matchup_header_widget.dart';
 import '../../../../core/animations/ball_refresh_indicator.dart';
 
@@ -80,7 +80,7 @@ class ChallengeDetailsBlocBuilder extends StatelessWidget {
             actionText: 'common.retry'.tr(context: context),
             onActionTap: () => cubit.load(challengeId),
           ),
-          _ => const ShimmerListSkeletonWidget(itemHeight: 140, itemCount: 3),
+          _ => const MatchDetailsSkeletonWidget(),
         };
       },
     );

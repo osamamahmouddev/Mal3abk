@@ -9,9 +9,9 @@ import '../../../../core/routes/routes.dart';
 import '../../../../core/widgets/app_top_snack_bar.dart';
 import '../../../../core/widgets/custom_state_widget.dart';
 import '../../../../core/widgets/fade_slide_in_widget.dart';
-import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
 import '../cubit/favorites_cubit.dart';
 import '../cubit/favorites_state.dart';
+import 'favorite_venue_card_skeleton_widget.dart';
 import 'favorite_venue_card_widget.dart';
 import '../../../../core/animations/ball_refresh_indicator.dart';
 
@@ -69,7 +69,12 @@ class FavoritesBlocBuilder extends StatelessWidget {
           actionText: 'common.retry'.tr(context: context),
           onActionTap: cubit.load,
         ),
-        _ => const ShimmerListSkeletonWidget(itemHeight: 230, itemCount: 2),
+        _ => ListView.separated(
+          padding: EdgeInsets.all(16.r),
+          itemCount: 2,
+          separatorBuilder: (_, _) => hSpace(12),
+          itemBuilder: (_, _) => const FavoriteVenueCardSkeletonWidget(),
+        ),
       },
     );
   }

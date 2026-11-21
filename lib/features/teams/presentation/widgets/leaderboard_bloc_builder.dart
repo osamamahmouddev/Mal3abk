@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
-import '../../../../core/app/app_spaces.dart';
 import '../../../../core/widgets/custom_state_widget.dart';
-import '../../../../core/widgets/empty_note_box_widget.dart';
 import '../../../../core/widgets/plain_note_box_widget.dart';
 import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
 import '../cubit/leaderboard_cubit.dart';
@@ -65,29 +63,16 @@ class LeaderboardBlocBuilder extends StatelessWidget {
                               ),
                             ),
                           )
-                        : ListView(
-                            physics: const BouncingScrollPhysics(),
-                            padding: EdgeInsets.fromLTRB(
-                              16.w,
-                              12.h,
-                              16.w,
-                              16.h,
-                            ),
-                            children: [
-                              if (entries.isEmpty) ...[
-                                EmptyNoteBoxWidget(
-                                  text: 'teams.rankings.empty'.tr(
+                        : CustomStateWidget(
+                            icon: const Icon(Icons.emoji_events_outlined),
+                            title: entries.isEmpty
+                                ? 'teams.rankings.empty'.tr(context: context)
+                                : 'teams.rankings.not_ready_title'.tr(
                                     context: context,
                                   ),
-                                ),
-                                hSpace(10),
-                              ],
-                              PlainNoteBoxWidget(
-                                text: 'teams.rankings.note'.tr(
-                                  context: context,
-                                ),
-                              ),
-                            ],
+                            description: 'teams.rankings.note'.tr(
+                              context: context,
+                            ),
                           ),
                   ),
                 ),

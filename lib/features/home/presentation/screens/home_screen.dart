@@ -64,30 +64,11 @@ class HomeScreen extends StatelessWidget {
                           child: const HomeHeroSearchCardWidget(),
                         ),
                       ),
-                      hSpace(18),
                       FadeSlideInWidget(
                         index: 1,
                         child: Padding(
                           padding: padding,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              SectionHeaderWidget(
-                                title: 'home.upcoming_booking'.tr(
-                                  context: context,
-                                ),
-                                actionText: 'home.bookings'.tr(
-                                  context: context,
-                                ),
-                                onAction: () => MainShellScopeWidget.switchTab(
-                                  context,
-                                  MainShellScopeWidget.bookingsTab,
-                                ),
-                              ),
-                              hSpace(12),
-                              const HomeUpcomingBookingBlocBuilder(),
-                            ],
-                          ),
+                          child: const HomeUpcomingBookingBlocBuilder(),
                         ),
                       ),
                       hSpace(18),

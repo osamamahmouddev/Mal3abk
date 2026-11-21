@@ -5,10 +5,10 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/widgets/custom_state_widget.dart';
-import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
 import '../cubit/team_dashboard_cubit.dart';
 import '../cubit/team_dashboard_state.dart';
 import 'team_challenges_section_widget.dart';
+import 'team_dashboard_skeleton_widget.dart';
 import 'team_join_requests_section_widget.dart';
 import 'team_profile_header_section_widget.dart';
 import 'team_profile_matches_section_widget.dart';
@@ -71,7 +71,7 @@ class TeamDashboardBlocBuilder extends StatelessWidget {
             actionText: 'common.retry'.tr(context: context),
             onActionTap: () => context.read<TeamDashboardCubit>().load(teamId),
           ),
-          _ => const ShimmerListSkeletonWidget(itemHeight: 160, itemCount: 4),
+          _ => const TeamDashboardSkeletonWidget(),
         };
       },
     );

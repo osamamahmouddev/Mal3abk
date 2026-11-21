@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../main_shell/presentation/widgets/main_shell_scope_widget.dart';
+import '../../../../core/routes/routes.dart';
 import '../cubit/profile_cubit.dart';
 import '../cubit/profile_state.dart';
 import 'profile_nav_tile_widget.dart';
@@ -19,10 +19,7 @@ class ProfileTeamsTileBlocBuilder extends StatelessWidget {
         trailing: state is ProfileSuccess && state.overview.teamNames.isNotEmpty
             ? state.overview.teamNames.take(2).join(' · ')
             : '',
-        onTap: () => MainShellScopeWidget.switchTab(
-          context,
-          MainShellScopeWidget.teamsTab,
-        ),
+        onTap: () => Navigator.of(context).pushNamed(AppRoutes.myTeams),
       ),
     );
   }

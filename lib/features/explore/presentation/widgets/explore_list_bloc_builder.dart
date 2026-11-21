@@ -12,8 +12,8 @@ import '../../../../core/utils/cairo_time.dart';
 import '../../../../core/widgets/app_top_snack_bar.dart';
 import '../../../../core/widgets/custom_state_widget.dart';
 import '../../../../core/widgets/fade_slide_in_widget.dart';
+import '../../../../core/widgets/pitch_card_skeleton_widget.dart';
 import '../../../../core/widgets/pitch_card_widget.dart';
-import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
 import '../../data/models/explore_venue_card_model.dart';
 import '../cubit/explore_list_cubit.dart';
 import '../cubit/explore_list_state.dart';
@@ -149,7 +149,17 @@ class ExploreListBlocBuilder extends StatelessWidget {
               actionText: 'common.retry'.tr(context: context),
               onActionTap: context.read<ExploreListCubit>().fetchVenues,
             ),
-            _ => const ShimmerListSkeletonWidget(itemHeight: 150, itemCount: 4),
+            _ => ListView.separated(
+              padding: EdgeInsets.fromLTRB(
+                16.w,
+                16.h,
+                16.w,
+                16.h + MediaQuery.paddingOf(context).bottom,
+              ),
+              itemCount: 4,
+              separatorBuilder: (_, _) => hSpace(12),
+              itemBuilder: (_, _) => const PitchCardSkeletonWidget(),
+            ),
           },
         ),
       ),

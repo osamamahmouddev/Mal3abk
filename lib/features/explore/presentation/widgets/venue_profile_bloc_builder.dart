@@ -11,7 +11,6 @@ import '../../../../core/widgets/app_top_snack_bar.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_state_widget.dart';
 import '../../../../core/widgets/custom_tab_bar_widget.dart';
-import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
 import '../cubit/favorite_toggle_cubit.dart';
 import '../screens/pitch_and_time_screen.dart';
 import '../cubit/favorite_toggle_state.dart';
@@ -25,6 +24,7 @@ import 'venue_offer_banner_widget.dart';
 import 'venue_pitches_tab_widget.dart';
 import 'venue_policies_tab_widget.dart';
 import 'venue_price_footer_widget.dart';
+import 'venue_profile_skeleton_widget.dart';
 import '../../../../core/animations/ball_refresh_indicator.dart';
 
 class VenueProfileBlocBuilder extends StatelessWidget {
@@ -177,7 +177,7 @@ class VenueProfileBlocBuilder extends StatelessWidget {
           ),
           _ => const Scaffold(
             backgroundColor: AppColors.pageBackground,
-            body: ShimmerListSkeletonWidget(itemHeight: 200, itemCount: 3),
+            body: VenueProfileSkeletonWidget(),
           ),
         },
       ),

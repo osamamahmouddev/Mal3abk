@@ -56,11 +56,17 @@ class HomeRecentlyViewedBlocBuilder extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final venue = venues[index];
                   final next = venue.nextAvailableStartUtc;
+                  final isAvailableNow =
+                      next != null &&
+                      CairoTime.parseUtc(next).isBefore(
+                        DateTime.now().toUtc().add(const Duration(hours: 1)),
+                      );
                   return Align(
                     alignment: AlignmentDirectional.topStart,
                     child: HomeNearbyPitchCardWidget(
                       imageUrl: venue.coverPhotoUrl,
                       name: venue.name,
+                      isAvailableNow: isAvailableNow,
                       price: venue.fromHourlyPrice == null
                           ? ''
                           : 'common.price_egp'.tr(

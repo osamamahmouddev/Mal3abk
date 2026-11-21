@@ -14,9 +14,9 @@ import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_state_widget.dart';
 import '../../../../core/widgets/plain_note_box_widget.dart';
 import '../../../../core/widgets/selectable_tile_widget.dart';
-import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
 import '../cubit/cancel_booking_cubit.dart';
 import '../cubit/cancel_booking_state.dart';
+import 'cancel_booking_skeleton_widget.dart';
 import 'cancel_footer_widget.dart';
 import 'cancel_refund_box_widget.dart';
 
@@ -118,7 +118,7 @@ class CancelBookingBlocConsumer extends HookWidget {
               actionText: 'common.retry'.tr(context: context),
               onActionTap: () => cubit.loadPreview(bookingId),
             ),
-            _ => const ShimmerListSkeletonWidget(itemHeight: 120, itemCount: 3),
+            _ => const CancelBookingSkeletonWidget(),
           },
         );
       },

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -18,6 +19,7 @@ class HomeNearbyPitchCardWidget extends StatelessWidget {
     required this.slot,
     required this.onTap,
     this.imageUrl,
+    this.isAvailableNow = false,
     super.key,
   });
 
@@ -26,6 +28,10 @@ class HomeNearbyPitchCardWidget extends StatelessWidget {
   final String dist;
   final String slot;
   final VoidCallback onTap;
+
+  /// Whether the venue has a free slot starting within the hour: shown as a
+  /// live badge on the photo instead of buried in the text below.
+  final bool isAvailableNow;
 
   /// The venue's cover photo; the built-in pattern shows until it loads, or
   /// when the venue has none.
@@ -61,15 +67,56 @@ class HomeNearbyPitchCardWidget extends StatelessWidget {
             children: [
               SizedBox(
                 height: 96.h,
-                child: resolvedUrl == null || resolvedUrl.isEmpty
-                    ? placeholder
-                    : CachedNetworkImage(
-                        imageUrl: resolvedUrl,
-                        fit: BoxFit.cover,
-                        memCacheWidth: 700,
-                        placeholder: (_, _) => placeholder,
-                        errorWidget: (_, _, _) => placeholder,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    resolvedUrl == null || resolvedUrl.isEmpty
+                        ? placeholder
+                        : CachedNetworkImage(
+                            imageUrl: resolvedUrl,
+                            fit: BoxFit.cover,
+                            memCacheWidth: 700,
+                            placeholder: (_, _) => placeholder,
+                            errorWidget: (_, _, _) => placeholder,
+                          ),
+                    if (isAvailableNow)
+                      PositionedDirectional(
+                        top: 8.h,
+                        start: 8.w,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 8.w,
+                            vertical: 4.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.successGreen,
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 6.r,
+                                height: 6.r,
+                                decoration: const BoxDecoration(
+                                  color: AppColors.white,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              vSpace(5),
+                              Text(
+                                'home.available_now'.tr(context: context),
+                                style: AppTextStyles.font11Regular.copyWith(
+                                  color: AppColors.white,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
+                  ],
+                ),
               ),
               Padding(
                 padding: EdgeInsets.fromLTRB(12.w, 5.h, 12.w, 12.h),

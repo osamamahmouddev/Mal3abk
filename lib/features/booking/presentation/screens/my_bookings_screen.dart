@@ -17,6 +17,19 @@ class MyBookingsScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final selected = useState(MyBookingsTab.upcoming);
+    final pageController = usePageController();
+
+    void goToTab(MyBookingsTab tab, {required bool animate}) {
+      selected.value = tab;
+      context.read<MyBookingsCubit>().load(tab);
+      if (animate) {
+        pageController.animateToPage(
+          tab.index,
+          duration: const Duration(milliseconds: 280),
+          curve: Curves.easeOutCubic,
+        );
+      }
+    }
 
     return Scaffold(
       backgroundColor: AppColors.pageBackground,
@@ -36,12 +49,25 @@ class MyBookingsScreen extends HookWidget {
               showTopBorder: false,
               onTabSelected: (index) {
                 HapticFeedback.selectionClick();
-                selected.value = MyBookingsTab.values[index];
-                context.read<MyBookingsCubit>().load(selected.value);
+                goToTab(MyBookingsTab.values[index], animate: true);
               },
             ),
           ),
-          const Expanded(child: MyBookingsBlocBuilder()),
+          Expanded(
+            child: PageView(
+              controller: pageController,
+              onPageChanged: (index) {
+                HapticFeedback.selectionClick();
+                goToTab(MyBookingsTab.values[index], animate: false);
+              },
+              children: const [
+                MyBookingsBlocBuilder(),
+                MyBookingsBlocBuilder(),
+                MyBookingsBlocBuilder(),
+                MyBookingsBlocBuilder(),
+              ],
+            ),
+          ),
         ],
       ),
     );

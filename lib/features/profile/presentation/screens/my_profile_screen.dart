@@ -10,7 +10,6 @@ import '../widgets/profile_header_bloc_builder.dart';
 import '../widgets/profile_nav_tile_widget.dart';
 import '../widgets/profile_teams_tile_bloc_builder.dart';
 import '../widgets/profile_venue_owner_card_widget.dart';
-import '../../../main_shell/presentation/widgets/main_shell_scope_widget.dart';
 
 class MyProfileScreen extends StatelessWidget {
   const MyProfileScreen({super.key});
@@ -41,10 +40,9 @@ class MyProfileScreen extends StatelessWidget {
                             title: 'profile.booking_history'.tr(
                               context: context,
                             ),
-                            onTap: () => MainShellScopeWidget.switchTab(
+                            onTap: () => Navigator.of(
                               context,
-                              MainShellScopeWidget.bookingsTab,
-                            ),
+                            ).pushNamed(AppRoutes.myBookings),
                           ),
                           const Divider(height: 1, color: AppColors.border),
                           ProfileNavTileWidget(

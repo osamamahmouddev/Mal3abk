@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/widgets/alert_banner_widget.dart';
-import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
 import '../../../reference/presentation/cubit/filter_options_cubit.dart';
 import '../../../reference/presentation/cubit/filter_options_state.dart';
 import '../../data/models/explore_filter_model.dart';
+import 'filter_reference_sections_skeleton_widget.dart';
 import 'filter_section_widget.dart';
 
 /// Pitch type, surface and facility chips from the server's reference data.
@@ -77,7 +77,7 @@ class FilterReferenceSectionsBlocBuilder extends StatelessWidget {
           actionText: 'common.retry'.tr(context: context),
           onActionTap: context.read<FilterOptionsCubit>().load,
         ),
-        _ => const ShimmerListSkeletonWidget(itemHeight: 90, itemCount: 3),
+        _ => const FilterReferenceSectionsSkeletonWidget(),
       },
     );
   }

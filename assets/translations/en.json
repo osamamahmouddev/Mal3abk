@@ -304,6 +304,7 @@
     "all_egypt": "All Egypt",
     "no_nearby": "No pitches are listed in your area yet.",
     "no_slots_soon": "No free slots soon",
+    "available_now": "Available now",
     "see_all": "See all",
     "recently_viewed": "Recently viewed",
     "clear": "Clear",
@@ -853,7 +854,8 @@
       "your_team": "{} (your team)",
       "note": "Rankings only count results both teams confirmed. Disputed results don't count until resolved. A team needs 3 confirmed matches to be ranked.",
       "all_egypt": "All Egypt",
-      "empty": "No ranked teams here yet."
+      "empty": "No ranked teams here yet.",
+      "not_ready_title": "Rankings are still building up"
     },
     "leave": {
       "title": "Leave team",

@@ -94,71 +94,77 @@ class CustomTextFormField extends StatelessWidget {
           ),
           vSpace(8),
         ],
-        TextFormField(
-          controller: controller,
-          initialValue: initialValue,
-          focusNode: focusNode,
-          keyboardType: keyboardType,
-          textInputAction: TextInputAction.next,
-          textAlign: textAlign,
-          textDirection: textDirection,
-          autofocus: autofocus,
-          readOnly: readOnly,
-          enabled: enabled,
-          obscureText: obscureText,
-          minLines: minLines,
-          maxLines: maxLines,
-          onChanged: onChanged,
-          onTap: onTap,
-          onFieldSubmitted: onFieldSubmitted,
-          validator: validator,
-          autovalidateMode: autovalidateMode,
-          inputFormatters: inputFormatters,
-          style: style ?? AppTextStyles.font14Medium,
-          decoration: InputDecoration(
-            hintText: hintText,
-            hintStyle:
-                hintStyle ??
-                AppTextStyles.font14Regular.copyWith(
-                  color: AppColors.textMuted,
+        Directionality(
+          textDirection: textDirection ?? Directionality.of(context),
+          child: TextFormField(
+            controller: controller,
+            initialValue: initialValue,
+            focusNode: focusNode,
+            keyboardType: keyboardType,
+            textInputAction: TextInputAction.next,
+            textAlign: textAlign,
+            textDirection: textDirection,
+            autofocus: autofocus,
+            readOnly: readOnly,
+            enabled: enabled,
+            obscureText: obscureText,
+            minLines: minLines,
+            maxLines: maxLines,
+            onChanged: onChanged,
+            onTap: onTap,
+            onFieldSubmitted: onFieldSubmitted,
+            validator: validator,
+            autovalidateMode: autovalidateMode,
+            inputFormatters: inputFormatters,
+            style: style ?? AppTextStyles.font14Medium,
+            decoration: InputDecoration(
+              hintText: hintText,
+              hintStyle:
+                  hintStyle ??
+                  AppTextStyles.font14Regular.copyWith(
+                    color: AppColors.textMuted,
+                  ),
+              errorText: errorText,
+              prefixIcon: prefixIcon,
+              suffixIcon: suffixIcon,
+              filled: true,
+              fillColor: fillColor,
+              isDense: isDense,
+              contentPadding:
+                  contentPadding ??
+                  EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+              border: OutlineInputBorder(
+                borderRadius: effectiveBorderRadius,
+                borderSide: BorderSide(
+                  color: borderColor ?? AppColors.borderInput,
+                  width: 1,
                 ),
-            errorText: errorText,
-            prefixIcon: prefixIcon,
-            suffixIcon: suffixIcon,
-            filled: true,
-            fillColor: fillColor,
-            isDense: isDense,
-            contentPadding:
-                contentPadding ??
-                EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
-            border: OutlineInputBorder(
-              borderRadius: effectiveBorderRadius,
-              borderSide: BorderSide(
-                color: borderColor ?? AppColors.borderInput,
-                width: 1,
               ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: effectiveBorderRadius,
-              borderSide: BorderSide(
-                color: borderColor ?? AppColors.borderInput,
-                width: 1,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: effectiveBorderRadius,
+                borderSide: BorderSide(
+                  color: borderColor ?? AppColors.borderInput,
+                  width: 1,
+                ),
               ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: effectiveBorderRadius,
-              borderSide: BorderSide(
-                color: focusedBorderColor ?? AppColors.focusedBorder,
-                width: 1.5,
+              focusedBorder: OutlineInputBorder(
+                borderRadius: effectiveBorderRadius,
+                borderSide: BorderSide(
+                  color: focusedBorderColor ?? AppColors.focusedBorder,
+                  width: 1.5,
+                ),
               ),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: effectiveBorderRadius,
-              borderSide: const BorderSide(color: AppColors.error, width: 1),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: effectiveBorderRadius,
-              borderSide: const BorderSide(color: AppColors.error, width: 1.5),
+              errorBorder: OutlineInputBorder(
+                borderRadius: effectiveBorderRadius,
+                borderSide: const BorderSide(color: AppColors.error, width: 1),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: effectiveBorderRadius,
+                borderSide: const BorderSide(
+                  color: AppColors.error,
+                  width: 1.5,
+                ),
+              ),
             ),
           ),
         ),

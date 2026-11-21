@@ -62,7 +62,7 @@ class PitchCardWidget extends StatelessWidget {
 
     return CustomCardWidget(
       onTap: onTap,
-      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
+      padding: EdgeInsets.all(12.r),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -72,14 +72,21 @@ class PitchCardWidget extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(16.r),
                 child: Container(
-                  width: 72.r,
-                  height: 72.r,
+                  width: 88.r,
+                  height: 88.r,
                   color: AppColors.pitchGreenLight,
+                  foregroundDecoration: BoxDecoration(
+                    border: Border.all(
+                      color: AppColors.navyShadow4,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(16.r),
+                  ),
                   child: resolvedUrl != null && resolvedUrl.isNotEmpty
                       ? CachedNetworkImage(
                           imageUrl: resolvedUrl,
                           fit: BoxFit.cover,
-                          memCacheWidth: 228,
+                          memCacheWidth: 264,
                           placeholder: (_, _) => const PitchPlaceholderWidget(),
                           errorWidget: (_, _, _) =>
                               const PitchPlaceholderWidget(),
@@ -87,7 +94,7 @@ class PitchCardWidget extends StatelessWidget {
                       : const PitchPlaceholderWidget(),
                 ),
               ),
-              SizedBox(width: 12.w),
+              SizedBox(width: 14.w),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

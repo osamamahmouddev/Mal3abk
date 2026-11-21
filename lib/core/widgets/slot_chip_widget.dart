@@ -22,7 +22,11 @@ class SlotChipWidget extends StatelessWidget {
         borderRadius: radius,
         child: Container(
           height: 34.h,
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
+          padding: EdgeInsets.symmetric(horizontal: 12.w),
+          decoration: BoxDecoration(
+            borderRadius: radius,
+            border: Border.all(color: AppColors.successBorderSoft),
+          ),
           child: Center(
             widthFactor: 1,
             child: Text(

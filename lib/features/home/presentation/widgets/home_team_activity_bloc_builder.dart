@@ -6,13 +6,13 @@ import '../../../../core/app/app_spaces.dart';
 import '../../../../core/extensions/app_display_extensions.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/utils/cairo_time.dart';
-import '../../../../core/widgets/custom_skeleton_widget.dart';
 import '../../../../core/widgets/empty_note_box_widget.dart';
 import '../cubit/home_team_activity_cubit.dart';
 import '../cubit/home_team_activity_state.dart';
 import 'home_no_team_card_widget.dart';
 import 'home_pending_result_card_widget.dart';
 import 'home_team_activity_card_widget.dart';
+import 'home_team_activity_skeleton_widget.dart';
 
 class HomeTeamActivityBlocBuilder extends StatelessWidget {
   const HomeTeamActivityBlocBuilder({super.key});
@@ -32,7 +32,7 @@ class HomeTeamActivityBlocBuilder extends StatelessWidget {
         if (state is! HomeTeamActivitySuccess) {
           return state is HomeTeamActivityError
               ? EmptyNoteBoxWidget(text: state.message.tr(context: context))
-              : const CustomSkeletonWidget(height: 58);
+              : const HomeTeamActivitySkeletonWidget();
         }
         final activity = state.activity;
         if (!activity.hasTeams) return const HomeNoTeamCardWidget();

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import '../../../../core/widgets/fade_slide_in_widget.dart';
+import '../../../../core/animations/turf_shimmer_widget.dart';
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/extensions/app_display_extensions.dart';
 import '../../../../core/routes/routes.dart';
@@ -19,12 +20,12 @@ import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
 import '../../../../core/widgets/icon_note_widget.dart';
-import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
 import '../../../explore/presentation/widgets/slot_taken_listener_widget.dart';
 import '../../../explore/presentation/cubit/pitch_booking_cubit.dart';
 import '../../../explore/presentation/cubit/pitch_booking_state.dart';
 import 'booking_detail_row_widget.dart';
 import 'booking_policy_card_widget.dart';
+import 'booking_review_skeleton_widget.dart';
 
 class BookingReviewBlocBuilder extends StatelessWidget {
   const BookingReviewBlocBuilder({
@@ -80,10 +81,7 @@ class BookingReviewBlocBuilder extends StatelessWidget {
             return Scaffold(
               backgroundColor: AppColors.pageBackground,
               appBar: CustomAppBarWidget(title: title),
-              body: const ShimmerListSkeletonWidget(
-                itemHeight: 140,
-                itemCount: 3,
-              ),
+              body: const BookingReviewSkeletonWidget(),
             );
           }
           final pitch = state.currentPitch;
@@ -198,10 +196,15 @@ class BookingReviewBlocBuilder extends StatelessWidget {
                     ),
                   )
                 else if (quote == null)
-                  const ShimmerListSkeletonWidget(
-                    itemHeight: 180,
-                    itemCount: 1,
-                    padding: EdgeInsets.zero,
+                  TurfShimmerWidget(
+                    child: Container(
+                      height: 180.h,
+                      decoration: BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.circular(20.r),
+                        border: Border.all(color: AppColors.borderCard),
+                      ),
+                    ),
                   )
                 else
                   CustomCardWidget(

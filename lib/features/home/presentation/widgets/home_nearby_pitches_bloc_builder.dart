@@ -9,11 +9,11 @@ import '../../../../core/extensions/app_display_extensions.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/utils/cairo_time.dart';
 import '../../../../core/widgets/empty_note_box_widget.dart';
-import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
 import '../../data/models/located_home_feed_model.dart';
 import '../cubit/home_feed_cubit.dart';
 import '../cubit/home_feed_state.dart';
 import 'home_nearby_pitch_card_widget.dart';
+import 'home_nearby_pitches_skeleton_widget.dart';
 
 class HomeNearbyPitchesBlocBuilder extends StatelessWidget {
   const HomeNearbyPitchesBlocBuilder({super.key});
@@ -41,11 +41,17 @@ class HomeNearbyPitchesBlocBuilder extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final venue = feed.nearby.items[index];
                   final next = venue.nextAvailableStartUtc;
+                  final isAvailableNow =
+                      next != null &&
+                      CairoTime.parseUtc(next).isBefore(
+                        DateTime.now().toUtc().add(const Duration(hours: 1)),
+                      );
                   return Align(
                     alignment: AlignmentDirectional.topStart,
                     child: HomeNearbyPitchCardWidget(
                       imageUrl: venue.coverPhotoUrl,
                       name: venue.name,
+                      isAvailableNow: isAvailableNow,
                       price: venue.fromHourlyPrice == null
                           ? ''
                           : 'common.price_egp'.tr(
@@ -91,11 +97,7 @@ class HomeNearbyPitchesBlocBuilder extends StatelessWidget {
             padding: padding,
             child: EmptyNoteBoxWidget(text: message.tr(context: context)),
           ),
-          _ => ShimmerListSkeletonWidget(
-            itemHeight: 160,
-            itemCount: 1,
-            padding: padding,
-          ),
+          _ => HomeNearbyPitchesSkeletonWidget(padding: padding),
         },
       ),
     );

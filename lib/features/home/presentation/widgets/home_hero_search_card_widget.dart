@@ -74,8 +74,20 @@ class HomeHeroSearchCardWidget extends HookWidget {
     return Container(
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: AppColors.brandNavy,
         borderRadius: BorderRadius.circular(22.r),
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [AppColors.brandPrimaryLight, AppColors.brandPrimaryDark],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.navyShadow30,
+            offset: Offset(0, 14.h),
+            blurRadius: 28.r,
+            spreadRadius: -16.r,
+          ),
+        ],
       ),
       child: Stack(
         children: [
@@ -83,6 +95,18 @@ class HomeHeroSearchCardWidget extends HookWidget {
             child: SvgPicture.asset(
               AppAssets.homeHeroPattern,
               fit: BoxFit.fill,
+            ),
+          ),
+          Positioned(
+            top: -36.r,
+            right: -28.r,
+            child: Container(
+              width: 120.r,
+              height: 120.r,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.redSoft.withValues(alpha: 0.16),
+              ),
             ),
           ),
           Padding(

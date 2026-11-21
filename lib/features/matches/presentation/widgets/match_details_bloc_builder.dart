@@ -9,9 +9,9 @@ import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/utils/cairo_time.dart';
 import '../../../../core/widgets/custom_card_widget.dart';
 import '../../../../core/widgets/custom_state_widget.dart';
-import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
 import '../cubit/match_details_cubit.dart';
 import '../cubit/match_details_state.dart';
+import 'match_details_skeleton_widget.dart';
 import 'match_status_badge_widget.dart';
 import 'match_status_banner_widget.dart';
 import 'team_matchup_header_widget.dart';
@@ -105,7 +105,7 @@ class MatchDetailsBlocBuilder extends StatelessWidget {
             actionText: 'common.retry'.tr(context: context),
             onActionTap: () => cubit.load(matchId),
           ),
-          _ => const ShimmerListSkeletonWidget(itemHeight: 140, itemCount: 3),
+          _ => const MatchDetailsSkeletonWidget(),
         };
       },
     );
