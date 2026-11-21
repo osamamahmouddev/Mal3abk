@@ -17,11 +17,11 @@ import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/empty_note_box_widget.dart';
 import '../../../../core/widgets/price_action_footer_widget.dart';
 import '../../../../core/widgets/selectable_tile_widget.dart';
-import '../../../../core/widgets/shimmer_list_skeleton_widget.dart';
 import '../../data/models/venue_availability_model.dart';
 import '../cubit/pitch_booking_cubit.dart';
 import '../cubit/pitch_booking_state.dart';
 import 'pitch_day_selector_widget.dart';
+import 'pitch_slot_grid_skeleton_widget.dart';
 import 'pitch_slot_legend_widget.dart';
 import 'pitch_time_slot_tile_widget.dart';
 
@@ -86,6 +86,12 @@ class PitchAndTimeLoadedWidget extends StatelessWidget {
               context,
               state.selectedSlotTaken ? t('taken_live') : t('pick_slot'),
             );
+            return;
+          }
+          // No base price for this pitch: the server cannot quote it, so
+          // say so here instead of on a review screen that can't load.
+          if (selected.price == null && quote == null) {
+            AppTopSnackBar.showError(context, t('no_price'));
             return;
           }
           HapticFeedback.lightImpact();
@@ -182,11 +188,7 @@ class PitchAndTimeLoadedWidget extends StatelessWidget {
               ),
               child: () {
                 if (state.isSlotsLoading) {
-                  return const ShimmerListSkeletonWidget(
-                    itemHeight: 52,
-                    itemCount: 3,
-                    padding: EdgeInsets.zero,
-                  );
+                  return const PitchSlotGridSkeletonWidget();
                 }
                 if (slots.isEmpty) {
                   return EmptyNoteBoxWidget(text: t('no_slots'));

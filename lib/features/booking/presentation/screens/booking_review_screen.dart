@@ -14,6 +14,12 @@ class BookingReviewScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final agreedToPolicy = useState(false);
+    // The price may still be missing (slow or lost answer): ask again rather
+    // than wait on a quote nobody is fetching.
+    useEffect(() {
+      cubit.ensureQuote();
+      return null;
+    }, [cubit]);
     return BlocProvider<PitchBookingCubit>.value(
       value: cubit,
       child: BookingReviewBlocBuilder(

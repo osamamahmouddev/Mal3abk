@@ -235,11 +235,27 @@ class PitchBookingCubit extends Cubit<PitchBookingState>
     );
   }
 
+  /// Fetches the price of the selected slot when it is missing and not on its
+  /// way (the review screen opened before a quote arrived, or it failed
+  /// silently).
+  Future<void> ensureQuote() async {
+    final current = state;
+    if (current is! PitchBookingLoaded) return;
+    final slot = current.selectedSlot;
+    if (slot == null || current.quote != null || current.isQuoting) return;
+    await fetchQuoteForSlot(slot);
+  }
+
+  /// Bumped per quote request; only the latest request's answer is kept, so a
+  /// slow answer for a slot the player already left never lands on another.
+  int _quoteRequest = 0;
+
   Future<void> fetchQuoteForSlot(SlotModel slot) async {
     final current = state;
     if (current is! PitchBookingLoaded) return;
     final pitch = current.currentPitch;
     if (pitch == null) return;
+    final request = ++_quoteRequest;
 
     emitIfOpen(current.copyWith(isQuoting: true, clearQuoteError: true));
 
@@ -252,7 +268,8 @@ class PitchBookingCubit extends Cubit<PitchBookingState>
     );
 
     final updated = state;
-    if (updated is! PitchBookingLoaded) return;
+    if (updated is! PitchBookingLoaded || request != _quoteRequest) return;
+    if (updated.selectedSlot?.startUtc != slot.startUtc) return;
 
     result.when(
       success: (quote) {

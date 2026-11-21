@@ -136,6 +136,7 @@ class ApiFailureMapper {
     'Quote.InvalidToken': 'errors.booking.quote_expired',
     'Booking.SlotOverlap': 'errors.booking.slot_taken',
     'Quote.SlotUnavailable': 'errors.booking.slot_taken',
+    'Pricing.NoBasePrice': 'errors.booking.no_price',
     'Match.SubmissionExpired': 'errors.matches.submission_expired',
     'Identity.AccountSuspended': 'errors.identity.account_suspended',
     'Identity.InvalidFirebaseToken': 'errors.identity.session_expired',

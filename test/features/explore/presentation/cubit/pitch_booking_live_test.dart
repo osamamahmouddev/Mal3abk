@@ -168,6 +168,57 @@ void main() {
 
   Future<void> settle() => Future<void>.delayed(Duration.zero);
 
+  group('PitchBookingCubit quotes', () {
+    test('a slow price for a slot the player left never lands on the new '
+        'one', () async {
+      final slow = Completer<ApiResult<BookingQuoteResponseModel>>();
+      when(() => quote(any())).thenAnswer((call) {
+        final body = call.positionalArguments.first as BookingQuoteRequestBody;
+        return body.startUtc == _nine
+            ? slow.future
+            : Future.value(const ApiResult.success(_quote));
+      });
+
+      final first = cubit.loadAvailability(_venue);
+      await settle();
+      await cubit.selectSlot(loaded().currentPitch!.slots[1]);
+      slow.complete(
+        const ApiResult.success(
+          BookingQuoteResponseModel(
+            quoteToken: 'stale',
+            expiresAtUtc: '2026-11-19T12:15:00Z',
+            currency: 'EGP',
+            subtotal: 999,
+            discount: 0,
+            fees: 0,
+            total: 999,
+            deposit: 0,
+            remainingBalance: 999,
+            subjectToConfirmation: true,
+            confirmationNote: '',
+          ),
+        ),
+      );
+      await first;
+
+      expect(loaded().selectedSlot!.startUtc, _ten);
+      expect(loaded().quote!.quoteToken, 'q');
+      expect(loaded().isQuoting, isFalse);
+    });
+
+    test('opening the review without a price asks for it again', () async {
+      await cubit.loadAvailability(_venue);
+      expect(loaded().quote, isNull, reason: 'the first quote failed');
+      when(
+        () => quote(any()),
+      ).thenAnswer((_) async => const ApiResult.success(_quote));
+
+      await cubit.ensureQuote();
+
+      expect(loaded().quote, _quote);
+    });
+  });
+
   group('PitchBookingCubit live slots', () {
     test('follows the day on screen and switches with it', () async {
       await cubit.loadAvailability(_venue);
