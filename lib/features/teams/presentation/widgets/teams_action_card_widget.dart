@@ -8,8 +8,9 @@ import '../../../../core/app/app_spaces.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 
-/// A big tappable card for a teams action (new team, join by code). It sinks a
-/// little under the finger and springs back when released.
+/// A compact tappable row for a teams action (new team, join by code): icon,
+/// title and a one-line hint. It sinks a little under the finger and springs
+/// back when released.
 class TeamsActionCardWidget extends HookWidget {
   const TeamsActionCardWidget({
     required this.icon,
@@ -45,7 +46,7 @@ class TeamsActionCardWidget extends HookWidget {
         curve: AppAnimations.standard,
         scale: pressed.value ? 0.96 : 1,
         child: Container(
-          padding: EdgeInsets.all(14.r),
+          padding: EdgeInsetsDirectional.fromSTEB(10.w, 10.h, 12.w, 10.h),
           decoration: BoxDecoration(
             gradient: filled
                 ? LinearGradient(
@@ -58,43 +59,55 @@ class TeamsActionCardWidget extends HookWidget {
                   )
                 : null,
             color: filled ? null : AppColors.white,
-            borderRadius: BorderRadius.circular(18.r),
+            borderRadius: BorderRadius.circular(14.r),
             border: filled ? null : Border.all(color: AppColors.border),
             boxShadow: filled
                 ? [
                     BoxShadow(
                       color: AppColors.brandRed.withValues(alpha: 0.18),
-                      blurRadius: 14.r,
-                      offset: Offset(0, 6.h),
+                      blurRadius: 12.r,
+                      offset: Offset(0, 4.h),
                       spreadRadius: -6.r,
                     ),
                   ]
                 : const [],
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
             children: [
               Container(
-                width: 36.r,
-                height: 36.r,
+                width: 32.r,
+                height: 32.r,
                 decoration: BoxDecoration(
                   color: filled
                       ? AppColors.white.withValues(alpha: 0.2)
                       : AppColors.lightSurface,
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: BorderRadius.circular(10.r),
                 ),
-                child: Icon(icon, color: fg, size: 20.r),
+                child: Icon(icon, color: fg, size: 18.r),
               ),
-              hSpace(10),
-              Text(title, style: AppTextStyles.font15Bold.copyWith(color: fg)),
-              hSpace(2),
-              Text(
-                hint,
-                maxLines: 2,
-                style: AppTextStyles.font12Regular.copyWith(
-                  color: filled
-                      ? AppColors.white.withValues(alpha: 0.85)
-                      : AppColors.textSecondary,
+              vSpace(10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.font14Bold.copyWith(color: fg),
+                    ),
+                    Text(
+                      hint,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.font11Regular.copyWith(
+                        color: filled
+                            ? AppColors.white.withValues(alpha: 0.85)
+                            : AppColors.textSecondary,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
