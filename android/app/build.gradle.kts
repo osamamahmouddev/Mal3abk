@@ -57,6 +57,11 @@ android {
             applicationId = "com.malabak.app.dev"
             versionNameSuffix = "-dev"
         }
+        create("staging") {
+            dimension = "env"
+            applicationId = "com.malabak.app.staging"
+            versionNameSuffix = "-staging"
+        }
         create("prod") {
             dimension = "env"
             applicationId = "com.malabak.app"

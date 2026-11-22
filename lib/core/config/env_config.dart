@@ -22,13 +22,13 @@ class DevEnvConfig implements EnvConfig {
 
   static const String _baseUrlOverride = String.fromEnvironment('BASE_URL');
 
-  /// Defaults to the staging API on MonsterASP (site109978.siteasp.net) so physical
+  /// Defaults to the staging API on MonsterASP (mal3abk-staging.runasp.net) so physical
   /// device builds and TestFlight reach the staging backend immediately.
   /// Can be overridden with `--dart-define=BASE_URL=http://10.0.2.2:5000` for local emulator.
   @override
   String get baseUrl {
     if (_baseUrlOverride.isNotEmpty) return _baseUrlOverride;
-    return 'http://site109978.siteasp.net';
+    return 'http://mal3abk-staging.runasp.net';
   }
 
   @override
@@ -58,7 +58,7 @@ class StagingEnvConfig implements EnvConfig {
   @override
   String get baseUrl {
     if (_baseUrlOverride.isNotEmpty) return _baseUrlOverride;
-    return 'http://site109978.siteasp.net';
+    return 'http://mal3abk-staging.runasp.net';
   }
 
   @override

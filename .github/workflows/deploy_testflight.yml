@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       target:
-        description: 'Target Flavor / Backend (dev = staging site109978, prod = production mal3abk)'
+        description: 'Target Flavor / Backend (dev = staging mal3abk-staging.runasp.net, prod = production mal3abk.runasp.net)'
         required: true
         default: 'dev'
         type: choice
@@ -15,6 +15,10 @@ on:
         description: 'Build Number (leave empty for automatic github.run_number)'
         required: false
         default: ''
+
+concurrency:
+  group: deploy-testflight-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   deploy-testflight:
@@ -95,6 +99,7 @@ jobs:
           fi
           echo "build_num=$BUILD_NUM" >> $GITHUB_OUTPUT
           TARGET_FLAVOR="${{ github.event.inputs.target || 'dev' }}"
+          echo "target_flavor=$TARGET_FLAVOR" >> $GITHUB_OUTPUT
           ENTRYPOINT="lib/main_${TARGET_FLAVOR}.dart"
           echo "Building TestFlight IPA targeting: $ENTRYPOINT"
           flutter build ipa --release -t "$ENTRYPOINT" --build-number="$BUILD_NUM" --export-options-plist=ios/ExportOptions.plist --obfuscate --split-debug-info=build/symbols
@@ -130,3 +135,66 @@ jobs:
           name: mal3abk-build-${{ steps.build_ipa.outputs.build_num }}-symbols
           path: build/symbols
           retention-days: 90
+
+      - name: Notify Slack of TestFlight Upload
+        if: always()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_MONITOR_WEBHOOK }}
+          TARGET_FLAVOR: ${{ steps.build_ipa.outputs.target_flavor || github.event.inputs.target || 'dev' }}
+          BUILD_NUM: ${{ steps.build_ipa.outputs.build_num || 'N/A' }}
+          JOB_STATUS: ${{ job.status }}
+          ACTOR: ${{ github.actor }}
+          RUN_URL: "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        run: |
+          python3 - << 'EOF'
+          import os, json, urllib.request
+
+          slack_url = os.environ.get("SLACK_WEBHOOK_URL", "").strip()
+          if not slack_url:
+              exit(0)
+
+          target = os.environ.get("TARGET_FLAVOR", "dev")
+          build_num = os.environ.get("BUILD_NUM", "N/A")
+          status = os.environ.get("JOB_STATUS", "unknown")
+          actor = os.environ.get("ACTOR", "")
+          run_url = os.environ.get("RUN_URL", "")
+
+          backend_url = "http://mal3abk.runasp.net" if target == "prod" else "http://mal3abk-staging.runasp.net"
+          is_success = (status.lower() == "success")
+          emoji = "✈️" if is_success else "❌"
+          color = "#16a34a" if is_success else "#dc2626"
+          title = f"{emoji} TestFlight Deploy: {status.upper()} [{target.upper()}]"
+
+          payload = {
+              "text": f"{title} (Build #{build_num})",
+              "attachments": [{
+                  "color": color,
+                  "blocks": [
+                      {
+                          "type": "header",
+                          "text": {"type": "plain_text", "text": title, "emoji": True}
+                      },
+                      {
+                          "type": "section",
+                          "fields": [
+                              {"type": "mrkdwn", "text": f"*Target Flavor:*\n`{target}`"},
+                              {"type": "mrkdwn", "text": f"*Build Number:*\n`#{build_num}`"},
+                              {"type": "mrkdwn", "text": f"*Uploaded By:*\n`{actor}`"},
+                              {"type": "mrkdwn", "text": f"*Backend:*\n<{backend_url}|{backend_url}>"}
+                          ]
+                      },
+                      {
+                          "type": "context",
+                          "elements": [{"type": "mrkdwn", "text": f"<{run_url}|View TestFlight GitHub Run>"}]
+                      }
+                  ]
+              }]
+          }
+
+          try:
+              req = urllib.request.Request(slack_url, data=json.dumps(payload).encode("utf-8"), headers={"Content-Type": "application/json"})
+              with urllib.request.urlopen(req, timeout=10) as resp:
+                  print(f"Slack notification sent: {resp.status}")
+          except Exception as e:
+              print(f"Failed to post to Slack: {e}")
+          EOF

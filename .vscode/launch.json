@@ -22,6 +22,19 @@
       "args": ["--flavor", "dev", "--dart-define=BASE_URL=http://192.168.1.10:5000"]
     },
     {
+      "name": "Staging - staging API (Android)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_staging.dart",
+      "args": ["--flavor", "dev"]
+    },
+    {
+      "name": "Staging - staging API (iOS)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_staging.dart"
+    },
+    {
       "name": "Prod - live server (Android)",
       "request": "launch",
       "type": "dart",
