@@ -3,6 +3,14 @@ name: Deploy to TestFlight
 on:
   workflow_dispatch:
     inputs:
+      target:
+        description: 'Target Flavor / Backend (dev = staging site109978, prod = production mal3abk)'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - prod
       build_number:
         description: 'Build Number (leave empty for automatic github.run_number)'
         required: false
@@ -86,7 +94,10 @@ jobs:
             BUILD_NUM=$((1 + ${{ github.run_number }}))
           fi
           echo "build_num=$BUILD_NUM" >> $GITHUB_OUTPUT
-          flutter build ipa --release -t lib/main_prod.dart --build-number="$BUILD_NUM" --export-options-plist=ios/ExportOptions.plist --obfuscate --split-debug-info=build/symbols
+          TARGET_FLAVOR="${{ github.event.inputs.target || 'dev' }}"
+          ENTRYPOINT="lib/main_${TARGET_FLAVOR}.dart"
+          echo "Building TestFlight IPA targeting: $ENTRYPOINT"
+          flutter build ipa --release -t "$ENTRYPOINT" --build-number="$BUILD_NUM" --export-options-plist=ios/ExportOptions.plist --obfuscate --split-debug-info=build/symbols
 
       - name: Upload IPA to TestFlight
         env:

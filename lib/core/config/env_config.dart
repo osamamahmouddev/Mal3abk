@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 abstract class EnvConfig {
   /// Test phone number reserved for Apple App Store / test review that bypasses Firebase SMS.
   static const String reviewTestPhoneNumber = '+201000000999';
@@ -17,22 +15,20 @@ abstract class EnvConfig {
   bool get useFirebasePhoneAuth;
 }
 
-/// The `dev` flavor: the API running on the developer's machine.
+/// The `dev` flavor: talks to the staging server on MonsterASP by default,
+/// or localhost/emulator when overridden via `--dart-define=BASE_URL=...`.
 class DevEnvConfig implements EnvConfig {
   const DevEnvConfig();
 
   static const String _baseUrlOverride = String.fromEnvironment('BASE_URL');
 
-  /// The Android emulator reaches the host through `10.0.2.2`; the iOS
-  /// simulator and desktop share the host's loopback. A physical device needs
-  /// `--dart-define=BASE_URL=http://<host-lan-ip>:5000`.
+  /// Defaults to the staging API on MonsterASP (site109978.siteasp.net) so physical
+  /// device builds and TestFlight reach the staging backend immediately.
+  /// Can be overridden with `--dart-define=BASE_URL=http://10.0.2.2:5000` for local emulator.
   @override
   String get baseUrl {
     if (_baseUrlOverride.isNotEmpty) return _baseUrlOverride;
-    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
-      return 'http://10.0.2.2:5000';
-    }
-    return 'http://127.0.0.1:5000';
+    return 'http://site109978.siteasp.net';
   }
 
   @override
@@ -47,8 +43,36 @@ class DevEnvConfig implements EnvConfig {
     defaultValue: 'dev-mobile-turnstile',
   );
 
-  /// Off by default: local sign-in reads the API's code from Mailpit and
-  /// sends no real SMS.
+  /// Off by default: staging/local sign-in reads the API's code from logs/SMS gateway.
+  @override
+  bool get useFirebasePhoneAuth =>
+      const bool.fromEnvironment('FIREBASE_PHONE_AUTH');
+}
+
+/// The `staging` flavor: explicitly named alias for staging server.
+class StagingEnvConfig implements EnvConfig {
+  const StagingEnvConfig();
+
+  static const String _baseUrlOverride = String.fromEnvironment('BASE_URL');
+
+  @override
+  String get baseUrl {
+    if (_baseUrlOverride.isNotEmpty) return _baseUrlOverride;
+    return 'http://site109978.siteasp.net';
+  }
+
+  @override
+  String get envName => 'staging';
+
+  @override
+  bool get isDebug => true;
+
+  @override
+  String get turnstileToken => const String.fromEnvironment(
+    'TURNSTILE_TOKEN',
+    defaultValue: 'dev-mobile-turnstile',
+  );
+
   @override
   bool get useFirebasePhoneAuth =>
       const bool.fromEnvironment('FIREBASE_PHONE_AUTH');
