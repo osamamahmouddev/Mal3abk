@@ -95,7 +95,8 @@ jobs:
           if [ -n "${{ github.event.inputs.build_number }}" ]; then
             BUILD_NUM="${{ github.event.inputs.build_number }}"
           else
-            BUILD_NUM=$((1 + ${{ github.run_number }}))
+            PUBSPEC_BUILD=$(grep '^version:' pubspec.yaml | sed -n 's/.*+\([0-9]*\)/\1/p')
+            BUILD_NUM="${PUBSPEC_BUILD:-14}"
           fi
           echo "build_num=$BUILD_NUM" >> $GITHUB_OUTPUT
           TARGET_FLAVOR="${{ github.event.inputs.target || 'dev' }}"
