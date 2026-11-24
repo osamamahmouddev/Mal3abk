@@ -45,6 +45,15 @@ class LocationService {
     }
   }
 
+  /// Opens the device settings page so the player can enable permissions if needed.
+  Future<bool> openAppSettings() async {
+    try {
+      return await Geolocator.openAppSettings();
+    } catch (_) {
+      return false;
+    }
+  }
+
   /// The device's last known position, read instantly (no GPS wait). Null
   /// when permission is missing or nothing is cached yet.
   Future<GeoPoint?> lastKnown({bool ask = false}) async {

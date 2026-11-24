@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
+import '../../../../core/location/location_service.dart';
 import '../../../../core/widgets/app_top_snack_bar.dart';
 import '../cubit/explore_map_cubit.dart';
 import '../cubit/explore_map_state.dart';
@@ -34,9 +35,11 @@ class ExploreMapSelectionBlocBuilder extends StatelessWidget {
                 onTap: () async {
                   HapticFeedback.selectionClick();
                   if (await cubit.locateMe() == null && context.mounted) {
-                    AppTopSnackBar.showError(
+                    AppTopSnackBar.showInfo(
                       context,
                       'explore.quick.location_off'.tr(context: context),
+                      actionLabel: 'common.settings'.tr(context: context),
+                      onAction: () => const LocationService().openAppSettings(),
                     );
                   }
                 },

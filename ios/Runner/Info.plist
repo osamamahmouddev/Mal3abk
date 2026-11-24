@@ -95,7 +95,7 @@
 		<key>GMSApiKey</key>
 		<string>$(MAPS_API_KEY)</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
-		<string>Malabak uses your location to show pitches near you.</string>
+		<string>نستخدم موقعك لعرض الملاعب القريبة منك وحساب المسافة بدقة / Malabak uses your location to show pitches near you and calculate distance accurately.</string>
 		<key>CFBundleURLTypes</key>
 		<array>
 			<dict>

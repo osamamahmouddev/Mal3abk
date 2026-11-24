@@ -1,2 +1,9 @@
 "CFBundleDisplayName" = "mal3abk";
 "CFBundleName" = "mal3abk";
+"NSLocationWhenInUseUsageDescription" = "Malabak uses your location to show pitches near you and calculate distance accurately.";
+"NSCameraUsageDescription" = "Malabak uses the camera to take your profile photo and payment receipts.";
+"NSPhotoLibraryUsageDescription" = "Malabak lets you choose a profile photo or payment receipt from your photos.";
+"NSFaceIDUsageDescription" = "Malabak uses Face ID to unlock the app.";
+"NSCalendarsUsageDescription" = "Malabak adds your pitch bookings to your calendar.";
+"NSCalendarsWriteOnlyAccessUsageDescription" = "Malabak adds your pitch bookings to your calendar.";
+"NSContactsUsageDescription" = "Malabak opens the calendar event editor, which can suggest invitees from your contacts.";

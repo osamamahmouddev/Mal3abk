@@ -6,6 +6,7 @@ import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/app/app_spaces.dart';
+import '../../../../core/location/location_service.dart';
 import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
@@ -39,9 +40,11 @@ class HomeLocationHeaderWidget extends StatelessWidget {
       if (picked.nearMe) {
         final found = await feed.showNearMe();
         if (!found && context.mounted) {
-          AppTopSnackBar.showError(
+          AppTopSnackBar.showInfo(
             context,
             'home.location_unavailable'.tr(context: context),
+            actionLabel: 'common.settings'.tr(context: context),
+            onAction: () => const LocationService().openAppSettings(),
           );
         }
       } else if (picked.city == null) {

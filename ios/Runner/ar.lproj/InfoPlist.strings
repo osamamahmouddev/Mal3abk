@@ -1,2 +1,9 @@
 "CFBundleDisplayName" = "ملعبك";
 "CFBundleName" = "ملعبك";
+"NSLocationWhenInUseUsageDescription" = "نستخدم موقعك لعرض الملاعب القريبة منك وحساب المسافة بدقة.";
+"NSCameraUsageDescription" = "نستخدم الكاميرا لالتقاط صورة حسابك وإيصالات التحويل.";
+"NSPhotoLibraryUsageDescription" = "يتيح لك التطبيق اختيار صورة حسابك أو إيصال التحويل من مكتبة الصور.";
+"NSFaceIDUsageDescription" = "نستخدم بصمة الوجه لتأمين وتسجيل الدخول للتطبيق.";
+"NSCalendarsUsageDescription" = "نضيف مواعيد حجوزات الملاعب إلى تقويمك.";
+"NSCalendarsWriteOnlyAccessUsageDescription" = "نضيف مواعيد حجوزات الملاعب إلى تقويمك.";
+"NSContactsUsageDescription" = "يفتح التطبيق محرر التقويم الذي قد يقترح مدعوين من جهات اتصالك.";

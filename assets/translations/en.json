@@ -12,6 +12,8 @@
     "back": "Back",
     "confirm": "Confirm",
     "save": "Save",
+    "continue": "Continue",
+    "settings": "Settings",
     "next": "Next",
     "edit": "Edit",
     "share": "Share",
@@ -213,8 +215,8 @@
       "step": "Step 2 of 2",
       "title": "Show pitches closest to you",
       "desc": "We use your location to calculate distance and sort results. Your exact location is never shared.",
-      "allow": "Allow Location Access",
-      "manual": "Select Area Manually",
+      "allow": "Continue",
+      "manual": "Not now",
       "badge1": "1.2 km",
       "badge2": "2.5 km"
     },
@@ -227,8 +229,8 @@
       "preview3_time": "Stars Pitch · Field 1",
       "title": "Don't miss venue updates",
       "desc": "Get notified when the venue confirms your deposit, when you receive a challenge, and before kickoff.",
-      "enable": "Enable Notifications",
-      "not_now": "Not Now"
+      "enable": "Continue",
+      "not_now": "Not now"
     },
     "profile_setup": {
       "step": "Step 1 of 2",
@@ -314,7 +316,7 @@
     "show_all_egypt": "Show all of Egypt",
     "use_my_location": "Use my current location",
     "near_me": "Near you",
-    "location_unavailable": "We couldn't find your location. Turn location on and allow access."
+    "location_unavailable": "Unable to determine your current location. You can enable it in Settings."
   },
   "explore": {
     "list_title": "Explore Pitches",
@@ -448,7 +450,7 @@
       "under": "Under EGP {}",
       "cheapest": "Cheapest first",
       "near_me": "Near me",
-      "location_off": "Turn on location and allow Malabak to use it to see what's nearest."
+      "location_off": "You can enable location in Settings to see pitches closest to you."
     },
     "map": {
       "subtitle": "Move the map to search",

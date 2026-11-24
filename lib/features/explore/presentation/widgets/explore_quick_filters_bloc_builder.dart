@@ -8,6 +8,7 @@ import '../../../../core/app/app_spaces.dart';
 import '../../../../core/extensions/app_display_extensions.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
+import '../../../../core/location/location_service.dart';
 import '../../../../core/widgets/app_top_snack_bar.dart';
 import '../../../../core/widgets/selectable_tile_widget.dart';
 import '../../data/models/explore_filter_model.dart';
@@ -100,9 +101,11 @@ class ExploreQuickFiltersBlocBuilder extends StatelessWidget {
                     // "Near me" toggles like the other chips.
                     await cubit.stopUsingLocation();
                   } else if (!await cubit.useMyLocation() && context.mounted) {
-                    AppTopSnackBar.showError(
+                    AppTopSnackBar.showInfo(
                       context,
                       'explore.quick.location_off'.tr(context: context),
+                      actionLabel: 'common.settings'.tr(context: context),
+                      onAction: () => const LocationService().openAppSettings(),
                     );
                   }
                 },
