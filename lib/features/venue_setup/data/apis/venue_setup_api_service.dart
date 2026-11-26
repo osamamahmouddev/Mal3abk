@@ -38,6 +38,25 @@ abstract class VenueSetupApiService {
   @DELETE(ApiConstants.managedPitch)
   Future<void> deletePitch(@Path('pitchId') String pitchId);
 
+  @PUT(ApiConstants.managedPitch)
+  Future<VenuePitchModel> updatePitch(
+    @Path('pitchId') String pitchId,
+    @Body() Map<String, dynamic> body,
+  );
+
+  /// Answers `{pitch, upcomingBookings}`.
+  @PUT(ApiConstants.managedPitchActive)
+  Future<dynamic> setPitchActive(
+    @Path('pitchId') String pitchId,
+    @Body() Map<String, dynamic> body,
+  );
+
+  @POST(ApiConstants.venuePublish)
+  Future<void> publishVenue(
+    @Path('venueId') String venueId,
+    @Body() Map<String, dynamic> body,
+  );
+
   @POST(ApiConstants.venueGallery)
   Future<void> addVenuePhoto(
     @Path('venueId') String venueId,

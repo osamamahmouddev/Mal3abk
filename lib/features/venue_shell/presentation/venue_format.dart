@@ -128,7 +128,9 @@ abstract final class VenueFormat {
 
   /// yyyy-MM-dd, the API's date format.
   static String apiDate(DateTime date) =>
-      intl.DateFormat('yyyy-MM-dd', 'en').format(date);
+      '${date.year.toString().padLeft(4, '0')}-'
+      '${date.month.toString().padLeft(2, '0')}-'
+      '${date.day.toString().padLeft(2, '0')}';
 
   static String _lang(BuildContext context) => context.locale.languageCode;
 

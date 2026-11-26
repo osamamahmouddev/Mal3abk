@@ -24,6 +24,20 @@ abstract final class VenueBookingStatus {
     noShow: 'no_show',
   };
 
+  /// The key of a status the API names (`Confirmed`, `NoShow`, …).
+  static String? keyOfName(String name) => const {
+    'Draft': 'draft',
+    'PendingDeposit': 'pending_deposit',
+    'ProofSubmitted': 'proof_submitted',
+    'UnderReview': 'under_review',
+    'Confirmed': 'confirmed',
+    'Rejected': 'rejected',
+    'Expired': 'expired',
+    'Cancelled': 'cancelled',
+    'Completed': 'completed',
+    'NoShow': 'no_show',
+  }[name];
+
   /// Statuses that still hold the slot.
   static const Set<int> active = {
     pendingDeposit,

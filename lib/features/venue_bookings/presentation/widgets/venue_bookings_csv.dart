@@ -46,7 +46,7 @@ abstract final class VenueBookingsCsv {
           ),
         ],
     ];
-    final csv = rows.map((r) => r.map(_cell).join(',')).join('\r\n');
+    final csv = rows.map((r) => r.map(cell).join(',')).join('\r\n');
     // BOM so spreadsheet apps read Arabic correctly.
     final bytes = utf8.encode('﻿$csv');
     await SharePlus.instance.share(
@@ -60,7 +60,7 @@ abstract final class VenueBookingsCsv {
   }
 
   /// Quotes a value and neutralises spreadsheet formulas (CSV injection).
-  static String _cell(String value) {
+  static String cell(String value) {
     var v = value;
     if (v.isNotEmpty && '=+-@\t\r'.contains(v[0])) v = "'$v";
     return '"${v.replaceAll('"', '""')}"';
