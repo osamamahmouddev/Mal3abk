@@ -17,6 +17,7 @@ void main() {
 
   setUp(() {
     checkAuth = MockCheckAuthStatusUseCase();
+    when(() => checkAuth.isVenueSession()).thenAnswer((_) async => false);
     lock = MockBiometricLock();
     when(() => lock.isEnabled()).thenAnswer((_) async => false);
     when(() => lock.isAvailable()).thenAnswer((_) async => true);

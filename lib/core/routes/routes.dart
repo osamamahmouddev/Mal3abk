@@ -52,6 +52,14 @@ class AppRoutes {
   static const String verifyOldPhone = '/change-phone/verify-old';
   static const String verifyNewPhone = '/change-phone/verify-new';
 
+  /// Venue owner and staff app.
+  static const String venueRegister = '/venue/register';
+  static const String venueForgotPassword = '/venue/forgot-password';
+  static const String venueShell = '/venue';
+  static const String venueSetup = '/venue/setup';
+  static const String venueManualBooking = '/venue/manual-booking';
+  static const String venueBookingDetail = '/venue/booking';
+
   /// Deep link: `https://malabak.app/recover-phone?token=…`.
   static const String recoverPhone = '/recover-phone';
 }

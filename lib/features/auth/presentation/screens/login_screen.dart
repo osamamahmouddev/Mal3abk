@@ -8,6 +8,8 @@ import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/app_back_button_widget.dart';
 import '../../../../core/widgets/brand_wordmark_widget.dart';
+import '../../../venue_auth/presentation/widgets/account_role_switch_widget.dart';
+import '../../../venue_auth/presentation/widgets/owner_login_form_widget.dart';
 import '../widgets/login_step_bloc_builder.dart';
 import '../widgets/send_otp_bloc_listener.dart';
 import '../widgets/verify_otp_bloc_listener.dart';
@@ -18,6 +20,7 @@ class LoginScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final phoneController = useTextEditingController();
+    final isOwner = useState(false);
 
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -37,12 +40,23 @@ class LoginScreen extends HookWidget {
                   BrandWordmarkWidget(height: 42.h),
                   hSpace(28),
                   Text(
-                    'auth.login.title'.tr(context: context),
+                    (isOwner.value
+                            ? 'venue_auth.login.title'
+                            : 'auth.login.title')
+                        .tr(context: context),
                     style: AppTextStyles.font24Bold,
                     textAlign: TextAlign.center,
                   ),
-                  hSpace(12),
-                  LoginStepBlocBuilder(phoneController: phoneController),
+                  hSpace(16),
+                  AccountRoleSwitchWidget(
+                    isOwner: isOwner.value,
+                    onChanged: (value) => isOwner.value = value,
+                  ),
+                  hSpace(16),
+                  if (isOwner.value)
+                    const OwnerLoginFormWidget()
+                  else
+                    LoginStepBlocBuilder(phoneController: phoneController),
                 ],
               ),
             ),

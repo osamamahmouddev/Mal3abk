@@ -40,6 +40,8 @@ class CustomTextFormField extends StatelessWidget {
     this.hintStyle,
     this.errorText,
     this.inputFormatters,
+    this.autofillHints,
+    this.textInputAction = TextInputAction.next,
   });
 
   final String hintText;
@@ -77,6 +79,10 @@ class CustomTextFormField extends StatelessWidget {
   final String? errorText;
   final List<TextInputFormatter>? inputFormatters;
 
+  /// Lets the system offer saved accounts and one-time codes.
+  final Iterable<String>? autofillHints;
+  final TextInputAction textInputAction;
+
   @override
   Widget build(BuildContext context) {
     final effectiveBorderRadius = BorderRadius.circular((borderRadius ?? 12).r);
@@ -101,7 +107,8 @@ class CustomTextFormField extends StatelessWidget {
             initialValue: initialValue,
             focusNode: focusNode,
             keyboardType: keyboardType,
-            textInputAction: TextInputAction.next,
+            textInputAction: textInputAction,
+            autofillHints: autofillHints,
             textAlign: textAlign,
             textDirection: textDirection,
             autofocus: autofocus,

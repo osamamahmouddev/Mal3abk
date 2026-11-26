@@ -1,3 +1,29 @@
+import '../../features/venue_auth/data/apis/venue_auth_api_service.dart';
+import '../../features/venue_auth/data/repos/venue_auth_repo_impl.dart';
+import '../../features/venue_auth/domain/repos/venue_auth_repo.dart';
+import '../../features/venue_auth/presentation/cubit/owner_forgot_password_cubit.dart';
+import '../../features/venue_auth/presentation/cubit/owner_login_cubit.dart';
+import '../../features/venue_auth/presentation/cubit/owner_register_cubit.dart';
+import '../../features/venue_bookings/data/apis/venue_bookings_api_service.dart';
+import '../../features/venue_bookings/data/repos/venue_bookings_repo_impl.dart';
+import '../../features/venue_bookings/domain/repos/venue_bookings_repo.dart';
+import '../../features/venue_bookings/presentation/cubit/venue_booking_detail_cubit.dart';
+import '../../features/venue_bookings/presentation/cubit/venue_bookings_cubit.dart';
+import '../../features/venue_calendar/data/apis/venue_calendar_api_service.dart';
+import '../../features/venue_calendar/data/repos/venue_calendar_repo_impl.dart';
+import '../../features/venue_calendar/domain/repos/venue_calendar_repo.dart';
+import '../../features/venue_calendar/presentation/cubit/venue_calendar_cubit.dart';
+import '../../features/venue_overview/data/apis/venue_overview_api_service.dart';
+import '../../features/venue_overview/data/repos/venue_overview_repo_impl.dart';
+import '../../features/venue_overview/domain/repos/venue_overview_repo.dart';
+import '../../features/venue_overview/presentation/cubit/venue_overview_cubit.dart';
+import '../../features/venue_setup/data/apis/venue_setup_api_service.dart';
+import '../../features/venue_setup/data/repos/venue_setup_repo_impl.dart';
+import '../../features/venue_setup/domain/repos/venue_setup_repo.dart';
+import '../../features/venue_shell/data/apis/venue_shell_api_service.dart';
+import '../../features/venue_shell/data/repos/venue_shell_repo_impl.dart';
+import '../../features/venue_shell/domain/repos/venue_shell_repo.dart';
+import '../../features/venue_shell/presentation/cubit/venue_session_cubit.dart';
 import 'dart:async';
 
 import 'package:dio/dio.dart';
@@ -703,6 +729,88 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
   );
   sl.registerFactory<TeamActionCubit>(
     () => TeamActionCubit(teamsRepo: sl<TeamsRepo>()),
+  );
+  _registerVenueDashboard();
+}
+
+/// Venue owner and staff accounts and their dashboard.
+void _registerVenueDashboard() {
+  sl.registerLazySingleton<VenueAuthApiService>(
+    () => VenueAuthApiService(sl<Dio>()),
+  );
+  sl.registerLazySingleton<VenueAuthRepo>(
+    () => VenueAuthRepoImpl(
+      apiService: sl<VenueAuthApiService>(),
+      tokenStorage: sl<AuthTokenStorage>(),
+      turnstileTokenProvider: sl<TurnstileTokenProvider>(),
+      pushNotificationService: sl<PushNotificationService>(),
+      realtimeService: sl<RealtimeService>(),
+    ),
+  );
+  sl.registerFactory<OwnerLoginCubit>(
+    () => OwnerLoginCubit(venueAuthRepo: sl<VenueAuthRepo>()),
+  );
+  sl.registerFactory<OwnerRegisterCubit>(
+    () => OwnerRegisterCubit(
+      venueAuthRepo: sl<VenueAuthRepo>(),
+      normalizePhoneNumberUseCase: sl<NormalizePhoneNumberUseCase>(),
+    ),
+  );
+  sl.registerFactory<OwnerForgotPasswordCubit>(
+    () => OwnerForgotPasswordCubit(venueAuthRepo: sl<VenueAuthRepo>()),
+  );
+
+  sl.registerLazySingleton<VenueShellApiService>(
+    () => VenueShellApiService(sl<Dio>()),
+  );
+  sl.registerLazySingleton<VenueShellRepo>(
+    () => VenueShellRepoImpl(apiService: sl<VenueShellApiService>()),
+  );
+  sl.registerFactory<VenueSessionCubit>(
+    () => VenueSessionCubit(venueShellRepo: sl<VenueShellRepo>()),
+  );
+
+  sl.registerLazySingleton<VenueOverviewApiService>(
+    () => VenueOverviewApiService(sl<Dio>()),
+  );
+  sl.registerLazySingleton<VenueOverviewRepo>(
+    () => VenueOverviewRepoImpl(apiService: sl<VenueOverviewApiService>()),
+  );
+  sl.registerFactory<VenueOverviewCubit>(
+    () => VenueOverviewCubit(venueOverviewRepo: sl<VenueOverviewRepo>()),
+  );
+
+  sl.registerLazySingleton<VenueBookingsApiService>(
+    () => VenueBookingsApiService(sl<Dio>()),
+  );
+  sl.registerLazySingleton<VenueBookingsRepo>(
+    () => VenueBookingsRepoImpl(apiService: sl<VenueBookingsApiService>()),
+  );
+  sl.registerFactory<VenueBookingsCubit>(
+    () => VenueBookingsCubit(venueBookingsRepo: sl<VenueBookingsRepo>()),
+  );
+  sl.registerFactory<VenueBookingDetailCubit>(
+    () => VenueBookingDetailCubit(venueBookingsRepo: sl<VenueBookingsRepo>()),
+  );
+
+  sl.registerLazySingleton<VenueCalendarApiService>(
+    () => VenueCalendarApiService(sl<Dio>()),
+  );
+  sl.registerLazySingleton<VenueCalendarRepo>(
+    () => VenueCalendarRepoImpl(apiService: sl<VenueCalendarApiService>()),
+  );
+  sl.registerFactory<VenueCalendarCubit>(
+    () => VenueCalendarCubit(venueCalendarRepo: sl<VenueCalendarRepo>()),
+  );
+
+  sl.registerLazySingleton<VenueSetupApiService>(
+    () => VenueSetupApiService(sl<Dio>()),
+  );
+  sl.registerLazySingleton<VenueSetupRepo>(
+    () => VenueSetupRepoImpl(
+      apiService: sl<VenueSetupApiService>(),
+      dio: sl<Dio>(),
+    ),
   );
 }
 

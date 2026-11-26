@@ -22,6 +22,8 @@ class SplashScreen extends StatelessWidget {
         BlocListener<SplashCubit, SplashState>(
           listener: (context, state) {
             switch (state) {
+              case SplashAuthenticated(isVenue: true):
+                context.openVenueShell();
               case SplashAuthenticated():
                 context.openMainShell();
               case SplashUnauthenticated():

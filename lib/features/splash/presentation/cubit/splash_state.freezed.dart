@@ -131,12 +131,12 @@ return locked(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function()?  authenticated,TResult Function()?  unauthenticated,TResult Function()?  locked,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( bool isVenue)?  authenticated,TResult Function()?  unauthenticated,TResult Function()?  locked,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case SplashLoading() when loading != null:
 return loading();case SplashAuthenticated() when authenticated != null:
-return authenticated();case SplashUnauthenticated() when unauthenticated != null:
+return authenticated(_that.isVenue);case SplashUnauthenticated() when unauthenticated != null:
 return unauthenticated();case SplashLocked() when locked != null:
 return locked();case _:
   return orElse();
@@ -156,12 +156,12 @@ return locked();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function()  authenticated,required TResult Function()  unauthenticated,required TResult Function()  locked,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( bool isVenue)  authenticated,required TResult Function()  unauthenticated,required TResult Function()  locked,}) {final _that = this;
 switch (_that) {
 case _Initial():
 return initial();case SplashLoading():
 return loading();case SplashAuthenticated():
-return authenticated();case SplashUnauthenticated():
+return authenticated(_that.isVenue);case SplashUnauthenticated():
 return unauthenticated();case SplashLocked():
 return locked();case _:
   throw StateError('Unexpected subclass');
@@ -180,12 +180,12 @@ return locked();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function()?  authenticated,TResult? Function()?  unauthenticated,TResult? Function()?  locked,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( bool isVenue)?  authenticated,TResult? Function()?  unauthenticated,TResult? Function()?  locked,}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case SplashLoading() when loading != null:
 return loading();case SplashAuthenticated() when authenticated != null:
-return authenticated();case SplashUnauthenticated() when unauthenticated != null:
+return authenticated(_that.isVenue);case SplashUnauthenticated() when unauthenticated != null:
 return unauthenticated();case SplashLocked() when locked != null:
 return locked();case _:
   return null;
@@ -263,33 +263,67 @@ String toString() {
 
 
 class SplashAuthenticated implements SplashState {
-  const SplashAuthenticated();
+  const SplashAuthenticated({this.isVenue = false});
   
 
+@JsonKey() final  bool isVenue;
 
-
+/// Create a copy of SplashState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$SplashAuthenticatedCopyWith<SplashAuthenticated> get copyWith => _$SplashAuthenticatedCopyWithImpl<SplashAuthenticated>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SplashAuthenticated);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SplashAuthenticated&&(identical(other.isVenue, isVenue) || other.isVenue == isVenue));
 }
 
 
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,isVenue);
 
 @override
 String toString() {
-  return 'SplashState.authenticated()';
+  return 'SplashState.authenticated(isVenue: $isVenue)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class $SplashAuthenticatedCopyWith<$Res> implements $SplashStateCopyWith<$Res> {
+  factory $SplashAuthenticatedCopyWith(SplashAuthenticated value, $Res Function(SplashAuthenticated) _then) = _$SplashAuthenticatedCopyWithImpl;
+@useResult
+$Res call({
+ bool isVenue
+});
 
 
+
+
+}
+/// @nodoc
+class _$SplashAuthenticatedCopyWithImpl<$Res>
+    implements $SplashAuthenticatedCopyWith<$Res> {
+  _$SplashAuthenticatedCopyWithImpl(this._self, this._then);
+
+  final SplashAuthenticated _self;
+  final $Res Function(SplashAuthenticated) _then;
+
+/// Create a copy of SplashState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? isVenue = null,}) {
+  return _then(SplashAuthenticated(
+isVenue: null == isVenue ? _self.isVenue : isVenue // ignore: cast_nullable_to_non_nullable
+as bool,
+  ));
+}
+
+
+}
 
 /// @nodoc
 

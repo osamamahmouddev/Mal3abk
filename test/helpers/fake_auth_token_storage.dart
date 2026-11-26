@@ -8,15 +8,21 @@ class FakeAuthTokenStorage extends Fake implements AuthTokenStorage {
   String accessToken;
   String refreshToken;
   int clearCount = 0;
+  bool venueSession = false;
 
   @override
   Future<void> saveTokens({
     required String accessToken,
     required String refreshToken,
+    bool isVenueSession = false,
   }) async {
     this.accessToken = accessToken;
     this.refreshToken = refreshToken;
+    venueSession = isVenueSession;
   }
+
+  @override
+  Future<bool> isVenueSession() async => venueSession;
 
   @override
   Future<String> readAccessToken() async => accessToken;
@@ -32,5 +38,6 @@ class FakeAuthTokenStorage extends Fake implements AuthTokenStorage {
     clearCount++;
     accessToken = '';
     refreshToken = '';
+    venueSession = false;
   }
 }
