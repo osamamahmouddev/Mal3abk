@@ -9,6 +9,7 @@ import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/utils/cairo_time.dart';
 import '../../../../core/widgets/custom_button.dart';
+import '../../../../core/widgets/venue_thumbnail_widget.dart';
 import '../../data/models/map_venue_pin_model.dart';
 import '../screens/pitch_and_time_screen.dart';
 
@@ -47,13 +48,43 @@ class ExploreMapVenueSheetWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              VenueThumbnailWidget(imageUrl: pin.coverPhotoUrl, size: 56),
+              vSpace(12),
               Expanded(
-                child: Text(
-                  pin.name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.font16Bold,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      pin.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.font16Bold,
+                    ),
+                    if (pin.fromHourlyPrice case final price?)
+                      Text(
+                        '${'explore.venue.starts_from'.tr(context: context)} ${'common.price_egp'.tr(context: context, args: [price.round().toLocalizedDigits(lang)])}',
+                        style: AppTextStyles.font13SemiBold.copyWith(
+                          color: AppColors.goldDark,
+                        ),
+                      ),
+                    hSpace(4),
+                    Text(
+                      next == null
+                          ? 'home.no_slots_soon'.tr(context: context)
+                          : 'explore.next_available'.tr(
+                              context: context,
+                              args: [
+                                CairoTime.dayAndTime(
+                                  CairoTime.parseUtc(next),
+                                  lang,
+                                ),
+                              ],
+                            ),
+                      style: AppTextStyles.font12Regular,
+                    ),
+                  ],
                 ),
               ),
               IconButton(
@@ -62,23 +93,6 @@ class ExploreMapVenueSheetWidget extends StatelessWidget {
                 visualDensity: VisualDensity.compact,
               ),
             ],
-          ),
-          if (pin.fromHourlyPrice case final price?)
-            Text(
-              '${'explore.venue.starts_from'.tr(context: context)} ${'common.price_egp'.tr(context: context, args: [price.round().toLocalizedDigits(lang)])}',
-              style: AppTextStyles.font13SemiBold.copyWith(
-                color: AppColors.goldDark,
-              ),
-            ),
-          hSpace(4),
-          Text(
-            next == null
-                ? 'home.no_slots_soon'.tr(context: context)
-                : 'explore.next_available'.tr(
-                    context: context,
-                    args: [CairoTime.dayAndTime(CairoTime.parseUtc(next), lang)],
-                  ),
-            style: AppTextStyles.font12Regular,
           ),
           hSpace(12),
           Row(

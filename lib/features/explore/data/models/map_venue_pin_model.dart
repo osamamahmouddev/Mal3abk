@@ -9,6 +9,7 @@ class MapVenuePinModel {
     required this.name,
     required this.latitude,
     required this.longitude,
+    this.coverPhotoUrl,
     this.fromHourlyPrice,
     this.currency = 'EGP',
     this.nextAvailableStartUtc,
@@ -19,6 +20,7 @@ class MapVenuePinModel {
   final String name;
   final double latitude;
   final double longitude;
+  final String? coverPhotoUrl;
   final double? fromHourlyPrice;
   final String currency;
   final String? nextAvailableStartUtc;
