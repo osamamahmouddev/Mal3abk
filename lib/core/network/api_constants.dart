@@ -72,6 +72,57 @@ class ApiConstants {
       '/api/v1/venue-manager/venues/{venueId}/bookings/manual/bulk-release';
   static const String venuePricePreview =
       '/api/v1/venue-manager/venues/{venueId}/price-rules/preview';
+  static const String managedPitchActive =
+      '/api/v1/venue-manager/pitches/{pitchId}/active';
+  static const String venuePublish =
+      '/api/v1/venue-manager/venues/{venueId}/publish';
+  static const String venueSpecialSchedules =
+      '/api/v1/venue-manager/venues/{venueId}/special-schedules';
+  static const String venueScheduleImpact =
+      '/api/v1/venue-manager/venues/{venueId}/schedules/impact';
+  static const String venueScheduleOverrides =
+      '/api/v1/venue-manager/venues/{venueId}/schedule-overrides';
+  static const String venueScheduleOverride =
+      '/api/v1/venue-manager/venues/{venueId}/schedule-overrides/{overrideId}';
+  static const String venueHolidayClosures =
+      '/api/v1/venue-manager/venues/{venueId}/schedule-overrides/holidays';
+  static const String venueBookingRules =
+      '/api/v1/venue-manager/venues/{venueId}/booking-rules';
+  static const String pitchWeeklyHours =
+      '/api/v1/venue-manager/venues/{venueId}/pitches/{pitchId}/weekly-hours';
+  static const String venuePriceRules =
+      '/api/v1/venue-manager/venues/{venueId}/price-rules';
+  static const String venuePriceRule =
+      '/api/v1/venue-manager/venues/{venueId}/price-rules/{ruleId}';
+  static const String venueBookingPolicy =
+      '/api/v1/venue-manager/venues/{venueId}/booking-policy';
+  static const String venueCustomer =
+      '/api/v1/venue-manager/venues/{venueId}/customers/{customerKey}';
+  static const String venueCustomerNotes =
+      '/api/v1/venue-manager/venues/{venueId}/customers/{customerKey}/notes';
+  static const String venueCustomerNote =
+      '/api/v1/venue-manager/venues/{venueId}/customers/{customerKey}/notes/{noteId}';
+  static const String venueReports =
+      '/api/v1/venue-manager/venues/{venueId}/reports';
+  static const String venueReportsCsv =
+      '/api/v1/venue-manager/venues/{venueId}/reports/bookings.csv';
+  static const String venuePayouts =
+      '/api/v1/venue-manager/venues/{venueId}/payouts';
+  static const String venueStaff =
+      '/api/v1/venue-manager/venues/{venueId}/staff';
+  static const String venueStaffInvitations =
+      '/api/v1/venue-manager/venues/{venueId}/staff/invitations';
+  static const String venueStaffInvitation =
+      '/api/v1/venue-manager/venues/{venueId}/staff/invitations/{invitationId}';
+  static const String venueStaffInvitationResend =
+      '/api/v1/venue-manager/venues/{venueId}/staff/invitations/{invitationId}/resend';
+  static const String venueStaffMember =
+      '/api/v1/venue-manager/venues/{venueId}/staff/members/{memberId}';
+  static const String changePassword = '/api/v1/auth/password/change';
+  static const String totpEnroll = '/api/v1/auth/2fa/totp/enroll';
+  static const String totpConfirm = '/api/v1/auth/2fa/totp/confirm';
+  static const String emailChangeStart = '/api/v1/me/email-change/start';
+  static const String emailChangeConfirm = '/api/v1/me/email-change/confirm';
   static const String venueCustomers =
       '/api/v1/venue-manager/venues/{venueId}/customers';
   static const String managedVenuePitches =

@@ -75,6 +75,42 @@ class VenueSetupRepoImpl implements VenueSetupRepo {
       _guard(() => apiService.deletePitch(pitchId));
 
   @override
+  Future<ApiResult<VenuePitchModel>> updatePitch(
+    VenuePitchModel pitch, {
+    required String name,
+    required String turfType,
+    required int capacity,
+    double? lengthMeters,
+    double? widthMeters,
+    List<String>? photos,
+  }) => _guard(
+    () => apiService.updatePitch(pitch.id, {
+      'name': name.trim(),
+      'turfType': turfType,
+      'capacity': capacity,
+      'lengthMeters': lengthMeters,
+      'widthMeters': widthMeters,
+      'photos': photos ?? pitch.photos,
+    }),
+  );
+
+  @override
+  Future<ApiResult<int>> setPitchActive(String pitchId, bool isActive) =>
+      _guard(() async {
+        final json = await apiService.setPitchActive(pitchId, {
+          'isActive': isActive,
+        });
+        final count = json is Map ? json['upcomingBookings'] : null;
+        return count is num ? count.toInt() : 0;
+      });
+
+  @override
+  Future<ApiResult<void>> publishVenue(String venueId, bool isPublished) =>
+      _guard(
+        () => apiService.publishVenue(venueId, {'isPublished': isPublished}),
+      );
+
+  @override
   Future<ApiResult<String>> uploadImage(
     Uint8List bytes,
     VenueMediaPurpose purpose,

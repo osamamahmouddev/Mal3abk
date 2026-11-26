@@ -23,17 +23,24 @@ import 'manual_booking_customer_sheet_widget.dart';
 import 'manual_booking_time_picker_widget.dart';
 
 class ManualBookingFormWidget extends HookWidget {
-  const ManualBookingFormWidget({required this.venue, super.key});
+  const ManualBookingFormWidget({
+    required this.venue,
+    this.initialName = '',
+    this.initialPhone = '',
+    super.key,
+  });
 
   final VenueModel venue;
+  final String initialName;
+  final String initialPhone;
 
   static const _durations = [60, 90, 120];
 
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<ManualBookingCubit>();
-    final name = useTextEditingController();
-    final phone = useTextEditingController();
+    final name = useTextEditingController(text: initialName);
+    final phone = useTextEditingController(text: initialPhone);
     final price = useTextEditingController();
     final deposit = useTextEditingController();
     final notes = useTextEditingController();

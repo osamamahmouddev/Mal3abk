@@ -834,7 +834,11 @@ class AppRouter {
               date: args.date ?? CairoTime.today(),
               startMinutes: args.startMinutes ?? 20 * 60,
             ),
-            child: VenueManualBookingScreen(venue: args.venue),
+            child: VenueManualBookingScreen(
+              venue: args.venue,
+              customerName: args.customerName,
+              customerPhone: args.customerPhone,
+            ),
           ),
         );
 

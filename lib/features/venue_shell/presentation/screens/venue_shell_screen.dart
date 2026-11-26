@@ -114,7 +114,7 @@ class VenueShellScreen extends HookWidget {
                     const VenueBookingsScreen()
                   else
                     const SizedBox.shrink(),
-                  const VenueMoreScreen(),
+                  VenueMoreScreen(onOpenTab: switchTab),
                 ],
               ),
             ),

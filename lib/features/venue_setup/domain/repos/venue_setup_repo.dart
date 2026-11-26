@@ -32,6 +32,22 @@ abstract class VenueSetupRepo {
 
   Future<ApiResult<void>> deletePitch(String pitchId);
 
+  Future<ApiResult<VenuePitchModel>> updatePitch(
+    VenuePitchModel pitch, {
+    required String name,
+    required String turfType,
+    required int capacity,
+    double? lengthMeters,
+    double? widthMeters,
+    List<String>? photos,
+  });
+
+  /// Pauses or resumes a pitch; returns its upcoming bookings count.
+  Future<ApiResult<int>> setPitchActive(String pitchId, bool isActive);
+
+  /// Shows or hides an approved venue (branch) in the app.
+  Future<ApiResult<void>> publishVenue(String venueId, bool isPublished);
+
   /// Cleans the picked image (real type check, no EXIF) and uploads it;
   /// returns the media path to store (`/api/v1/media/{id}/medium`).
   Future<ApiResult<String>> uploadImage(

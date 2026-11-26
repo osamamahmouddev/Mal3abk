@@ -19,19 +19,32 @@ class VenueManualBookingArgs {
     this.pitchId,
     this.date,
     this.startMinutes,
+    this.customerName,
+    this.customerPhone,
   });
 
   final VenueModel venue;
   final String? pitchId;
   final DateTime? date;
   final int? startMinutes;
+
+  /// Prefilled when booking for a known customer.
+  final String? customerName;
+  final String? customerPhone;
 }
 
 /// A phone or walk-in booking. Pops `true` once it was saved.
 class VenueManualBookingScreen extends StatelessWidget {
-  const VenueManualBookingScreen({required this.venue, super.key});
+  const VenueManualBookingScreen({
+    required this.venue,
+    this.customerName,
+    this.customerPhone,
+    super.key,
+  });
 
   final VenueModel venue;
+  final String? customerName;
+  final String? customerPhone;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +65,11 @@ class VenueManualBookingScreen extends StatelessWidget {
         body: SafeArea(
           child: SingleChildScrollView(
             padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 32.h),
-            child: ManualBookingFormWidget(venue: venue),
+            child: ManualBookingFormWidget(
+              venue: venue,
+              initialName: customerName ?? '',
+              initialPhone: customerPhone ?? '',
+            ),
           ),
         ),
       ),

@@ -17,6 +17,27 @@ import '../../features/venue_overview/data/apis/venue_overview_api_service.dart'
 import '../../features/venue_overview/data/repos/venue_overview_repo_impl.dart';
 import '../../features/venue_overview/domain/repos/venue_overview_repo.dart';
 import '../../features/venue_overview/presentation/cubit/venue_overview_cubit.dart';
+import '../../features/venue_account/data/apis/venue_account_api_service.dart';
+import '../../features/venue_account/data/repos/venue_account_repo_impl.dart';
+import '../../features/venue_account/domain/repos/venue_account_repo.dart';
+import '../../features/venue_customers/data/apis/venue_customers_api_service.dart';
+import '../../features/venue_customers/data/repos/venue_customers_repo_impl.dart';
+import '../../features/venue_customers/domain/repos/venue_customers_repo.dart';
+import '../../features/venue_policies/data/apis/venue_policies_api_service.dart';
+import '../../features/venue_policies/data/repos/venue_policies_repo_impl.dart';
+import '../../features/venue_policies/domain/repos/venue_policies_repo.dart';
+import '../../features/venue_pricing/data/apis/venue_pricing_api_service.dart';
+import '../../features/venue_pricing/data/repos/venue_pricing_repo_impl.dart';
+import '../../features/venue_pricing/domain/repos/venue_pricing_repo.dart';
+import '../../features/venue_reports/data/apis/venue_reports_api_service.dart';
+import '../../features/venue_reports/data/repos/venue_reports_repo_impl.dart';
+import '../../features/venue_reports/domain/repos/venue_reports_repo.dart';
+import '../../features/venue_staff/data/apis/venue_staff_api_service.dart';
+import '../../features/venue_staff/data/repos/venue_staff_repo_impl.dart';
+import '../../features/venue_staff/domain/repos/venue_staff_repo.dart';
+import '../../features/venue_schedule/data/apis/venue_schedule_api_service.dart';
+import '../../features/venue_schedule/data/repos/venue_schedule_repo_impl.dart';
+import '../../features/venue_schedule/domain/repos/venue_schedule_repo.dart';
 import '../../features/venue_setup/data/apis/venue_setup_api_service.dart';
 import '../../features/venue_setup/data/repos/venue_setup_repo_impl.dart';
 import '../../features/venue_setup/domain/repos/venue_setup_repo.dart';
@@ -811,6 +832,32 @@ void _registerVenueDashboard() {
       apiService: sl<VenueSetupApiService>(),
       dio: sl<Dio>(),
     ),
+  );
+
+  sl.registerLazySingleton<VenueScheduleApiService>(
+    () => VenueScheduleApiService(sl<Dio>()),
+  );
+  sl.registerLazySingleton<VenueScheduleRepo>(
+    () => VenueScheduleRepoImpl(apiService: sl<VenueScheduleApiService>()),
+  );
+  sl.registerLazySingleton<VenuePricingRepo>(
+    () => VenuePricingRepoImpl(apiService: VenuePricingApiService(sl<Dio>())),
+  );
+  sl.registerLazySingleton<VenuePoliciesRepo>(
+    () => VenuePoliciesRepoImpl(apiService: VenuePoliciesApiService(sl<Dio>())),
+  );
+  sl.registerLazySingleton<VenueCustomersRepo>(
+    () =>
+        VenueCustomersRepoImpl(apiService: VenueCustomersApiService(sl<Dio>())),
+  );
+  sl.registerLazySingleton<VenueReportsRepo>(
+    () => VenueReportsRepoImpl(apiService: VenueReportsApiService(sl<Dio>())),
+  );
+  sl.registerLazySingleton<VenueStaffRepo>(
+    () => VenueStaffRepoImpl(apiService: VenueStaffApiService(sl<Dio>())),
+  );
+  sl.registerLazySingleton<VenueAccountRepo>(
+    () => VenueAccountRepoImpl(apiService: VenueAccountApiService(sl<Dio>())),
   );
 }
 
