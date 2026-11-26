@@ -34,46 +34,44 @@ class LeaderboardBlocBuilder extends StatelessWidget {
                   governorate: governorate,
                 ),
                 Expanded(
-                  child: NotificationListener<ScrollEndNotification>(
-                    onNotification: (notification) {
-                      if (hasMore && notification.metrics.extentAfter < 300) {
-                        context.read<LeaderboardCubit>().loadMore();
-                      }
-                      return false;
-                    },
-                    child: entries.length > 3
-                        // Column titles stay pinned; only the rows scroll.
-                        ? Padding(
-                            padding: EdgeInsets.fromLTRB(
-                              16.w,
-                              12.h,
-                              16.w,
-                              16.h,
-                            ),
-                            child: Align(
-                              alignment: Alignment.topCenter,
-                              child: RankingsTableWidget(
-                                entries: entries.skip(3).toList(),
-                                myTeamIds: myTeamIds,
-                                footer: PlainNoteBoxWidget(
-                                  text: 'teams.rankings.note'.tr(
-                                    context: context,
+                  child: Transform.translate(
+                    offset: Offset(0, -14.h),
+                    child: NotificationListener<ScrollEndNotification>(
+                      onNotification: (notification) {
+                        if (hasMore && notification.metrics.extentAfter < 300) {
+                          context.read<LeaderboardCubit>().loadMore();
+                        }
+                        return false;
+                      },
+                      child: entries.length > 3
+                          // Column titles stay pinned; only the rows scroll.
+                          ? Padding(
+                              padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
+                              child: Align(
+                                alignment: Alignment.topCenter,
+                                child: RankingsTableWidget(
+                                  entries: entries.skip(3).toList(),
+                                  myTeamIds: myTeamIds,
+                                  footer: PlainNoteBoxWidget(
+                                    text: 'teams.rankings.note'.tr(
+                                      context: context,
+                                    ),
                                   ),
                                 ),
                               ),
+                            )
+                          : CustomStateWidget(
+                              icon: const Icon(Icons.emoji_events_outlined),
+                              title: entries.isEmpty
+                                  ? 'teams.rankings.empty'.tr(context: context)
+                                  : 'teams.rankings.not_ready_title'.tr(
+                                      context: context,
+                                    ),
+                              description: 'teams.rankings.note'.tr(
+                                context: context,
+                              ),
                             ),
-                          )
-                        : CustomStateWidget(
-                            icon: const Icon(Icons.emoji_events_outlined),
-                            title: entries.isEmpty
-                                ? 'teams.rankings.empty'.tr(context: context)
-                                : 'teams.rankings.not_ready_title'.tr(
-                                    context: context,
-                                  ),
-                            description: 'teams.rankings.note'.tr(
-                              context: context,
-                            ),
-                          ),
+                    ),
                   ),
                 ),
               ],

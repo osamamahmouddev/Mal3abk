@@ -96,6 +96,8 @@ class RankingsTableWidget extends StatelessWidget {
                     child: TeamRankCardWidget(
                       rank: entry.rank.toLocalizedDigits(lang),
                       teamName: entry.name,
+                      initials: entry.name.initials,
+                      logoUrl: entry.logoUrl,
                       trend: entry.city,
                       record:
                           '${entry.wins.toLocalizedDigits(lang)}-${entry.draws.toLocalizedDigits(lang)}-${entry.losses.toLocalizedDigits(lang)}',

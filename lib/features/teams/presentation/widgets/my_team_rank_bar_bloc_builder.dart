@@ -31,6 +31,8 @@ class MyTeamRankBarBlocBuilder extends StatelessWidget {
               context: context,
               args: [mine.name],
             ),
+            initials: mine.name.initials,
+            logoUrl: mine.logoUrl,
             trend: mine.city,
             record:
                 '${mine.wins.toLocalizedDigits(lang)}-${mine.draws.toLocalizedDigits(lang)}-${mine.losses.toLocalizedDigits(lang)}',

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../../core/animations/app_animations.dart';
 import '../../../../core/app/app_spaces.dart';
 import '../../../../core/extensions/app_display_extensions.dart';
 import '../../../../core/styles/app_assets.dart';
@@ -41,7 +42,11 @@ class RankingsHeaderWidget extends StatelessWidget {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: AppSystemUi.onDark,
       child: Container(
-        color: AppColors.brandNavy,
+        decoration: BoxDecoration(
+          color: AppColors.brandNavy,
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(28.r)),
+        ),
+        clipBehavior: Clip.antiAlias,
         child: Stack(
           children: [
             Positioned.fill(
@@ -84,10 +89,12 @@ class RankingsHeaderWidget extends StatelessWidget {
                               final entry? => RankingsPodiumColumnWidget(
                                 initials: entry.name.initials,
                                 name: entry.name,
+                                logoUrl: entry.logoUrl,
                                 rank: entry.rank.toLocalizedDigits(lang),
                                 points: pts(entry),
                                 blockHeight: heights[index],
                                 isWinner: index == 0,
+                                enterDelay: AppAnimations.staggerStep * i,
                                 onTap: () => Navigator.of(context).pushNamed(
                                   AppRoutes.teamProfile,
                                   arguments: entry.teamId,
@@ -99,7 +106,7 @@ class RankingsHeaderWidget extends StatelessWidget {
                         ],
                       ],
                     ),
-                    hSpace(18),
+                    hSpace(14),
                   ],
                 ),
               ),
