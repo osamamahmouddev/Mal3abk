@@ -9,7 +9,6 @@ import '../models/cancel_booking_request_body.dart';
 import '../models/cancel_preview_model.dart';
 import '../models/create_booking_request_body.dart';
 import '../models/create_booking_response_model.dart';
-import '../models/paymob_checkout_response_model.dart';
 import '../models/player_booking_detail_model.dart';
 import '../models/player_booking_summary_model.dart';
 import '../models/submit_proof_request_body.dart';
@@ -30,11 +29,6 @@ abstract class BookingApiService {
   Future<CreateBookingResponseModel> createBooking(
     @Body() CreateBookingRequestBody body,
     @Header(ApiConstants.idempotencyKeyHeader) String idempotencyKey,
-  );
-
-  @POST(ApiConstants.payBookingCommission)
-  Future<PaymobCheckoutResponseModel> payCommission(
-    @Path('id') String id,
   );
 
   @GET(ApiConstants.myBookingsList)

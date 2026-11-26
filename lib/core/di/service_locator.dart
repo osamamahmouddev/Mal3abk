@@ -33,7 +33,6 @@ import 'package:get_it/get_it.dart';
 import '../../features/booking/presentation/cubit/booking_details_cubit.dart';
 import '../../features/booking/presentation/cubit/cancel_booking_cubit.dart';
 import '../../features/booking/presentation/cubit/deposit_methods_cubit.dart';
-import '../../features/booking/presentation/cubit/pay_commission_cubit.dart';
 import '../../features/explore/presentation/cubit/favorite_toggle_cubit.dart';
 import '../../features/reference/presentation/cubit/filter_options_cubit.dart';
 import '../../features/explore/presentation/cubit/favorites_cubit.dart';
@@ -95,7 +94,6 @@ import '../../features/booking/domain/repos/booking_repo.dart';
 import '../../features/booking/domain/use_cases/create_booking_use_case.dart';
 import '../../features/booking/domain/use_cases/get_booking_quote_use_case.dart';
 import '../../features/booking/domain/use_cases/get_my_bookings_use_case.dart';
-import '../../features/booking/domain/use_cases/pay_booking_commission_use_case.dart';
 import '../services/firebase_phone_auth_service.dart';
 import '../services/realtime_service.dart';
 import '../../features/booking/presentation/cubit/my_bookings_cubit.dart';
@@ -475,9 +473,6 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
   sl.registerLazySingleton<CreateBookingUseCase>(
     () => CreateBookingUseCase(bookingRepo: sl<BookingRepo>()),
   );
-  sl.registerLazySingleton<PayBookingCommissionUseCase>(
-    () => PayBookingCommissionUseCase(bookingRepo: sl<BookingRepo>()),
-  );
   sl.registerLazySingleton<GetMyBookingsUseCase>(
     () => GetMyBookingsUseCase(bookingRepo: sl<BookingRepo>()),
   );
@@ -498,11 +493,6 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
   );
   sl.registerFactory<CancelBookingCubit>(
     () => CancelBookingCubit(bookingRepo: sl<BookingRepo>()),
-  );
-  sl.registerFactory<PayCommissionCubit>(
-    () => PayCommissionCubit(
-      payBookingCommissionUseCase: sl<PayBookingCommissionUseCase>(),
-    ),
   );
   sl.registerFactory<MyBookingsCubit>(
     () => MyBookingsCubit(

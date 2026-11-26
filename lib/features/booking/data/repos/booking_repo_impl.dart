@@ -11,7 +11,6 @@ import '../models/booking_quote_request_body.dart';
 import '../models/booking_quote_response_model.dart';
 import '../models/create_booking_request_body.dart';
 import '../models/create_booking_response_model.dart';
-import '../models/paymob_checkout_response_model.dart';
 import '../models/player_booking_detail_model.dart';
 import '../models/player_booking_summary_model.dart';
 import '../models/submit_proof_request_body.dart';
@@ -45,16 +44,6 @@ class BookingRepoImpl implements BookingRepo {
         body,
         idempotencyKey,
       );
-      return ApiResult.success(response);
-    } catch (e, st) {
-      return ApiResult.failure(ApiFailureMapper.map(e, st));
-    }
-  }
-
-  @override
-  Future<ApiResult<PaymobCheckoutResponseModel>> payCommission(String id) async {
-    try {
-      final response = await bookingApiService.payCommission(id);
       return ApiResult.success(response);
     } catch (e, st) {
       return ApiResult.failure(ApiFailureMapper.map(e, st));

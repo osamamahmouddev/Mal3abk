@@ -8,6 +8,7 @@ import '../../../../core/extensions/app_display_extensions.dart';
 import '../../../../core/routes/routes.dart';
 import '../../../../core/styles/app_assets.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_shadows.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/utils/cairo_time.dart';
 import '../../../../core/widgets/bottom_action_bar_widget.dart';
@@ -20,7 +21,6 @@ import '../widgets/deposit_methods_bloc_builder.dart';
 import '../widgets/deposit_step_widget.dart';
 import '../widgets/deposit_summary_card_widget.dart';
 import '../widgets/hold_timer_banner_widget.dart';
-import '../widgets/pay_commission_bloc_consumer.dart';
 
 class DepositInstructionsScreen extends StatelessWidget {
   const DepositInstructionsScreen({required this.booking, super.key});
@@ -44,24 +44,18 @@ class DepositInstructionsScreen extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              PayCommissionBlocConsumer(bookingId: booking.bookingId),
-              hSpace(8),
               CustomButton(
                 text: 'booking.or_pay_manual'.tr(context: context),
-                type: CustomButtonType.outline,
-                height: 44.h,
+                height: 50.h,
                 borderRadius: 14,
+                boxShadow: AppShadows.redGlow,
                 icon: SvgPicture.asset(
                   AppAssets.icUploadWhite,
                   width: 18.r,
                   height: 18.r,
-                  colorFilter: const ColorFilter.mode(
-                    AppColors.textPrimary,
-                    BlendMode.srcIn,
-                  ),
                 ),
-                textStyle: AppTextStyles.font14SemiBold.copyWith(
-                  color: AppColors.textPrimary,
+                textStyle: AppTextStyles.font15Bold.copyWith(
+                  color: AppColors.white,
                 ),
                 onTap: () => navigator.pushReplacementNamed(
                   AppRoutes.uploadProof,

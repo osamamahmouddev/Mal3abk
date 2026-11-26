@@ -112,8 +112,6 @@ class ApiConstants {
   static const String cancelPreview = '/api/v1/bookings/{id}/cancel/preview';
   static const String bookingPaymentMethods =
       '/api/v1/bookings/{id}/payment-methods';
-  static const String payBookingCommission =
-      '/api/v1/bookings/{id}/pay-commission';
   static const String idempotencyKeyHeader = 'Idempotency-Key';
   static const String proofUploadUrl = '/api/v1/bookings/{id}/proof/upload-url';
   static const String submitBookingProof = '/api/v1/bookings/{id}/proof/submit';
