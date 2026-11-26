@@ -56,18 +56,16 @@
                       android:host="app"
                       android:pathPrefix="/join/"/>
             </intent-filter>
-            <!-- Shared team invite link: http(s)://mal3abk.runasp.net/join/<CODE>.
-                 Unverified until the API host serves HTTPS and
-                 /.well-known/assetlinks.json, so Android may open the web page
-                 first, which then hands the code to the app. -->
-            <intent-filter>
+            <!-- Shared team invite link: https://mal3abk.runasp.net/join/<CODE>.
+                 Verified by /.well-known/assetlinks.json on that host, so
+                 Android opens the app directly instead of a browser. -->
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="https"/>
-                <data android:scheme="http"/>
-                <data android:host="mal3abk.runasp.net"/>
-                <data android:pathPrefix="/join/"/>
+                <data android:scheme="https"
+                      android:host="mal3abk.runasp.net"
+                      android:pathPrefix="/join/"/>
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
