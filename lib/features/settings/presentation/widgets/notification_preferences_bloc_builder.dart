@@ -4,11 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/widgets/app_top_snack_bar.dart';
-import '../../../../core/widgets/custom_skeleton_widget.dart';
 import '../../../../core/widgets/empty_note_box_widget.dart';
 import '../cubit/notification_preferences_cubit.dart';
 import '../cubit/notification_preferences_state.dart';
 import 'settings_section_card_widget.dart';
+import 'settings_section_skeleton_widget.dart';
 import 'settings_switch_tile_widget.dart';
 
 class NotificationPreferencesBlocBuilder extends StatelessWidget {
@@ -58,7 +58,7 @@ class NotificationPreferencesBlocBuilder extends StatelessWidget {
           NotificationPreferencesError(:final message) => EmptyNoteBoxWidget(
             text: message.tr(context: context),
           ),
-          _ => const CustomSkeletonWidget(height: 220),
+          _ => const SettingsSectionSkeletonWidget(rowCount: 4),
         };
       },
     );
