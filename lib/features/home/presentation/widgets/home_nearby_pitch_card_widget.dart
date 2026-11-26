@@ -139,17 +139,26 @@ class HomeNearbyPitchCardWidget extends StatelessWidget {
                             style: AppTextStyles.font12Bold.copyWith(
                               color: AppColors.goldDark,
                             ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                       ],
                     ),
                     hSpace(4),
-                    Text(dist, style: AppTextStyles.font12Regular),
+                    Text(
+                      dist,
+                      style: AppTextStyles.font12Regular,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     hSpace(4),
                     Text(
                       slot,
                       style: AppTextStyles.font12Bold.copyWith(
                         color: AppColors.successGreen,
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
