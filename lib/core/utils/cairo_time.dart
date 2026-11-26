@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:timezone/data/latest_10y.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
 
+import '../extensions/app_display_extensions.dart';
 import 'app_logger.dart';
 
 /// Every slot, booking and match time is shown in Egyptian local time, whatever the
@@ -82,4 +83,9 @@ class CairoTime {
 
   static String time(DateTime utc, String languageCode) =>
       DateFormat('h:mm a', languageCode).format(fromUtc(utc));
+
+  /// "9:00 ص" for a slot tile: always Latin digits, whatever the locale,
+  /// since a slot grid reads faster as plain numbers.
+  static String slotLabel(DateTime utc, String languageCode) =>
+      DateFormat('h:mm a', languageCode).format(fromUtc(utc)).toLatinDigits();
 }

@@ -219,7 +219,7 @@ class PitchAndTimeLoadedWidget extends StatelessWidget {
                         // animates when its own slot changes, never when
                         // the day, pitch or filter shows another slot.
                         key: ValueKey('${pitch?.pitchId}|${slot.startUtc}'),
-                        time: CairoTime.time(
+                        time: CairoTime.slotLabel(
                           CairoTime.parseUtc(slot.startUtc),
                           lang,
                         ),
