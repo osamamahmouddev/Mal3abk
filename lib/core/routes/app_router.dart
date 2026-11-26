@@ -104,6 +104,25 @@ import '../../features/teams/presentation/screens/manage_members_screen.dart';
 import '../../features/teams/presentation/screens/my_teams_screen.dart';
 import '../../features/teams/presentation/screens/rankings_screen.dart';
 import '../../features/teams/presentation/screens/team_profile_screen.dart';
+import '../../features/venue_auth/presentation/cubit/owner_forgot_password_cubit.dart';
+import '../../features/venue_auth/presentation/cubit/owner_login_cubit.dart';
+import '../../features/venue_auth/presentation/cubit/owner_register_cubit.dart';
+import '../../features/venue_auth/presentation/screens/owner_forgot_password_screen.dart';
+import '../../features/venue_auth/presentation/screens/owner_register_screen.dart';
+import '../../features/venue_bookings/presentation/cubit/venue_booking_detail_cubit.dart';
+import '../../features/venue_bookings/presentation/screens/venue_booking_detail_screen.dart';
+import '../../features/venue_bookings/presentation/widgets/venue_bookings_list_widget.dart';
+import '../../features/venue_calendar/domain/repos/venue_calendar_repo.dart';
+import '../../features/venue_calendar/presentation/cubit/manual_booking_cubit.dart';
+import '../../features/venue_calendar/presentation/screens/venue_manual_booking_screen.dart';
+import '../../features/reference/domain/repos/reference_repo.dart';
+import '../../features/venue_setup/domain/repos/venue_setup_repo.dart';
+import '../../features/venue_setup/presentation/cubit/venue_setup_cubit.dart';
+import '../../features/venue_setup/presentation/screens/venue_setup_screen.dart';
+import '../../features/venue_shell/data/models/venue_model.dart';
+import '../../features/venue_shell/presentation/cubit/venue_session_cubit.dart';
+import '../../features/venue_shell/presentation/screens/venue_shell_screen.dart';
+import '../utils/cairo_time.dart';
 import '../config/env_config.dart';
 import '../di/service_locator.dart';
 import 'app_navigator.dart';
@@ -169,6 +188,9 @@ class AppRouter {
             providers: [
               BlocProvider<SendOtpCubit>(create: (_) => sl<SendOtpCubit>()),
               BlocProvider<VerifyOtpCubit>(create: (_) => sl<VerifyOtpCubit>()),
+              BlocProvider<OwnerLoginCubit>(
+                create: (_) => sl<OwnerLoginCubit>(),
+              ),
             ],
             child: const LoginScreen(),
           ),
@@ -727,6 +749,95 @@ class AppRouter {
           ),
         );
 
+      case AppRoutes.venueRegister:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => BlocProvider<OwnerRegisterCubit>(
+            create: (_) => sl<OwnerRegisterCubit>(),
+            child: const OwnerRegisterScreen(),
+          ),
+        );
+
+      case AppRoutes.venueForgotPassword:
+        final email = settings.arguments;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => BlocProvider<OwnerForgotPasswordCubit>(
+            create: (_) => sl<OwnerForgotPasswordCubit>(),
+            child: OwnerForgotPasswordScreen(
+              initialEmail: email is String ? email : '',
+            ),
+          ),
+        );
+
+      case AppRoutes.venueShell:
+        return MaterialPageRoute(
+          settings: const RouteSettings(name: AppRoutes.venueShell),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<VenueSessionCubit>(
+                create: (_) => sl<VenueSessionCubit>()..load(),
+              ),
+              BlocProvider<LogoutCubit>(create: (_) => sl<LogoutCubit>()),
+            ],
+            child: const VenueShellScreen(),
+          ),
+        );
+
+      case AppRoutes.venueSetup:
+        final venue = settings.arguments;
+        return MaterialPageRoute<String>(
+          settings: settings,
+          builder: (_) => BlocProvider<VenueSetupCubit>(
+            create: (_) => VenueSetupCubit(
+              venueSetupRepo: sl<VenueSetupRepo>(),
+              referenceRepo: sl<ReferenceRepo>(),
+              venue: venue is VenueModel ? venue : null,
+            )..init(),
+            child: const VenueSetupScreen(),
+          ),
+        );
+
+      case AppRoutes.venueBookingDetail:
+        final args = settings.arguments;
+        if (args is! VenueBookingDetailArgs) {
+          return _errorRoute('Missing booking');
+        }
+        return MaterialPageRoute<bool>(
+          settings: settings,
+          builder: (_) => BlocProvider<VenueBookingDetailCubit>(
+            create: (_) =>
+                sl<VenueBookingDetailCubit>()
+                  ..load(args.venueId, args.bookingId),
+            child: VenueBookingDetailScreen(args: args),
+          ),
+        );
+
+      case AppRoutes.venueManualBooking:
+        final raw = settings.arguments;
+        final args = raw is VenueManualBookingArgs
+            ? raw
+            : raw is VenueModel
+            ? VenueManualBookingArgs(venue: raw)
+            : null;
+        if (args == null) return _errorRoute('Missing venue');
+        return MaterialPageRoute<bool>(
+          settings: settings,
+          builder: (_) => BlocProvider<ManualBookingCubit>(
+            create: (_) => ManualBookingCubit(
+              venueCalendarRepo: sl<VenueCalendarRepo>(),
+              venueId: args.venue.id,
+              pitchId:
+                  args.pitchId ??
+                  args.venue.activePitches.firstOrNull?.id ??
+                  '',
+              date: args.date ?? CairoTime.today(),
+              startMinutes: args.startMinutes ?? 20 * 60,
+            ),
+            child: VenueManualBookingScreen(venue: args.venue),
+          ),
+        );
+
       case AppRoutes.recoverPhone:
         // The token comes from the deep link query or, when pushed in-app,
         // from the arguments. A missing token shows the invalid-link state.
@@ -755,10 +866,9 @@ class AppRouter {
             if (Navigator.of(context).canPop()) {
               Navigator.of(context).pop();
             } else {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                AppRoutes.main,
-                (_) => false,
-              );
+              Navigator.of(
+                context,
+              ).pushNamedAndRemoveUntil(AppRoutes.main, (_) => false);
             }
           },
         ),
@@ -770,10 +880,9 @@ class AppRouter {
             Text(message),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
-                AppRoutes.main,
-                (_) => false,
-              ),
+              onPressed: () => Navigator.of(
+                context,
+              ).pushNamedAndRemoveUntil(AppRoutes.main, (_) => false),
               child: const Text('العودة للرئيسية'),
             ),
           ],

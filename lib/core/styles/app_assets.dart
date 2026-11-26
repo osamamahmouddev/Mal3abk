@@ -67,6 +67,8 @@ class AppAssets {
   static const String icNavBookings = 'assets/images/svgs/ic-nav-bookings.svg';
   static const String icNavTeams = 'assets/images/svgs/ic-nav-teams.svg';
   static const String icNavProfile = 'assets/images/svgs/ic-nav-profile.svg';
+  static const String icNavCalendar = 'assets/images/svgs/ic-nav-calendar.svg';
+  static const String icNavMenu = 'assets/images/svgs/ic-nav-menu.svg';
   static const String icWifiOff = 'assets/images/svgs/ic-wifi-off.svg';
   static const String icSearch = 'assets/images/svgs/ic-search.svg';
   static const String icFilter = 'assets/images/svgs/ic-filter.svg';

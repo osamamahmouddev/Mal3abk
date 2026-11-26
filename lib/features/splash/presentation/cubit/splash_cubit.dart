@@ -17,6 +17,8 @@ class SplashCubit extends Cubit<SplashState>
   final BiometricLock biometricLock;
   final Duration delay;
 
+  bool _isVenue = false;
+
   Future<void> checkAuth() async {
     emitIfOpen(const SplashState.loading());
     if (delay > Duration.zero) {
@@ -24,10 +26,13 @@ class SplashCubit extends Cubit<SplashState>
     }
     final isAuthed = await checkAuthStatusUseCase();
     if (isAuthed) {
+      _isVenue = await checkAuthStatusUseCase.isVenueSession();
       final locked =
           await biometricLock.isEnabled() && await biometricLock.isAvailable();
       emitIfOpen(
-        locked ? const SplashState.locked() : const SplashState.authenticated(),
+        locked
+            ? const SplashState.locked()
+            : SplashState.authenticated(isVenue: _isVenue),
       );
     } else {
       emitIfOpen(const SplashState.unauthenticated());
@@ -37,7 +42,7 @@ class SplashCubit extends Cubit<SplashState>
   Future<void> unlock(String reason) async {
     if (state is! SplashLocked) return;
     if (await biometricLock.authenticate(reason)) {
-      emitIfOpen(const SplashState.authenticated());
+      emitIfOpen(SplashState.authenticated(isVenue: _isVenue));
     }
   }
 }

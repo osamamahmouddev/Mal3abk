@@ -52,6 +52,12 @@ extension ContextExt on BuildContext {
     rootNavigator: true,
   ).pushNamedAndRemoveUntil(AppRoutes.main, (_) => false);
 
+  /// Opens the venue owner/staff dashboard and clears the whole stack.
+  void openVenueShell() => Navigator.of(
+    this,
+    rootNavigator: true,
+  ).pushNamedAndRemoveUntil(AppRoutes.venueShell, (_) => false);
+
   /// Opens login on the root navigator and clears the whole stack, used when
   /// the session ends (logout, phone change, phone recovery).
   void openLogin() => Navigator.of(

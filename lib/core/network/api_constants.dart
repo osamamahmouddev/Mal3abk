@@ -8,6 +8,12 @@ class ApiConstants {
   static const String logout = '/api/v1/auth/logout';
   static const String logoutAll = '/api/v1/auth/logout-all';
 
+  /// Venue owner/staff accounts (email + password)
+  static const String ownerLogin = '/api/v1/auth/login';
+  static const String registerVenueOwner = '/api/v1/auth/register/venue-owner';
+  static const String resendVerificationEmail = '/api/v1/auth/email/resend';
+  static const String forgotPassword = '/api/v1/auth/password/forgot';
+
   static const String stepUp = '/api/v1/auth/step-up';
   static const String stepUpOtp = '/api/v1/auth/step-up/otp';
   static const String startPhoneChange = '/api/v1/me/phone-change/start';
@@ -24,7 +30,61 @@ class ApiConstants {
     refreshToken,
     logout,
     recoverPhone,
+    ownerLogin,
+    registerVenueOwner,
+    resendVerificationEmail,
+    forgotPassword,
   ];
+
+  /// Venue dashboard (owners and staff)
+  static const String myPermissions = '/api/v1/me/permissions';
+  static const String managedVenues = '/api/v1/venue-manager/venues';
+  static const String managedVenue = '/api/v1/venue-manager/venues/{venueId}';
+  static const String venueDashboard =
+      '/api/v1/venue-manager/venues/{venueId}/dashboard';
+  static const String venueApproval =
+      '/api/v1/venue-manager/venues/{venueId}/approval';
+  static const String venueApprovalSubmit =
+      '/api/v1/venue-manager/venues/{venueId}/approval/submit';
+  static const String venueBookings =
+      '/api/v1/venue-manager/venues/{venueId}/bookings';
+  static const String venueBooking =
+      '/api/v1/venue-manager/venues/{venueId}/bookings/{bookingId}';
+  static const String venueBookingConfirmDeposit =
+      '/api/v1/venue-manager/venues/{venueId}/bookings/{bookingId}/confirm-deposit';
+  static const String venueBookingCancel =
+      '/api/v1/venue-manager/venues/{venueId}/bookings/{bookingId}/cancel';
+  static const String venueBookingNoShow =
+      '/api/v1/venue-manager/venues/{venueId}/bookings/{bookingId}/no-show';
+  static const String venueManualBooking =
+      '/api/v1/venue-manager/venues/{venueId}/bookings/manual';
+  static const String venueCalendar =
+      '/api/v1/venue-manager/venues/{venueId}/calendar';
+  static const String venueSchedules =
+      '/api/v1/venue-manager/venues/{venueId}/schedules';
+  static const String venueBlockedSlots =
+      '/api/v1/venue-manager/venues/{venueId}/blocked-slots';
+  static const String venueBlockedSlot =
+      '/api/v1/venue-manager/venues/{venueId}/blocked-slots/{slotId}';
+  static const String venueManualBookingBulk =
+      '/api/v1/venue-manager/venues/{venueId}/bookings/manual/bulk';
+  static const String venueManualBookingBulkRelease =
+      '/api/v1/venue-manager/venues/{venueId}/bookings/manual/bulk-release';
+  static const String venuePricePreview =
+      '/api/v1/venue-manager/venues/{venueId}/price-rules/preview';
+  static const String venueCustomers =
+      '/api/v1/venue-manager/venues/{venueId}/customers';
+  static const String managedVenuePitches =
+      '/api/v1/venue-manager/venues/{venueId}/pitches';
+  static const String managedPitch = '/api/v1/venue-manager/pitches/{pitchId}';
+  static const String venueGallery =
+      '/api/v1/venue-manager/venues/{venueId}/gallery';
+  static const String venueGalleryItem =
+      '/api/v1/venue-manager/venues/{venueId}/gallery/{mediaId}';
+  static const String pitchGallery =
+      '/api/v1/venue-manager/venues/{venueId}/pitches/{pitchId}/gallery';
+  static const String pitchGalleryItem =
+      '/api/v1/venue-manager/venues/{venueId}/pitches/{pitchId}/gallery/{mediaId}';
 
   /// Profile and onboarding
   static const String myProfile = '/api/v1/me';

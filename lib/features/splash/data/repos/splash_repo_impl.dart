@@ -10,4 +10,7 @@ class SplashRepoImpl implements SplashRepo {
   Future<bool> isAuthenticated() async {
     return tokenStorage.hasSession();
   }
+
+  @override
+  Future<bool> isVenueSession() => tokenStorage.isVenueSession();
 }

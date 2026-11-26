@@ -8,4 +8,7 @@ class CheckAuthStatusUseCase {
   Future<bool> call() async {
     return splashRepo.isAuthenticated();
   }
+
+  /// Whether the saved session is a venue owner/staff one.
+  Future<bool> isVenueSession() => splashRepo.isVenueSession();
 }
