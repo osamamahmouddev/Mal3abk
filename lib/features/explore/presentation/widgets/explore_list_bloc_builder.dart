@@ -1,3 +1,4 @@
+import 'explore_featured_bloc_builder.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -83,10 +84,15 @@ class ExploreListBlocBuilder extends StatelessWidget {
                         16.w,
                         16.h + MediaQuery.paddingOf(context).bottom,
                       ),
-                      itemCount: result.items.length,
-                      separatorBuilder: (_, _) => hSpace(12),
+                      // Promoted venues lead the list (they hide when there are none).
+                      itemCount: result.items.length + 1,
+                      separatorBuilder: (_, index) =>
+                          index == 0 ? const SizedBox.shrink() : hSpace(12),
                       itemBuilder: (context, index) {
-                        final item = result.items[index];
+                        if (index == 0) {
+                          return const ExploreFeaturedBlocBuilder();
+                        }
+                        final item = result.items[index - 1];
                         final next = item.nextAvailableStartUtc;
                         final offer = item.offer;
                         final after = offer?.fromHourlyPriceAfter;
@@ -95,7 +101,7 @@ class ExploreListBlocBuilder extends StatelessWidget {
                           args: [v.round().toLocalizedDigits(lang)],
                         );
                         return FadeSlideInWidget(
-                          index: index,
+                          index: index - 1,
                           child: PitchCardWidget(
                             name: item.name,
                             specs: specs(item),

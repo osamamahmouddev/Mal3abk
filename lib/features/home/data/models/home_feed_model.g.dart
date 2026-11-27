@@ -32,6 +32,11 @@ HomeFeedModel _$HomeFeedModelFromJson(Map<String, dynamic> json) =>
         json['recentlyViewed'] as Map<String, dynamic>,
       ),
       generatedAtUtc: json['generatedAtUtc'] as String,
+      sponsored: json['sponsored'] == null
+          ? null
+          : SponsoredSectionModel.fromJson(
+              json['sponsored'] as Map<String, dynamic>,
+            ),
     );
 
 Map<String, dynamic> _$HomeFeedModelToJson(HomeFeedModel instance) =>
@@ -40,4 +45,5 @@ Map<String, dynamic> _$HomeFeedModelToJson(HomeFeedModel instance) =>
       'popularNearYou': instance.popularNearYou,
       'recentlyViewed': instance.recentlyViewed,
       'generatedAtUtc': instance.generatedAtUtc,
+      'sponsored': instance.sponsored,
     };

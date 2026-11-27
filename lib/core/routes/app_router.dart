@@ -1,3 +1,4 @@
+import '../../features/explore/presentation/cubit/featured_venues_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -279,6 +280,9 @@ class AppRouter {
             providers: [
               BlocProvider<ExploreListCubit>(
                 create: (_) => sl<ExploreListCubit>()..start(),
+              ),
+              BlocProvider<FeaturedVenuesCubit>(
+                create: (_) => sl<FeaturedVenuesCubit>()..load(),
               ),
               BlocProvider<FavoriteToggleCubit>(
                 create: (_) => sl<FavoriteToggleCubit>(),

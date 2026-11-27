@@ -1,3 +1,4 @@
+import '../../../../core/widgets/sponsored_badge_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ class HomeNearbyPitchCardWidget extends StatelessWidget {
     required this.onTap,
     this.imageUrl,
     this.isAvailableNow = false,
+    this.sponsoredLabel,
     super.key,
   });
 
@@ -32,6 +34,10 @@ class HomeNearbyPitchCardWidget extends StatelessWidget {
   /// Whether the venue has a free slot starting within the hour: shown as a
   /// live badge on the photo instead of buried in the text below.
   final bool isAvailableNow;
+
+  /// Set for a promoted venue: shown as a badge on the photo so it is never
+  /// mistaken for an organic result.
+  final String? sponsoredLabel;
 
   /// The venue's cover photo; the built-in pattern shows until it loads, or
   /// when the venue has none.
@@ -114,6 +120,12 @@ class HomeNearbyPitchCardWidget extends StatelessWidget {
                             ],
                           ),
                         ),
+                      ),
+                    if (sponsoredLabel != null)
+                      PositionedDirectional(
+                        top: 8.h,
+                        end: 8.w,
+                        child: SponsoredBadgeWidget(label: sponsoredLabel!),
                       ),
                   ],
                 ),

@@ -327,7 +327,10 @@
     "show_all_egypt": "Show all of Egypt",
     "use_my_location": "Use my current location",
     "near_me": "Near you",
-    "location_unavailable": "Unable to determine your current location. You can enable it in Settings."
+    "location_unavailable": "Unable to determine your current location. You can enable it in Settings.",
+    "sponsored": "Featured pitches",
+    "sponsored_badge": "Ad",
+    "sponsored_cta": "Book now"
   },
   "explore": {
     "list_title": "Explore Pitches",

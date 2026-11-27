@@ -199,6 +199,7 @@ class ApiConstants {
   static const String favorites = '/api/v1/me/favorites';
   static const String favorite = '/api/v1/me/favorites/{venueId}';
   static const String recentlyViewed = '/api/v1/me/recently-viewed';
+  static const String featuredVenues = '/api/v1/venues/featured';
   static const String recentlyViewedVenue =
       '/api/v1/me/recently-viewed/{venueId}';
   static const String sessions = '/api/v1/me/sessions';
