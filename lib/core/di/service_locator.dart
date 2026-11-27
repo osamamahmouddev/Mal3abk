@@ -1,3 +1,4 @@
+import '../../features/explore/presentation/cubit/featured_venues_cubit.dart';
 import '../../features/venue_auth/data/apis/venue_auth_api_service.dart';
 import '../../features/venue_auth/data/repos/venue_auth_repo_impl.dart';
 import '../../features/venue_auth/domain/repos/venue_auth_repo.dart';
@@ -443,6 +444,9 @@ Future<void> setupServiceLocator(EnvConfig envConfig) async {
   );
   sl.registerLazySingleton<GetVenueAvailabilityUseCase>(
     () => GetVenueAvailabilityUseCase(exploreRepo: sl<ExploreRepo>()),
+  );
+  sl.registerFactory<FeaturedVenuesCubit>(
+    () => FeaturedVenuesCubit(exploreRepo: sl<ExploreRepo>()),
   );
   sl.registerFactory<ExploreListCubit>(
     () => ExploreListCubit(

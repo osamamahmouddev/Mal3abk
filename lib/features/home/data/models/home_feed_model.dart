@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import '../../../explore/data/models/explore_venue_card_model.dart';
+import '../../../explore/data/models/sponsored_item_model.dart';
 
 part 'home_feed_model.g.dart';
 
@@ -23,12 +24,16 @@ class HomeFeedModel {
     required this.popularNearYou,
     required this.recentlyViewed,
     required this.generatedAtUtc,
+    this.sponsored,
   });
 
   final HomeSectionModel nearby;
   final HomeSectionModel popularNearYou;
   final HomeSectionModel recentlyViewed;
   final String generatedAtUtc;
+
+  /// Promoted venues; null while the admin has sponsored items switched off.
+  final SponsoredSectionModel? sponsored;
 
   factory HomeFeedModel.fromJson(Map<String, dynamic> json) =>
       _$HomeFeedModelFromJson(json);

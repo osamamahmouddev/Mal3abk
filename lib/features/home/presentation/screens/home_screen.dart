@@ -16,6 +16,7 @@ import '../widgets/home_hero_search_card_widget.dart';
 import '../widgets/home_location_header_widget.dart';
 import '../widgets/home_nearby_pitches_bloc_builder.dart';
 import '../widgets/home_recently_viewed_bloc_builder.dart';
+import '../widgets/home_sponsored_bloc_builder.dart';
 import '../widgets/home_team_activity_bloc_builder.dart';
 import '../widgets/home_upcoming_booking_bloc_builder.dart';
 import '../../../main_shell/presentation/widgets/main_shell_scope_widget.dart';
@@ -69,6 +70,14 @@ class HomeScreen extends StatelessWidget {
                         child: Padding(
                           padding: padding,
                           child: const HomeUpcomingBookingBlocBuilder(),
+                        ),
+                      ),
+                      // Promoted venues sit high on the page, each tagged as an ad.
+                      FadeSlideInWidget(
+                        index: 1,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 18.h),
+                          child: const HomeSponsoredBlocBuilder(),
                         ),
                       ),
                       hSpace(18),

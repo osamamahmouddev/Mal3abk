@@ -6,6 +6,7 @@ import '../models/explore_result_model.dart';
 import '../models/explore_venue_card_model.dart';
 import '../models/map_venue_pin_model.dart';
 import '../models/pitch_details_model.dart';
+import '../models/sponsored_item_model.dart';
 import '../models/venue_availability_model.dart';
 import '../models/venue_details_model.dart';
 
@@ -57,6 +58,10 @@ abstract class ExploreApiService {
 
   @GET(ApiConstants.recentlyViewed)
   Future<List<ExploreVenueCardModel>> getRecentlyViewed();
+
+  /// Promoted venues for the top of explore; empty while switched off.
+  @GET(ApiConstants.featuredVenues)
+  Future<List<SponsoredItemModel>> getFeaturedVenues();
 
   @POST(ApiConstants.recentlyViewedVenue)
   Future<void> recordView(@Path('venueId') String venueId);

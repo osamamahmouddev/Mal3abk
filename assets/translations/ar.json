@@ -336,7 +336,10 @@
     "show_all_egypt": "عرض كل مصر",
     "use_my_location": "استخدم موقعي الحالي",
     "near_me": "قريب منك",
-    "location_unavailable": "تعذر تحديد موقعك الحالي. يمكنك تفعيل الموقع من الإعدادات."
+    "location_unavailable": "تعذر تحديد موقعك الحالي. يمكنك تفعيل الموقع من الإعدادات.",
+    "sponsored": "ملاعب مميزة",
+    "sponsored_badge": "إعلان",
+    "sponsored_cta": "احجز دلوقتي"
   },
   "explore": {
     "list_title": "استكشف الملاعب",

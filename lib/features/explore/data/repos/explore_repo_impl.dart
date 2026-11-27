@@ -10,6 +10,7 @@ import '../models/map_bounds_model.dart';
 import '../models/map_venue_pin_model.dart';
 import '../models/explore_venue_card_model.dart';
 import '../models/pitch_details_model.dart';
+import '../models/sponsored_item_model.dart';
 import '../models/venue_availability_model.dart';
 import '../models/venue_details_model.dart';
 
@@ -165,6 +166,10 @@ class ExploreRepoImpl implements ExploreRepo {
   @override
   Future<ApiResult<List<ExploreVenueCardModel>>> getRecentlyViewed() =>
       _guard(exploreApiService.getRecentlyViewed);
+
+  @override
+  Future<ApiResult<List<SponsoredItemModel>>> getFeaturedVenues() =>
+      _guard(exploreApiService.getFeaturedVenues);
 
   @override
   Future<ApiResult<void>> recordView(String venueId) =>
